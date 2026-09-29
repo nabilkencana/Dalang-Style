@@ -59,15 +59,15 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
       {/* 2. Top Header Navigation Bar */}
       <header className="relative z-30 w-full border-b border-[#dedf42]/15 bg-black/60 backdrop-blur-md sticky top-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
-          {/* Back to Home Link */}
+          {/* Back to Catalog Link */}
           <Link
-            href="/#cara-bermain"
+            href="/katalog"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-sans font-bold tracking-wider text-[#dedf42] uppercase hover:brightness-125 transition-all group focus:outline-none focus:underline"
           >
             <span className="text-base sm:text-lg group-hover:-translate-x-1 transition-transform">
               ←
             </span>
-            <span>Kembali ke Beranda</span>
+            <span>Kembali ke Katalog</span>
           </Link>
 
           {/* Central Brand */}
@@ -246,10 +246,10 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
             </div>
 
             <Link
-              href="/#cara-bermain"
+              href="/katalog"
               className="text-xs font-sans font-bold text-[#dedf42] uppercase tracking-wider hover:underline"
             >
-              Lihat di Roda 3D →
+              Lihat Semua di Katalog →
             </Link>
           </div>
 

@@ -3,18 +3,19 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import InteractiveListPreview, {
+  type InteractiveListItem,
+} from '@/components/ui/interactive-list-preview';
 
 export interface SectionStoryFinaleProps {
   id?: string;
+  categoryLabel?: string;
   headline?: {
     line1: string;
     line2: string;
   };
   paragraphStanzas?: string[][];
-  listItems?: Array<{
-    type: 'sparkle' | 'heart' | 'mask';
-    text: string;
-  }>;
+  articles?: InteractiveListItem[];
   brand?: {
     line1: string;
     line2: string;
@@ -23,30 +24,44 @@ export interface SectionStoryFinaleProps {
   backdropImage?: string;
 }
 
+const DEFAULT_PREVIEW_ARTICLES: InteractiveListItem[] = [
+  {
+    client: 'Wayang Puppet Theatre: Masterpiece of Oral and Intangible Heritage',
+    platform: 'UNESCO ICH OFFICIAL',
+    services: 'Buka Berita',
+    img: '/images/articles/unesco-page.png',
+    href: 'https://ich.unesco.org/en/RL/wayang-puppet-theatre-00063',
+  },
+  {
+    client: 'Sejarah & Filosofi Gunungan Wayang Kulit, Simbol Kosmologi Jawa',
+    platform: 'KOMPAS.COM BUDAYA',
+    services: 'Buka Berita',
+    img: '/images/articles/kompas-page.png',
+    href: 'https://regional.kompas.com/read/2022/02/02/180653778/sejarah-dan-filosofi-gunungan-wayang-kulit-digunakan-dalam-uang-logam?page=all',
+  },
+  {
+    client: '7 Alasan Wayang Menjadi Warisan Budaya Tak Benda UNESCO',
+    platform: 'KEMENDIKBUD RI',
+    services: 'Buka Berita',
+    img: '/images/articles/kemendikbud-page.png',
+    href: 'https://itjen.kemendikdasmen.go.id/web/?p=8640',
+  },
+];
+
 export default function SectionStoryFinale({
   id = 'filosofi',
+  categoryLabel = 'CATATAN BUDAYA',
   headline = {
-    line1: 'Malam yang Tak Terlupakan',
-    line2: 'Kisah untuk Dibawa Pulang',
+    line1: 'Warta & Refleksi',
+    line2: 'Dari Balik Layar',
   },
   paragraphStanzas = [
     [
-      'SAAT MALAM SEMAKIN LARUT, BATAS',
-      'ANTARA MASA LALU DAN MASA KINI MELEBUR.',
-      'ORANG-ORANG ASING DUDUK BERDAMPINGAN,',
-      'TERHUBUNG OLEH KEHENINGAN BERSAMA,',
-      'KEKAGUMAN BERSAMA.',
+      'DOKUMENTASI PEMIKIRAN, TAFSIR FILOSOFI,',
+      'DAN KISAH YANG TERUS HIDUP MELAMPAUI WAKTU.',
     ],
-    ['DAN KETIKA ADEGAN TERAKHIR BERAKHIR,', 'SESUATU TETAP TINGGAL DALAM DIRIMU.'],
   ],
-  listItems = [
-    { type: 'sparkle', text: 'Rasa takjub.' },
-    { type: 'heart', text: 'Sebuah perenungan sunyi.' },
-    {
-      type: 'mask',
-      text: 'Sebuah kisah yang membekas lama setelah lampu padam.',
-    },
-  ],
+  articles = DEFAULT_PREVIEW_ARTICLES,
   brand = { line1: 'Wayang', line2: 'Jawi' },
   tagline = 'KISAH-KISAH LELUHUR,\nDIHIDUPKAN KEMBALI\nSETELAH GELAP. TIDAK SEMUA\nYANG LAMA HARUS TETAP\nDI MASA LALU.',
   backdropImage = '/images/section5-dancers-backdrop-clean.png',
@@ -76,17 +91,20 @@ export default function SectionStoryFinale({
           {/* RIGHT SIDE PURE CODE CONTENT LAYER */}
           <div className="relative md:absolute inset-0 flex flex-col justify-between py-8 md:py-0 md:pt-[13.2%] md:pb-[9.5%] px-6 md:px-0 md:pl-[56.1%] md:pr-[6.0%] pointer-events-none z-20 gap-6 md:gap-0">
             {/* Top Headline: "A Night to Remember \n A Story to Carry" */}
-            <div data-gsap="finale-headline" className="pointer-events-auto bg-black/60 md:bg-transparent p-4 md:p-0 rounded-lg md:rounded-none">
-              <h2 className="font-playfair text-[#dedf42] text-[clamp(28px,4.5cqi,62px)] font-normal leading-[1.08] md:leading-[1.05] tracking-[-0.025em] select-text">
+            {/* Top Headline: Editorial Articles & Blog Section */}
+            <div data-gsap="finale-headline" className="pointer-events-auto bg-black/60 md:bg-transparent p-3 md:p-0 rounded-lg md:rounded-none">
+              <p className="text-[10px] sm:text-xs font-sans font-bold tracking-[0.25em] text-[#dedf42]/70 uppercase mb-2 select-text">
+                {categoryLabel}
+              </p>
+              <h2 className="font-playfair text-[#dedf42] text-[clamp(28px,4.5cqi,60px)] font-normal leading-[1.04] tracking-[-0.025em] select-text">
                 <span data-gsap="finale-headline-line" className="block will-change-transform">{headline.line1}</span>
                 <span data-gsap="finale-headline-line" className="block will-change-transform">{headline.line2}</span>
               </h2>
             </div>
-
             {/* Middle Uppercase Paragraph */}
-            <div data-gsap="finale-stanza" className="pointer-events-auto max-w-[360px] space-y-3 sm:space-y-4 font-sans font-bold text-[#dedf42] text-[clamp(8px,0.92cqi,12.5px)] uppercase leading-[1.38] tracking-wider select-text bg-black/60 md:bg-transparent p-4 md:p-0 rounded-lg md:rounded-none">
+            <div data-gsap="finale-stanza" className="pointer-events-auto max-w-[360px] font-sans font-semibold text-[#dedf42]/80 text-[clamp(8.5px,0.95cqi,12px)] uppercase leading-[1.45] tracking-[0.16em] select-text bg-black/60 md:bg-transparent p-3 md:p-0 rounded-lg md:rounded-none">
               {paragraphStanzas.map((stanza, sIdx) => (
-                <p key={sIdx}>
+                <p key={sIdx} className="space-y-1">
                   {stanza.map((line, lIdx) => (
                     <span key={lIdx} className="block whitespace-nowrap">
                       {line}
@@ -97,52 +115,29 @@ export default function SectionStoryFinale({
             </div>
 
             {/* Bottom 3 List Rows with Horizontal Yellow Divider Lines */}
-            <div className="pointer-events-auto w-full max-w-[560px] lg:max-w-[620px] bg-black/60 md:bg-transparent p-4 md:p-0 rounded-lg md:rounded-none">
-              <div className="border-t border-[#dedf42]/80 divide-y divide-[#dedf42]/80 border-b border-[#dedf42]/80">
-                {listItems.map((item, idx) => (
-                  <div
-                    key={idx}
-                    data-gsap="finale-item"
-                    className="flex items-center gap-3 sm:gap-4 min-h-[44px] sm:min-h-[48px] py-2 sm:py-2.5 group transition-colors hover:bg-[#dedf42]/5 px-2 rounded-sm"
-                  >
-                    {/* List Icon SVG */}
-                    <div className="w-5 h-5 shrink-0 flex items-center justify-center text-[#dedf42]">
-                      {item.type === 'sparkle' && (
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="w-4 h-4"
-                        >
-                          <path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z" />
-                          <path d="M19 15L19.9 18.1L23 19L19.9 19.9L19 23L18.1 19.9L15 19L18.1 18.1L19 15Z" />
-                        </svg>
-                      )}
-                      {item.type === 'heart' && (
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="w-4 h-4"
-                        >
-                          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                        </svg>
-                      )}
-                      {item.type === 'mask' && (
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="w-4 h-4"
-                        >
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-3 8c.83 0 1.5.67 1.5 1.5S9.83 13 9 13s-1.5-.67-1.5-1.5S8.17 10 9 10zm6 0c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zm-3 7.5c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5z" />
-                        </svg>
-                      )}
-                    </div>
+            {/* Bottom 3 Featured Article Entries with Horizontal Yellow Divider Lines */}
+            {/* Interactive List Preview for Articles & News */}
+            <div className="pointer-events-auto w-full max-w-[580px] lg:max-w-[640px] bg-black/60 md:bg-transparent p-2 sm:p-3 md:p-0 rounded-lg md:rounded-none">
+              <InteractiveListPreview
+                items={articles}
+                bgColor="transparent"
+                imageSize={0.9}
+                highlightColor="rgba(222, 223, 66, 0.18)"
+                activeTextColor="#dedf42"
+                inactiveTextColor="#dedf42"
+                className="w-full text-[#dedf42]"
+              />
 
-                    {/* List Item Text */}
-                    <span className="font-playfair text-[#dedf42] text-[clamp(12px,1.3cqi,18px)] font-normal tracking-[-0.01em] leading-snug select-text">
-                      {item.text}
-                    </span>
-                  </div>
-                ))}
+              {/* Subtle Bottom Archive Line */}
+              <div className="pt-3 mt-1 flex items-center justify-between text-[#dedf42]/60 text-[9.5px] sm:text-[11px] font-sans tracking-wider select-text">
+                <span>Catatan & Arsip Budaya</span>
+                <Link
+                  href="/katalog"
+                  className="hover:underline flex items-center gap-1 group text-[#dedf42] font-bold"
+                >
+                  <span>Katalog Karakter</span>
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </Link>
               </div>
             </div>
           </div>

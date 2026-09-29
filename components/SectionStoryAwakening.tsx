@@ -85,17 +85,17 @@ const DEFAULT_WHEEL_ITEMS: WorksWheelItem[] = [
 export default function SectionStoryAwakening({
   id = 'cara-bermain',
   headerBrandText = 'MALAM WAYANG JAWI',
-  categoryLabel = 'KISAH KEBANGKITAN BATIN',
+  categoryLabel = 'GALERI TOKOH PEWAYANGAN',
   headline = [
-    'Saat dunia hening dan malam',
-    'semakin larut, sebuah perjalanan',
-    'yang berbeda dimulai.',
+    'Ragam Tokoh dan Watak Luhur',
+    'Cermin Jiwa Manusia',
+    'Dalam Jagad Pakeliran.',
   ],
   wheelItems = DEFAULT_WHEEL_ITEMS,
   wheelLabel = 'TOKOH WAYANG',
   readMoreText = 'BACA SELENGKAPNYA →',
-  readMoreHref = '/stage',
-  aksaraText = 'ꦭꦏꦺꦴꦤ꧀ ꦧꦶꦩ ꦱꦸꦕꦶ ꦠꦶꦂꦠ ꦥꦿꦮꦶꦠꦱꦫꦶ',
+  readMoreHref = '/katalog',
+  aksaraText = 'ꦠꦺꦴꦏꦺꦴꦃ ꦮꦪꦁ ꦥꦸꦂꦮ ꦤꦸꦱꦤ꧀ꦠꦫ',
 }: SectionStoryAwakeningProps) {
   return (
     <section

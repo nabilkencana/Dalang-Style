@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { TOKOH_CHARACTERS, type TokohCharacter } from '@/lib/tokoh-data';
+import { TOKOH_CHARACTERS } from '@/lib/tokoh-data';
 
 const CATEGORIES = [
   { id: 'ALL', label: 'Semua Tokoh', count: 9 },
@@ -12,15 +12,19 @@ const CATEGORIES = [
   { id: 'KERAJAAN', label: 'Kerajaan & Begawan', count: 2 },
 ];
 
+const POPULAR_TAGS = ['Semar', 'Arjuna', 'Gatotkaca', 'Bima', 'Petruk', 'Rahwana'];
+
 export default function KatalogTokohView() {
   const [selectedCategory, setSelectedCategory] = useState('ALL');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [submittedQuery, setSubmittedQuery] = useState('');
 
   const allCharacters = useMemo(() => Object.values(TOKOH_CHARACTERS), []);
 
+  // Filter characters by both category and query
   const filteredCharacters = useMemo(() => {
     return allCharacters.filter((char) => {
-      // Category filter
+      // 1. Category Filter
       let matchesCategory = true;
       if (selectedCategory === 'PUNAKAWAN') {
         matchesCategory = char.badge === 'PUNAKAWAN';
@@ -30,18 +34,42 @@ export default function KatalogTokohView() {
         matchesCategory = char.badge === 'ALENGKA' || char.badge === 'HASTINA';
       }
 
-      // Search query filter
-      const q = searchQuery.toLowerCase().trim();
-      const matchesSearch =
+      // 2. Query Filter (checks name, role, subtitle, and character traits)
+      const q = (submittedQuery || searchInput).toLowerCase().trim();
+      const matchesQuery =
         !q ||
         char.name.toLowerCase().includes(q) ||
         char.role.toLowerCase().includes(q) ||
         char.subtitle.toLowerCase().includes(q) ||
         char.traits.some((t) => t.toLowerCase().includes(q));
 
-      return matchesCategory && matchesSearch;
+      return matchesCategory && matchesQuery;
     });
-  }, [allCharacters, selectedCategory, searchQuery]);
+  }, [allCharacters, selectedCategory, submittedQuery, searchInput]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmittedQuery(searchInput.trim());
+  };
+
+  const handleClearSearch = () => {
+    setSearchInput('');
+    setSubmittedQuery('');
+  };
+
+  const handleTagClick = (tag: string) => {
+    setSearchInput(tag);
+    setSubmittedQuery(tag);
+    setSelectedCategory('ALL');
+  };
+
+  const handleResetAll = () => {
+    setSelectedCategory('ALL');
+    setSearchInput('');
+    setSubmittedQuery('');
+  };
+
+  const isFiltered = selectedCategory !== 'ALL' || !!submittedQuery || !!searchInput;
 
   return (
     <div className="relative min-h-screen bg-[#050303] text-[#f4e7cd] overflow-x-clip selection:bg-[#dedf42] selection:text-black">
@@ -73,28 +101,15 @@ export default function KatalogTokohView() {
             </span>
           </Link>
 
-          {/* Action Link to Stage */}
-          <Link
-            href="/stage"
-            className="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border border-[#dedf42]/70 text-[10px] sm:text-xs font-sans font-bold tracking-wider text-[#dedf42] uppercase bg-black/40 hover:bg-[#dedf42] hover:text-black active:scale-95 transition-all shadow-sm focus:outline-none"
-          >
-            Buka Panggung →
-          </Link>
+          {/* Header Right Balancing Spacer */}
+          <div className="w-10 sm:w-28 hidden sm:block pointer-events-none" />
         </div>
       </header>
 
       {/* 3. Hero Header Section */}
       <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 md:pt-18 pb-6 sm:pb-8 text-center flex flex-col items-center">
-        {/* Category Pill Tag */}
-        <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-[#dedf42]/35 bg-[#dedf42]/10 mb-4 sm:mb-5">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#dedf42] animate-pulse" />
-          <span className="text-[10px] sm:text-xs font-sans font-bold tracking-[0.22em] text-[#dedf42] uppercase">
-            Ensiklopedia Budaya Nusantara
-          </span>
-        </div>
-
         {/* Aksara Jawa Watermark */}
-        <p className="text-[#dedf42]/60 text-lg sm:text-2xl font-serif tracking-[0.3em] mb-2 select-none">
+        <p className="text-[#dedf42]/60 text-lg sm:text-2xl font-serif tracking-[0.3em] mb-3 select-none">
           ꦏꦠꦭꦺꦴꦒ꧀ ꦠꦺꦴꦏꦺꦴꦃ ꦮꦪꦁ
         </p>
 
@@ -111,30 +126,62 @@ export default function KatalogTokohView() {
 
         {/* 4. Interactive Search Bar & Category Filter Tabs */}
         <div className="w-full max-w-3xl mt-8 sm:mt-10 flex flex-col gap-4 items-center">
-          {/* Search Box */}
-          <div className="relative w-full">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Cari nama tokoh, peran, atau watak (e.g. Arjuna, Semar, Bijaksana)..."
-              className="w-full px-5 py-3 sm:py-3.5 pl-12 rounded-full border border-[#dedf42]/30 bg-black/60 text-[#f4e7cd] placeholder-[#f4e7cd]/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#dedf42] focus:ring-2 focus:ring-[#dedf42]/20 transition-all backdrop-blur-md"
-            />
+          {/* Functional Search Box with Clickable Button & Form Submit */}
+          <form
+            onSubmit={handleSearchSubmit}
+            className="relative w-full flex items-center"
+          >
             <span className="absolute left-4.5 top-1/2 -translate-y-1/2 text-[#dedf42]/70 text-sm sm:text-base pointer-events-none">
               🔍
             </span>
-            {searchQuery && (
+            <input
+              type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Cari nama tokoh, peran, atau watak (e.g. Arjuna, Semar, Bijaksana)..."
+              className="w-full px-5 py-3.5 pl-12 pr-28 sm:pr-32 rounded-full border border-[#dedf42]/30 bg-black/60 text-[#f4e7cd] placeholder-[#f4e7cd]/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#dedf42] focus:ring-2 focus:ring-[#dedf42]/20 transition-all backdrop-blur-md shadow-inner"
+            />
+
+            {/* Clear Input Button */}
+            {searchInput && (
               <button
                 type="button"
-                onClick={() => setSearchQuery('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-[#dedf42]/70 hover:text-[#dedf42] px-2 py-1"
+                onClick={handleClearSearch}
+                aria-label="Hapus kata kunci pencarian"
+                className="absolute right-24 sm:right-28 top-1/2 -translate-y-1/2 text-xs text-[#dedf42]/60 hover:text-[#dedf42] p-1.5 cursor-pointer font-bold"
               >
-                ✕ Hapus
+                ✕
               </button>
             )}
+
+            {/* Functional Search Submit Button */}
+            <button
+              type="submit"
+              aria-label="Cari Tokoh"
+              className="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 px-4 sm:px-5 py-2 rounded-full bg-[#dedf42] text-black font-sans font-bold text-xs uppercase tracking-wider hover:bg-white active:scale-95 transition-all shadow-md cursor-pointer"
+            >
+              Cari
+            </button>
+          </form>
+
+          {/* Quick Search Tag Chips */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[11px] text-[#f4e7cd]/70">
+            <span className="font-sans font-medium text-xs text-[#dedf42]/80 mr-1">
+              Populer:
+            </span>
+            {POPULAR_TAGS.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => handleTagClick(tag)}
+                className="px-2.5 py-0.5 rounded-full border border-[#dedf42]/25 bg-black/40 hover:border-[#dedf42] hover:text-[#dedf42] text-[11px] font-sans transition-all cursor-pointer"
+              >
+                #{tag}
+              </button>
+            ))}
           </div>
 
-          {/* Filter Pills */}
+          {/* Functional Category Filter Pills with Item Counts */}
           <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 w-full pt-1">
             {CATEGORIES.map((cat) => {
               const isActive = selectedCategory === cat.id;
@@ -143,13 +190,20 @@ export default function KatalogTokohView() {
                   key={cat.id}
                   type="button"
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-full border text-[11px] sm:text-xs font-sans font-bold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
+                  className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-full border text-[11px] sm:text-xs font-sans font-bold tracking-wider uppercase transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
                     isActive
-                      ? 'border-[#dedf42] bg-[#dedf42] text-black shadow-[0_0_20px_rgba(222,223,66,0.3)]'
+                      ? 'border-[#dedf42] bg-[#dedf42] text-black shadow-[0_0_20px_rgba(222,223,66,0.3)] scale-105'
                       : 'border-[#dedf42]/30 text-[#f4e7cd]/75 hover:border-[#dedf42] hover:text-[#dedf42] bg-black/40'
                   }`}
                 >
                   <span>{cat.label}</span>
+                  <span
+                    className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono ${
+                      isActive ? 'bg-black/20 text-black font-bold' : 'bg-[#dedf42]/15 text-[#dedf42]'
+                    }`}
+                  >
+                    {cat.count}
+                  </span>
                 </button>
               );
             })}
@@ -159,19 +213,33 @@ export default function KatalogTokohView() {
 
       {/* 5. Main Catalog Grid Section */}
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {/* Results Counter Bar */}
-        <div className="flex items-center justify-between pb-6 border-b border-[#dedf42]/15 mb-8">
+        {/* Results Counter Bar & Active Filter Reset */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-[#dedf42]/15 mb-8 gap-3">
           <p className="text-xs sm:text-sm font-sans font-medium text-[#f4e7cd]/70">
             Menampilkan{' '}
             <span className="font-bold text-[#dedf42]">
               {filteredCharacters.length}
             </span>{' '}
             tokoh pewayangan
+            {selectedCategory !== 'ALL' && (
+              <span className="text-[#f4e7cd]/60">
+                {' '}
+                pada kategori{' '}
+                <span className="text-[#dedf42] font-semibold">
+                  {CATEGORIES.find((c) => c.id === selectedCategory)?.label}
+                </span>
+              </span>
+            )}
           </p>
-          {searchQuery && (
-            <p className="text-xs text-[#dedf42]/80 font-sans">
-              Kata kunci: &ldquo;{searchQuery}&rdquo;
-            </p>
+
+          {isFiltered && (
+            <button
+              type="button"
+              onClick={handleResetAll}
+              className="text-xs font-sans font-bold text-[#dedf42] hover:underline flex items-center gap-1 cursor-pointer"
+            >
+              <span>✕ Reset Semua Filter</span>
+            </button>
           )}
         </div>
 
@@ -183,22 +251,19 @@ export default function KatalogTokohView() {
               Tokoh Tidak Ditemukan
             </h3>
             <p className="text-xs sm:text-sm text-[#f4e7cd]/70 max-w-md">
-              Tidak ada tokoh wayang yang cocok dengan pencarian &ldquo;{searchQuery}&rdquo;.
+              Tidak ada tokoh wayang yang cocok dengan pencarian Anda.
               Coba gunakan kata kunci lain seperti Semar, Arjuna, atau Bima.
             </p>
             <button
               type="button"
-              onClick={() => {
-                setSearchQuery('');
-                setSelectedCategory('ALL');
-              }}
-              className="mt-6 px-5 py-2 rounded-full border border-[#dedf42] bg-[#dedf42] text-black text-xs font-sans font-bold uppercase tracking-wider hover:bg-white transition-all cursor-pointer"
+              onClick={handleResetAll}
+              className="mt-6 px-6 py-2.5 rounded-full border border-[#dedf42] bg-[#dedf42] text-black text-xs font-sans font-bold uppercase tracking-wider hover:bg-white transition-all cursor-pointer shadow-md"
             >
-              Reset Filter
+              Tampilkan Semua Tokoh
             </button>
           </div>
         ) : (
-          /* Cards Grid */
+          /* Cards Grid: Authentic Dark Theatrical Wayang Cards */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {filteredCharacters.map((char) => (
               <Link

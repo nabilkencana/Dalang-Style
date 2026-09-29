@@ -300,8 +300,8 @@ export default function GsapAnimations() {
       stagger: 0.15,
       scrollTrigger: {
         trigger: '#filosofi',
-        start: 'top 70%',
-        toggleActions: 'play none none reverse',
+        start: 'top 85%',
+        toggleActions: 'play none none none',
       },
     });
 
@@ -313,22 +313,8 @@ export default function GsapAnimations() {
       ease: 'power3.out',
       scrollTrigger: {
         trigger: '#filosofi',
-        start: 'top 65%',
-        toggleActions: 'play none none reverse',
-      },
-    });
-
-    // 3 Iconic list items (Sparkle, Heart, Mask) slide from left
-    gsap.from('[data-gsap="finale-item"]', {
-      x: 70,
-      opacity: 0,
-      duration: 0.85,
-      ease: 'power3.out',
-      stagger: 0.15,
-      scrollTrigger: {
-        trigger: '#filosofi',
-        start: 'top 60%',
-        toggleActions: 'play none none reverse',
+        start: 'top 85%',
+        toggleActions: 'play none none none',
       },
     });
 
