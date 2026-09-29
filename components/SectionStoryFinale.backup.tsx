@@ -54,10 +54,18 @@ export default function SectionStoryFinale({
   return (
     <section
       id={id}
-      className="relative w-full bg-[#050303] text-[#000000] overflow-hidden select-none"
+      className="relative w-full bg-[#dedf42] text-[#000000] overflow-hidden select-none edge-fade-top edge-fade-bottom"
     >
-      {/* Main Theatrical Dark Card - Full Width */}
-      <div className="relative w-full aspect-auto md:aspect-[1354/846] overflow-hidden bg-[#050303] @container min-h-[640px] md:min-h-0">
+      {/* Full-Width Canvas Container matching Section 1 & Section 2 */}
+      <div
+        className="w-full px-3 sm:px-6 md:px-10 lg:px-12 xl:px-16 pt-2 sm:pt-3 md:pt-4 pb-2 sm:pb-3 md:pb-4 flex flex-col justify-between"
+        style={{
+          background:
+            'radial-gradient(circle at 75% 20%, #e8e84d 0%, #dedf42 55%, #cfd033 100%)',
+        }}
+      >
+        {/* 1. MAIN THEATRICAL DARK CARD - Full Width */}
+        <div className="relative w-full aspect-auto md:aspect-[1354/846] rounded-none overflow-hidden bg-[#050303] shadow-[0_30px_90px_-15px_rgba(0,0,0,0.75),0_0_60px_rgba(0,0,0,0.35)] border border-black/20 @container z-10 min-h-[640px] md:min-h-0">
           {/* Authentic Stage Backdrop Image (Two Dancers & Ethereal Smoke) */}
           <div className="absolute inset-0 bg-[#050303] pointer-events-none">
             <Image
@@ -146,6 +154,36 @@ export default function SectionStoryFinale({
             </div>
           </div>
         </div>
+
+        {/* 2. BOTTOM YELLOW FOOTER BRAND BAR (matching Section 1 Header) */}
+        <div className="w-full flex items-center justify-between gap-4 md:gap-8 pt-4 sm:pt-5 md:pt-6">
+          {/* Brand Logo - Pure Code Typography */}
+          <Link
+            href="/"
+            className="inline-block shrink-0 group focus:outline-none"
+          >
+            <div className="font-serif font-bold text-3xl sm:text-4xl md:text-5xl lg:text-[54px] leading-[0.84] text-[#000000] tracking-[-0.03em] flex flex-col">
+              <span className="transition-transform group-hover:scale-[1.01] origin-left">
+                {brand.line1}
+              </span>
+              <span className="transition-transform group-hover:scale-[1.01] origin-left">
+                <span className="italic font-normal">
+                  {brand.line2?.charAt(0)}
+                </span>
+                {brand.line2?.slice(1)}
+              </span>
+            </div>
+          </Link>
+
+          {/* Thin Horizontal Divider Line */}
+          <div className="flex-1 h-[1.5px] bg-[#000000] hidden sm:block mx-3 md:mx-6 lg:mx-8" />
+
+          {/* Right Header Text Block - Pure Code Typography */}
+          <div className="text-[10px] sm:text-xs md:text-sm font-bold tracking-tight text-[#000000] uppercase text-right leading-[1.3] font-sans shrink-0 whitespace-pre-line select-text">
+            {tagline}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

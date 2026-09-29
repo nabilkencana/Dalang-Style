@@ -66,12 +66,37 @@ export default function SectionStoryAwakening({
   return (
     <section
       id={id}
-      className="relative w-full bg-[#0a0a0a] text-[#000000] overflow-hidden select-none"
+      className="relative w-full bg-[#dedf42] text-[#000000] overflow-hidden select-none py-2 sm:py-3 md:py-4 edge-fade-top edge-fade-bottom"
+      style={{
+        background:
+          'radial-gradient(circle at 75% 20%, #e8e84d 0%, #dedf42 55%, #cfd033 100%)',
+      }}
     >
-      <div className="relative w-full min-h-[580px] md:aspect-[1504/1128] @container overflow-hidden flex items-center justify-center py-10 md:py-0">
-        {/* INNER STORY CARD - Full Width */}
+      {/* Canvas Container matching Poster Ratio (4:3) on desktop, adaptive on mobile - Full Width */}
+      <div className="relative w-full px-3 sm:px-6 md:px-10 lg:px-12 xl:px-16 min-h-[580px] md:aspect-[1504/1128] @container overflow-hidden flex items-center justify-center py-10 md:py-0">
+        {/* Subtle Ambient Vignette Overlay */}
+        <div className="absolute inset-0 bg-radial-[circle_at_center,transparent_60%,rgba(0,0,0,0.06)_95%] pointer-events-none z-10" />
+
+        {/* PURE CODE: Outer Border Frame */}
+        <div className="absolute inset-[3.5%_2.2%_3.8%_2.2%] md:inset-[4.17%_2.53%_4.34%_2.53%] border border-black/35 pointer-events-none z-20" />
+
+        {/* PURE CODE: Top Center Label "THE NIGHT WAYANG JAWI" on the outer border line */}
+        <div className="absolute top-[3.5%] md:top-[4.17%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#dedf42] px-3 sm:px-5 py-0.5 z-30 pointer-events-auto">
+          <p className="font-sans font-bold text-black text-[clamp(8px,1.05cqi,14px)] tracking-[0.22em] sm:tracking-[0.25em] uppercase whitespace-nowrap select-text">
+            {headerBrandText}
+          </p>
+        </div>
+
+        {/* PURE CODE: Bottom Center Label "THE NIGHT WAYANG JAWI" on the outer border line */}
+        <div className="absolute bottom-[3.8%] md:bottom-[4.34%] left-1/2 -translate-x-1/2 translate-y-1/2 bg-[#dedf42] px-3 sm:px-5 py-0.5 z-30 pointer-events-auto">
+          <p className="font-sans font-bold text-black text-[clamp(8px,1.05cqi,14px)] tracking-[0.22em] sm:tracking-[0.25em] uppercase whitespace-nowrap select-text">
+            {headerBrandText}
+          </p>
+        </div>
+
+        {/* INNER YELLOW STORY CARD (1126 x 814 = Aspect 1.383 on desktop) */}
         <div
-          className="relative w-full aspect-auto md:aspect-[1126/814] overflow-hidden bg-[#dedf42] z-20 @container"
+          className="relative w-[94%] sm:w-[90%] md:w-[86%] lg:w-[82%] my-6 md:my-0 aspect-auto md:aspect-[1126/814] rounded-none overflow-hidden bg-[#dedf42] shadow-[0_25px_80px_rgba(0,0,0,0.85)] z-20 @container"
         >
           {/* Yellow Card Canvas with authentic Bima Wayang Watermark Illustration */}
           <div className="absolute inset-0 bg-[#dedf42] pointer-events-none">

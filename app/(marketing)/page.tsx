@@ -26,8 +26,6 @@ export default function LandingPage() {
       {/* 5. Section 3: Tonight Lakon - Bima Suci */}
       <SectionBimaSuci />
 
-      {/* Gradient bridge: black → yellow (softens BimaSuci→StoryAwakening) */}
-      <div className="h-12 sm:h-16 md:h-24 bg-gradient-to-b from-black via-[#1a1a0a] to-[#3a3b0e]" />
 
       {/* 6. Section 4: A Story of Inner Awakening */}
       <SectionStoryAwakening id="cara-bermain" />

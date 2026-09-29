@@ -63,12 +63,20 @@ export default function SectionMovementMeaning({
   return (
     <section
       id={id}
-      className="relative w-full bg-[#0a0a0a] text-[#000000] overflow-hidden select-none"
+      className="relative w-full bg-[#dedf42] text-[#000000] overflow-hidden select-none py-2 sm:py-3 md:py-4 edge-fade-top edge-fade-bottom"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Main Central Card - Full Width */}
-      <div className="relative w-full aspect-auto md:aspect-[1354/846] overflow-hidden bg-[#0a0a0a] @container min-h-[580px] md:min-h-0 flex items-center justify-center">
+      {/* Outer Full-Width Canvas Container matching Section 1 & Section 2 */}
+      <div
+        className="w-full px-3 sm:px-6 md:px-10 lg:px-12 xl:px-16 flex items-center justify-center"
+        style={{
+          background:
+            'radial-gradient(circle at 75% 20%, #e8e84d 0%, #dedf42 55%, #cfd033 100%)',
+        }}
+      >
+        {/* Main Central Card (Aspect 1354 x 846 = 1.60) - Full Width */}
+        <div className="relative w-full aspect-auto md:aspect-[1354/846] rounded-none overflow-hidden bg-[#0a0a0a] shadow-[0_30px_90px_-15px_rgba(0,0,0,0.75),0_0_60px_rgba(0,0,0,0.35)] border border-black/20 @container z-10 min-h-[580px] md:min-h-0 flex items-center justify-center">
           {/* Authentic Illuminated Wayang Kulit Puppet Profile Backdrop */}
           <div className="absolute inset-0 bg-[#0a0a0a] pointer-events-none">
             <Image
@@ -144,6 +152,7 @@ export default function SectionMovementMeaning({
             </div>
           </div>
         </div>
+      </div>
     </section>
   );
 }
