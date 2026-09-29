@@ -51,7 +51,7 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
   );
 
   return (
-    <div className="relative min-h-screen bg-[#050303] text-[#f4e7cd] overflow-hidden selection:bg-[#dedf42] selection:text-black">
+    <div className="relative min-h-screen bg-[#050303] text-[#f4e7cd] overflow-x-clip selection:bg-[#dedf42] selection:text-black">
       {/* 1. Ambient Theatrical Stage Background Vignettes */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(222,223,66,0.08)_0%,_rgba(11,6,4,0.7)_50%,_#050303_100%)] pointer-events-none z-0" />
       <div className="fixed inset-0 bg-repeat opacity-[0.03] pointer-events-none z-0 bg-[radial-gradient(#dedf42_1px,transparent_1px)] [background-size:24px_24px]" />
@@ -59,7 +59,7 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
       {/* 2. Top Header Navigation Bar */}
       <header className="relative z-30 w-full border-b border-[#dedf42]/15 bg-black/60 backdrop-blur-md sticky top-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
-          {/* Back to Stage Link */}
+          {/* Back to Home Link */}
           <Link
             href="/#cara-bermain"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-sans font-bold tracking-wider text-[#dedf42] uppercase hover:brightness-125 transition-all group focus:outline-none focus:underline"
@@ -67,7 +67,7 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
             <span className="text-base sm:text-lg group-hover:-translate-x-1 transition-transform">
               ←
             </span>
-            <span>Kembali ke Panggung</span>
+            <span>Kembali ke Beranda</span>
           </Link>
 
           {/* Central Brand */}
@@ -80,22 +80,16 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
             </span>
           </Link>
 
-          {/* Action Link to Stage */}
-          <Link
-            href="/stage"
-            className="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border border-[#dedf42]/70 text-[10px] sm:text-xs font-sans font-bold tracking-wider text-[#dedf42] uppercase bg-black/40 hover:bg-[#dedf42] hover:text-black active:scale-95 transition-all shadow-sm focus:outline-none"
-          >
-            Buka Panggung →
-          </Link>
+          {/* Header Right Balancing Spacer */}
+          <div className="w-10 sm:w-28 hidden sm:block pointer-events-none" />
         </div>
       </header>
 
       {/* 3. Main Character Profile Content */}
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
-          {/* Left Column: Visual Showcase Card */}
-          <div className="lg:col-span-6 flex flex-col items-center">
-            {/* Museum-Grade Card Display with 3D Depth Frame */}
+          {/* Left Column: Visual Showcase Card (Sticky on Scroll) */}
+          <div className="lg:col-span-6 flex flex-col items-center lg:sticky lg:top-24 self-start h-fit z-20">
             <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden border-2 border-[#dedf42]/40 bg-[#120d08] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.9),0_0_40px_rgba(222,223,66,0.12)] group">
               <Image
                 src={character.image}

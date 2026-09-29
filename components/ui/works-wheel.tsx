@@ -313,17 +313,27 @@ export function WorksWheel({
           drag.current = event.clientY;
           dragStartY.current = event.clientY;
           hasDragged.current = false;
-          event.currentTarget.setPointerCapture(event.pointerId);
         }}
         onPointerMove={(event) => {
           if (drag.current === null) return;
-          if (dragStartY.current !== null && Math.abs(event.clientY - dragStartY.current) > 6) {
+          const delta = Math.abs(event.clientY - (dragStartY.current ?? event.clientY));
+          if (delta > 6) {
             hasDragged.current = true;
+            try {
+              if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
+                event.currentTarget.setPointerCapture(event.pointerId);
+              }
+            } catch {}
           }
           to(target.current + (drag.current - event.clientY) / DRAG_UNITS);
           drag.current = event.clientY;
         }}
-        onPointerUp={() => {
+        onPointerUp={(event) => {
+          try {
+            if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+              event.currentTarget.releasePointerCapture(event.pointerId);
+            }
+          } catch {}
           drag.current = null;
           dragStartY.current = null;
           to(Math.round(target.current));
@@ -340,16 +350,15 @@ export function WorksWheel({
           className="absolute top-1/2 left-1/2 [transform-style:preserve-3d]"
         >
           {items.map((item, i) => {
-            const Tag = (item.href ? "a" : "div") as "a";
             return (
               <React.Fragment key={item.title}>
-                <Tag
+                <Link
                   id={`works-wheel-${i}`}
                   role="option"
                   aria-selected={i === active}
-                  href={item.href}
-                  ref={(node: HTMLElement | null) => {
-                    cardRefs.current[i] = node;
+                  href={item.href || '#'}
+                  ref={(node) => {
+                    cardRefs.current[i] = node as unknown as HTMLElement;
                   }}
                   onClick={(e) => {
                     if (hasDragged.current) {
@@ -400,8 +409,9 @@ export function WorksWheel({
                       </span>
                     )}
 
-                    {action && item.href ? (
-                      <span className="bg-black/80 text-[#dedf42] pointer-events-none absolute right-3 bottom-3 flex translate-y-1 items-center gap-1 rounded-full px-2.5 py-1 text-[0.7rem] font-bold opacity-0 backdrop-blur-sm transition group-hover:translate-y-0 group-hover:opacity-100 border border-[#dedf42]/40 shadow-sm">
+                    {item.href ? (
+                      <span className="pointer-events-auto absolute right-3 bottom-3 z-30 flex items-center gap-1.5 rounded-full px-3.5 py-1.5 bg-[#dedf42] text-black text-[11px] sm:text-xs font-sans font-bold tracking-wider uppercase hover:bg-white active:scale-95 transition-all shadow-md cursor-pointer border border-black/30">
+                        <span>{action}</span>
                         <svg
                           viewBox="0 0 12 12"
                           className="size-2.5"
@@ -416,11 +426,10 @@ export function WorksWheel({
                             strokeLinejoin="round"
                           />
                         </svg>
-                        {action}
                       </span>
                     ) : null}
                   </span>
-                </Tag>
+                </Link>
               </React.Fragment>
             );
           })}
