@@ -25,8 +25,8 @@ export interface SectionJoinTheNightProps {
 export default function SectionJoinTheNight({
   id = 'join',
   title = 'Bergabunglah dalam Malam Ini',
-  datePill = 'JUN 21TH 2026',
-  timePill = '8.00 PM - END',
+  datePill = '21 JUNI 2026',
+  timePill = '20.00 WIB - SELESAI',
   venuePill = {
     text: 'YASINTHA CAMPUS →',
     href: '/stage',
@@ -41,7 +41,7 @@ export default function SectionJoinTheNight({
     { label: 'INSTAGRAM', href: 'https://instagram.com' },
     { label: 'TIKTOK', href: 'https://tiktok.com' },
   ],
-  brandTitle = 'The Night Wayang Jawi',
+  brandTitle = 'Malam Wayang Jawi',
   backgroundImage = '/images/join-night-canvas-bg.png',
 }: SectionJoinTheNightProps) {
   return (

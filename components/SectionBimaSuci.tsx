@@ -134,9 +134,14 @@ export default function SectionBimaSuci({
             />
           )}
 
-          {/* Atmospheric Contrast Overlays inside yellow box */}
-          <div className="absolute inset-0 bg-black/20 pointer-events-none z-10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/40 pointer-events-none z-10" />
+          {/* Clickable overlay → opens YouTube in new tab */}
+          <a
+            href={`https://www.youtube.com/watch?v=${youtubeVideoId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute inset-0 z-20 cursor-pointer"
+            aria-label="Tonton video di YouTube"
+          />
         </div>
 
         {/* Top Center Label: TONIGHT LAKON (centered on top yellow border line) */}

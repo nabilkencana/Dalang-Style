@@ -26,7 +26,7 @@ export interface SectionStoryAwakeningProps {
 
 export default function SectionStoryAwakening({
   id = 'cara-bermain',
-  headerBrandText = 'THE NIGHT WAYANG JAWI',
+  headerBrandText = 'MALAM WAYANG JAWI',
   categoryLabel = 'KISAH KEBANGKITAN BATIN',
   headline = [
     'Saat dunia hening dan malam',

@@ -14,8 +14,8 @@ export interface MarqueeTickerProps {
 
 const DEFAULT_ITEMS = [
   'KISAH YANG HIDUP SETELAH MATAHARI TERBENAM',
-  'JUN 21TH 2026',
-  '8:00 PM - END',
+  '21 JUNI 2026',
+  '20.00 WIB - SELESAI',
   'YASINTHA CAMPUS',
   'HALAMAN ACARA',
   'WAYANG JAWI',

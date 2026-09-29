@@ -49,7 +49,7 @@ export default function SectionStoryFinale({
   ],
   brand = { line1: 'Wayang', line2: 'Jawi' },
   tagline = 'KISAH-KISAH LELUHUR,\nDIHIDUPKAN KEMBALI\nSETELAH GELAP. TIDAK SEMUA\nYANG LAMA HARUS TETAP\nDI MASA LALU.',
-  backdropImage = '/images/section5-dancers-backdrop.png',
+  backdropImage = '/images/section5-dancers-backdrop-clean.png',
 }: SectionStoryFinaleProps) {
   return (
     <section
@@ -96,13 +96,13 @@ export default function SectionStoryFinale({
               ))}
             </div>
 
-            {/* Bottom 3 List Rows with 4 Horizontal Yellow Divider Lines */}
-            <div className="pointer-events-auto w-full max-w-[510px] bg-black/60 md:bg-transparent p-4 md:p-0 rounded-lg md:rounded-none">
-              <div className="border-t border-[#dedf42] divide-y divide-[#dedf42] border-b border-[#dedf42]">
+            {/* Bottom 3 List Rows with Horizontal Yellow Divider Lines */}
+            <div className="pointer-events-auto w-full max-w-[560px] lg:max-w-[620px] bg-black/60 md:bg-transparent p-4 md:p-0 rounded-lg md:rounded-none">
+              <div className="border-t border-[#dedf42]/80 divide-y divide-[#dedf42]/80 border-b border-[#dedf42]/80">
                 {listItems.map((item, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-3 sm:gap-4 h-[38px] sm:h-[42px] md:h-[45px] group transition-colors hover:bg-[#dedf42]/10 px-1"
+                    className="flex items-center gap-3 sm:gap-4 min-h-[44px] sm:min-h-[48px] py-2 sm:py-2.5 group transition-colors hover:bg-[#dedf42]/5 px-2 rounded-sm"
                   >
                     {/* List Icon SVG */}
                     <div className="w-5 h-5 shrink-0 flex items-center justify-center text-[#dedf42]">
@@ -137,7 +137,7 @@ export default function SectionStoryFinale({
                     </div>
 
                     {/* List Item Text */}
-                    <span className="font-playfair text-[#dedf42] text-[clamp(13px,1.55cqi,21px)] font-normal tracking-[-0.01em] select-text">
+                    <span className="font-playfair text-[#dedf42] text-[clamp(12px,1.3cqi,18px)] font-normal tracking-[-0.01em] leading-snug select-text">
                       {item.text}
                     </span>
                   </div>

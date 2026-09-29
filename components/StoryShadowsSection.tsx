@@ -16,7 +16,7 @@ export interface StoryShadowsSectionProps {
 export default function StoryShadowsSection({
   id = 'fitur',
   tagline = ['MALAM SAAT', 'BAYANGAN BERBICARA'],
-  pillText = 'JUN 21TH',
+  pillText = '21 JUNI',
   headline = [
     'Jauh sebelum layar menerangi hidup kita, kisah-kisah',
     'dikisahkan melalui bayangan yang menari di atas kain putih.',
