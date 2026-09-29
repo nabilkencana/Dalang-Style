@@ -18,7 +18,7 @@ export default function LandingPage() {
       <StoryShadowsSection id="fitur" />
 
       {/* 4. Marquee Ticker Tape */}
-      <MarqueeTicker variant="tape" size="xl" speed="normal" />
+      <MarqueeTicker variant="tape" size="xl" />
 
       {/* Gradient bridge: yellow → black (softens Ticker→BimaSuci) */}
       <div className="h-10 sm:h-14 md:h-20 bg-gradient-to-b from-[#3a3b0e] via-[#1a1a0a] to-black" />
