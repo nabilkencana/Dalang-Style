@@ -17,7 +17,7 @@ export default function SectionBimaSuci({
   youtubeVideoId = 'sQyQ31bysTQ',
   backgroundType = 'youtube',
   backgroundImage = '/images/bima-stage-clean-v2.png',
-  lakonSubtitle = 'TONIGHT LAKON',
+  lakonSubtitle = 'LAKON MALAM INI',
   accentColor = '#dedf42',
   className = '',
 }: SectionBimaSuciProps) {
@@ -121,7 +121,7 @@ export default function SectionBimaSuci({
               <iframe
                 ref={iframeRef}
                 src={`https://www.youtube-nocookie.com/embed/${youtubeVideoId}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeVideoId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&playsinline=1&cc_load_policy=1&cc_lang_pref=en&hl=en`}
-                title="Tonight Lakon YouTube Video Background"
+                title="Lakon Malam Ini - Latar Video YouTube"
                 className="absolute bottom-0 left-1/2 w-[118%] sm:w-[112%] h-[118%] sm:h-[112%] -translate-x-1/2 object-cover pointer-events-none opacity-95 filter contrast-[1.1] brightness-[0.92]"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen

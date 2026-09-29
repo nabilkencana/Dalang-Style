@@ -26,29 +26,29 @@ export interface SectionStoryFinaleProps {
 export default function SectionStoryFinale({
   id = 'filosofi',
   headline = {
-    line1: 'A Night to Remember',
-    line2: 'A Story to Carry',
+    line1: 'Malam yang Tak Terlupakan',
+    line2: 'Kisah untuk Dibawa Pulang',
   },
   paragraphStanzas = [
     [
-      'AS THE NIGHT DEEPENS, THE LINE',
-      'BETWEEN PAST AND PRESENT FADES.',
-      'STRANGERS SIT SIDE BY SIDE,',
-      'CONNECTED BY A SHARED SILENCE, A',
-      'SHARED AWE.',
+      'SAAT MALAM SEMAKIN LARUT, BATAS',
+      'ANTARA MASA LALU DAN MASA KINI MELEBUR.',
+      'ORANG-ORANG ASING DUDUK BERDAMPINGAN,',
+      'TERHUBUNG OLEH KEHENINGAN BERSAMA,',
+      'KEKAGUMAN BERSAMA.',
     ],
-    ['AND WHEN THE FINAL SCENE CLOSES,', 'SOMETHING STAYS WITH YOU.'],
+    ['DAN KETIKA ADEGAN TERAKHIR BERAKHIR,', 'SESUATU TETAP TINGGAL DALAM DIRIMU.'],
   ],
   listItems = [
-    { type: 'sparkle', text: 'A sense of wonder.' },
-    { type: 'heart', text: 'A quiet reflection.' },
+    { type: 'sparkle', text: 'Rasa takjub.' },
+    { type: 'heart', text: 'Sebuah perenungan sunyi.' },
     {
       type: 'mask',
-      text: 'A story that lingers long after the lights go out.',
+      text: 'Sebuah kisah yang membekas lama setelah lampu padam.',
     },
   ],
   brand = { line1: 'Wayang', line2: 'Jawi' },
-  tagline = 'ANCESTRAL STORIES,\nREIMAGINED AFTER\nDARK. NOT EVERYTHING\nOLD IS MEANT TO STAY IN\nTHE PAST.',
+  tagline = 'KISAH-KISAH LELUHUR,\nDIHIDUPKAN KEMBALI\nSETELAH GELAP. TIDAK SEMUA\nYANG LAMA HARUS TETAP\nDI MASA LALU.',
   backdropImage = '/images/section5-dancers-backdrop.png',
 }: SectionStoryFinaleProps) {
   return (

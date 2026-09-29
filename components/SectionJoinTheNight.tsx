@@ -24,7 +24,7 @@ export interface SectionJoinTheNightProps {
 
 export default function SectionJoinTheNight({
   id = 'join',
-  title = 'Join the Night',
+  title = 'Bergabunglah dalam Malam Ini',
   datePill = 'JUN 21TH 2026',
   timePill = '8.00 PM - END',
   venuePill = {
@@ -32,10 +32,10 @@ export default function SectionJoinTheNight({
     href: '/stage',
   },
   tagline = [
-    'THE NIGHT OF WAYANG JAWI',
-    'IS NOT JUST AN EVENT.',
-    "IT'S A MEMORY WAITING TO",
-    'HAPPEN.',
+    'MALAM WAYANG JAWI',
+    'BUKAN SEKADAR ACARA.',
+    'INI ADALAH KENANGAN YANG',
+    'MENUNGGU UNTUK TERJADI.',
   ],
   socialLinks = [
     { label: 'INSTAGRAM', href: 'https://instagram.com' },

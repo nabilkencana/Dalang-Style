@@ -15,20 +15,20 @@ export interface StoryShadowsSectionProps {
 
 export default function StoryShadowsSection({
   id = 'fitur',
-  tagline = ['A NIGHT WHERE', 'SHADOWS SPEAK'],
+  tagline = ['MALAM SAAT', 'BAYANGAN BERBICARA'],
   pillText = 'JUN 21TH',
   headline = [
-    'Long before screens lit up our lives, stories were',
-    'told through shadows dancing on a white cloth.',
-    'Hands, light, and leather carved figures became',
-    'heroes, gods, and legends.',
+    'Jauh sebelum layar menerangi hidup kita, kisah-kisah',
+    'dikisahkan melalui bayangan yang menari di atas kain putih.',
+    'Tangan, cahaya, dan figur kulit yang diukir menjadi',
+    'pahlawan, dewa, dan legenda.',
   ],
   photoSrc = '/images/dalang-story-photo.png',
-  photoAlt = 'Dalang performing Wayang Kulit behind the illuminated kelir screen',
+  photoAlt = 'Dalang memainkan Wayang Kulit di balik layar kelir yang bercahaya',
   poeticLines = [
-    ['THE RHYTHMIC ECHO OF', 'GAMELAN FILLS THE AIR.'],
-    ['THE FLICKER OF OIL LAMPS', 'CASTS HYPNOTIC SILHOUETTES.'],
-    ['THE DALANG BEGINS.'],
+    ['GEMA IRAMA GAMELAN', 'MEMENUHI UDARA.'],
+    ['KERLIP LAMPU MINYAK', 'MEMANCARKAN SILUET YANG MEMUKAU.'],
+    ['SANG DALANG MEMULAI.'],
   ],
 }: StoryShadowsSectionProps) {
   return (

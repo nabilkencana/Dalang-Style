@@ -23,15 +23,15 @@ export interface HeroWayangJawiProps {
 
 export default function HeroWayangJawi({
   navLinks = [
-    { label: 'OVERVIEW', href: '#overview' },
-    { label: 'ACTOR', href: '#actor' },
-    { label: 'STORY', href: '#story' },
+    { label: 'RINGKASAN', href: '#overview' },
+    { label: 'AKTOR', href: '#actor' },
+    { label: 'CERITA', href: '#story' },
   ],
-  ticketText = 'BOOK THE TICKET',
+  ticketText = 'PESAN TIKET',
   ticketHref = '/stage',
   aksaraText = 'ꦠꦼꦂꦱꦶꦤꦺꦴꦮꦂꦠ ꦮꦪꦁ ꦗꦮꦶ ꦏꦭ ꦮꦼꦔꦶ',
   title = { line1: 'The Night', line2: 'Wayang', line3: 'Jawi' },
-  cardTagline = 'ANCESTRAL STORIES, REIMAGINED AFTER\nDARK. NOT EVERYTHING OLD IS MEANT TO\nSTAY IN THE PAST.',
+  cardTagline = 'KISAH LELUHUR, DIHIDUPKAN KEMBALI SETELAH\nGELAP. TAK SEMUA YANG LAMA HARUS\nTETAP TINGGAL DI MASA LALU.',
   date = 'JUN 21TH 2026',
   venue = 'YASINTHA CAMPUS',
   venueHref = '/stage',
