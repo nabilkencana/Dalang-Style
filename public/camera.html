@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wayang Camera</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #090503;
+      }
+
+      canvas {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      #status {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: #f4e7cd;
+        font: 14px system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: #090503;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="camera"></canvas>
+    <div id="status">Waiting for camera preview...</div>
+    <script type="module">
+      const canvas = document.getElementById('camera');
+      const ctx = canvas.getContext('2d');
+      const status = document.getElementById('status');
+      const openerWayang = () => window.opener?.wayang;
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.max(1, Math.round(innerWidth * dpr));
+        canvas.height = Math.max(1, Math.round(innerHeight * dpr));
+      }
+
+      function draw() {
+        const wayang = openerWayang();
+        if (!wayang) {
+          status.textContent = 'Main Wayang window is not available.';
+          status.hidden = false;
+          requestAnimationFrame(draw);
+          return;
+        }
+
+        wayang.attachCameraWindow?.(window);
+        if (wayang.cameraReady?.()) {
+          status.hidden = true;
+          wayang.drawCamera(ctx, canvas.width, canvas.height);
+        } else {
+          status.textContent = 'Start the camera from the main window.';
+          status.hidden = false;
+        }
+        requestAnimationFrame(draw);
+      }
+
+      addEventListener('resize', resize);
+      addEventListener('beforeunload', () => openerWayang()?.attachCameraWindow?.(null));
+      resize();
+      draw();
+    </script>
+  </body>
+</html>
