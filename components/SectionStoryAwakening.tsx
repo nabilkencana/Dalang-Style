@@ -3,26 +3,84 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import { WorksWheel, type WorksWheelItem } from '@/components/ui/works-wheel';
 export interface SectionStoryAwakeningProps {
   id?: string;
   headerBrandText?: string;
   categoryLabel?: string;
   headline?: string[];
-  block1?: {
-    lines: string[];
-    imageSrc: string;
-    imageAlt: string;
-  };
-  block2?: {
-    lines: string[];
-    imageSrc: string;
-    imageAlt: string;
-  };
+  wheelItems?: WorksWheelItem[];
+  wheelLabel?: string;
   readMoreText?: string;
   readMoreHref?: string;
   aksaraText?: string;
 }
+
+const DEFAULT_WHEEL_ITEMS: WorksWheelItem[] = [
+  {
+    title: 'Kyai Semar',
+    role: 'Punakawan • Pamong Ksatria',
+    description: 'Penjelmaan Batara Ismaya, penasihat bijak para ksatria berjiwa luhur dan pengayom kebenaran.',
+    image: '/images/tokoh/wayang-1.png',
+    href: '/tokoh/kyai-semar',
+  },
+  {
+    title: 'Kyai Petruk',
+    role: 'Punakawan • Cerdas & Jenaka',
+    description: 'Karakter periang berhidung panjang, tangkas berfikir, jenaka namun berwawasan luas.',
+    image: '/images/tokoh/wayang-2.png',
+    href: '/tokoh/kyai-petruk',
+  },
+  {
+    title: 'Kyai Bagong',
+    role: 'Punakawan • Kritis & Jujur',
+    description: 'Sosok polos bertubuh bulat yang berani menyuarakan kebenaran rakyat tanpa tedeng aling-aling.',
+    image: '/images/tokoh/wayang-3.png',
+    href: '/tokoh/kyai-bagong',
+  },
+  {
+    title: 'Sang Arjuna',
+    role: 'Satria Pandawa • Penengah Pandawa',
+    description: 'Ksatria berbusur sakti Gandiwa, lambang keteguhan batin, kehalusan budi, dan kemahiran ilmu.',
+    image: '/images/tokoh/wayang-4.png',
+    href: '/tokoh/sang-arjuna',
+  },
+  {
+    title: 'Sang Gatotkaca',
+    role: 'Satria Pandawa • Ksatria Pringgandani',
+    description: 'Otot kawat balung wesi, satria perkasa pelindung angkasa yang gugur dalam palagan kehormatan.',
+    image: '/images/tokoh/wayang-5.png',
+    href: '/tokoh/sang-gatotkaca',
+  },
+  {
+    title: 'Nala Gareng',
+    role: 'Punakawan • Bijak & Bersahaja',
+    description: 'Kakak tertua punakawan bertangan ceko dan kaki pincang, lambang kehati-hatian dalam hidup.',
+    image: '/images/tokoh/wayang-6.png',
+    href: '/tokoh/nala-gareng',
+  },
+  {
+    title: 'Sang Bima',
+    role: 'Satria Pandawa • Werkudara Perkasa',
+    description: 'Sosok jujur pantang kompromi, pemberani penjelajah samudera pencari air suci Tirta Prawitasari.',
+    image: '/images/tokoh/wayang-7.png',
+    href: '/tokoh/sang-bima',
+  },
+  {
+    title: 'Prabu Rahwana',
+    role: 'Prabu Alengka • Dasamuka',
+    description: 'Raja sakti berkepala sepuluh berjiwa angkara, personifikasi nafsu duniawi yang tak terbendung.',
+    image: '/images/tokoh/wayang-8.png',
+    href: '/tokoh/prabu-rahwana',
+  },
+  {
+    title: 'Resi Drona',
+    role: 'Pujangga Hastina • Guru Besar',
+    description: 'Begawan sakti ahli siasat dan senjata perang, guru agung bagi seluruh Pandawa dan Kurawa.',
+    image: '/images/tokoh/wayang-9.png',
+    href: '/tokoh/resi-drona',
+  },
+];
 
 export default function SectionStoryAwakening({
   id = 'cara-bermain',
@@ -33,44 +91,22 @@ export default function SectionStoryAwakening({
     'semakin larut, sebuah perjalanan',
     'yang berbeda dimulai.',
   ],
-  block1 = {
-    lines: [
-      'BIMA, YANG TERKUAT DI ANTARA',
-      'PANDAWA, DIKENAL AKAN',
-      'KEKUATANNYA, KEBERANIANNYA,',
-      'TEKADNYA YANG TAK TERGOYAHKAN.',
-      'NAMUN DI MALAM INI, KEKUATAN',
-      'SAJA TIDAKLAH CUKUP.',
-    ],
-    imageSrc: '/images/story-bima-portrait.png',
-    imageAlt: 'Potret topeng dan kostum Wayang Wong Bima',
-  },
-  block2 = {
-    lines: [
-      'DITUNTUN OLEH PANGGILAN MISTERIUS,',
-      'BIMA DIUTUS UNTUK MENCARI TIRTA',
-      'PRAWITASARI—AIR SUCI',
-      'KEHIDUPAN. NAMUN INI BUKANLAH',
-      'PENCARIAN BIASA. IA MEMBAWANYA',
-      'MELAMPAUI KERAJAAN DAN MEDAN',
-      'PERTEMPURAN... MENUJU KEDALAMAN',
-      'SAMUDERA YANG LUAS TAK TERDUGA.',
-    ],
-    imageSrc: '/images/story-ocean-battle.png',
-    imageAlt: 'Bima menghadapi kekuatan gaib di kedalaman samudera',
-  },
+  wheelItems = DEFAULT_WHEEL_ITEMS,
+  wheelLabel = 'TOKOH WAYANG',
   readMoreText = 'BACA SELENGKAPNYA →',
   readMoreHref = '/stage',
   aksaraText = 'ꦭꦏꦺꦴꦤ꧀ ꦧꦶꦩ ꦱꦸꦕꦶ ꦠꦶꦂꦠ ꦥꦿꦮꦶꦠꦱꦫꦶ',
 }: SectionStoryAwakeningProps) {
   return (
     <section
+      data-gsap="awaken-section"
       id={id}
       className="relative w-full bg-[#0a0a0a] text-[#000000] overflow-hidden select-none"
     >
       <div className="relative w-full min-h-[580px] md:aspect-[1504/1128] @container overflow-hidden flex items-center justify-center py-10 md:py-0">
         {/* INNER STORY CARD - Full Width */}
         <div
+          data-gsap="awaken-card"
           className="relative w-full aspect-auto md:aspect-[1126/814] overflow-hidden bg-[#dedf42] z-20 @container"
         >
           {/* Yellow Card Canvas with authentic Bima Wayang Watermark Illustration */}
@@ -130,73 +166,37 @@ export default function SectionStoryAwakening({
           {/* CARD CONTENT LAYER */}
           <div className="relative md:absolute inset-0 flex flex-col items-center justify-between pt-[7.5%] pb-[7.2%] px-[7%] pointer-events-none z-20 gap-5 md:gap-0">
             {/* Top Section: Category Label + Main Headline */}
-            <div className="w-full flex flex-col items-center text-center pointer-events-auto">
+            <div data-gsap="awaken-text" className="w-full flex flex-col items-center text-center pointer-events-auto">
               {/* Category Label: "A STORY OF INNER AWAKENING" */}
               <p className="font-sans font-bold text-black text-[clamp(8px,1.15cqi,13.5px)] tracking-[0.24em] sm:tracking-[0.28em] uppercase mb-2 sm:mb-3 md:mb-3.5 select-text">
                 {categoryLabel}
               </p>
 
               {/* Headline: 3 Lines in Playfair Display */}
-              <h2 className="font-playfair text-black text-[clamp(17px,3.52cqi,41px)] font-normal leading-[1.14] tracking-[-0.02em] max-w-[530px] select-text">
+              <h2 className="font-playfair text-black text-[clamp(17px,3.52cqi,41px)] font-normal leading-[1.20] tracking-[-0.02em] max-w-[530px] select-text">
                 {headline.map((line, idx) => (
-                  <span key={idx} className="block whitespace-nowrap">
+                  <span key={idx} data-gsap="awaken-headline-line" className="block whitespace-nowrap will-change-transform">
                     {line}
                   </span>
                 ))}
               </h2>
             </div>
 
-            {/* Middle Section: Two Story Blocks with Text on Left, Photo on Right */}
-            <div className="w-full max-w-[340px] sm:max-w-[370px] md:max-w-[395px] flex flex-col gap-4 sm:gap-5 md:gap-6 my-auto pointer-events-auto">
-              {/* Block 1: BIMA, THE STRONGEST OF THE PANDAWA... */}
-              <div className="flex items-center justify-between gap-3 sm:gap-4 md:gap-6">
-                {/* Left Text */}
-                <div className="flex-1 text-left font-sans font-bold text-black text-[clamp(7px,0.94cqi,11.5px)] uppercase leading-[1.32] sm:leading-[1.38] tracking-wider select-text">
-                  {block1.lines.map((line, idx) => (
-                    <p key={idx} className="whitespace-nowrap">
-                      {line}
-                    </p>
-                  ))}
-                </div>
-
-                {/* Right Photo */}
-                <div className="relative w-[90px] sm:w-[110px] md:w-[130px] aspect-[126/138] shrink-0 border-[1.5px] border-black/90 shadow-md overflow-hidden bg-black">
-                  <Image
-                    src={block1.imageSrc}
-                    alt={block1.imageAlt}
-                    fill
-                    sizes="130px"
-                    className="object-cover object-center pointer-events-none"
-                  />
-                </div>
-              </div>
-
-              {/* Block 2: GUIDED BY A MYSTERIOUS CALLING... */}
-              <div className="flex items-center justify-between gap-3 sm:gap-4 md:gap-6">
-                {/* Left Text */}
-                <div className="flex-1 text-left font-sans font-bold text-black text-[clamp(7px,0.94cqi,11.5px)] uppercase leading-[1.32] sm:leading-[1.38] tracking-wider select-text">
-                  {block2.lines.map((line, idx) => (
-                    <p key={idx} className="whitespace-nowrap">
-                      {line}
-                    </p>
-                  ))}
-                </div>
-
-                {/* Right Photo */}
-                <div className="relative w-[90px] sm:w-[110px] md:w-[130px] aspect-[125/133] shrink-0 border-[1.5px] border-black/90 shadow-md overflow-hidden bg-black">
-                  <Image
-                    src={block2.imageSrc}
-                    alt={block2.imageAlt}
-                    fill
-                    sizes="130px"
-                    className="object-cover object-center pointer-events-none"
-                  />
-                </div>
-              </div>
+            {/* Middle Section: Interactive 3D WorksWheel Component */}
+            <div
+              data-gsap="awaken-wheel"
+              className="w-full flex-1 min-h-[340px] sm:min-h-[420px] md:min-h-[480px] my-1 sm:my-2 pointer-events-auto flex items-center justify-center overflow-hidden"
+            >
+              <WorksWheel
+                items={wheelItems}
+                label={wheelLabel}
+                action="Jelajahi"
+                className="bg-transparent text-black min-h-[320px] sm:min-h-[400px] md:min-h-[460px] w-full"
+              />
             </div>
 
             {/* Bottom Section: "READ MORE →" Pill Button */}
-            <div className="pointer-events-auto mt-2 md:mt-0">
+            <div data-gsap="awaken-cta" className="pointer-events-auto mt-2 md:mt-0">
               <Link
                 href={readMoreHref}
                 className="inline-flex items-center justify-center px-6 sm:px-8 py-1.5 sm:py-2 rounded-full border-[1.5px] border-black text-black font-sans font-bold text-[clamp(8px,1.05cqi,13px)] tracking-wider uppercase bg-transparent hover:bg-black hover:text-[#dedf42] active:scale-95 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-black"

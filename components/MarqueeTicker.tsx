@@ -117,6 +117,7 @@ export default function MarqueeTicker({
     <div
       ref={containerRef}
       className={`relative w-full ${sizeStyles.container} bg-[#e3e638] text-black overflow-hidden flex items-center select-none z-20 ${className}`}
+      data-gsap="ticker"
       aria-label="Event Ticker Tape"
     >
       <div

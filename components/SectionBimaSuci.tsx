@@ -105,11 +105,13 @@ export default function SectionBimaSuci({
     >
       {/* 1504 x 1128 Canvas Ratio Container matching Reference (4:3) */}
       <div
+        data-gsap="bima-card"
         className="relative w-full overflow-hidden bg-[#000000] shadow-[0_25px_80px_rgba(0,0,0,0.95)]"
         style={{ aspectRatio: '1504 / 1128' }}
       >
         {/* Yellow Frame Box - The video is fitted cleanly inside */}
         <div
+          data-gsap="bima-frame"
           className="absolute inset-[13.65%_6.25%_13.74%_6.25%] overflow-hidden z-10"
           style={{
             border: `1.5px solid ${accentColor}`,
@@ -145,7 +147,7 @@ export default function SectionBimaSuci({
         </div>
 
         {/* Top Center Label: TONIGHT LAKON (centered on top yellow border line) */}
-        <div className="absolute top-[13.65%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#000000] px-3 sm:px-6 md:px-8 z-30 pointer-events-auto">
+        <div data-gsap="bima-label" className="absolute top-[13.65%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#000000] px-3 sm:px-6 md:px-8 z-30 pointer-events-auto">
           <span
             className="font-sans font-bold text-[clamp(9px,1.1cqi,15px)] tracking-[0.22em] sm:tracking-[0.28em] uppercase whitespace-nowrap select-text"
             style={{ color: accentColor }}

@@ -68,7 +68,7 @@ export default function SectionMovementMeaning({
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Main Central Card - Full Width */}
-      <div className="relative w-full aspect-auto md:aspect-[1354/846] overflow-hidden bg-[#0a0a0a] @container min-h-[580px] md:min-h-0 flex items-center justify-center">
+      <div data-gsap="meaning-card" className="relative w-full aspect-auto md:aspect-[1354/846] overflow-hidden bg-[#0a0a0a] @container min-h-[580px] md:min-h-0 flex items-center justify-center">
           {/* Authentic Illuminated Wayang Kulit Puppet Profile Backdrop */}
           <div className="absolute inset-0 bg-[#0a0a0a] pointer-events-none">
             <Image
@@ -85,7 +85,7 @@ export default function SectionMovementMeaning({
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(10,10,10,0.65)_0%,rgba(10,10,10,0.85)_60%,#0a0a0a_95%)] pointer-events-none z-10" />
 
           {/* CENTER CONTENT LAYER */}
-          <div className="relative z-20 w-full max-w-[780px] px-6 py-12 md:py-0 flex flex-col items-center text-center pointer-events-auto">
+          <div data-gsap="meaning-content" className="relative z-20 w-full max-w-[780px] px-6 py-12 md:py-0 flex flex-col items-center text-center pointer-events-auto">
             {/* Interactive Number Pill Selector: ( 1 ) ( 2 ) ( 3 ) */}
             <div className="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8 md:mb-10">
               {slides.map((s, idx) => {

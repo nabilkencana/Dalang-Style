@@ -7,10 +7,13 @@ import SectionStoryFinale from '@/components/SectionStoryFinale';
 import SectionMovementMeaning from '@/components/SectionMovementMeaning';
 import SectionJoinTheNight from '@/components/SectionJoinTheNight';
 import MarqueeTicker from '@/components/MarqueeTicker';
+import GsapAnimations from '@/components/GsapAnimations';
 
 export default function LandingPage() {
   return (
     <div className="relative overflow-hidden bg-[#dedf42]">
+      {/* GSAP ScrollTrigger Animations Controller */}
+      <GsapAnimations />
       {/* 2. Section 1: Hero Wayang Jawi */}
       <HeroWayangJawi />
 

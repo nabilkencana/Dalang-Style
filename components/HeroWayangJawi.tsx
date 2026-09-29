@@ -41,6 +41,7 @@ export default function HeroWayangJawi({
     <section className="relative w-full min-h-screen bg-[#050303] text-[#dedf42] overflow-hidden select-none">
       {/* Full-bleed Background Image */}
       <Image
+        data-gsap="hero-bg"
         src={cardBackground}
         alt="Wayang Kulit Background Scene"
         fill
@@ -57,7 +58,7 @@ export default function HeroWayangJawi({
       {/* Content Layer */}
       <div className="relative z-10 flex flex-col justify-between min-h-screen px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-5 sm:py-7 md:py-9">
         {/* Top Bar: Nav Left + Ticket Right */}
-        <header className="w-full flex items-center justify-between">
+        <header data-gsap="hero-nav" className="w-full flex items-center justify-between">
           <nav className="flex items-center gap-1 text-[11px] sm:text-xs md:text-sm font-bold tracking-wider text-[#dedf42] uppercase font-sans drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             {navLinks.map((link, idx) => (
               <React.Fragment key={link.label}>
@@ -85,6 +86,7 @@ export default function HeroWayangJawi({
           {/* Aksara Jawa */}
           {aksaraText && (
             <p
+              data-gsap="hero-aksara"
               className="text-[#dedf42]/80 text-[10px] sm:text-xs md:text-sm lg:text-base tracking-[0.20em] font-serif mb-3 sm:mb-4 md:mb-5 drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]"
               aria-label="Aksara Jawa Subtitle"
             >
@@ -93,15 +95,27 @@ export default function HeroWayangJawi({
           )}
 
           {/* Main Headline — Centered */}
-          <h1 className="font-serif font-bold text-[#dedf42] text-7xl sm:text-8xl md:text-9xl lg:text-[130px] xl:text-[160px] leading-[0.88] tracking-[-0.03em] drop-shadow-[0_4px_30px_rgba(0,0,0,0.98)]">
-            {title.line1 && <span className="block">{title.line1}</span>}
-            {title.line2 && <span className="block">{title.line2}</span>}
-            {title.line3 && <span className="block">{title.line3}</span>}
+          <h1 className="font-serif font-bold text-[#dedf42] text-7xl sm:text-8xl md:text-9xl lg:text-[130px] xl:text-[160px] leading-[0.98] tracking-[-0.03em] drop-shadow-[0_4px_30px_rgba(0,0,0,0.98)]">
+            {title.line1 && (
+              <span data-gsap="hero-title-line" className="block will-change-transform">
+                {title.line1}
+              </span>
+            )}
+            {title.line2 && (
+              <span data-gsap="hero-title-line" className="block will-change-transform">
+                {title.line2}
+              </span>
+            )}
+            {title.line3 && (
+              <span data-gsap="hero-title-line" className="block will-change-transform">
+                {title.line3}
+              </span>
+            )}
           </h1>
         </div>
 
         {/* Bottom Bar: Tagline Left + Pills Right */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 w-full">
+        <div data-gsap="hero-bottom" className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 w-full">
           <p className="text-[9px] sm:text-[11px] md:text-xs lg:text-[13px] font-bold tracking-wider text-[#dedf42]/70 uppercase leading-[1.35] font-sans max-w-xs md:max-w-sm whitespace-pre-line drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             {cardTagline}
           </p>

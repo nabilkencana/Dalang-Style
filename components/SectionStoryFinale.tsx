@@ -57,7 +57,7 @@ export default function SectionStoryFinale({
       className="relative w-full bg-[#050303] text-[#000000] overflow-hidden select-none"
     >
       {/* Main Theatrical Dark Card - Full Width */}
-      <div className="relative w-full aspect-auto md:aspect-[1354/846] overflow-hidden bg-[#050303] @container min-h-[640px] md:min-h-0">
+      <div data-gsap="finale-card" className="relative w-full aspect-auto md:aspect-[1354/846] overflow-hidden bg-[#050303] @container min-h-[640px] md:min-h-0">
           {/* Authentic Stage Backdrop Image (Two Dancers & Ethereal Smoke) */}
           <div className="absolute inset-0 bg-[#050303] pointer-events-none">
             <Image
@@ -76,15 +76,15 @@ export default function SectionStoryFinale({
           {/* RIGHT SIDE PURE CODE CONTENT LAYER */}
           <div className="relative md:absolute inset-0 flex flex-col justify-between py-8 md:py-0 md:pt-[13.2%] md:pb-[9.5%] px-6 md:px-0 md:pl-[56.1%] md:pr-[6.0%] pointer-events-none z-20 gap-6 md:gap-0">
             {/* Top Headline: "A Night to Remember \n A Story to Carry" */}
-            <div className="pointer-events-auto bg-black/60 md:bg-transparent p-4 md:p-0 rounded-lg md:rounded-none">
-              <h2 className="font-playfair text-[#dedf42] text-[clamp(28px,4.5cqi,62px)] font-normal leading-[1.0] md:leading-[0.98] tracking-[-0.025em] select-text">
-                <span className="block">{headline.line1}</span>
-                <span className="block">{headline.line2}</span>
+            <div data-gsap="finale-headline" className="pointer-events-auto bg-black/60 md:bg-transparent p-4 md:p-0 rounded-lg md:rounded-none">
+              <h2 className="font-playfair text-[#dedf42] text-[clamp(28px,4.5cqi,62px)] font-normal leading-[1.08] md:leading-[1.05] tracking-[-0.025em] select-text">
+                <span data-gsap="finale-headline-line" className="block will-change-transform">{headline.line1}</span>
+                <span data-gsap="finale-headline-line" className="block will-change-transform">{headline.line2}</span>
               </h2>
             </div>
 
             {/* Middle Uppercase Paragraph */}
-            <div className="pointer-events-auto max-w-[360px] space-y-3 sm:space-y-4 font-sans font-bold text-[#dedf42] text-[clamp(8px,0.92cqi,12.5px)] uppercase leading-[1.38] tracking-wider select-text bg-black/60 md:bg-transparent p-4 md:p-0 rounded-lg md:rounded-none">
+            <div data-gsap="finale-stanza" className="pointer-events-auto max-w-[360px] space-y-3 sm:space-y-4 font-sans font-bold text-[#dedf42] text-[clamp(8px,0.92cqi,12.5px)] uppercase leading-[1.38] tracking-wider select-text bg-black/60 md:bg-transparent p-4 md:p-0 rounded-lg md:rounded-none">
               {paragraphStanzas.map((stanza, sIdx) => (
                 <p key={sIdx}>
                   {stanza.map((line, lIdx) => (
@@ -102,6 +102,7 @@ export default function SectionStoryFinale({
                 {listItems.map((item, idx) => (
                   <div
                     key={idx}
+                    data-gsap="finale-item"
                     className="flex items-center gap-3 sm:gap-4 min-h-[44px] sm:min-h-[48px] py-2 sm:py-2.5 group transition-colors hover:bg-[#dedf42]/5 px-2 rounded-sm"
                   >
                     {/* List Icon SVG */}

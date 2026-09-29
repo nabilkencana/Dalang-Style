@@ -67,12 +67,12 @@ export default function SectionJoinTheNight({
         <div className="relative z-10 w-full flex flex-col md:flex-row items-start justify-between gap-6 md:gap-8">
           {/* Top-Left: "Join the Night" Title and 3 Pills */}
           <div className="flex flex-col items-start pointer-events-auto">
-            <h2 className="font-playfair text-black text-[clamp(42px,10.2cqi,152px)] font-normal leading-[0.88] tracking-[-0.035em] mb-4 sm:mb-5 md:mb-6 select-text">
-              {title}
+            <h2 data-gsap="join-title" className="font-playfair text-black text-[clamp(42px,10.2cqi,152px)] font-normal leading-[0.98] tracking-[-0.035em] mb-4 sm:mb-5 md:mb-6 select-text">
+              <span data-gsap="join-title-line" className="block will-change-transform">{title}</span>
             </h2>
 
             {/* 3 Top Information Pills */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 md:gap-3">
+            <div data-gsap="join-pills" className="flex flex-wrap items-center gap-2 sm:gap-2.5 md:gap-3">
               {/* Date Pill */}
               <div className="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-transparent">
                 <span className="font-sans font-bold text-black text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap select-text">
@@ -100,7 +100,7 @@ export default function SectionJoinTheNight({
           </div>
 
           {/* Top-Right: 4-Line Event Tagline */}
-          <div className="pointer-events-auto shrink-0 md:pt-4 text-left max-w-[260px]">
+          <div data-gsap="join-tagline" className="pointer-events-auto shrink-0 md:pt-4 text-left max-w-[260px]">
             <p className="font-sans font-bold text-black text-[clamp(8px,0.95cqi,13px)] leading-[1.38] tracking-wider uppercase select-text">
               {tagline.map((line, idx) => (
                 <span key={idx} className="block whitespace-nowrap">
@@ -113,7 +113,7 @@ export default function SectionJoinTheNight({
 
         {/* 2. MIDDLE-BOTTOM ROW: Social Pills on Right */}
         <div className="relative z-10 w-full flex items-center justify-end pt-8 md:pt-0 my-auto md:my-0">
-          <div className="flex items-center gap-2 sm:gap-3 pointer-events-auto">
+          <div data-gsap="join-social" className="flex items-center gap-2 sm:gap-3 pointer-events-auto">
             {socialLinks.map((social) => (
               <a
                 key={social.label}
@@ -130,8 +130,8 @@ export default function SectionJoinTheNight({
 
         {/* 3. GIANT BOTTOM HEADLINE: "The Night Wayang Jawi" */}
         <div className="relative z-10 w-full pt-4 md:pt-0 pointer-events-auto">
-          <h1 className="font-playfair text-black text-[clamp(28px,9.55cqi,146px)] font-normal leading-[0.85] tracking-[-0.02em] whitespace-nowrap select-text text-left">
-            {brandTitle}
+          <h1 className="font-playfair text-black text-[clamp(28px,9.55cqi,146px)] font-normal leading-[0.95] tracking-[-0.02em] whitespace-nowrap select-text text-left">
+            <span data-gsap="join-brand-line" className="block will-change-transform">{brandTitle}</span>
           </h1>
         </div>
       </div>

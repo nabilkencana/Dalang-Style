@@ -38,6 +38,7 @@ export default function StoryShadowsSection({
     >
       {/* Main Theatrical Black Card - Full Width, no yellow wrapper */}
       <div
+        data-gsap="story-card"
         className="relative w-full aspect-[1354/846] overflow-hidden bg-[#0a0a0a] @container"
       >
         {/* Solid deep pitch-black backdrop */}
@@ -45,6 +46,7 @@ export default function StoryShadowsSection({
 
         {/* 1. TOP-LEFT TEXT: "A NIGHT WHERE \n SHADOWS SPEAK" */}
         <div
+          data-gsap="story-tagline"
           className="absolute left-[3%] sm:left-[2.5%] top-[13.71%] z-10 pointer-events-auto"
           style={{ width: 'clamp(55px, 9.16cqi, 124px)' }}
         >
@@ -59,6 +61,7 @@ export default function StoryShadowsSection({
 
         {/* 2. BOTTOM-LEFT PILL BADGE: "JUN 21TH" */}
         <div
+          data-gsap="story-pill"
           className="absolute left-[3%] sm:left-[2.5%] bottom-[9.93%] z-10 pointer-events-auto"
           style={{
             width: 'clamp(52px, 9.16cqi, 124px)',
@@ -74,12 +77,13 @@ export default function StoryShadowsSection({
 
         {/* 3. CENTER-LEFT MAIN HEADLINE */}
         <div
+          data-gsap="story-headline"
           className="absolute left-[26.00%] top-[13.95%] z-10 pointer-events-auto"
           style={{ width: '58.49%' }}
         >
-          <h2 className="font-playfair text-[#dedf42] text-[clamp(8px,3.18cqi,43px)] font-normal leading-[1.18] tracking-[-0.015em] select-text">
+          <h2 className="font-playfair text-[#dedf42] text-[clamp(8px,3.18cqi,43px)] font-normal leading-[1.22] tracking-[-0.015em] select-text">
             {headline.map((line, idx) => (
-              <span key={idx} className="block whitespace-nowrap">
+              <span key={idx} data-gsap="story-headline-line" className="block whitespace-nowrap will-change-transform">
                 {line}
               </span>
             ))}
@@ -88,6 +92,7 @@ export default function StoryShadowsSection({
 
         {/* 4. CENTER DALANG PERFORMANCE PHOTO */}
         <div
+          data-gsap="story-photo"
           className="absolute left-[26.00%] top-[46.34%] z-10 overflow-hidden shadow-2xl"
           style={{ width: '31.68%', height: '44.21%' }}
         >
@@ -107,7 +112,7 @@ export default function StoryShadowsSection({
         >
           <div className="font-sans font-bold text-[#dedf42] text-[clamp(5.5px,1.00cqi,13.5px)] uppercase tracking-wider leading-[1.38] space-y-[clamp(4px,1.6cqi,22px)] select-text">
             {poeticLines.map((stanza, sIdx) => (
-              <p key={sIdx}>
+              <p key={sIdx} data-gsap="story-stanza">
                 {stanza.map((line, lIdx) => (
                   <span key={lIdx} className="block whitespace-nowrap">
                     {line}
