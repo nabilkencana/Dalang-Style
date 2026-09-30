@@ -131,15 +131,16 @@ export default function GsapAnimations() {
       },
     });
 
-    // Center Dalang Photo — Curtain Reveal
+    // Center Dalang Photo — Smooth Appear (fade + subtle float up)
     gsap.from('[data-gsap="story-photo"]', {
-      clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)',
-      scale: 1.08,
-      duration: 1.3,
-      ease: 'power3.inOut',
+      opacity: 0,
+      y: 30,
+      scale: 1.04,
+      duration: 1.0,
+      ease: 'power3.out',
       scrollTrigger: {
         trigger: '#fitur',
-        start: 'top 65%',
+        start: 'top 72%',
         toggleActions: 'play none none reverse',
       },
     });

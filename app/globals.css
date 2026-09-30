@@ -59,3 +59,67 @@ body {
 .animate-fadeSlideUp {
   animation: fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ─── Smooth scroll ─────────────────────────────────────────────────────── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* ─── Global scroll-reveal system ──────────────────────────────────────── */
+/* pending: start state — invisible, slightly below */
+[data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* visible: settled state */
+[data-reveal="visible"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children inside a revealed section */
+[data-reveal="pending"] > * { transition-delay: 0ms; }
+[data-reveal="visible"] > *:nth-child(1) { transition-delay: 0ms;   }
+[data-reveal="visible"] > *:nth-child(2) { transition-delay: 60ms;  }
+[data-reveal="visible"] > *:nth-child(3) { transition-delay: 120ms; }
+[data-reveal="visible"] > *:nth-child(4) { transition-delay: 180ms; }
+[data-reveal="visible"] > *:nth-child(5) { transition-delay: 240ms; }
+[data-reveal="visible"] > *:nth-child(n+6) { transition-delay: 300ms; }
+
+/* Cards and images get a slight scale-up too */
+article[data-reveal="pending"],
+.group[data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+}
+article[data-reveal="visible"],
+.group[data-reveal="visible"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Headings get a faster, crisper reveal */
+h1[data-reveal="pending"],
+h2[data-reveal="pending"],
+h3[data-reveal="pending"],
+h4[data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}

@@ -295,6 +295,7 @@ export function WorksWheel({
   return (
     <section
       aria-label={label}
+      data-lenis-prevent
       className={cn(
         "bg-background text-foreground relative h-full min-h-[26rem] w-full overflow-hidden select-none",
         className,
@@ -308,6 +309,7 @@ export function WorksWheel({
         aria-label={label}
         aria-activedescendant={`works-wheel-${active}`}
         className="focus-visible:outline-foreground absolute inset-0 cursor-grab touch-pan-x outline-none focus-visible:outline-2 focus-visible:-outline-offset-4 active:cursor-grabbing"
+        data-lenis-prevent
         style={{ perspective: `${metrics.depth}px` }}
         onPointerDown={(event) => {
           drag.current = event.clientY;
@@ -402,32 +404,7 @@ export function WorksWheel({
                     {/* Subtle Top-to-Bottom Light Sheen Gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-white/10 pointer-events-none" />
 
-                    {/* Character Role Tag inside front card */}
-                    {item.role && (
-                      <span className="absolute top-2.5 left-3 px-2.5 py-0.5 rounded-full bg-black/75 backdrop-blur-md text-[#dedf42] text-[9px] sm:text-[10px] font-sans font-bold tracking-wider uppercase border border-white/15 pointer-events-none">
-                        {item.role}
-                      </span>
-                    )}
 
-                    {item.href ? (
-                      <span className="pointer-events-auto absolute right-3 bottom-3 z-30 flex items-center gap-1.5 rounded-full px-3.5 py-1.5 bg-[#dedf42] text-black text-[11px] sm:text-xs font-sans font-bold tracking-wider uppercase hover:bg-white active:scale-95 transition-all shadow-md cursor-pointer border border-black/30">
-                        <span>{action}</span>
-                        <svg
-                          viewBox="0 0 12 12"
-                          className="size-2.5"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M3 9 9 3M4 3h5v5"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </span>
-                    ) : null}
                   </span>
                 </Link>
               </React.Fragment>
