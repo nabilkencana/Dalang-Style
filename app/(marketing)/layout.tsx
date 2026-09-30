@@ -1,5 +1,6 @@
 import React from 'react';
-import Link from 'next/link';
+import Navbar from '@/components/Navbar';
+import SiteFrame from '@/components/SiteFrame';
 
 export default function MarketingLayout({
   children,
@@ -8,6 +9,12 @@ export default function MarketingLayout({
 }>) {
   return (
     <div className="min-h-screen flex flex-col bg-[#0b0604] text-[#f4e7cd] selection:bg-[#dedf42] selection:text-[#0b0604]">
+      {/* Continuous Viewport Border Frame */}
+      <SiteFrame />
+
+      {/* Floating Animated Navigation Bar */}
+      <Navbar />
+
       {/* Main Content */}
       <main className="flex-1">{children}</main>
     </div>

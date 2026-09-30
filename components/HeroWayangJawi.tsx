@@ -2,147 +2,127 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export interface HeroWayangJawiProps {
-  navLinks?: Array<{ label: string; href: string }>;
-  ticketText?: string;
-  ticketHref?: string;
-  aksaraText?: string;
-  title?: {
-    line1?: string;
-    line2?: string;
-    line3?: string;
+  videoSrc?: string;
+  taglineText?: {
+    normal1?: string;
+    highlight?: string;
+    normal2?: string;
   };
-  cardTagline?: string;
-  date?: string;
-  venue?: string;
-  venueHref?: string;
-  cardBackground?: string;
+  brandTitle?: string;
+  ctaText?: string;
+  ctaHref?: string;
+  secondaryText?: string;
+  secondaryHref?: string;
 }
 
 export default function HeroWayangJawi({
-  navLinks = [
-    { label: 'CERITA', href: '#fitur' },
-    { label: 'LAKON', href: '#lakon' },
-    { label: 'TOKOH', href: '#cara-bermain' },
-    { label: 'MUSEUM', href: '#galeri' },
-    { label: 'WARTA', href: '#filosofi' },
-  ],
-  ticketText = 'MAINKAN WAYANG',
-  ticketHref = '/stage',
-  aksaraText = 'ꦠꦼꦂꦱꦶꦤꦺꦴꦮꦂꦠ ꦮꦪꦁ ꦗꦮꦶ ꦏꦭ ꦮꦼꦔꦶ',
-  title = { line1: 'Malam', line2: 'Wayang', line3: 'Jawi' },
-  cardTagline = 'KISAH LELUHUR, DIHIDUPKAN KEMBALI SETELAH\nGELAP. TAK SEMUA YANG LAMA HARUS\nTETAP TINGGAL DI MASA LALU.',
-  venue = 'JELAJAHI PANGGUNG',
-  venueHref = '/stage',
-  cardBackground = '/images/wayang-stage-bg.png',
+  videoSrc = '/videos/banner-video.mp4',
+  taglineText = {
+    normal1: 'Menghidupkan',
+    highlight: 'seni wayang kulit',
+    normal2: 'lewat panggung digital interaktif dan teknologi kecerdasan buatan.',
+  },
+  brandTitle = 'Wayang',
+  ctaText = 'Panduan Mendalang',
+  ctaHref = '/panduan',
 }: HeroWayangJawiProps) {
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith('#')) {
-      e.preventDefault();
-      const id = href.replace('#', '');
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        window.history.pushState(null, '', href);
-      }
-    }
-  };
-
   return (
-    <section className="relative w-full min-h-screen bg-[#050303] text-[#dedf42] overflow-hidden select-none">
-      {/* Full-bleed Background Image */}
-      <Image
-        data-gsap="hero-bg"
-        src={cardBackground}
-        alt="Wayang Kulit Background Scene"
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-center pointer-events-none brightness-[0.55] contrast-[1.15]"
-      />
+    <section className="relative w-full min-h-screen bg-black text-white overflow-hidden select-none flex flex-col justify-end">
+      {/* ── Background Looping Video (from Studiova template) ── */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none brightness-[0.7] contrast-[1.1]"
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
 
-      {/* Atmospheric Vignette Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/50 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/50 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(5,3,3,0.05)_0%,rgba(5,3,3,0.35)_60%,rgba(5,3,3,0.75)_100%)] pointer-events-none" />
+      {/* ── Cinematic Dark Gradient Overlays (Ensures text readability & deep atmospheric mood) ── */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(0,0,0,0.92)_0%,rgba(0,0,0,0.35)_55%,transparent_100%)] pointer-events-none z-10" />
 
-      {/* Content Layer */}
-      <div className="relative z-10 flex flex-col justify-between min-h-screen px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-5 sm:py-7 md:py-9">
-        {/* Top Bar: Nav Left + Ticket Right */}
-        {/* Top Bar: Nav Left + Action Button Right */}
-        <header data-gsap="hero-nav" className="w-full flex items-center justify-between gap-4">
-          <nav className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs md:text-sm font-bold tracking-wider text-[#dedf42] uppercase font-sans drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-            {navLinks.map((link, idx) => (
-              <React.Fragment key={link.label}>
-                <a
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className="hover:brightness-125 transition-all focus:outline-none focus:underline py-1"
-                >
-                  {link.label}
-                </a>
-                {idx < navLinks.length - 1 && <span className="opacity-40">,</span>}
-              </React.Fragment>
-            ))}
-          </nav>
-
-          <Link
-            href={ticketHref}
-            className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-[#dedf42]/70 bg-[#dedf42]/10 hover:bg-[#dedf42] hover:text-black text-[#dedf42] font-bold text-[11px] sm:text-xs md:text-sm tracking-wider uppercase transition-all duration-300 shadow-md active:scale-95 flex items-center gap-1.5 group cursor-pointer backdrop-blur-sm shrink-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
+      {/* ── Bottom Content Container (Exact Studiova Reference Structure) ── */}
+      <div className="relative z-20 w-full px-6 sm:px-10 md:px-14 lg:px-16 xl:px-20 pb-10 sm:pb-14 md:pb-16 pt-32">
+        <div className="flex flex-col gap-6 sm:gap-8">
+          {/* Top Tagline Row with Spinning Pinwheel/Leaf Icon */}
+          <div
+            data-gsap="hero-tagline"
+            className="flex items-center gap-3.5 sm:gap-4.5 max-w-md sm:max-w-lg"
           >
-            <span>{ticketText}</span>
-            <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
-          </Link>
-        </header>
-
-        {/* Center: Title Block — Left-Aligned */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center py-8 sm:py-12 md:py-16">
-          {/* Aksara Jawa */}
-          {aksaraText && (
-            <p
-              data-gsap="hero-aksara"
-              className="text-[#dedf42]/80 text-[10px] sm:text-xs md:text-sm lg:text-base tracking-[0.20em] font-serif mb-3 sm:mb-4 md:mb-5 drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]"
-              aria-label="Aksara Jawa Subtitle"
-            >
-              {aksaraText}
+            {/* Fast Spinning Pinwheel Icon in #dedf42 (3s per rotation) */}
+            <div className="shrink-0 animate-[spin_3s_linear_infinite]">
+              <svg
+                width="36"
+                height="38"
+                viewBox="0 0 40 42"
+                fill="none"
+                className="size-7 sm:size-8 text-[#dedf42]"
+                aria-hidden="true"
+              >
+                <path
+                  d="M0 27.8928L13.9269 21.6025L21.943 26.3203L23.5624 41.7978L13.684 41.7148L15.1415 30.9551L13.4411 29.9619L5.10111 36.5836L0 27.8928Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M22.8342 25.6576L35.1419 34.8446L40 25.9887L30.1213 21.933V19.9466L40 15.8082L35.1419 7.03488L22.8342 16.2221V25.6576Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M21.943 15.4775L23.5624 0L13.684 0.165487L15.1415 10.9253L13.4411 11.9185L5.02015 5.29708L0 13.9049L13.9269 20.1952L21.943 15.4775Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+            <p className="text-white/80 text-sm sm:text-base md:text-lg font-sans leading-relaxed font-normal">
+              {taglineText.normal1}{' '}
+              <span className="text-[#dedf42] font-semibold">
+                {taglineText.highlight}
+              </span>{' '}
+              {taglineText.normal2}
             </p>
-          )}
+          </div>
 
-          {/* Main Headline — Centered */}
-          <h1 className="font-serif font-bold text-[#dedf42] text-7xl sm:text-8xl md:text-9xl lg:text-[130px] xl:text-[160px] leading-[0.98] tracking-[-0.03em] drop-shadow-[0_4px_30px_rgba(0,0,0,0.98)]">
-            {title.line1 && (
-              <span data-gsap="hero-title-line" className="block will-change-transform">
-                {title.line1}
-              </span>
-            )}
-            {title.line2 && (
-              <span data-gsap="hero-title-line" className="block will-change-transform">
-                {title.line2}
-              </span>
-            )}
-            {title.line3 && (
-              <span data-gsap="hero-title-line" className="block will-change-transform">
-                {title.line3}
-              </span>
-            )}
-          </h1>
-        </div>
-
-        {/* Bottom Bar: Tagline Left + Pills Right */}
-        <div data-gsap="hero-bottom" className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 w-full">
-          <p className="text-[9px] sm:text-[11px] md:text-xs lg:text-[13px] font-bold tracking-wider text-[#dedf42]/70 uppercase leading-[1.35] font-sans max-w-xs md:max-w-sm whitespace-pre-line drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-            {cardTagline}
-          </p>
-
-          <div className="flex items-center">
-            <Link
-              href={venueHref}
-              className="px-5 sm:px-6 py-2 sm:py-2.5 rounded-full border border-[#dedf42]/70 text-[10px] sm:text-xs md:text-sm font-bold tracking-wider text-[#dedf42] uppercase whitespace-nowrap bg-black/40 backdrop-blur-md hover:bg-[#dedf42] hover:text-[#050303] active:scale-95 transition-all flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-[#dedf42] shadow-lg drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] cursor-pointer"
+          {/* Bottom Row: Giant Title + Pill CTA Button + Secondary Action Link */}
+          {/* Bottom Row: Giant Title + Pill CTA Button Side-by-Side */}
+          <div
+            data-gsap="hero-bottom"
+            className="flex items-end gap-4 sm:gap-6 md:gap-8 flex-wrap"
+          >
+            <h1
+              data-gsap="hero-title"
+              className="font-sans font-extrabold text-white text-6xl sm:text-8xl md:text-9xl lg:text-[130px] xl:text-[150px] leading-none tracking-tight select-text"
             >
-              <span>{venue}</span>
-              <span className="transition-transform group-hover:translate-x-1 text-sm sm:text-base leading-none">&rarr;</span>
+              {brandTitle}
+              <span className="text-[#dedf42]">.</span>
+            </h1>
+
+            {/* Exact Studiova Pill Button right next to title */}
+            {/* Studiova-Style Interactive Pill Button linking to /panduan with dynamic hover effects */}
+            <Link
+              href={ctaHref}
+              className="mb-2 sm:mb-4 md:mb-5 lg:mb-6 group relative p-1.5 pl-5 sm:pl-6 bg-[#dedf42] hover:bg-[#e8ea4a] rounded-full transition-all duration-300 shadow-2xl hover:shadow-[0_10px_35px_rgba(222,223,66,0.4)] hover:scale-[1.03] active:scale-95 flex items-center gap-2.5 cursor-pointer shrink-0"
+            >
+              <span className="text-black font-sans font-bold text-xs sm:text-sm tracking-wider uppercase transition-transform duration-200 group-hover:translate-x-0.5">
+                {ctaText}
+              </span>
+              <span className="size-10 sm:size-11 rounded-full bg-black text-[#dedf42] group-hover:bg-white group-hover:text-black flex items-center justify-center shadow-md transition-all duration-300 group-hover:scale-110 group-hover:rotate-45">
+                <svg
+                  className="size-4 sm:size-4.5 transition-transform duration-300"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M7 17L17 7M17 7H7M17 7v10" />
+                </svg>
+              </span>
             </Link>
           </div>
         </div>

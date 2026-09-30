@@ -22,45 +22,41 @@ export default function GsapAnimations() {
       delay: 0.2,
     });
 
-    // Aksara Jawa subtitle blooms in with blur
+    // Hero tagline with spinning leaf blooms in
     heroTl.from(
-      '[data-gsap="hero-aksara"]',
+      '[data-gsap="hero-tagline"]',
       {
-        y: 35,
+        y: 40,
         opacity: 0,
-        filter: 'blur(10px)',
         duration: 1.1,
         ease: 'power3.out',
       },
       '-=0.7'
     );
 
-    // Main 3-line Headline — Cinematic Upward Fade & Tilt Entrance
+    // Main Title "Wayang Jawi." slides up boldly
     heroTl.from(
-      '[data-gsap="hero-title-line"]',
+      '[data-gsap="hero-title"]',
       {
-        y: 60,
+        y: 70,
         opacity: 0,
-        rotateX: -15,
         duration: 1.2,
-        stagger: 0.15,
         ease: 'power3.out',
       },
-      '-=0.8'
+      '-=0.7'
     );
 
-    // Bottom tagline + venue pills pop up
+    // Bottom action bar (CTA button & secondary link) pops up
     heroTl.from(
       '[data-gsap="hero-bottom"]',
       {
-        y: 45,
+        y: 35,
         opacity: 0,
-        duration: 1.0,
+        duration: 0.9,
         ease: 'power3.out',
       },
       '-=0.6'
     );
-
     // Hero background subtle parallax on scroll
     gsap.to('[data-gsap="hero-bg"]', {
       yPercent: 15,
