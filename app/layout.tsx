@@ -3,7 +3,6 @@ import { Cormorant_Garamond, Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import "./wayang.css";
 import SmoothScroll from "@/components/SmoothScroll";
-import ScrollReveal from "@/components/ScrollReveal";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-serif",
@@ -42,7 +41,6 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-[#0b0604] text-[#f4e7cd] antialiased">
         <SmoothScroll />
-        <ScrollReveal />
         {children}
       </body>
     </html>

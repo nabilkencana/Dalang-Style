@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import StrokeText from '@/components/StrokeText';
 
 export interface HeroWayangJawiProps {
   videoSrc?: string;
@@ -13,12 +14,10 @@ export interface HeroWayangJawiProps {
   brandTitle?: string;
   ctaText?: string;
   ctaHref?: string;
-  secondaryText?: string;
-  secondaryHref?: string;
 }
 
 export default function HeroWayangJawi({
-  videoSrc = '/videos/banner-video.mp4',
+  videoSrc = '/videos/hero-dalang-loop.mp4',
   taglineText = {
     normal1: 'Menghidupkan',
     highlight: 'seni wayang kulit',
@@ -30,21 +29,20 @@ export default function HeroWayangJawi({
 }: HeroWayangJawiProps) {
   return (
     <section className="relative w-full min-h-screen bg-black text-white overflow-hidden select-none flex flex-col justify-end">
-      {/* ── Background Looping Video (from Studiova template) ── */}
+      {/* ── Background Looping Video: Dalang Tradisional Memainkan Wayang ── */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none brightness-[0.7] contrast-[1.1]"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none brightness-[1.18] contrast-[1.05]"
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
 
-      {/* ── Cinematic Dark Gradient Overlays (Ensures text readability & deep atmospheric mood) ── */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none z-10" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent pointer-events-none z-10" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(0,0,0,0.92)_0%,rgba(0,0,0,0.35)_55%,transparent_100%)] pointer-events-none z-10" />
+      {/* ── Soft Vignette Overlays (Gentle contrast for bottom text while keeping the Dalang bright & clearly visible) ── */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent pointer-events-none z-10" />
 
       {/* ── Bottom Content Container (Exact Studiova Reference Structure) ── */}
       <div className="relative z-20 w-full px-6 sm:px-10 md:px-14 lg:px-16 xl:px-20 pb-10 sm:pb-14 md:pb-16 pt-32">
@@ -91,16 +89,26 @@ export default function HeroWayangJawi({
           {/* Bottom Row: Giant Title + Pill CTA Button Side-by-Side */}
           <div
             data-gsap="hero-bottom"
-            className="flex items-end gap-4 sm:gap-6 md:gap-8 flex-wrap"
+            className="flex items-end gap-2 sm:gap-3 md:gap-4 flex-wrap"
           >
-            <h1
-              data-gsap="hero-title"
-              className="font-sans font-extrabold text-white text-6xl sm:text-8xl md:text-9xl lg:text-[130px] xl:text-[150px] leading-none tracking-tight select-text"
-            >
-              {brandTitle}
-              <span className="text-[#dedf42]">.</span>
-            </h1>
-
+            <StrokeText
+              text={`${brandTitle}.`}
+              strokeColor="#dedf42"
+              fillColor="#ffffff"
+              strokeWidth={2}
+              drawDuration={2}
+              fillDelay={0.3}
+              stagger={0.06}
+              ease="power3.out"
+              trigger="mount"
+              fillMode="wipe"
+              fontSize={150}
+              fontWeight={800}
+              letterSpacing={-4}
+              hideStrokeOnFill
+              charColors={{ 6: '#dedf42' }}
+              className="max-w-[700px] drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]"
+            />
             {/* Exact Studiova Pill Button right next to title */}
             {/* Studiova-Style Interactive Pill Button linking to /panduan with dynamic hover effects */}
             <Link

@@ -1,75 +1,134 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-/**
- * ScrollReveal
- * Adds entrance animations to every section / card / heading on every page
- * using a single IntersectionObserver. Elements opt-in automatically by
- * element type; no data-attribute required in JSX.
- *
- * Animation classes are defined in globals.css under `[data-reveal]`.
- */
+import './ScrollReveal.css';
 
-const REVEAL_SELECTOR = [
-  // Section-level containers
-  'section',
-  // Article / news cards
-  'article',
-  // Generic cards that are direct children of grid/flex parents
-  '.group',
-  // Headings at every level
-  'h1:not([data-gsap])',
-  'h2:not([data-gsap])',
-  'h3:not([data-gsap])',
-  'h4:not([data-gsap])',
-  // Body paragraphs
-  'p:not([data-gsap])',
-  // Images (lazy-loaded, so good to reveal on intersection)
-  'figure',
-  // CTA links / buttons at the top level of a section
-  '.cta-reveal',
-].join(', ');
+gsap.registerPlugin(ScrollTrigger);
 
-// Skip elements already animated by GSAP (they have data-gsap attributes)
-function shouldSkip(el: Element): boolean {
-  if (el.hasAttribute('data-gsap')) return true;
-  if (el.closest('[data-gsap]')) return true;
-  // Skip elements inside the hero section to avoid double-animation
-  if (el.closest('section:first-of-type')) return true;
-  return false;
+interface ScrollRevealProps {
+  children: React.ReactNode;
+  scrollContainerRef?: React.RefObject<HTMLElement | null>;
+  enableBlur?: boolean;
+  baseOpacity?: number;
+  baseRotation?: number;
+  blurStrength?: number;
+  containerClassName?: string;
+  textClassName?: string;
+  rotationEnd?: string;
+  wordAnimationEnd?: string;
 }
 
-export default function ScrollReveal() {
-  useEffect(() => {
-    const els = Array.from(document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR))
-      .filter((el) => !shouldSkip(el));
+export default function ScrollReveal({
+  children,
+  scrollContainerRef,
+  enableBlur = true,
+  baseOpacity = 0.1,
+  baseRotation = 3,
+  blurStrength = 4,
+  containerClassName = '',
+  textClassName = '',
+  rotationEnd = 'bottom bottom',
+  wordAnimationEnd = 'bottom bottom',
+}: ScrollRevealProps) {
+  const containerRef = useRef<HTMLHeadingElement>(null);
 
-    // Mark elements before observer fires so they start invisible
-    els.forEach((el) => {
-      el.dataset.reveal = 'pending';
+  const splitText = useMemo(() => {
+    const text = typeof children === 'string' ? children : '';
+    return text.split(/(\s+)/).map((word, index) => {
+      if (word.match(/^\s+$/)) return word;
+      return (
+        <span className="word" key={index}>
+          {word}
+        </span>
+      );
     });
+  }, [children]);
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const el = entry.target as HTMLElement;
-            el.dataset.reveal = 'visible';
-            io.unobserve(el); // fire once
-          }
-        });
-      },
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const scroller =
+      scrollContainerRef?.current ? scrollContainerRef.current : undefined;
+
+    const triggers: ScrollTrigger[] = [];
+
+    const rotAnim = gsap.fromTo(
+      el,
+      { transformOrigin: '0% 50%', rotate: baseRotation },
       {
-        threshold: 0.08,
-        rootMargin: '0px 0px -40px 0px',
-      }
+        ease: 'none',
+        rotate: 0,
+        scrollTrigger: {
+          trigger: el,
+          scroller,
+          start: 'top bottom',
+          end: rotationEnd,
+          scrub: true,
+        },
+      },
     );
+    if (rotAnim.scrollTrigger) triggers.push(rotAnim.scrollTrigger);
 
-    els.forEach((el) => io.observe(el));
+    const wordElements = el.querySelectorAll('.word');
 
-    return () => io.disconnect();
-  }, []);
+    const opAnim = gsap.fromTo(
+      wordElements,
+      { opacity: baseOpacity, willChange: 'opacity' },
+      {
+        ease: 'none',
+        opacity: 1,
+        stagger: 0.05,
+        scrollTrigger: {
+          trigger: el,
+          scroller,
+          start: 'top bottom-=20%',
+          end: wordAnimationEnd,
+          scrub: true,
+        },
+      },
+    );
+    if (opAnim.scrollTrigger) triggers.push(opAnim.scrollTrigger);
 
-  return null;
+    if (enableBlur) {
+      const blurAnim = gsap.fromTo(
+        wordElements,
+        { filter: `blur(${blurStrength}px)` },
+        {
+          ease: 'none',
+          filter: 'blur(0px)',
+          stagger: 0.05,
+          scrollTrigger: {
+            trigger: el,
+            scroller,
+            start: 'top bottom-=20%',
+            end: wordAnimationEnd,
+            scrub: true,
+          },
+        },
+      );
+      if (blurAnim.scrollTrigger) triggers.push(blurAnim.scrollTrigger);
+    }
+
+    return () => {
+      triggers.forEach((t) => t.kill());
+    };
+  }, [
+    scrollContainerRef,
+    enableBlur,
+    baseRotation,
+    baseOpacity,
+    rotationEnd,
+    wordAnimationEnd,
+    blurStrength,
+  ]);
+
+  return (
+    <h2 ref={containerRef} className={`scroll-reveal ${containerClassName}`}>
+      <p className={`scroll-reveal-text ${textClassName}`}>{splitText}</p>
+    </h2>
+  );
 }

@@ -2,12 +2,12 @@
 
 import React from 'react';
 import Image from 'next/image';
-
+import ScrollReveal from '@/components/ScrollReveal';
 export interface StoryShadowsSectionProps {
   id?: string;
   tagline?: string[];
   pillText?: string;
-  headline?: string[];
+  headline?: string;
   photoSrc?: string;
   photoAlt?: string;
   poeticLines?: Array<string[]>;
@@ -15,20 +15,14 @@ export interface StoryShadowsSectionProps {
 
 export default function StoryShadowsSection({
   id = 'fitur',
-  tagline = ['MALAM SAAT', 'BAYANGAN BERBICARA'],
-  pillText = '21 JUNI',
-  headline = [
-    'Jauh sebelum layar menerangi hidup kita, kisah-kisah',
-    'dikisahkan melalui bayangan yang menari di atas kain putih.',
-    'Tangan, cahaya, dan figur kulit yang diukir menjadi',
-    'pahlawan, dewa, dan legenda.',
-  ],
+  tagline = ['KETIKA KELIR', 'BERTUTUR KATA'],
+  headline = 'Jauh sebelum cahaya layar mengisi peradaban, leluhur bertutur lewat tarian siluet di selembar kelir. Tangan sang dalang, percik blencong, dan tatahan kulit menjelma cermin jagad ksatria, dewa, dan sukma manusia.',
   photoSrc = '/images/dalang-story-photo.png',
   photoAlt = 'Dalang memainkan Wayang Kulit di balik layar kelir yang bercahaya',
   poeticLines = [
-    ['GEMA IRAMA GAMELAN', 'MEMENUHI UDARA.'],
-    ['KERLIP LAMPU MINYAK', 'MEMANCARKAN SILUET YANG MEMUKAU.'],
-    ['SANG DALANG MEMULAI.'],
+    ['TABUHAN SLENDRO BERDENGUNG,', 'MENYAPA HENING MALAM.'],
+    ['API BLENCONG MENYALA,', 'MENETAS BAYANG DARI GELAP.'],
+    ['KAYON BERGERAK,', 'JAGAD PAKELIRAN DIBUKA.'],
   ],
 }: StoryShadowsSectionProps) {
   return (
@@ -59,35 +53,22 @@ export default function StoryShadowsSection({
           </p>
         </div>
 
-        {/* 2. BOTTOM-LEFT PILL BADGE: "JUN 21TH" */}
+        {/* 3. CENTER-LEFT MAIN HEADLINE with ScrollReveal word-by-word animation */}
         <div
-          data-gsap="story-pill"
-          className="absolute left-[3%] sm:left-[2.5%] bottom-[9.93%] z-10 pointer-events-auto"
-          style={{
-            width: 'clamp(52px, 9.16cqi, 124px)',
-            height: 'clamp(18px, 2.81cqi, 38px)',
-          }}
+          className="absolute left-[20%] top-[13.95%] z-10 pointer-events-auto"
+          style={{ width: '76%' }}
         >
-          <div className="w-full h-full rounded-full border border-[#dedf42] flex items-center justify-center bg-black/40 hover:bg-[#dedf42] hover:text-black transition-all cursor-pointer group shadow-sm px-1">
-            <span className="font-sans font-bold text-[#dedf42] group-hover:text-black text-[clamp(6px,0.96cqi,13px)] tracking-wider uppercase whitespace-nowrap transition-colors">
-              {pillText}
-            </span>
-          </div>
-        </div>
-
-        {/* 3. CENTER-LEFT MAIN HEADLINE */}
-        <div
-          data-gsap="story-headline"
-          className="absolute left-[26.00%] top-[13.95%] z-10 pointer-events-auto"
-          style={{ width: '58.49%' }}
-        >
-          <h2 className="font-playfair text-[#dedf42] text-[clamp(8px,3.18cqi,43px)] font-normal leading-[1.22] tracking-[-0.015em] select-text">
-            {headline.map((line, idx) => (
-              <span key={idx} data-gsap="story-headline-line" className="block whitespace-nowrap will-change-transform">
-                {line}
-              </span>
-            ))}
-          </h2>
+          <ScrollReveal
+            baseOpacity={0.03}
+            enableBlur={true}
+            baseRotation={0}
+            blurStrength={10}
+            rotationEnd="bottom center"
+            wordAnimationEnd="bottom center"
+            textClassName="font-playfair text-[#dedf42] text-[clamp(8px,3.18cqi,43px)] font-normal leading-[1.22] tracking-[-0.015em] select-text"
+          >
+            {headline}
+          </ScrollReveal>
         </div>
 
         {/* 4. CENTER DALANG PERFORMANCE PHOTO */}
@@ -108,9 +89,9 @@ export default function StoryShadowsSection({
         {/* 5. BOTTOM-RIGHT POETIC STANZAS */}
         <div
           className="absolute right-[3%] sm:right-[2.5%] bottom-[10.40%] z-10 pointer-events-auto text-left"
-          style={{ width: 'clamp(68px, 16.91cqi, 229px)' }}
+          style={{ width: 'clamp(100px, 22cqi, 300px)' }}
         >
-          <div className="font-sans font-bold text-[#dedf42] text-[clamp(5.5px,1.00cqi,13.5px)] uppercase tracking-wider leading-[1.38] space-y-[clamp(4px,1.6cqi,22px)] select-text">
+          <div className="font-sans font-semibold text-[#dedf42] text-[clamp(7px,1.15cqi,14px)] uppercase tracking-wider leading-[1.48] space-y-[clamp(6px,2cqi,24px)] select-text">
             {poeticLines.map((stanza, sIdx) => (
               <p key={sIdx} data-gsap="story-stanza">
                 {stanza.map((line, lIdx) => (

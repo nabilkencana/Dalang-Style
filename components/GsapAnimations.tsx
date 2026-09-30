@@ -34,17 +34,6 @@ export default function GsapAnimations() {
       '-=0.7'
     );
 
-    // Main Title "Wayang Jawi." slides up boldly
-    heroTl.from(
-      '[data-gsap="hero-title"]',
-      {
-        y: 70,
-        opacity: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-      },
-      '-=0.7'
-    );
 
     // Bottom action bar (CTA button & secondary link) pops up
     heroTl.from(
@@ -100,32 +89,6 @@ export default function GsapAnimations() {
       },
     });
 
-    // Bottom-left date pill pop
-    gsap.from('[data-gsap="story-pill"]', {
-      scale: 0,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'back.out(2)',
-      scrollTrigger: {
-        trigger: '#fitur',
-        start: 'top 75%',
-        toggleActions: 'play none none reverse',
-      },
-    });
-
-    // Center-left 4-line Headline — Smooth Upward Reveal
-    gsap.from('[data-gsap="story-headline-line"]', {
-      y: 40,
-      opacity: 0,
-      duration: 1.0,
-      ease: 'power3.out',
-      stagger: 0.12,
-      scrollTrigger: {
-        trigger: '#fitur',
-        start: 'top 70%',
-        toggleActions: 'play none none reverse',
-      },
-    });
 
     // Center Dalang Photo — Smooth Appear (fade + subtle float up)
     gsap.from('[data-gsap="story-photo"]', {
