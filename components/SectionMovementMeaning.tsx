@@ -87,24 +87,10 @@ export default function SectionMovementMeaning({
           {/* CENTER CONTENT LAYER */}
           <div data-gsap="meaning-content" className="relative z-20 w-full max-w-[780px] px-6 py-12 md:py-0 flex flex-col items-center text-center pointer-events-auto">
             {/* Interactive Number Pill Selector: ( 1 ) ( 2 ) ( 3 ) */}
-            <div className="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8 md:mb-10">
-              {slides.map((s, idx) => {
-                const isActive = idx === activeIndex;
-                return (
-                  <button
-                    key={s.number}
-                    onClick={() => setActiveIndex(idx)}
-                    className={`px-4 sm:px-5 py-1 sm:py-1.5 rounded-full border text-[11px] sm:text-xs md:text-sm font-sans font-bold transition-all duration-300 cursor-pointer ${
-                      isActive
-                        ? 'border-[#dedf42] bg-[#dedf42] text-black scale-105 shadow-[0_0_20px_rgba(222,223,66,0.4)]'
-                        : 'border-[#dedf42]/50 text-[#dedf42]/70 hover:border-[#dedf42] hover:text-[#dedf42] bg-black/40'
-                    }`}
-                    title={`Slide ${s.number}`}
-                  >
-                    <span>{s.number}</span>
-                  </button>
-                );
-              })}
+            <div className="mb-6 sm:mb-8 md:mb-10">
+              <span className="px-4 sm:px-5 py-1 sm:py-1.5 rounded-full border border-[#dedf42] bg-[#dedf42] text-black font-sans font-bold text-[11px] sm:text-xs md:text-sm tracking-wider select-none">
+                {currentSlide.number}
+              </span>
             </div>
 
             {/* Headline with Smooth Cross-Fade Animation */}
@@ -127,21 +113,6 @@ export default function SectionMovementMeaning({
               </p>
             </div>
 
-            {/* Interactive Progress Indicator Dots */}
-            <div className="flex items-center gap-2 mt-8 sm:mt-10">
-              {slides.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveIndex(idx)}
-                  className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
-                    idx === activeIndex
-                      ? 'w-8 bg-[#dedf42]'
-                      : 'w-2 bg-[#dedf42]/30 hover:bg-[#dedf42]/60'
-                  }`}
-                  aria-label={`Go to slide ${idx + 1}`}
-                />
-              ))}
-            </div>
           </div>
         </div>
     </section>

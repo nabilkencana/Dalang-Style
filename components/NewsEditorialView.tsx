@@ -66,12 +66,6 @@ export default function NewsEditorialView() {
           ))}
           <span className="font-serif italic text-[#dedf42] text-xs ml-2 hidden sm:inline">Warta</span>
         </div>
-        <Link
-          href="/stage"
-          className="px-3 py-1.5 rounded-sm bg-[#b91c1c] hover:bg-red-700 text-white font-bold text-[10px] sm:text-xs uppercase tracking-wider transition-all shadow-sm"
-        >
-          Panggung Digital
-        </Link>
       </div>
 
       {/* 3. Main Editorial Content Container */}
@@ -106,12 +100,6 @@ export default function NewsEditorialView() {
 
           {/* Right: Breaking Story Headline & Excerpt */}
           <div className="lg:col-span-5 flex flex-col justify-center space-y-4">
-            <div className="inline-flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#b91c1c] animate-pulse" />
-              <span className="text-[10px] font-sans font-bold tracking-[0.25em] text-[#dedf42] uppercase">
-                {HERO_STORY.category}
-              </span>
-            </div>
 
             <h1 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-normal text-white leading-[1.1] tracking-tight">
               {HERO_STORY.title}
@@ -146,7 +134,7 @@ export default function NewsEditorialView() {
           <div className="flex items-center justify-between">
             <div className="relative">
               <h2 className="font-sans font-black text-2xl sm:text-3xl text-white tracking-tight uppercase">
-                Full <span className="text-[#dedf42]">Story</span>
+                Berita <span className="text-[#dedf42]">Lengkap</span>
               </h2>
               <div className="h-0.5 w-16 bg-[#dedf42] mt-1" />
             </div>
@@ -358,7 +346,7 @@ export default function NewsEditorialView() {
           {/* Section Header */}
           <div className="relative">
             <h2 className="font-sans font-black text-2xl sm:text-3xl text-white tracking-tight uppercase">
-              Most <span className="text-[#dedf42]">Watched</span>
+              Paling <span className="text-[#dedf42]">Ditonton</span>
             </h2>
             <div className="h-0.5 w-16 bg-[#dedf42] mt-1" />
           </div>
@@ -418,7 +406,7 @@ export default function NewsEditorialView() {
           <div className="flex items-center justify-between">
             <div className="relative">
               <h2 className="font-sans font-black text-2xl sm:text-3xl text-white tracking-tight uppercase">
-                Most <span className="text-[#dedf42]">See</span>
+                Paling <span className="text-[#dedf42]">Dilihat</span>
               </h2>
               <div className="h-0.5 w-16 bg-[#dedf42] mt-1" />
             </div>
@@ -503,92 +491,6 @@ export default function NewsEditorialView() {
                 </a>
               ))}
             </div>
-          </div>
-        </section>
-        {/* ========================================================================= */}
-        {/* SECTION 6: FIND US HERE & NEWSLETTER (Matching Reference Bottom Layout) */}
-        {/* ========================================================================= */}
-        <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center border-b border-[#dedf42]/20 pb-12">
-          {/* Left: Find us here */}
-          <div className="md:col-span-4 space-y-4">
-            <h3 className="font-sans font-black text-xl text-white uppercase tracking-tight">
-              Find <span className="text-[#dedf42]">us here</span>
-            </h3>
-            <div className="flex items-center gap-4 text-lg">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center hover:bg-[#dedf42] hover:text-black transition-all"
-                aria-label="Facebook"
-              >
-                f
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center hover:bg-[#dedf42] hover:text-black transition-all"
-                aria-label="Instagram"
-              >
-                ig
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center hover:bg-[#dedf42] hover:text-black transition-all"
-                aria-label="Twitter"
-              >
-                𝕏
-              </a>
-            </div>
-          </div>
-
-          {/* Middle: News Daily Newsletter Subscription */}
-          <div className="md:col-span-4 space-y-3">
-            <h4 className="font-sans font-bold text-sm text-white uppercase tracking-wider">
-              Nawala Warta Budaya
-            </h4>
-            <p className="text-xs text-[#f4e7cd]/70 leading-relaxed font-sans">
-              Dapatkan liputan seni pewayangan terbaru langsung di surel Anda setiap minggu.
-            </p>
-            {subscribed ? (
-              <p className="text-xs text-[#dedf42] font-bold">
-                ✓ Terima kasih! Anda telah terdaftar.
-              </p>
-            ) : (
-              <form onSubmit={handleSubscribe} className="flex items-center gap-2">
-                <input
-                  type="email"
-                  required
-                  value={emailInput}
-                  onChange={(e) => setEmailInput(e.target.value)}
-                  placeholder="Ketik surel Anda..."
-                  className="flex-1 px-3 py-2 rounded bg-white/10 border border-white/20 text-xs text-white placeholder-white/40 focus:outline-none focus:border-[#dedf42]"
-                />
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded bg-[#dedf42] text-black font-bold text-xs uppercase hover:bg-white transition-all cursor-pointer"
-                >
-                  Kirim
-                </button>
-              </form>
-            )}
-          </div>
-
-          {/* Right: Contact & Editorial Email */}
-          <div className="md:col-span-4 space-y-2 text-xs text-[#f4e7cd]/70 md:text-right font-sans">
-            <p>
-              Hubungi redaksi di{' '}
-              <a href="mailto:redaksi@wayangjawi.id" className="text-[#dedf42] font-bold hover:underline">
-                redaksi@wayangjawi.id
-              </a>
-            </p>
-            <p>Layanan Pembaca / SMS: +62 812-WAYANG-ID</p>
-            <p className="text-[10px] text-[#f4e7cd]/50">
-              Wayang Jawi • Dikelola demi pelestarian seni budaya adiluhung Nusantara.
-            </p>
           </div>
         </section>
       </main>

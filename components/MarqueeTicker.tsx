@@ -28,7 +28,7 @@ export default function MarqueeTicker({
   variant = 'tape',
   size = 'xl',
   className = '',
-  scrollRange = 2000,
+  scrollRange = 900,
 }: MarqueeTickerProps) {
   const sequence = [...items, ...items, ...items, ...items];
   const containerRef = useRef<HTMLDivElement>(null);
@@ -56,9 +56,9 @@ export default function MarqueeTicker({
         const progress = Math.max(0, Math.min(1, traveled / total));
 
         // Start from right side of viewport, move left as user scrolls
-        const startOffset = window.innerWidth;
+        // Start slightly off-screen right, move left slowly with scroll
+        const startOffset = window.innerWidth * 0.25;
         const x = startOffset - progress * (startOffset + scrollRange);
-        setTranslateX(x);
         ticking = false;
       });
     }
