@@ -46,116 +46,33 @@ export default function NewsEditorialView() {
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(222,223,66,0.06)_0%,_rgba(11,6,4,0.7)_50%,_#050303_100%)] pointer-events-none z-0" />
       <div className="fixed inset-0 bg-repeat opacity-[0.025] pointer-events-none z-0 bg-[radial-gradient(#dedf42_1px,transparent_1px)] [background-size:24px_24px]" />
 
-      {/* 2. Top Editorial Masthead (Referencing C I B I R Red Block Header) */}
-      <header className="relative z-30 w-full border-b border-[#dedf42]/20 bg-black/80 backdrop-blur-md">
-        {/* Top Utility Row */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4 border-b border-[#dedf42]/10 text-[11px] sm:text-xs">
-          {/* Logo Block: W A Y A N G (Red square boxes matching CIBIR reference) */}
-          <div className="flex items-center gap-1 shrink-0">
-            {['W', 'A', 'Y', 'A', 'N', 'G'].map((letter, i) => (
-              <span
-                key={i}
-                className="w-6 h-6 sm:w-7 sm:h-7 bg-[#b91c1c] text-white font-bold flex items-center justify-center rounded-xs text-xs sm:text-sm tracking-wider shadow-sm font-sans"
-              >
-                {letter}
-              </span>
-            ))}
-            <span className="font-serif italic text-[#dedf42] text-xs sm:text-sm ml-2 hidden sm:inline">
-              Warta & Jurnal Budaya
-            </span>
-          </div>
-
-          {/* Center Links */}
-          <nav className="hidden md:flex items-center gap-5 font-sans font-bold text-xs tracking-wider uppercase text-[#f4e7cd]/80">
-            <Link href="/" className="hover:text-[#dedf42] transition-colors">
-              Beranda
-            </Link>
-            <Link href="/berita" className="text-[#dedf42] underline underline-offset-4">
-              Warta
-            </Link>
-            <Link href="/stage" className="hover:text-[#dedf42] transition-colors">
-              Pentas
-            </Link>
-            <Link href="/katalog" className="hover:text-[#dedf42] transition-colors">
-              Katalog
-            </Link>
-            <Link href="/#makna" className="hover:text-[#dedf42] transition-colors">
-              Filosofi
-            </Link>
-          </nav>
-
-          {/* Right Action */}
-          <div className="flex items-center gap-3">
-            <Link
-              href="/#cara-bermain"
-              className="text-xs font-sans font-bold text-[#dedf42] hover:underline uppercase flex items-center gap-1"
+      {/* Minimal floating back bar */}
+      <div className="sticky top-0 z-30 w-full bg-black/85 backdrop-blur-md border-b border-[#dedf42]/15 px-4 sm:px-8 py-3 flex items-center justify-between">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-[#f4e7cd]/70 hover:text-[#dedf42] transition-colors text-xs font-bold uppercase tracking-wider font-sans group"
+        >
+          <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
+          <span>Beranda</span>
+        </Link>
+        <div className="flex items-center gap-1">
+          {['W', 'A', 'Y', 'A', 'N', 'G'].map((letter, i) => (
+            <span
+              key={i}
+              className="w-5 h-5 sm:w-6 sm:h-6 bg-[#b91c1c] text-white font-bold flex items-center justify-center rounded-xs text-[10px] sm:text-xs tracking-wider font-sans"
             >
-              <span>← Beranda</span>
-            </Link>
-            <Link
-              href="/stage"
-              className="px-4 py-1.5 rounded-sm bg-[#b91c1c] hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-sm"
-            >
-              Panggung Digital
-            </Link>
-          </div>
-        </div>
-
-        {/* Hot News Header Row (Matching Reference) */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            {/* HOT NEWS Badge with Yellow Highlight Line */}
-            <div className="relative shrink-0">
-              <span className="font-sans font-black text-xl sm:text-2xl text-white tracking-tight uppercase">
-                HOT <span className="text-[#dedf42]">NEWS</span>
-              </span>
-              <div className="h-0.5 w-full bg-[#dedf42] mt-0.5" />
-            </div>
-
-            {/* Date & Edition */}
-            <div className="border-l border-white/20 pl-3 text-[11px] sm:text-xs text-[#f4e7cd]/70 flex flex-col">
-              <span className="font-bold text-white">Kamis, 24 Mei 2026</span>
-              <span className="text-[10px] text-[#dedf42]">Edisi Hari Ini • Hari Wayang Sedunia</span>
-            </div>
-          </div>
-
-          {/* Weather & Market Ticker on Right */}
-          <div className="flex items-center gap-4 text-xs text-[#f4e7cd]/80 font-sans self-end md:self-auto">
-            <span className="flex items-center gap-1.5">
-              <span>🌤</span>
-              <span className="font-bold text-white">28°C</span>
-              <span className="text-[10px] text-[#f4e7cd]/60">Surakarta / Yogyakarta</span>
+              {letter}
             </span>
-            <span className="border-l border-white/20 pl-3 font-mono text-[11px]">
-              <span className="text-[#dedf42]">UNESCO ICH</span>{' '}
-              <span className="text-emerald-400 font-bold">▲ Inscribed</span>
-            </span>
-          </div>
+          ))}
+          <span className="font-serif italic text-[#dedf42] text-xs ml-2 hidden sm:inline">Warta</span>
         </div>
-
-        {/* Category Horizontal Scrolling Navigation Bar */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#dedf42]/15 py-2 overflow-x-auto scrollbar-none">
-          <div className="flex items-center gap-4 sm:gap-6 whitespace-nowrap text-xs font-sans tracking-wide">
-            {SUB_NAV_CATEGORIES.map((cat) => {
-              const isActive = activeCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setActiveCategory(cat)}
-                  className={`py-1 transition-all cursor-pointer ${
-                    isActive
-                      ? 'text-[#dedf42] font-bold border-b-2 border-[#dedf42]'
-                      : 'text-[#f4e7cd]/70 hover:text-white'
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </header>
+        <Link
+          href="/stage"
+          className="px-3 py-1.5 rounded-sm bg-[#b91c1c] hover:bg-red-700 text-white font-bold text-[10px] sm:text-xs uppercase tracking-wider transition-all shadow-sm"
+        >
+          Panggung Digital
+        </Link>
+      </div>
 
       {/* 3. Main Editorial Content Container */}
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16">
@@ -163,8 +80,13 @@ export default function NewsEditorialView() {
         {/* SECTION 1: HERO BREAKING STORY (Queen's Life Reference Layout) */}
         {/* ========================================================================= */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-b border-[#dedf42]/20 pb-12">
-          {/* Left: Big Feature Image */}
-          <div className="lg:col-span-7 relative aspect-[16/10] rounded-xl overflow-hidden border border-[#dedf42]/30 bg-black group shadow-xl">
+          {/* Left: Big Feature Image (Clickable Link to Official Article) */}
+          <a
+            href={HERO_STORY.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="lg:col-span-7 relative aspect-[16/10] rounded-xl overflow-hidden border border-[#dedf42]/30 bg-black group shadow-xl block cursor-pointer"
+          >
             <Image
               src={HERO_STORY.image}
               alt={HERO_STORY.title}
@@ -180,7 +102,7 @@ export default function NewsEditorialView() {
               <p className="font-bold text-white text-xs">{HERO_STORY.author}</p>
               <p className="text-[10px] text-[#dedf42]">{HERO_STORY.sourceName} • {HERO_STORY.date}</p>
             </div>
-          </div>
+          </a>
 
           {/* Right: Breaking Story Headline & Excerpt */}
           <div className="lg:col-span-5 flex flex-col justify-center space-y-4">
@@ -236,8 +158,13 @@ export default function NewsEditorialView() {
             </Link>
           </div>
 
-          {/* Full Story Main Card (Text on Left, Photo on Right) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#120d08] p-6 sm:p-8 rounded-xl border border-[#dedf42]/25">
+          {/* Full Story Main Card (Clickable to Official Article) */}
+          <a
+            href={FULL_STORY_MAIN.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#120d08] p-6 sm:p-8 rounded-xl border border-[#dedf42]/25 group hover:border-[#dedf42] transition-all cursor-pointer block"
+          >
             <div className="lg:col-span-7 space-y-3">
               <div className="flex items-center gap-3 text-xs text-[#f4e7cd]/60">
                 <span className="font-bold text-[#dedf42]">{FULL_STORY_MAIN.author}</span>
@@ -249,7 +176,7 @@ export default function NewsEditorialView() {
                 </span>
               </div>
 
-              <h3 className="font-playfair text-2xl sm:text-3xl lg:text-4xl text-white font-normal leading-tight">
+              <h3 className="font-playfair text-2xl sm:text-3xl lg:text-4xl text-white group-hover:text-[#dedf42] transition-colors font-normal leading-tight">
                 {FULL_STORY_MAIN.title}
               </h3>
 
@@ -258,15 +185,10 @@ export default function NewsEditorialView() {
               </p>
 
               <div className="pt-2">
-                <a
-                  href={FULL_STORY_MAIN.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-sans font-bold text-[#dedf42] uppercase tracking-wider hover:underline inline-flex items-center gap-1.5"
-                >
-                  <span>Baca Selengkapnya</span>
+                <span className="text-xs font-sans font-bold text-[#dedf42] uppercase tracking-wider group-hover:underline inline-flex items-center gap-1.5">
+                  <span>Buka Berita Resmi</span>
                   <span>↗</span>
-                </a>
+                </span>
               </div>
             </div>
 
@@ -276,10 +198,10 @@ export default function NewsEditorialView() {
                 alt={FULL_STORY_MAIN.title}
                 fill
                 sizes="(max-width: 1024px) 100vw, 500px"
-                className="object-cover object-center"
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
               />
             </div>
-          </div>
+          </a>
 
           {/* 3-Column Sub-Cards Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
@@ -346,21 +268,25 @@ export default function NewsEditorialView() {
                 </h2>
               </div>
 
-              {/* Large Spotlight Image */}
-              <div className="relative aspect-[16/9] rounded-xl overflow-hidden border border-[#dedf42]/30 bg-black shadow-xl">
+              {/* Large Spotlight Image with Link */}
+              <a
+                href={SPOTLIGHT_MAIN.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative aspect-[16/9] rounded-xl overflow-hidden border border-[#dedf42]/30 bg-black shadow-xl block group cursor-pointer"
+              >
                 <Image
                   src={SPOTLIGHT_MAIN.image}
                   alt={SPOTLIGHT_MAIN.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 800px"
-                  className="object-cover object-center"
+                  className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 ease-out"
                 />
                 <div className="absolute bottom-4 left-4 p-3 rounded bg-black/85 backdrop-blur-md border border-white/10 text-xs text-[#f4e7cd]/80">
                   <p className="font-bold text-white">{SPOTLIGHT_MAIN.author}</p>
-                  <p className="text-[10px] text-[#dedf42]">{SPOTLIGHT_MAIN.date}</p>
+                  <p className="text-[10px] text-[#dedf42]">{SPOTLIGHT_MAIN.sourceName} • {SPOTLIGHT_MAIN.date}</p>
                 </div>
-              </div>
-
+              </a>
               {/* Spotlight Text Excerpt */}
               <div className="space-y-3 text-xs sm:text-sm text-[#f4e7cd]/85 font-sans leading-relaxed">
                 <p>
@@ -392,10 +318,12 @@ export default function NewsEditorialView() {
 
               <div className="space-y-4">
                 {SPOTLIGHT_SIDE_ITEMS.map((item) => (
-                  <Link
+                  <a
                     key={item.id}
-                    href={item.sourceUrl || '/katalog'}
-                    className="group flex items-start gap-4 p-3 rounded-lg border border-[#dedf42]/10 bg-[#0a0a0a] hover:border-[#dedf42]/40 transition-all"
+                    href={item.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-start gap-4 p-3 rounded-lg border border-[#dedf42]/10 bg-[#0a0a0a] hover:border-[#dedf42]/40 transition-all cursor-pointer block"
                   >
                     <div className="relative w-24 h-20 rounded overflow-hidden shrink-0 bg-black">
                       <Image
@@ -416,7 +344,7 @@ export default function NewsEditorialView() {
                       </h4>
                       <p className="text-[10px] text-[#f4e7cd]/50">{item.date}</p>
                     </div>
-                  </Link>
+                  </a>
                 ))}
               </div>
             </div>
@@ -438,9 +366,12 @@ export default function NewsEditorialView() {
           {/* 3 Video Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {MOST_WATCHED_STORIES.map((item) => (
-              <div
+              <a
                 key={item.id}
-                className="group flex flex-col space-y-3 bg-[#0a0a0a] p-4 rounded-xl border border-[#dedf42]/15 hover:border-[#dedf42] transition-all"
+                href={item.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col space-y-3 bg-[#0a0a0a] p-4 rounded-xl border border-[#dedf42]/15 hover:border-[#dedf42] transition-all cursor-pointer block"
               >
                 {/* Thumbnail with Play Icon Badge */}
                 <div className="relative aspect-[16/10] rounded-lg overflow-hidden bg-black">
@@ -462,7 +393,7 @@ export default function NewsEditorialView() {
                 </div>
 
                 <div className="flex items-center gap-2 text-[10px] text-[#f4e7cd]/60">
-                  <span className="font-bold text-[#dedf42]">{item.author}</span>
+                  <span className="font-bold text-[#dedf42]">{item.sourceName}</span>
                   <span>•</span>
                   <span>{item.date}</span>
                 </div>
@@ -474,7 +405,7 @@ export default function NewsEditorialView() {
                 <p className="text-xs text-[#f4e7cd]/70 font-sans leading-relaxed line-clamp-2">
                   {item.excerpt}
                 </p>
-              </div>
+              </a>
             ))}
           </div>
         </section>
@@ -502,14 +433,19 @@ export default function NewsEditorialView() {
           {/* Grid Layout: Left Big Feature + Right 4-Grid Cards */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left Big Feature Card */}
-            <div className="lg:col-span-5 space-y-4 bg-[#120d08] p-6 rounded-xl border border-[#dedf42]/25">
+            <a
+              href={MOST_READ_FEATURE.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lg:col-span-5 space-y-4 bg-[#120d08] p-6 rounded-xl border border-[#dedf42]/25 group hover:border-[#dedf42] transition-all cursor-pointer block"
+            >
               <div className="relative aspect-[16/11] rounded-lg overflow-hidden border border-[#dedf42]/20 bg-black">
                 <Image
                   src={MOST_READ_FEATURE.image}
                   alt={MOST_READ_FEATURE.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 500px"
-                  className="object-cover object-center"
+                  className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
 
@@ -519,7 +455,7 @@ export default function NewsEditorialView() {
                 <span>{MOST_READ_FEATURE.date}</span>
               </div>
 
-              <h3 className="font-playfair text-2xl text-white font-normal leading-tight">
+              <h3 className="font-playfair text-2xl text-white group-hover:text-[#dedf42] transition-colors font-normal leading-tight">
                 {MOST_READ_FEATURE.title}
               </h3>
 
@@ -527,22 +463,21 @@ export default function NewsEditorialView() {
                 {MOST_READ_FEATURE.excerpt}
               </p>
 
-              <Link
-                href="/katalog"
-                className="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-[#dedf42] uppercase tracking-wider hover:underline pt-1"
-              >
-                <span>Pelajari Watak Tokoh</span>
-                <span>→</span>
-              </Link>
-            </div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-[#dedf42] uppercase tracking-wider group-hover:underline pt-1">
+                <span>Buka Artikel Resmi</span>
+                <span>↗</span>
+              </span>
+            </a>
 
             {/* Right 4-Grid Cards (2x2) */}
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {MOST_READ_GRID.map((item) => (
-                <Link
+                <a
                   key={item.id}
-                  href={item.sourceUrl || '/katalog'}
-                  className="group flex flex-col p-4 rounded-xl border border-[#dedf42]/15 bg-[#0a0a0a] hover:border-[#dedf42] transition-all space-y-2.5"
+                  href={item.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex flex-col p-4 rounded-xl border border-[#dedf42]/15 bg-[#0a0a0a] hover:border-[#dedf42] transition-all space-y-2.5 cursor-pointer block"
                 >
                   <div className="relative aspect-[16/10] rounded-lg overflow-hidden bg-black">
                     <Image
@@ -565,12 +500,11 @@ export default function NewsEditorialView() {
                   <p className="text-[11px] text-[#f4e7cd]/65 line-clamp-2 font-sans">
                     {item.excerpt}
                   </p>
-                </Link>
+                </a>
               ))}
             </div>
           </div>
         </section>
-
         {/* ========================================================================= */}
         {/* SECTION 6: FIND US HERE & NEWSLETTER (Matching Reference Bottom Layout) */}
         {/* ========================================================================= */}
@@ -659,50 +593,6 @@ export default function NewsEditorialView() {
         </section>
       </main>
 
-      {/* 4. Bottom Footer Bar (Matching Reference CIBIR Footer) */}
-      <footer className="relative z-20 w-full bg-black border-t border-[#dedf42]/20 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Red Block Logo in Footer */}
-            <div className="flex items-center gap-1">
-              {['W', 'A', 'Y', 'A', 'N', 'G'].map((letter, i) => (
-                <span
-                  key={i}
-                  className="w-6 h-6 bg-[#b91c1c] text-white font-bold flex items-center justify-center rounded-xs text-xs"
-                >
-                  {letter}
-                </span>
-              ))}
-            </div>
-
-            {/* Quick Links */}
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-[#f4e7cd]/70 font-sans">
-              <Link href="/" className="hover:text-[#dedf42]">
-                Beranda
-              </Link>
-              <Link href="/berita" className="hover:text-[#dedf42]">
-                Warta Terkini
-              </Link>
-              <Link href="/stage" className="hover:text-[#dedf42]">
-                Panggung Digital
-              </Link>
-              <Link href="/katalog" className="hover:text-[#dedf42]">
-                Katalog Karakter
-              </Link>
-              <Link href="/#fitur" className="hover:text-[#dedf42]">
-                Kisah Lakon
-              </Link>
-              <Link href="/#makna" className="hover:text-[#dedf42]">
-                Filosofi
-              </Link>
-            </div>
-          </div>
-
-          <p className="text-[11px] text-center text-[#f4e7cd]/50 font-sans border-t border-white/10 pt-4">
-            Hak Cipta © 2026 Wayang Jawi. Portal warta resmi pelestarian seni pewayangan Nusantara.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

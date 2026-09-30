@@ -132,10 +132,10 @@ export default function SectionStoryFinale({
               <div className="pt-3 mt-1 flex items-center justify-between text-[#dedf42]/60 text-[9.5px] sm:text-[11px] font-sans tracking-wider select-text">
                 <span>Catatan & Arsip Budaya</span>
                 <Link
-                  href="/katalog"
-                  className="hover:underline flex items-center gap-1 group text-[#dedf42] font-bold"
+                  href="/berita"
+                  className="px-3.5 py-1 rounded-full border border-[#dedf42]/70 bg-[#dedf42]/10 hover:bg-[#dedf42] hover:text-black text-[#dedf42] text-[10px] sm:text-xs font-sans font-bold tracking-wider uppercase transition-all shadow-sm flex items-center gap-1.5 group cursor-pointer"
                 >
-                  <span>Katalog Karakter</span>
+                  <span>Portal Berita Wayang</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </Link>
               </div>
