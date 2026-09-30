@@ -7,7 +7,7 @@ import SectionStoryFinale from '@/components/SectionStoryFinale';
 import SectionMovementMeaning from '@/components/SectionMovementMeaning';
 import SectionGalleryMuseum from '@/components/SectionGalleryMuseum';
 import SectionJoinTheNight from '@/components/SectionJoinTheNight';
-import MarqueeTicker from '@/components/MarqueeTicker';
+import TextMarquee from '@/components/ui/text-marquee';
 import GsapAnimations from '@/components/GsapAnimations';
 
 export default function LandingPage() {
@@ -21,8 +21,25 @@ export default function LandingPage() {
       {/* 3. Section 2: A Night Where Shadows Speak */}
       <StoryShadowsSection id="fitur" />
 
-      {/* 4. Marquee Ticker Tape */}
-      <MarqueeTicker variant="tape" size="xl" />
+      {/* 4. Marquee Ticker Tape — scroll-reactive dual-row */}
+      <div className="relative w-full py-4 sm:py-5 md:py-6 bg-[#dedf42] text-black overflow-hidden select-none z-20">
+        <TextMarquee
+          baseVelocity={-3}
+          scrollDependent
+          delay={300}
+          clasname="font-sans font-black text-[4vw] sm:text-[3vw] md:text-[2.5vw] tracking-[0.15em] uppercase text-black leading-none"
+        >
+          WAYANG JAWI • PANGGUNG DIGITAL INTERAKTIF • SENI WARISAN NUSANTARA • DALANG AI •
+        </TextMarquee>
+        <TextMarquee
+          baseVelocity={3}
+          scrollDependent
+          delay={300}
+          clasname="font-sans font-black text-[4vw] sm:text-[3vw] md:text-[2.5vw] tracking-[0.15em] uppercase text-black/40 leading-none"
+        >
+          KELIR • BLENCONG • GAMELAN • KAYON • PAKELIRAN • TATAH SUNGGING •
+        </TextMarquee>
+      </div>
 
       {/* Gradient bridge: yellow → black (softens Ticker→BimaSuci) */}
       <div className="h-10 sm:h-14 md:h-20 bg-gradient-to-b from-[#3a3b0e] via-[#1a1a0a] to-black" />
@@ -34,9 +51,8 @@ export default function LandingPage() {
       {/* 6. Section 4: A Story of Inner Awakening */}
       <SectionStoryAwakening id="cara-bermain" />
 
-      {/* 7. Section 5: A Night to Remember / A Story to Carry */}
-      <SectionStoryFinale id="filosofi" />
-
+      {/* 7. Section 5: Articles & Editorial News (#berita) */}
+      <SectionStoryFinale id="berita" />
       {/* 8. Section 6: Interactive Meaning Carousel (From Video 00:26 - 00:34) */}
       <SectionMovementMeaning id="makna" />
 

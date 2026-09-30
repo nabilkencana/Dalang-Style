@@ -40,7 +40,7 @@ const DEFAULT_SLIDES: MovementSlide[] = [
 export default function SectionMovementMeaning({
   id = 'makna',
   slides = DEFAULT_SLIDES,
-  autoPlayInterval = 5000,
+  autoPlayInterval = 2600,
   backgroundImage = '/images/wayang-movement-bg.png',
 }: SectionMovementMeaningProps) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -88,9 +88,14 @@ export default function SectionMovementMeaning({
           <div data-gsap="meaning-content" className="relative z-20 w-full max-w-[780px] px-6 py-12 md:py-0 flex flex-col items-center text-center pointer-events-auto">
             {/* Interactive Number Pill Selector: ( 1 ) ( 2 ) ( 3 ) */}
             <div className="mb-6 sm:mb-8 md:mb-10">
-              <span className="px-4 sm:px-5 py-1 sm:py-1.5 rounded-full border border-[#dedf42] bg-[#dedf42] text-black font-sans font-bold text-[11px] sm:text-xs md:text-sm tracking-wider select-none">
+              <button
+                type="button"
+                onClick={() => setActiveIndex((prev) => (prev + 1) % slides.length)}
+                className="px-4 sm:px-5 py-1 sm:py-1.5 rounded-full border border-[#dedf42] bg-[#dedf42] text-black font-sans font-bold text-[11px] sm:text-xs md:text-sm tracking-wider select-none hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-md"
+                title="Klik untuk berpindah ke makna berikutnya"
+              >
                 {currentSlide.number}
-              </span>
+              </button>
             </div>
 
             {/* Headline with Smooth Cross-Fade Animation */}

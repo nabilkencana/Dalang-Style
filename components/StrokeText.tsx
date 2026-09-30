@@ -302,7 +302,10 @@ export default function StrokeText({
       <svg
         className="stroke-text__svg"
         viewBox={viewBox}
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio="xMinYMid meet"
+        style={{
+          aspectRatio: box ? `${box.width} / ${box.height}` : undefined,
+        }}
         aria-hidden="true"
       >
         {fillMode === 'wipe' && box && (

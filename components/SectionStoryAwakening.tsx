@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { WorksWheel, type WorksWheelItem } from '@/components/ui/works-wheel';
+import { OriginButton } from '@/components/ui/origin-button';
 export interface SectionStoryAwakeningProps {
   id?: string;
   headerBrandText?: string;
@@ -195,14 +196,16 @@ export default function SectionStoryAwakening({
               />
             </div>
 
-            {/* Bottom Section: "READ MORE →" Pill Button */}
+            {/* Bottom Section: "READ MORE →" Pill Button with Origin Ripple Animation */}
             <div data-gsap="awaken-cta" className="pointer-events-auto mt-2 md:mt-0">
-              <Link
+              <OriginButton
                 href={readMoreHref}
-                className="inline-flex items-center justify-center px-6 sm:px-8 py-1.5 sm:py-2 rounded-full border-[1.5px] border-black text-black font-sans font-bold text-[clamp(8px,1.05cqi,13px)] tracking-wider uppercase bg-transparent hover:bg-black hover:text-[#dedf42] active:scale-95 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-black"
+                fillClassName="bg-black"
+                activeTextClassName="text-[#dedf42]"
+                className="h-auto px-6 sm:px-8 py-2 sm:py-2.5 rounded-full border-[1.5px] border-black text-black font-sans font-bold text-[clamp(8px,1.05cqi,13px)] tracking-wider uppercase bg-transparent shadow-sm"
               >
-                <span>{readMoreText}</span>
-              </Link>
+                {readMoreText}
+              </OriginButton>
             </div>
           </div>
         </div>

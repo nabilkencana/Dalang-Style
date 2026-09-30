@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 import StrokeText from '@/components/StrokeText';
 
 export interface HeroWayangJawiProps {
@@ -89,7 +90,7 @@ export default function HeroWayangJawi({
           {/* Bottom Row: Giant Title + Pill CTA Button Side-by-Side */}
           <div
             data-gsap="hero-bottom"
-            className="flex items-end gap-2 sm:gap-3 md:gap-4 flex-wrap"
+            className="flex items-end gap-1 sm:gap-2 md:gap-3 flex-wrap"
           >
             <StrokeText
               text={`${brandTitle}.`}
@@ -107,30 +108,20 @@ export default function HeroWayangJawi({
               letterSpacing={-4}
               hideStrokeOnFill
               charColors={{ 6: '#dedf42' }}
-              className="max-w-[700px] drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]"
+              className="shrink-0 drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]"
             />
-            {/* Exact Studiova Pill Button right next to title */}
-            {/* Studiova-Style Interactive Pill Button linking to /panduan with dynamic hover effects */}
+
+            {/* Interactive Button With Icon from Prompt (Sliding badge pill with 500ms transition) */}
             <Link
               href={ctaHref}
-              className="mb-2 sm:mb-4 md:mb-5 lg:mb-6 group relative p-1.5 pl-5 sm:pl-6 bg-[#dedf42] hover:bg-[#e8ea4a] rounded-full transition-all duration-300 shadow-2xl hover:shadow-[0_10px_35px_rgba(222,223,66,0.4)] hover:scale-[1.03] active:scale-95 flex items-center gap-2.5 cursor-pointer shrink-0"
+              className="mb-2 sm:mb-4 md:mb-6 -ml-1 sm:ml-0 relative inline-flex items-center text-xs sm:text-sm font-sans font-bold uppercase tracking-wider rounded-full h-11 sm:h-12 p-1 ps-5 sm:ps-6 pe-13 sm:pe-14 group transition-all duration-500 hover:ps-13 sm:hover:ps-14 hover:pe-5 sm:hover:pe-6 w-fit overflow-hidden cursor-pointer select-none bg-[#dedf42] text-black shadow-2xl hover:shadow-[0_10px_35px_rgba(222,223,66,0.4)] active:scale-95 shrink-0"
             >
-              <span className="text-black font-sans font-bold text-xs sm:text-sm tracking-wider uppercase transition-transform duration-200 group-hover:translate-x-0.5">
+              <span className="relative z-10 transition-all duration-500 whitespace-nowrap">
                 {ctaText}
               </span>
-              <span className="size-10 sm:size-11 rounded-full bg-black text-[#dedf42] group-hover:bg-white group-hover:text-black flex items-center justify-center shadow-md transition-all duration-300 group-hover:scale-110 group-hover:rotate-45">
-                <svg
-                  className="size-4 sm:size-4.5 transition-transform duration-300"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M7 17L17 7M17 7H7M17 7v10" />
-                </svg>
-              </span>
+              <div className="absolute right-1 w-9 h-9 sm:w-10 sm:h-10 bg-black text-[#dedf42] rounded-full flex items-center justify-center transition-all duration-500 group-hover:right-[calc(100%-40px)] sm:group-hover:right-[calc(100%-44px)] group-hover:rotate-45 group-hover:bg-white group-hover:text-black shadow-md">
+                <ArrowUpRight className="size-4 sm:size-4.5" />
+              </div>
             </Link>
           </div>
         </div>

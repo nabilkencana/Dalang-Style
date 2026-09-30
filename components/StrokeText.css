@@ -1,16 +1,17 @@
 .stroke-text {
-  display: block;
-  width: 100%;
+  display: inline-block;
+  width: auto;
+  max-width: 100%;
   line-height: 0;
 }
 
 .stroke-text--hover {
   cursor: pointer;
 }
-
 .stroke-text__svg {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   height: var(--stroke-text-height, 160px);
 }
 

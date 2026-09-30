@@ -6,6 +6,7 @@ import Link from 'next/link';
 import InteractiveListPreview, {
   type InteractiveListItem,
 } from '@/components/ui/interactive-list-preview';
+import { OriginButton } from '@/components/ui/origin-button';
 
 export interface SectionStoryFinaleProps {
   id?: string;
@@ -49,16 +50,16 @@ const DEFAULT_PREVIEW_ARTICLES: InteractiveListItem[] = [
 ];
 
 export default function SectionStoryFinale({
-  id = 'filosofi',
-  categoryLabel = 'CATATAN BUDAYA',
+  id = 'berita',
+  categoryLabel = 'ARTIKEL & WARTA TERKINI',
   headline = {
-    line1: 'Warta & Refleksi',
-    line2: 'Dari Balik Layar',
+    line1: 'Warta Budaya &',
+    line2: 'Sorotan Terkini',
   },
   paragraphStanzas = [
     [
-      'DOKUMENTASI PEMIKIRAN, TAFSIR FILOSOFI,',
-      'DAN KISAH YANG TERUS HIDUP MELAMPAUI WAKTU.',
+      'LIPUTAN RESMI UNESCO, KABAR DEWANTARA, DAN CATATAN',
+      'MENDALAM SEPUTAR PELESTARIAN WAYANG KULIT NUSANTARA.',
     ],
   ],
   articles = DEFAULT_PREVIEW_ARTICLES,
@@ -92,17 +93,19 @@ export default function SectionStoryFinale({
           <div className="relative md:absolute inset-0 flex flex-col justify-between py-8 md:py-0 md:pt-[13.2%] md:pb-[9.5%] px-6 md:px-0 md:pl-[56.1%] md:pr-[6.0%] pointer-events-none z-20 gap-6 md:gap-0">
             {/* Top Headline: "A Night to Remember \n A Story to Carry" */}
             {/* Top Headline: Editorial Articles & Blog Section */}
-            <div data-gsap="finale-headline" className="pointer-events-auto bg-black/60 md:bg-transparent p-3 md:p-0 rounded-lg md:rounded-none">
-              <p className="text-[10px] sm:text-xs font-sans font-bold tracking-[0.25em] text-[#dedf42]/70 uppercase mb-2 select-text">
+            {/* Top Headline: Editorial Articles & Blog Section (Centered & Enlarged) */}
+            <div data-gsap="finale-headline" className="pointer-events-auto bg-black/60 md:bg-transparent p-3 md:p-0 rounded-lg md:rounded-none text-center flex flex-col items-center w-full">
+              <p className="text-xs sm:text-sm font-sans font-bold tracking-[0.28em] text-[#dedf42]/70 uppercase mb-2 sm:mb-3 select-text text-center">
                 {categoryLabel}
               </p>
-              <h2 className="font-playfair text-[#dedf42] text-[clamp(28px,4.5cqi,60px)] font-normal leading-[1.04] tracking-[-0.025em] select-text">
+              <h2 className="font-playfair text-[#dedf42] text-[clamp(32px,5.2cqi,72px)] font-normal leading-[1.02] tracking-[-0.03em] select-text text-center">
                 <span data-gsap="finale-headline-line" className="block will-change-transform">{headline.line1}</span>
                 <span data-gsap="finale-headline-line" className="block will-change-transform">{headline.line2}</span>
               </h2>
             </div>
+
             {/* Middle Uppercase Paragraph */}
-            <div data-gsap="finale-stanza" className="pointer-events-auto max-w-[360px] font-sans font-semibold text-[#dedf42]/80 text-[clamp(8.5px,0.95cqi,12px)] uppercase leading-[1.45] tracking-[0.16em] select-text bg-black/60 md:bg-transparent p-3 md:p-0 rounded-lg md:rounded-none">
+            <div data-gsap="finale-stanza" className="pointer-events-auto max-w-[460px] mx-auto text-center font-sans font-semibold text-[#dedf42]/80 text-[clamp(8.5px,0.95cqi,12px)] uppercase leading-[1.5] tracking-[0.16em] select-text bg-black/60 md:bg-transparent p-3 md:p-0 rounded-lg md:rounded-none">
               {paragraphStanzas.map((stanza, sIdx) => (
                 <p key={sIdx} className="space-y-1">
                   {stanza.map((line, lIdx) => (
@@ -130,15 +133,17 @@ export default function SectionStoryFinale({
               />
 
               {/* Subtle Bottom Archive Line */}
-              <div className="pt-3 mt-1 flex items-center justify-between text-[#dedf42]/60 text-[9.5px] sm:text-[11px] font-sans tracking-wider select-text">
-                <span>Catatan & Arsip Budaya</span>
-                <Link
+              <div className="pt-4 mt-2 flex flex-wrap items-center justify-between gap-3 text-[#dedf42]/70 text-[10px] sm:text-xs font-sans tracking-wider select-text">
+                <span className="font-medium">Arsip Artikel & Publikasi</span>
+                <OriginButton
                   href="/berita"
-                  className="px-3.5 py-1 rounded-full border border-[#dedf42]/70 bg-[#dedf42]/10 hover:bg-[#dedf42] hover:text-black text-[#dedf42] text-[10px] sm:text-xs font-sans font-bold tracking-wider uppercase transition-all shadow-sm flex items-center gap-1.5 group cursor-pointer"
+                  fillClassName="bg-[#dedf42]"
+                  activeTextClassName="text-black font-bold"
+                  className="h-auto px-6 sm:px-7 py-2.5 sm:py-3 rounded-full border border-[#dedf42] bg-[#dedf42]/15 text-[#dedf42] text-xs sm:text-sm font-sans font-bold tracking-wider uppercase shadow-lg group cursor-pointer"
                 >
-                  <span>Portal Berita Wayang</span>
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </Link>
+                  <span>Lihat Semua Artikel</span>
+                  <span className="transition-transform duration-200 group-hover:translate-x-1.5">→</span>
+                </OriginButton>
               </div>
             </div>
           </div>

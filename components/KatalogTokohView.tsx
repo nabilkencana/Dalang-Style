@@ -351,33 +351,6 @@ export default function KatalogTokohView() {
           </div>
         )}
 
-        {/* 6. Bottom Theatrical Call-to-Action */}
-        <section className="mt-16 sm:mt-24 p-8 sm:p-12 rounded-3xl border border-[#dedf42]/25 bg-gradient-to-b from-[#18110b] via-[#0d0806] to-[#050303] text-center relative overflow-hidden shadow-2xl">
-          <div className="max-w-2xl mx-auto flex flex-col items-center">
-            <span className="text-3xl mb-3">✨</span>
-            <h2 className="font-playfair text-2xl sm:text-3xl md:text-4xl text-[#dedf42] font-normal tracking-tight">
-              Saksikan Lakon Pementasan
-            </h2>
-            <p className="text-xs sm:text-sm text-[#f4e7cd]/80 font-sans mt-3 leading-relaxed">
-              Kisah para tokoh pewayangan ini hidup dalam pertunjukan dramatis
-              Wayang Jawi. Nikmati interaksi kendali wayang digital di panggung kami.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-3.5 mt-6">
-              <Link
-                href="/stage"
-                className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-full border border-[#dedf42] bg-[#dedf42] text-black font-sans font-bold text-xs uppercase tracking-wider hover:bg-white active:scale-95 transition-all shadow-md"
-              >
-                Buka Panggung Wayang Digital →
-              </Link>
-              <Link
-                href="/#cara-bermain"
-                className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-full border border-[#dedf42]/40 bg-black/40 text-[#dedf42] font-sans font-bold text-xs uppercase tracking-wider hover:bg-[#dedf42] hover:text-black active:scale-95 transition-all"
-              >
-                Kembali ke Beranda
-              </Link>
-            </div>
-          </div>
-        </section>
       </main>
     </div>
   );

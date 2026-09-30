@@ -156,9 +156,9 @@ export default function Navbar({ className }: { className?: string }) {
                 <span className="font-semibold text-white block">Gerak & Simbolisme</span>
                 <span className="text-[11px] text-[#cdb894] block">Filosofi Gerak Pewayangan</span>
               </HoveredLink>
-              <HoveredLink href="/#filosofi">
-                <span className="font-semibold text-white block">Warta Budaya</span>
-                <span className="text-[11px] text-[#cdb894] block">Catatan & Dokumentasi</span>
+              <HoveredLink href="/#berita">
+                <span className="font-semibold text-white block">Warta & Artikel</span>
+                <span className="text-[11px] text-[#cdb894] block">Sorotan & Kabar Terkini</span>
               </HoveredLink>
               <div className="pt-2 border-t border-[#dedf42]/20">
                 <Link

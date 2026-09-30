@@ -234,7 +234,7 @@ export default function GsapAnimations() {
     });
 
     // ─────────────────────────────────────────────────────────────
-    // 5. SECTION 5: STORY FINALE (#filosofi)
+    // 5. SECTION 5: STORY FINALE (#berita)
     // ─────────────────────────────────────────────────────────────
 
     // Dark theatrical card entrance
@@ -244,7 +244,7 @@ export default function GsapAnimations() {
       duration: 1.2,
       ease: 'power2.out',
       scrollTrigger: {
-        trigger: '#filosofi',
+        trigger: '#berita',
         start: 'top 85%',
         end: 'top 40%',
         scrub: 1,
@@ -259,7 +259,7 @@ export default function GsapAnimations() {
       ease: 'power3.out',
       stagger: 0.15,
       scrollTrigger: {
-        trigger: '#filosofi',
+        trigger: '#berita',
         start: 'top 85%',
         toggleActions: 'play none none none',
       },
@@ -272,12 +272,11 @@ export default function GsapAnimations() {
       duration: 0.9,
       ease: 'power3.out',
       scrollTrigger: {
-        trigger: '#filosofi',
+        trigger: '#berita',
         start: 'top 85%',
         toggleActions: 'play none none none',
       },
     });
-
     // ─────────────────────────────────────────────────────────────
     // 6. SECTION 6: MOVEMENT & MEANING (#makna)
     // ─────────────────────────────────────────────────────────────
@@ -380,19 +379,6 @@ export default function GsapAnimations() {
       },
     });
 
-    // Marquee Ticker entrance
-    gsap.from('[data-gsap="ticker"]', {
-      scaleY: 0,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power2.out',
-      transformOrigin: 'center center',
-      scrollTrigger: {
-        trigger: '[data-gsap="ticker"]',
-        start: 'top 90%',
-        toggleActions: 'play none none reverse',
-      },
-    });
 
     // Refresh ScrollTrigger when web fonts are ready to ensure perfect coordinate calculation
     if (typeof document !== 'undefined' && 'fonts' in document) {
