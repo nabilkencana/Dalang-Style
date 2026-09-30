@@ -60,6 +60,11 @@ body {
   animation: fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes mediaSliderProgress {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
 /* ─── Smooth scroll ─────────────────────────────────────────────────────── */
 html.lenis,
 html.lenis body {

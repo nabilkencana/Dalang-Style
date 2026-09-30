@@ -8,6 +8,8 @@ import {
   Gesture02Visual,
   Gesture03Visual,
   Gesture04Visual,
+  ModeDuaWayangVisual,
+  ModeSatuWayangVisual,
 } from '@/components/GestureVisuals';
 import PanduanGsapAnimations from '@/components/PanduanGsapAnimations';
 
@@ -291,23 +293,9 @@ export default function PanduanPage() {
                   </span>
                 </div>
 
-                {/* Mode Dua Wayang Illustration */}
-                <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden border-2 border-black/30 shadow-lg group bg-black mb-4">
-                  <Image
-                    src="/images/gestures/mode-dua-wayang.png"
-                    alt="Mode Standar: Dua Wayang Dua Tangan"
-                    fill
-                    className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[10px] font-mono text-[#dedf42] pointer-events-none">
-                    <span className="bg-black/80 backdrop-blur-sm px-2.5 py-1 rounded-full border border-[#dedf42]/40 font-bold uppercase tracking-wider shadow-sm">
-                      ✦ MODE DUA WAYANG
-                    </span>
-                    <span className="text-white/80 bg-black/70 px-2 py-0.5 rounded text-[9px] font-sans">
-                      Laga & Dialog
-                    </span>
-                  </div>
+                {/* Mode Dua Wayang Video on Hover */}
+                <div className="mb-4">
+                  <ModeDuaWayangVisual />
                 </div>
 
                 <h3 className="font-serif italic font-bold text-xl sm:text-2xl text-black mb-2">
@@ -336,23 +324,9 @@ export default function PanduanPage() {
                   </span>
                 </div>
 
-                {/* Mode Satu Wayang Penuh Illustration */}
-                <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden border-2 border-black/30 shadow-lg group bg-black mb-4">
-                  <Image
-                    src="/images/gestures/mode-satu-wayang.png"
-                    alt="Mode Lanjutan: Satu Wayang Penuh Dua Tangan"
-                    fill
-                    className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
-                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[10px] font-mono text-[#dedf42] pointer-events-none">
-                    <span className="bg-black/80 backdrop-blur-sm px-2.5 py-1 rounded-full border border-[#dedf42]/40 font-bold uppercase tracking-wider shadow-sm">
-                      ✦ KENDALI SATU WAYANG PENUH
-                    </span>
-                    <span className="text-white/80 bg-black/70 px-2 py-0.5 rounded text-[9px] font-sans">
-                      Artikulasi Penuh
-                    </span>
-                  </div>
+                {/* Mode Satu Wayang Penuh Video on Hover */}
+                <div className="mb-4">
+                  <ModeSatuWayangVisual />
                 </div>
 
                 <h3 className="font-serif italic font-bold text-xl sm:text-2xl text-black mb-2">
