@@ -9,10 +9,28 @@ import {
   Gesture03Visual,
   Gesture04Visual,
 } from '@/components/GestureVisuals';
+import PanduanGsapAnimations from '@/components/PanduanGsapAnimations';
 
 export default function PanduanPage() {
+  const handleScrollToGestur = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = document.getElementById('gestur-utama');
+    if (!target) return;
+    if (typeof window !== 'undefined' && window.lenisInstance) {
+      window.lenisInstance.scrollTo(target, {
+        offset: -80,
+        duration: 1.6,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    } else {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <div className="relative w-full min-h-screen bg-[#dedf42] text-[#050303] selection:bg-black selection:text-[#dedf42] overflow-x-hidden pt-28 pb-20">
+      {/* GSAP ScrollTrigger Animations Controller for Panduan */}
+      <PanduanGsapAnimations />
       {/* ── Background Watermark Canvas (Same as Section 4 SectionStoryAwakening) ── */}
       <div className="fixed inset-0 bg-[#dedf42] pointer-events-none -z-10">
         <Image
@@ -28,7 +46,7 @@ export default function PanduanPage() {
 
       <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
         {/* ── Breadcrumb & Aksara Jawa ── */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 border-b border-black/20">
+        <div data-gsap="panduan-breadcrumb" className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 border-b border-black/20">
           <div className="flex items-center gap-2 text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-black/70">
             <Link href="/" className="hover:text-black hover:underline transition-colors">
               Beranda
@@ -44,27 +62,28 @@ export default function PanduanPage() {
 
         {/* ── Hero Title Section ── */}
         <div className="pt-10 pb-14 text-center max-w-4xl mx-auto">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-black text-[#dedf42] text-xs font-mono font-bold tracking-widest uppercase mb-4 shadow-sm">
+          <span data-gsap="panduan-kicker" className="inline-block px-4 py-1.5 rounded-full bg-black text-[#dedf42] text-xs font-mono font-bold tracking-widest uppercase mb-4 shadow-sm">
             TUTORIAL & PANDUAN PANGGUNG
           </span>
-          <h1 className="font-serif italic font-bold text-4xl sm:text-6xl lg:text-7xl text-[#050303] leading-[1.02] tracking-tight">
+          <h1 data-gsap="panduan-title" className="font-serif italic font-bold text-4xl sm:text-6xl lg:text-7xl text-[#050303] leading-[1.02] tracking-tight">
             Seni Mendalang di Ujung Jemari Anda
           </h1>
-          <p className="mt-5 text-base sm:text-lg lg:text-xl font-sans text-black/80 leading-relaxed font-normal max-w-2xl mx-auto">
+          <p data-gsap="panduan-subtitle" className="mt-5 text-base sm:text-lg lg:text-xl font-sans text-black/80 leading-relaxed font-normal max-w-2xl mx-auto">
             Pelajari bagaimana kecerdasan buatan membaca gerak tangan, jemari cempurit, dan gestur sakral Anda untuk menghidupkan boneka wayang kulit di Panggung Virtual Wayang Jawi.
           </p>
 
-          <div className="mt-8 flex items-center justify-center gap-4 flex-wrap">
+          <div data-gsap="panduan-cta" className="mt-8 flex items-center justify-center gap-4 flex-wrap">
             <Link
               href="/stage"
-              className="px-6 sm:px-8 py-3 rounded-full bg-black text-[#dedf42] font-sans font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-neutral-800 active:scale-95 transition-all shadow-lg flex items-center gap-2"
+              className="px-6 sm:px-8 py-3 rounded-full bg-black text-[#dedf42] font-sans font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-neutral-800 active:scale-95 transition-[background-color,transform,box-shadow] duration-200 shadow-lg flex items-center gap-2"
             >
               <span>Masuk ke Panggung Sekarang</span>
               <span className="text-base">&rarr;</span>
             </Link>
             <a
               href="#gestur-utama"
-              className="px-6 sm:px-7 py-3 rounded-full border border-black/40 text-black font-sans font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-black/10 transition-colors"
+              onClick={handleScrollToGestur}
+              className="px-6 sm:px-7 py-3 rounded-full border border-black/40 text-black font-sans font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-black/10 active:scale-95 transition-all cursor-pointer shadow-sm"
             >
               Pelajari 4 Gestur Inti &darr;
             </a>
@@ -73,8 +92,7 @@ export default function PanduanPage() {
 
         {/* ── 4 GESTUR UTAMA TANGAN (CARDS) ── */}
         <section id="gestur-utama" className="py-8 scroll-mt-24">
-          <div className="flex items-center gap-3 mb-8">
-            <span className="w-3 h-3 rounded-full bg-black shrink-0" />
+          <div data-gsap="panduan-gestur-header" className="flex items-center gap-3 mb-8">
             <h2 className="font-serif italic font-bold text-2xl sm:text-3xl lg:text-4xl text-[#050303]">
               Empat Gestur Inti Pelacakan Tangan
             </h2>
@@ -82,7 +100,7 @@ export default function PanduanPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {/* Gestur 1: Poros Tubuh / Posisi Wayang */}
-            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
+            <div data-gsap="panduan-gestur-card" className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
               <div>
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
@@ -124,7 +142,7 @@ export default function PanduanPage() {
               </div>
             </div>
             {/* Gestur 2: Kendali Lengan Wayang */}
-            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
+            <div data-gsap="panduan-gestur-card" className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
               <div>
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
@@ -166,7 +184,7 @@ export default function PanduanPage() {
               </div>
             </div>
             {/* Gestur 3: Tarian Sakral Kiprahan */}
-            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
+            <div data-gsap="panduan-gestur-card" className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
               <div>
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
@@ -208,7 +226,7 @@ export default function PanduanPage() {
               </div>
             </div>
             {/* Gestur 4: Jarak Kedalaman & Bayangan Kelir */}
-            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
+            <div data-gsap="panduan-gestur-card" className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
               <div>
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
@@ -252,8 +270,8 @@ export default function PanduanPage() {
           </div>
         </section>
         {/* ── DUA MODE PERTUNJUKAN ── */}
-        <section className="py-12 border-t border-black/20">
-          <div className="flex items-center gap-3 mb-6">
+        <section data-gsap="panduan-mode-section" className="py-12 border-t border-black/20">
+          <div data-gsap="panduan-mode-header" className="flex items-center gap-3 mb-6">
             <span className="w-3 h-3 rounded-full bg-black shrink-0" />
             <h2 className="font-serif italic font-bold text-2xl sm:text-3xl lg:text-4xl text-[#050303]">
               Dua Mode Karakter Panggung
@@ -262,7 +280,7 @@ export default function PanduanPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Mode 1: Dua Wayang (Dua Tangan) */}
-            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm hover:bg-black/10 transition-all gap-4">
+            <div data-gsap="panduan-mode-card" className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm hover:bg-black/10 transition-all gap-4">
               <div>
                 <div className="flex items-center justify-between gap-4 mb-3">
                   <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
@@ -307,7 +325,7 @@ export default function PanduanPage() {
             </div>
 
             {/* Mode 2: Satu Wayang Penuh (Dua Tangan) */}
-            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm hover:bg-black/10 transition-all gap-4">
+            <div data-gsap="panduan-mode-card" className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm hover:bg-black/10 transition-all gap-4">
               <div>
                 <div className="flex items-center justify-between gap-4 mb-3">
                   <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
@@ -354,16 +372,18 @@ export default function PanduanPage() {
         </section>
 
         {/* ── TABEL HOTKEYS KEYBOARD ── */}
-        <section className="py-12 border-t border-black/20">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="w-3 h-3 rounded-full bg-black shrink-0" />
-            <h2 className="font-serif italic font-bold text-2xl sm:text-3xl lg:text-4xl text-[#050303]">
-              Pintasan Keyboard Dalang (Hotkeys)
-            </h2>
+        <section data-gsap="panduan-hotkey-section" className="py-12 border-t border-black/20">
+          <div data-gsap="panduan-hotkey-header">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-3 h-3 rounded-full bg-black shrink-0" />
+              <h2 className="font-serif italic font-bold text-2xl sm:text-3xl lg:text-4xl text-[#050303]">
+                Pintasan Keyboard Dalang (Hotkeys)
+              </h2>
+            </div>
+            <p className="text-black/70 text-sm mb-8 font-sans">
+              Gunakan tombol-tombol pintasan berikut di keyboard saat berada di panggung untuk aksi kilat tanpa harus membuka menu:
+            </p>
           </div>
-          <p className="text-black/70 text-sm mb-8 font-sans">
-            Gunakan tombol-tombol pintasan berikut di keyboard saat berada di panggung untuk aksi kilat tanpa harus membuka menu:
-          </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
@@ -378,6 +398,7 @@ export default function PanduanPage() {
             ].map((hk) => (
               <div
                 key={hk.key}
+                data-gsap="panduan-hotkey-card"
                 className="bg-black text-[#dedf42] rounded-xl p-4 flex flex-col justify-between shadow-md hover:scale-[1.02] transition-transform"
               >
                 <div className="flex items-center justify-between mb-2">
@@ -397,7 +418,7 @@ export default function PanduanPage() {
 
         {/* ── TIPS OPTIMALISASI RUANGAN & KAMERA ── */}
         <section className="py-12 border-t border-black/20">
-          <div className="bg-[#140e0a] text-[#dedf42] rounded-3xl p-8 sm:p-10 shadow-2xl border border-black/50">
+          <div data-gsap="panduan-tips-box" className="bg-[#140e0a] text-[#dedf42] rounded-3xl p-8 sm:p-10 shadow-2xl border border-black/50">
             <span className="text-xs font-mono font-bold tracking-widest text-[#dedf42]/70 uppercase block mb-2">
               TIPS & REKOMENDASI PERFORMA
             </span>
@@ -406,19 +427,19 @@ export default function PanduanPage() {
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm text-[#f4e7cd]/80 font-sans">
-              <div className="border-l-2 border-[#dedf42]/40 pl-4">
+              <div data-gsap="panduan-tips-col" className="border-l-2 border-[#dedf42]/40 pl-4">
                 <h4 className="font-bold text-[#dedf42] mb-1">Pencahayaan Depan</h4>
                 <p className="leading-relaxed">
                   Pastikan tangan Anda tersinari dari arah depan atau samping. Hindari cahaya lampu yang terlalu terang persis di belakang tubuh (*backlight*).
                 </p>
               </div>
-              <div className="border-l-2 border-[#dedf42]/40 pl-4">
+              <div data-gsap="panduan-tips-col" className="border-l-2 border-[#dedf42]/40 pl-4">
                 <h4 className="font-bold text-[#dedf42] mb-1">Jarak Ideal Webcam</h4>
                 <p className="leading-relaxed">
                   Duduk dengan jarak sekitar 60 cm hingga 1 meter dari kamera agar seluruh telapak dan pergelangan tangan tertangkap penuh dalam frame.
                 </p>
               </div>
-              <div className="border-l-2 border-[#dedf42]/40 pl-4">
+              <div data-gsap="panduan-tips-col" className="border-l-2 border-[#dedf42]/40 pl-4">
                 <h4 className="font-bold text-[#dedf42] mb-1">Akselerasi GPU</h4>
                 <p className="leading-relaxed">
                   Sistem AI MediaPipe otomatis menggunakan akselerasi WebGL/GPU pada peramban Anda untuk latensi super rendah di 60 FPS.
@@ -429,7 +450,7 @@ export default function PanduanPage() {
         </section>
 
         {/* ── FINAL CALL TO ACTION ── */}
-        <div className="pt-10 pb-8 text-center border-t border-black/20">
+        <div data-gsap="panduan-final-cta" className="pt-10 pb-8 text-center border-t border-black/20">
           <h3 className="font-serif italic font-bold text-3xl sm:text-4xl text-[#050303] mb-4">
             Sudah Memahami Ilmunya? Waktunya Naik ke Panggung.
           </h3>

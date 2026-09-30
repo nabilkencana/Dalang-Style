@@ -11,67 +11,63 @@ export default function PanduanGsapAnimations() {
     // ─────────────────────────────────────────────────────────────
     // 1. HERO SECTION — Cinematic Entrance on Page Load
     // ─────────────────────────────────────────────────────────────
-    const heroTl = gsap.timeline({ defaults: { ease: 'power4.out' } });
-
-    // Breadcrumb bar slides down
-    heroTl.from('[data-gsap="panduan-breadcrumb"]', {
-      y: -25,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.15,
+    const heroTl = gsap.timeline({
+      defaults: { ease: 'power3.out' },
+      onComplete: () => {
+        gsap.set(
+          '[data-gsap="panduan-breadcrumb"], [data-gsap="panduan-kicker"], [data-gsap="panduan-title"], [data-gsap="panduan-subtitle"], [data-gsap="panduan-cta"] > *',
+          { clearProps: 'all' }
+        );
+      },
     });
 
+    // Breadcrumb bar slides down
+    heroTl.fromTo(
+      '[data-gsap="panduan-breadcrumb"]',
+      { y: -20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, delay: 0.05, clearProps: 'all' }
+    );
+
     // Kicker pill pops in
-    heroTl.from(
+    heroTl.fromTo(
       '[data-gsap="panduan-kicker"]',
-      {
-        scale: 0.85,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'back.out(1.8)',
-      },
-      '-=0.5'
+      { scale: 0.9, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.5)', clearProps: 'all' },
+      '-=0.4'
     );
 
     // Main Title "Seni Mendalang di Ujung Jemari Anda"
-    heroTl.from(
+    heroTl.fromTo(
       '[data-gsap="panduan-title"]',
-      {
-        y: 40,
-        opacity: 0,
-        duration: 1.0,
-        ease: 'power3.out',
-      },
-      '-=0.5'
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', clearProps: 'all' },
+      '-=0.4'
     );
 
     // Subtitle paragraph
-    heroTl.from(
+    heroTl.fromTo(
       '[data-gsap="panduan-subtitle"]',
-      {
-        y: 25,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-      },
-      '-=0.6'
-    );
-
-    // Hero action buttons
-    heroTl.from(
-      '[data-gsap="panduan-cta"] > *',
-      {
-        y: 20,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.7,
-        ease: 'power2.out',
-      },
+      { y: 15, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, clearProps: 'all' },
       '-=0.5'
     );
 
+    // Hero action buttons
+    heroTl.fromTo(
+      '[data-gsap="panduan-cta"] > *',
+      { y: 15, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        stagger: 0.08,
+        duration: 0.5,
+        clearProps: 'all',
+      },
+      '-=0.4'
+    );
+
     // ─────────────────────────────────────────────────────────────
-    // 2. 4 GESTUR INTI SECTION — Staggered Card Reveals
+    // 2. 4 GESTUR INTI SECTION — Individual Card Reveals
     // ─────────────────────────────────────────────────────────────
     gsap.from('[data-gsap="panduan-gestur-header"]', {
       y: 30,
@@ -85,21 +81,23 @@ export default function PanduanGsapAnimations() {
       },
     });
 
-    gsap.from('[data-gsap="panduan-gestur-card"]', {
-      y: 50,
-      opacity: 0,
-      stagger: 0.16,
-      duration: 0.9,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '#gestur-utama',
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
+    const gesturCards = gsap.utils.toArray<HTMLElement>('[data-gsap="panduan-gestur-card"]');
+    gesturCards.forEach((card) => {
+      gsap.from(card, {
+        y: 35,
+        opacity: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+        },
+      });
     });
 
     // ─────────────────────────────────────────────────────────────
-    // 3. DUA MODE PANGGUNG — Theatrical Slide-Up
+    // 3. DUA MODE PANGGUNG — Individual Card Reveals
     // ─────────────────────────────────────────────────────────────
     gsap.from('[data-gsap="panduan-mode-header"]', {
       y: 30,
@@ -113,17 +111,19 @@ export default function PanduanGsapAnimations() {
       },
     });
 
-    gsap.from('[data-gsap="panduan-mode-card"]', {
-      y: 45,
-      opacity: 0,
-      stagger: 0.18,
-      duration: 0.9,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '[data-gsap="panduan-mode-section"]',
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
+    const modeCards = gsap.utils.toArray<HTMLElement>('[data-gsap="panduan-mode-card"]');
+    modeCards.forEach((card) => {
+      gsap.from(card, {
+        y: 35,
+        opacity: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+        },
+      });
     });
 
     // ─────────────────────────────────────────────────────────────
@@ -142,15 +142,15 @@ export default function PanduanGsapAnimations() {
     });
 
     gsap.from('[data-gsap="panduan-hotkey-card"]', {
-      scale: 0.9,
-      y: 20,
+      scale: 0.92,
+      y: 15,
       opacity: 0,
       stagger: 0.05,
       duration: 0.6,
       ease: 'back.out(1.5)',
       scrollTrigger: {
         trigger: '[data-gsap="panduan-hotkey-section"]',
-        start: 'top 75%',
+        start: 'top 82%',
         toggleActions: 'play none none none',
       },
     });
@@ -161,24 +161,24 @@ export default function PanduanGsapAnimations() {
     gsap.from('[data-gsap="panduan-tips-box"]', {
       scale: 0.96,
       opacity: 0,
-      duration: 0.9,
-      ease: 'power3.out',
+      duration: 0.8,
+      ease: 'power2.out',
       scrollTrigger: {
         trigger: '[data-gsap="panduan-tips-box"]',
-        start: 'top 82%',
+        start: 'top 85%',
         toggleActions: 'play none none none',
       },
     });
 
     gsap.from('[data-gsap="panduan-tips-col"]', {
-      y: 25,
+      y: 20,
       opacity: 0,
-      stagger: 0.12,
-      duration: 0.8,
+      stagger: 0.1,
+      duration: 0.7,
       ease: 'power2.out',
       scrollTrigger: {
         trigger: '[data-gsap="panduan-tips-box"]',
-        start: 'top 78%',
+        start: 'top 82%',
         toggleActions: 'play none none none',
       },
     });
