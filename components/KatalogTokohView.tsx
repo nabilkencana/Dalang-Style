@@ -4,6 +4,52 @@ import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { TOKOH_CHARACTERS } from '@/lib/tokoh-data';
+import {
+  Brain,
+  ShieldCheck,
+  Heart,
+  Zap,
+  Lightbulb,
+  Users,
+  Smile,
+  Gift,
+  Scale,
+  Flame,
+  Sparkles,
+  Eye,
+  Target,
+  Swords,
+  Feather,
+  Compass,
+  Crown,
+  BookOpen,
+  Lock,
+} from 'lucide-react';
+
+function getTraitIcon(trait: string) {
+  const t = trait.toLowerCase();
+  if (t.includes('bijak') || t.includes('pencari')) return <Brain className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('pengayom') || t.includes('kokoh') || t.includes('lindung')) return <ShieldCheck className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('tulus') || t.includes('bakti') || t.includes('kasih') || t.includes('sayang')) return <Heart className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('sakti') || t.includes('perkasa') || t.includes('mandraguna')) return <Zap className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('cerdas') || t.includes('pikir')) return <Lightbulb className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('diplomatis') || t.includes('kawan')) return <Users className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('humor') || t.includes('jenaka')) return <Smile className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('dermawan')) return <Gift className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('jujur')) return <Scale className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('berani')) return <Flame className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('spontan') || t.includes('tangkas')) return <Sparkles className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('kritis') || t.includes('waspada') || t.includes('hati-hati') || t.includes('mawas')) return <Eye className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('fokus') || t.includes('senjata')) return <Target className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('ksatria') || t.includes('patriot')) return <Swords className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('halus') || t.includes('budi') || t.includes('sabar')) return <Feather className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('pertapa') || t.includes('hakikat')) return <Compass className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('ambisi') || t.includes('raja')) return <Crown className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('angkara')) return <Flame className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('pujangga')) return <BookOpen className="size-3 text-[#dedf42] shrink-0" />;
+  if (t.includes('sumpah')) return <Lock className="size-3 text-[#dedf42] shrink-0" />;
+  return <Sparkles className="size-3 text-[#dedf42] shrink-0" />;
+}
 
 const CATEGORIES = [
   { id: 'ALL', label: 'Semua Tokoh', count: 9 },
@@ -79,8 +125,7 @@ export default function KatalogTokohView() {
 
       {/* 2. Top Header Navigation Bar */}
       <header className="relative z-30 w-full border-b border-[#dedf42]/15 bg-black/70 backdrop-blur-md sticky top-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
-          {/* Back to Home Link */}
+        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 h-16 sm:h-20 flex items-center justify-between gap-4">
           <Link
             href="/#cara-bermain"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-sans font-bold tracking-wider text-[#dedf42] uppercase hover:brightness-125 transition-all group focus:outline-none focus:underline"
@@ -107,8 +152,7 @@ export default function KatalogTokohView() {
       </header>
 
       {/* 3. Hero Header Section */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 md:pt-18 pb-6 sm:pb-8 text-center flex flex-col items-center">
-        {/* Aksara Jawa Watermark */}
+      <section className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 pt-10 sm:pt-14 md:pt-18 pb-6 sm:pb-8 text-center flex flex-col items-center">
         <p className="text-[#dedf42]/60 text-lg sm:text-2xl font-serif tracking-[0.3em] mb-3 select-none">
           ꦏꦠꦭꦺꦴꦒ꧀ ꦠꦺꦴꦏꦺꦴꦃ ꦮꦪꦁ
         </p>
@@ -211,9 +255,8 @@ export default function KatalogTokohView() {
         </div>
       </section>
 
-      {/* 5. Main Catalog Grid Section */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {/* Results Counter Bar & Active Filter Reset */}
+      {/* 5. Main Catalog Grid Section - Full Width */}
+      <main className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-12">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-[#dedf42]/15 mb-8 gap-3">
           <p className="text-xs sm:text-sm font-sans font-medium text-[#f4e7cd]/70">
             Menampilkan{' '}
@@ -264,7 +307,7 @@ export default function KatalogTokohView() {
           </div>
         ) : (
           /* Cards Grid: Authentic Dark Theatrical Wayang Cards */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 lg:gap-7">
             {filteredCharacters.map((char) => (
               <Link
                 key={char.slug}
@@ -284,12 +327,6 @@ export default function KatalogTokohView() {
                   {/* Gradient Lighting Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-white/10 pointer-events-none" />
 
-                  {/* Badge Pill */}
-                  <div className="absolute top-3.5 left-3.5 z-20">
-                    <span className="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[#dedf42] font-sans font-bold text-[10px] tracking-widest uppercase border border-[#dedf42]/30 shadow-md">
-                      {char.badge}
-                    </span>
-                  </div>
 
                   {/* Aksara Jawa Bottom Watermark */}
                   <span className="absolute bottom-2.5 right-3 text-[#dedf42]/80 font-serif text-xs tracking-widest bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm pointer-events-none">
@@ -316,13 +353,15 @@ export default function KatalogTokohView() {
                     </p>
 
                     {/* Traits Tags */}
+                    {/* Traits Tags with Bespoke Icons */}
                     <div className="flex flex-wrap items-center gap-1.5 mt-3.5">
                       {char.traits.map((trait) => (
                         <span
                           key={trait}
-                          className="px-2.5 py-0.5 rounded-full border border-[#dedf42]/20 bg-white/[0.02] text-[#f4e7cd]/80 text-[10px] font-sans"
+                          className="px-2.5 py-0.5 rounded-full border border-[#dedf42]/20 bg-white/[0.03] hover:bg-[#dedf42]/10 hover:border-[#dedf42]/40 text-[#f4e7cd]/90 text-[10.5px] font-sans font-medium flex items-center gap-1 transition-colors"
                         >
-                          ✦ {trait}
+                          {getTraitIcon(trait)}
+                          <span>{trait}</span>
                         </span>
                       ))}
                     </div>

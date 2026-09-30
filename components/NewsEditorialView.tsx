@@ -47,29 +47,18 @@ export default function NewsEditorialView() {
       <div className="fixed inset-0 bg-repeat opacity-[0.025] pointer-events-none z-0 bg-[radial-gradient(#dedf42_1px,transparent_1px)] [background-size:24px_24px]" />
 
       {/* Minimal floating back bar */}
-      <div className="sticky top-0 z-30 w-full bg-black/85 backdrop-blur-md border-b border-[#dedf42]/15 px-4 sm:px-8 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-30 w-full bg-black/85 backdrop-blur-md border-b border-[#dedf42]/15 px-4 sm:px-6 md:px-8 lg:px-10 py-3 flex items-center justify-between">
         <Link
           href="/"
           className="flex items-center gap-2 text-[#f4e7cd]/70 hover:text-[#dedf42] transition-colors text-xs font-bold uppercase tracking-wider font-sans group"
         >
           <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
-          <span>Beranda</span>
+          <span>Kembali ke Beranda</span>
         </Link>
-        <div className="flex items-center gap-1">
-          {['W', 'A', 'Y', 'A', 'N', 'G'].map((letter, i) => (
-            <span
-              key={i}
-              className="w-5 h-5 sm:w-6 sm:h-6 bg-[#b91c1c] text-white font-bold flex items-center justify-center rounded-xs text-[10px] sm:text-xs tracking-wider font-sans"
-            >
-              {letter}
-            </span>
-          ))}
-          <span className="font-serif italic text-[#dedf42] text-xs ml-2 hidden sm:inline">Warta</span>
-        </div>
       </div>
 
       {/* 3. Main Editorial Content Container */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16">
+      <main className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-12 space-y-16">
         {/* ========================================================================= */}
         {/* SECTION 1: HERO BREAKING STORY (Queen's Life Reference Layout) */}
         {/* ========================================================================= */}

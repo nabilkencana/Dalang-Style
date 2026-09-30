@@ -325,46 +325,20 @@ export default function GsapAnimations() {
       },
     });
 
-    // Info pills row
-    gsap.from('[data-gsap="join-pills"] > *', {
-      scale: 0,
-      opacity: 0,
-      duration: 0.7,
-      ease: 'back.out(1.8)',
-      stagger: 0.12,
-      scrollTrigger: {
-        trigger: '#join',
-        start: 'top 75%',
-        toggleActions: 'play none none reverse',
-      },
-    });
 
     // Tagline text slide-in from right
     gsap.from('[data-gsap="join-tagline"]', {
-      x: 60,
+      x: 40,
       opacity: 0,
-      duration: 0.9,
+      duration: 0.8,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: '#join',
-        start: 'top 75%',
-        toggleActions: 'play none none reverse',
+        start: 'top 85%',
+        toggleActions: 'play none none none',
       },
     });
 
-    // Social pills
-    gsap.from('[data-gsap="join-social"] > *', {
-      y: 35,
-      opacity: 0,
-      duration: 0.65,
-      ease: 'power2.out',
-      stagger: 0.12,
-      scrollTrigger: {
-        trigger: '#join',
-        start: 'top 80%',
-        toggleActions: 'play none none reverse',
-      },
-    });
 
     // Giant bottom brand headline — Upward Reveal
     gsap.from('[data-gsap="join-brand-line"]', {

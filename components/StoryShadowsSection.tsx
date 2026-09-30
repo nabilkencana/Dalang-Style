@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import ScrollReveal from '@/components/ScrollReveal';
+import FlipCard from '@/components/ui/flip-card';
 export interface StoryShadowsSectionProps {
   id?: string;
   tagline?: string[];
@@ -71,21 +72,75 @@ export default function StoryShadowsSection({
           </ScrollReveal>
         </div>
 
-        {/* 4. CENTER DALANG PERFORMANCE PHOTO */}
+        {/* 4. CENTER DALANG PERFORMANCE 3D FLIP CARD */}
         <div
           data-gsap="story-photo"
-          className="absolute left-[26.00%] top-[46.34%] z-10 overflow-hidden shadow-2xl"
-          style={{ width: '31.68%', height: '44.21%' }}
+          className="absolute left-[24%] top-[47.5%] z-20 pointer-events-auto"
+          style={{ width: '35.5%', height: '46.5%' }}
         >
-          <Image
-            src={photoSrc}
-            alt={photoAlt}
-            fill
-            sizes="(max-width: 1504px) 35vw, 429px"
-            className="object-cover object-center pointer-events-none"
+          <FlipCard
+            width="100%"
+            height="100%"
+            radius={2}
+            background="#0a0a0a"
+            color="#dedf42"
+            tilt
+            tiltMax={12}
+            glare
+            glareOpacity={0.2}
+            hoverScale={1.02}
+            shadow
+            shadowColor="#000000"
+            shadowOpacity={0.6}
+            className="w-full h-full"
+            ariaLabel="Foto pertunjukan Sang Dalang (ketuk untuk melihat filosofi pakeliran)"
+            front={
+              <div className="relative w-full h-full bg-[#0a0a0a] rounded-[2px] overflow-hidden">
+                <Image
+                  src={photoSrc}
+                  alt={photoAlt}
+                  fill
+                  sizes="(max-width: 1504px) 35vw, 429px"
+                  className="object-cover object-center pointer-events-none"
+                />
+                {/* Subtle theatrical vignette */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/15 pointer-events-none" />
+                {/* Flip hint at bottom right (Sang Dalang badge removed) */}
+                <div className="absolute bottom-2.5 right-2.5 pointer-events-none">
+                  <span className="text-[9px] sm:text-[10px] font-sans text-[#f4e7cd]/80 bg-black/75 backdrop-blur-sm px-2.5 py-1 rounded-[3px] border border-white/10 flex items-center gap-1.5 shadow-md">
+                    <span>Ketuk untuk membalik</span>
+                    <span className="text-[#dedf42]">↺</span>
+                  </span>
+                </div>
+              </div>
+            }
+            back={
+              <div className="relative w-full h-full p-4 sm:p-6 md:p-7 flex flex-col justify-between bg-gradient-to-br from-[#1a140b] via-[#0d0905] to-[#040202] rounded-[2px] text-[#f4e7cd] select-text shadow-2xl">
+                {/* Top Aksara & Kicker */}
+                <div>
+                  <div className="flex items-center justify-between text-[#dedf42]/70 text-[9px] sm:text-[10.5px] font-sans font-bold tracking-[0.22em] uppercase mb-1.5 sm:mb-2">
+                    <span>FILOSOFI PAKELIRAN</span>
+                    <span className="font-serif tracking-widest text-[#dedf42]">ꦥꦏꦼꦭꦶꦫꦤ꧀</span>
+                  </div>
+                  <h3 className="font-playfair text-[#dedf42] text-base sm:text-xl md:text-2xl font-normal tracking-tight leading-snug">
+                    Sang Dalang & Jagad Kelir
+                  </h3>
+                </div>
+
+                {/* Philosophical Narrative */}
+                <p className="text-[9.5px] sm:text-xs md:text-[13px] text-[#f4e7cd]/85 leading-relaxed font-sans font-normal my-1 sm:my-2">
+                  Di balik selembar kelir putih, Sang Dalang bertindak sebagai cermin semesta — menyatukan cipta, sukma bayangan, dan nyala api blencong untuk menyingkap hakikat watak manusia.
+                </p>
+
+                {/* Footer Cultural Notes */}
+                <div className="pt-2.5 sm:pt-3 border-t border-[#dedf42]/20 flex items-center justify-between text-[8.5px] sm:text-[10px] font-sans text-[#dedf42]/85">
+                  <span className="font-semibold uppercase tracking-wider">✦ Cipta • Rasa • Karsa</span>
+                  <span className="text-[#f4e7cd]/60">Ketuk balik ↻</span>
+                </div>
+              </div>
+            }
           />
         </div>
-
         {/* 5. BOTTOM-RIGHT POETIC STANZAS */}
         <div
           className="absolute right-[3%] sm:right-[2.5%] bottom-[10.40%] z-10 pointer-events-auto text-left"

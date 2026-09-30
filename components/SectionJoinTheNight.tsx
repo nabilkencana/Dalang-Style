@@ -7,14 +7,14 @@ import Link from 'next/link';
 export interface SectionJoinTheNightProps {
   id?: string;
   title?: string;
-  datePill?: string;
-  timePill?: string;
-  venuePill?: {
+  pill1?: string;
+  pill2?: string;
+  actionPill?: {
     text: string;
     href: string;
   };
   tagline?: string[];
-  socialLinks?: Array<{
+  platformLinks?: Array<{
     label: string;
     href: string;
   }>;
@@ -24,24 +24,25 @@ export interface SectionJoinTheNightProps {
 
 export default function SectionJoinTheNight({
   id = 'join',
-  title = 'Bergabunglah dalam Malam Ini',
-  datePill = '21 JUNI 2026',
-  timePill = '20.00 WIB - SELESAI',
-  venuePill = {
-    text: 'YASINTHA CAMPUS →',
+  title = 'Mulai Perjalanan Mendalang',
+  pill1 = 'WARISAN BUDAYA UNESCO',
+  pill2 = 'KONTROL WAYANG AI',
+  actionPill = {
+    text: 'MULAI MENDALANG →',
     href: '/stage',
   },
   tagline = [
-    'MALAM WAYANG JAWI',
-    'BUKAN SEKADAR ACARA.',
-    'INI ADALAH KENANGAN YANG',
-    'MENUNGGU UNTUK TERJADI.',
+    'WAYANG JAWI HADIR UNTUK',
+    'MENJAGA TRADISI LELUHUR',
+    'AGAR TETAP HIDUP, RELEVAN,',
+    'DAN BERMAKNA HARI INI.',
   ],
-  socialLinks = [
-    { label: 'INSTAGRAM', href: 'https://instagram.com' },
-    { label: 'TIKTOK', href: 'https://tiktok.com' },
+  platformLinks = [
+    { label: 'KATALOG TOKOH', href: '/katalog' },
+    { label: 'PANDUAN MENDALANG', href: '/panduan' },
+    { label: 'KREDIT & TENTANG KITA', href: '/kredit' },
   ],
-  brandTitle = 'Malam Wayang Jawi',
+  brandTitle = 'Panggung Wayang Jawi',
   backgroundImage = '/images/join-night-canvas-bg.png',
 }: SectionJoinTheNightProps) {
   return (
@@ -73,27 +74,27 @@ export default function SectionJoinTheNight({
 
             {/* 3 Top Information Pills */}
             <div data-gsap="join-pills" className="flex flex-wrap items-center gap-2 sm:gap-2.5 md:gap-3">
-              {/* Date Pill */}
+              {/* Heritage Badge Pill */}
               <div className="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-transparent">
                 <span className="font-sans font-bold text-black text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap select-text">
-                  {datePill}
+                  {pill1}
                 </span>
               </div>
 
-              {/* Time Pill */}
+              {/* Technology Badge Pill */}
               <div className="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-transparent">
                 <span className="font-sans font-bold text-black text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap select-text">
-                  {timePill}
+                  {pill2}
                 </span>
               </div>
 
-              {/* Venue Link Pill */}
+              {/* Action Link Pill */}
               <Link
-                href={venuePill.href}
-                className="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-transparent hover:bg-black hover:text-[#dedf42] active:scale-95 transition-all group flex items-center gap-1.5 shadow-sm focus:outline-none focus:ring-2 focus:ring-black"
+                href={actionPill.href}
+                className="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-black text-[#dedf42] hover:bg-white hover:text-black active:scale-95 transition-all group flex items-center gap-1.5 shadow-md focus:outline-none focus:ring-2 focus:ring-black"
               >
                 <span className="font-sans font-bold text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap">
-                  {venuePill.text}
+                  {actionPill.text}
                 </span>
               </Link>
             </div>
@@ -111,28 +112,29 @@ export default function SectionJoinTheNight({
           </div>
         </div>
 
-        {/* 2. MIDDLE-BOTTOM ROW: Social Pills on Right */}
-        <div className="relative z-10 w-full flex items-center justify-end pt-8 md:pt-0 my-auto md:my-0">
-          <div data-gsap="join-social" className="flex items-center gap-2 sm:gap-3 pointer-events-auto">
-            {socialLinks.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 sm:px-8 md:px-10 py-1.5 sm:py-2 rounded-full border border-black bg-transparent text-black font-sans font-bold text-[clamp(8px,1.00cqi,13px)] tracking-widest uppercase hover:bg-black hover:text-[#dedf42] active:scale-95 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-black"
-              >
-                {social.label}
-              </a>
-            ))}
+        {/* 2. BOTTOM SECTION: Navigation & Credit Pills directly above Giant Title */}
+        <div className="relative z-10 w-full flex flex-col gap-3 sm:gap-4 md:gap-5 mt-auto pt-6 md:pt-0">
+          {/* Action & Credit Pills sitting right above the giant title */}
+          <div className="flex items-center justify-end">
+            <div data-gsap="join-social" className="flex flex-wrap items-center justify-end gap-2 sm:gap-3 pointer-events-auto">
+              {platformLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="px-5 sm:px-6 md:px-7 py-1.5 sm:py-2 rounded-full border border-black bg-transparent text-black font-sans font-bold text-[clamp(8px,0.95cqi,12px)] tracking-wider uppercase hover:bg-black hover:text-[#dedf42] active:scale-95 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-black"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* 3. GIANT BOTTOM HEADLINE: "The Night Wayang Jawi" */}
-        <div className="relative z-10 w-full pt-4 md:pt-0 pointer-events-auto">
-          <h1 className="font-playfair text-black text-[clamp(28px,9.55cqi,146px)] font-normal leading-[0.95] tracking-[-0.02em] whitespace-nowrap select-text text-left">
-            <span data-gsap="join-brand-line" className="block will-change-transform">{brandTitle}</span>
-          </h1>
+          {/* Giant Bottom Headline: "Panggung Wayang Jawi" */}
+          <div className="w-full pointer-events-auto">
+            <h1 className="font-playfair text-black text-[clamp(28px,9.55cqi,146px)] font-normal leading-[0.95] tracking-[-0.02em] whitespace-nowrap select-text text-left">
+              <span data-gsap="join-brand-line" className="block will-change-transform">{brandTitle}</span>
+            </h1>
+          </div>
         </div>
       </div>
     </section>

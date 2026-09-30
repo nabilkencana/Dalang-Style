@@ -305,7 +305,7 @@ export default function Navbar({ className }: { className?: string }) {
 
           {/* Exact Split Button from rbp-saas-template [ Mainkan Wayang | ↘ ] */}
           <Link
-            href="/stage"
+            href="/panduan"
             className="group relative inline-flex items-center active:scale-95 transition-transform shrink-0"
           >
             {/* Left black capsule */}
@@ -403,7 +403,7 @@ export default function Navbar({ className }: { className?: string }) {
             Katalog Lengkap Tokoh
           </Link>
           <Link
-            href="/stage"
+            href="/panduan"
             onClick={() => setMobileMenuOpen(false)}
             className="text-sm font-bold text-[#dedf42]"
           >

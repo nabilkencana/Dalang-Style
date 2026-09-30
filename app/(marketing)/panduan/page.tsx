@@ -3,6 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import {
+  Gesture01Visual,
+  Gesture02Visual,
+  Gesture03Visual,
+  Gesture04Visual,
+} from '@/components/GestureVisuals';
 
 export default function PanduanPage() {
   return (
@@ -20,7 +26,7 @@ export default function PanduanPage() {
         <div className="absolute inset-0 bg-radial-gradient from-transparent via-transparent to-black/10 pointer-events-none" />
       </div>
 
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 relative z-10">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
         {/* ── Breadcrumb & Aksara Jawa ── */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 border-b border-black/20">
           <div className="flex items-center gap-2 text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-black/70">
@@ -76,7 +82,7 @@ export default function PanduanPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {/* Gestur 1: Poros Tubuh / Posisi Wayang */}
-            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all">
+            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
               <div>
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
@@ -86,6 +92,12 @@ export default function PanduanPage() {
                     TELAPAK TANGAN
                   </span>
                 </div>
+
+                {/* Visual Illustration */}
+                <div className="mb-5">
+                  <Gesture01Visual />
+                </div>
+
                 <h3 className="font-serif italic font-bold text-2xl sm:text-3xl text-[#050303] mb-3">
                   Gerak Batang Gapit Utama
                 </h3>
@@ -107,13 +119,12 @@ export default function PanduanPage() {
                   </div>
                 </div>
               </div>
-              <div className="mt-6 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
+              <div className="mt-4 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
                 Titik Deteksi AI: Wrist & Sendi Telapak (0, 5, 9, 13, 17)
               </div>
             </div>
-
             {/* Gestur 2: Kendali Lengan Wayang */}
-            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all">
+            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
               <div>
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
@@ -123,6 +134,12 @@ export default function PanduanPage() {
                     IBU JARI + TELUNJUK
                   </span>
                 </div>
+
+                {/* Visual Illustration */}
+                <div className="mb-5">
+                  <Gesture02Visual />
+                </div>
+
                 <h3 className="font-serif italic font-bold text-2xl sm:text-3xl text-[#050303] mb-3">
                   Gerak Tangan & Siku Wayang
                 </h3>
@@ -144,13 +161,12 @@ export default function PanduanPage() {
                   </div>
                 </div>
               </div>
-              <div className="mt-6 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
+              <div className="mt-4 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
                 Opsi Ekstra: Mode Thumb-Pinky untuk rentangan tangan lebih lebar
               </div>
             </div>
-
             {/* Gestur 3: Tarian Sakral Kiprahan */}
-            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all">
+            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
               <div>
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
@@ -160,6 +176,12 @@ export default function PanduanPage() {
                     PINKY SIGN (KELINGKING)
                   </span>
                 </div>
+
+                {/* Visual Illustration */}
+                <div className="mb-5">
+                  <Gesture03Visual />
+                </div>
+
                 <h3 className="font-serif italic font-bold text-2xl sm:text-3xl text-[#050303] mb-3">
                   Pemicu Tari Kiprahan Otomatis
                 </h3>
@@ -181,13 +203,12 @@ export default function PanduanPage() {
                   </div>
                 </div>
               </div>
-              <div className="mt-6 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
+              <div className="mt-4 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
                 Pintasan Keyboard Alternatif: Tekan tombol [ D ]
               </div>
             </div>
-
             {/* Gestur 4: Jarak Kedalaman & Bayangan Kelir */}
-            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all">
+            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
               <div>
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
@@ -197,6 +218,12 @@ export default function PanduanPage() {
                     JARAK KE KAMERA
                   </span>
                 </div>
+
+                {/* Visual Illustration */}
+                <div className="mb-5">
+                  <Gesture04Visual />
+                </div>
+
                 <h3 className="font-serif italic font-bold text-2xl sm:text-3xl text-[#050303] mb-3">
                   Efek Bayangan Tajam vs Baur
                 </h3>
@@ -218,13 +245,12 @@ export default function PanduanPage() {
                   </div>
                 </div>
               </div>
-              <div className="mt-6 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
+              <div className="mt-4 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
                 Kontrol Mouse Alternatif: Gunakan Scroll Wheel untuk zoom kedalaman
               </div>
             </div>
           </div>
         </section>
-
         {/* ── DUA MODE PERTUNJUKAN ── */}
         <section className="py-12 border-t border-black/20">
           <div className="flex items-center gap-3 mb-6">
@@ -235,38 +261,94 @@ export default function PanduanPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white/40 border border-black/30 rounded-2xl p-6 sm:p-7">
-              <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
-                MODE STANDAR (DEFAULT)
-              </span>
-              <h3 className="font-serif italic font-bold text-xl sm:text-2xl text-black mt-1 mb-3">
-                Dua Wayang (Dua Tangan)
-              </h3>
-              <p className="text-black/80 text-sm leading-relaxed mb-4">
-                Sangat ideal untuk adegan dialog, perdebatan batin, atau pertempuran dua satria:
-              </p>
-              <ul className="text-xs sm:text-sm space-y-2 text-black/85">
-                <li>• <strong>Tangan Kiri Dalang:</strong> Mengendalikan wayang sisi kiri panggung.</li>
-                <li>• <strong>Tangan Kanan Dalang:</strong> Mengendalikan wayang sisi kanan panggung.</li>
-                <li>• <strong>Otomatis Berhadapan:</strong> Kedua tokoh otomatis menatap satu sama lain saat saling mendekat.</li>
-              </ul>
+            {/* Mode 1: Dua Wayang (Dua Tangan) */}
+            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm hover:bg-black/10 transition-all gap-4">
+              <div>
+                <div className="flex items-center justify-between gap-4 mb-3">
+                  <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
+                    MODE STANDAR (DEFAULT)
+                  </span>
+                  <span className="px-3 py-1 rounded-full bg-black text-[#dedf42] text-[11px] font-mono font-bold">
+                    2 TANGAN = 2 WAYANG
+                  </span>
+                </div>
+
+                {/* Mode Dua Wayang Illustration */}
+                <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden border-2 border-black/30 shadow-lg group bg-black mb-4">
+                  <Image
+                    src="/images/gestures/mode-dua-wayang.png"
+                    alt="Mode Standar: Dua Wayang Dua Tangan"
+                    fill
+                    className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[10px] font-mono text-[#dedf42] pointer-events-none">
+                    <span className="bg-black/80 backdrop-blur-sm px-2.5 py-1 rounded-full border border-[#dedf42]/40 font-bold uppercase tracking-wider shadow-sm">
+                      ✦ MODE DUA WAYANG
+                    </span>
+                    <span className="text-white/80 bg-black/70 px-2 py-0.5 rounded text-[9px] font-sans">
+                      Laga & Dialog
+                    </span>
+                  </div>
+                </div>
+
+                <h3 className="font-serif italic font-bold text-xl sm:text-2xl text-black mb-2">
+                  Dua Wayang (Dua Tangan)
+                </h3>
+                <p className="text-black/80 text-sm leading-relaxed mb-4">
+                  Sangat ideal untuk adegan dialog, perdebatan batin, atau pertempuran dua satria:
+                </p>
+                <ul className="text-xs sm:text-sm space-y-2 text-black/85">
+                  <li>• <strong>Tangan Kiri Dalang:</strong> Mengendalikan wayang sisi kiri panggung.</li>
+                  <li>• <strong>Tangan Kanan Dalang:</strong> Mengendalikan wayang sisi kanan panggung.</li>
+                  <li>• <strong>Otomatis Berhadapan:</strong> Kedua tokoh otomatis menatap satu sama lain saat saling mendekat.</li>
+                </ul>
+              </div>
             </div>
 
-            <div className="bg-white/40 border border-black/30 rounded-2xl p-6 sm:p-7">
-              <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
-                MODE LANJUTAN (SOLO MASTERY)
-              </span>
-              <h3 className="font-serif italic font-bold text-xl sm:text-2xl text-black mt-1 mb-3">
-                Satu Wayang Penuh (Dua Tangan)
-              </h3>
-              <p className="text-black/80 text-sm leading-relaxed mb-4">
-                Fokus mendalam pada satu tokoh untuk gerakan artikulatif yang sangat kaya:
-              </p>
-              <ul className="text-xs sm:text-sm space-y-2 text-black/85">
-                <li>• <strong>Tangan Utama (Body Hand):</strong> Mengendalikan posisi dan poros badan wayang.</li>
-                <li>• <strong>Tangan Kedua (Arm Hand):</strong> Mengendalikan kedua lengan secara independen dan ekspresif.</li>
-                <li>• Diaktifkan melalui tombol <strong>Settings</strong> di pojok panggung.</li>
-              </ul>
+            {/* Mode 2: Satu Wayang Penuh (Dua Tangan) */}
+            <div className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm hover:bg-black/10 transition-all gap-4">
+              <div>
+                <div className="flex items-center justify-between gap-4 mb-3">
+                  <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
+                    MODE LANJUTAN (SOLO MASTERY)
+                  </span>
+                  <span className="px-3 py-1 rounded-full bg-black text-[#dedf42] text-[11px] font-mono font-bold">
+                    2 TANGAN = 1 WAYANG
+                  </span>
+                </div>
+
+                {/* Mode Satu Wayang Penuh Illustration */}
+                <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden border-2 border-black/30 shadow-lg group bg-black mb-4">
+                  <Image
+                    src="/images/gestures/mode-satu-wayang.png"
+                    alt="Mode Lanjutan: Satu Wayang Penuh Dua Tangan"
+                    fill
+                    className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[10px] font-mono text-[#dedf42] pointer-events-none">
+                    <span className="bg-black/80 backdrop-blur-sm px-2.5 py-1 rounded-full border border-[#dedf42]/40 font-bold uppercase tracking-wider shadow-sm">
+                      ✦ KENDALI SATU WAYANG PENUH
+                    </span>
+                    <span className="text-white/80 bg-black/70 px-2 py-0.5 rounded text-[9px] font-sans">
+                      Artikulasi Penuh
+                    </span>
+                  </div>
+                </div>
+
+                <h3 className="font-serif italic font-bold text-xl sm:text-2xl text-black mb-2">
+                  Satu Wayang Penuh (Dua Tangan)
+                </h3>
+                <p className="text-black/80 text-sm leading-relaxed mb-4">
+                  Fokus mendalam pada satu tokoh untuk gerakan artikulatif yang sangat kaya:
+                </p>
+                <ul className="text-xs sm:text-sm space-y-2 text-black/85">
+                  <li>• <strong>Tangan Utama (Body Hand):</strong> Mengendalikan posisi dan poros badan wayang.</li>
+                  <li>• <strong>Tangan Kedua (Arm Hand):</strong> Mengendalikan kedua lengan secara independen dan ekspresif.</li>
+                  <li>• Diaktifkan melalui tombol <strong>Settings</strong> di pojok panggung.</li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>

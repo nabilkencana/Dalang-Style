@@ -4,10 +4,95 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import {
+  Brain,
+  ShieldCheck,
+  Heart,
+  Zap,
+  Lightbulb,
+  Users,
+  Smile,
+  Gift,
+  Scale,
+  Flame,
+  Sparkles,
+  Eye,
+  Target,
+  Swords,
+  Feather,
+  Compass,
+  Crown,
+  BookOpen,
+  Lock,
+  Wind,
+  Axe,
+  Hammer,
+  MessageSquareQuote,
+} from 'lucide-react';
+import {
   TOKOH_CHARACTERS,
   getAllTokohSlugs,
   getTokohBySlug,
 } from '@/lib/tokoh-data';
+
+function getTraitIcon(trait: string) {
+  const t = trait.toLowerCase();
+  if (t.includes('bijak') || t.includes('pencari')) return <Brain className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('pengayom') || t.includes('kokoh') || t.includes('lindung')) return <ShieldCheck className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('tulus') || t.includes('bakti') || t.includes('kasih') || t.includes('sayang')) return <Heart className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('sakti') || t.includes('perkasa') || t.includes('mandraguna')) return <Zap className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('cerdas') || t.includes('pikir')) return <Lightbulb className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('diplomatis') || t.includes('kawan')) return <Users className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('humor') || t.includes('jenaka')) return <Smile className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('dermawan')) return <Gift className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('jujur')) return <Scale className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('berani')) return <Flame className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('spontan') || t.includes('tangkas')) return <Sparkles className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('kritis') || t.includes('waspada') || t.includes('hati-hati') || t.includes('mawas')) return <Eye className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('fokus') || t.includes('senjata')) return <Target className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('ksatria') || t.includes('patriot')) return <Swords className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('halus') || t.includes('budi') || t.includes('sabar')) return <Feather className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('pertapa') || t.includes('hakikat')) return <Compass className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('ambisi') || t.includes('raja')) return <Crown className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('angkara')) return <Flame className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('pujangga')) return <BookOpen className="size-3.5 text-[#dedf42] shrink-0" />;
+  if (t.includes('sumpah')) return <Lock className="size-3.5 text-[#dedf42] shrink-0" />;
+  return <Sparkles className="size-3.5 text-[#dedf42] shrink-0" />;
+}
+
+function getWeaponIcon(name: string) {
+  const n = name.toLowerCase();
+  if (n.includes('kentut') || n.includes('angin') || n.includes('rompi') || n.includes('antakusuma')) {
+    return <Wind className="size-4 text-[#dedf42]" />;
+  }
+  if (n.includes('kapak')) {
+    return <Axe className="size-4 text-[#dedf42]" />;
+  }
+  if (n.includes('busur') || n.includes('gandiwa') || n.includes('panah') || n.includes('pasopati') || n.includes('cundamanik')) {
+    return <Target className="size-4 text-[#dedf42]" />;
+  }
+  if (n.includes('keris') || n.includes('pedang') || n.includes('candrasa') || n.includes('belati')) {
+    return <Swords className="size-4 text-[#dedf42]" />;
+  }
+  if (n.includes('kuku') || n.includes('pancanaka')) {
+    return <Sparkles className="size-4 text-[#dedf42]" />;
+  }
+  if (n.includes('gada') || n.includes('rujakpala') || n.includes('brajamusti') || n.includes('narantaka') || n.includes('palu')) {
+    return <Hammer className="size-4 text-[#dedf42]" />;
+  }
+  if (n.includes('lidah') || n.includes('kata') || n.includes('jujur') || n.includes('silat')) {
+    return <MessageSquareQuote className="size-4 text-[#dedf42]" />;
+  }
+  if (n.includes('jiwa') || n.includes('caping') || n.includes('batin') || n.includes('pangabaran') || n.includes('rawarontek')) {
+    return <ShieldCheck className="size-4 text-[#dedf42]" />;
+  }
+  if (n.includes('danurweda') || n.includes('kitab') || n.includes('ilmu')) {
+    return <BookOpen className="size-4 text-[#dedf42]" />;
+  }
+  if (n.includes('pancasona') || n.includes('bandung') || n.includes('daya') || n.includes('sakti')) {
+    return <Zap className="size-4 text-[#dedf42]" />;
+  }
+  return <Flame className="size-4 text-[#dedf42]" />;
+}
 
 interface TokohPageProps {
   params: Promise<{
@@ -58,7 +143,7 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
 
       {/* 2. Top Header Navigation Bar */}
       <header className="relative z-30 w-full border-b border-[#dedf42]/15 bg-black/60 backdrop-blur-md sticky top-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 h-16 sm:h-20 flex items-center justify-between gap-4">
           {/* Back to Catalog Link */}
           <Link
             href="/katalog"
@@ -86,7 +171,7 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
       </header>
 
       {/* 3. Main Character Profile Content */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
+      <main className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-12 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
           {/* Left Column: Visual Showcase Card (Sticky on Scroll) */}
           <div className="lg:col-span-6 flex flex-col items-center lg:sticky lg:top-24 self-start h-fit z-20">
@@ -103,22 +188,18 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
               {/* Card Sheen & Vignette Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-white/10 pointer-events-none" />
 
-              {/* Floating Badge on Card */}
-              <div className="absolute top-4 left-4 z-20">
-                <span className="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[#dedf42] font-sans font-bold text-xs tracking-widest uppercase border border-[#dedf42]/30 shadow-md">
-                  {character.badge}
-                </span>
-              </div>
             </div>
 
             {/* Quick Character Traits Pills */}
+            {/* Quick Character Traits Pills with Custom Icons */}
             <div className="w-full flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mt-5">
               {character.traits.map((trait) => (
                 <span
                   key={trait}
-                  className="px-3.5 py-1 rounded-full border border-[#dedf42]/25 bg-white/[0.03] text-[#f4e7cd]/90 text-[11px] sm:text-xs font-sans font-medium tracking-wide shadow-sm"
+                  className="px-3.5 py-1.5 rounded-full border border-[#dedf42]/30 bg-white/[0.04] hover:bg-[#dedf42]/10 hover:border-[#dedf42]/60 text-[#f4e7cd] text-[11px] sm:text-xs font-sans font-medium tracking-wide shadow-sm flex items-center gap-1.5 transition-colors"
                 >
-                  ✦ {trait}
+                  {getTraitIcon(trait)}
+                  <span>{trait}</span>
                 </span>
               ))}
             </div>
@@ -215,14 +296,16 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
                 {character.weapons.map((w, idx) => (
                   <div
                     key={idx}
-                    className="flex items-start gap-3 p-3 rounded-lg border border-[#dedf42]/10 bg-white/[0.02]"
+                    className="flex items-start gap-3.5 p-3.5 rounded-xl border border-[#dedf42]/15 bg-white/[0.02] hover:bg-white/[0.04] hover:border-[#dedf42]/30 transition-all"
                   >
-                    <span className="text-[#dedf42] text-sm mt-0.5">⚔</span>
+                    <div className="size-8 rounded-lg border border-[#dedf42]/25 bg-[#dedf42]/10 flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                      {getWeaponIcon(w.name)}
+                    </div>
                     <div className="flex-1">
                       <p className="font-sans font-bold text-xs text-[#dedf42] tracking-wider uppercase">
                         {w.name}
                       </p>
-                      <p className="text-[11px] text-[#f4e7cd]/70 leading-relaxed font-sans mt-0.5">
+                      <p className="text-[11px] text-[#f4e7cd]/75 leading-relaxed font-sans mt-0.5">
                         {w.description}
                       </p>
                     </div>
@@ -254,7 +337,7 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
           </div>
 
           {/* Other Characters Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6">
             {otherCharacters.map((other) => (
               <Link
                 key={other.slug}
