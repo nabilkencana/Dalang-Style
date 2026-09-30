@@ -23,20 +23,33 @@ export interface HeroWayangJawiProps {
 
 export default function HeroWayangJawi({
   navLinks = [
-    { label: 'RINGKASAN', href: '#overview' },
-    { label: 'AKTOR', href: '#actor' },
-    { label: 'CERITA', href: '#story' },
+    { label: 'CERITA', href: '#fitur' },
+    { label: 'LAKON', href: '#lakon' },
+    { label: 'TOKOH', href: '#cara-bermain' },
+    { label: 'MUSEUM', href: '#galeri' },
+    { label: 'WARTA', href: '#filosofi' },
   ],
-  ticketText = 'PESAN TIKET',
+  ticketText = 'MAINKAN WAYANG',
   ticketHref = '/stage',
   aksaraText = 'ꦠꦼꦂꦱꦶꦤꦺꦴꦮꦂꦠ ꦮꦪꦁ ꦗꦮꦶ ꦏꦭ ꦮꦼꦔꦶ',
   title = { line1: 'Malam', line2: 'Wayang', line3: 'Jawi' },
   cardTagline = 'KISAH LELUHUR, DIHIDUPKAN KEMBALI SETELAH\nGELAP. TAK SEMUA YANG LAMA HARUS\nTETAP TINGGAL DI MASA LALU.',
-  date = '21 JUNI 2026',
-  venue = 'YASINTHA CAMPUS',
+  venue = 'JELAJAHI PANGGUNG',
   venueHref = '/stage',
   cardBackground = '/images/wayang-stage-bg.png',
 }: HeroWayangJawiProps) {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      const id = href.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.history.pushState(null, '', href);
+      }
+    }
+  };
+
   return (
     <section className="relative w-full min-h-screen bg-[#050303] text-[#dedf42] overflow-hidden select-none">
       {/* Full-bleed Background Image */}
@@ -58,26 +71,29 @@ export default function HeroWayangJawi({
       {/* Content Layer */}
       <div className="relative z-10 flex flex-col justify-between min-h-screen px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-5 sm:py-7 md:py-9">
         {/* Top Bar: Nav Left + Ticket Right */}
-        <header data-gsap="hero-nav" className="w-full flex items-center justify-between">
-          <nav className="flex items-center gap-1 text-[11px] sm:text-xs md:text-sm font-bold tracking-wider text-[#dedf42] uppercase font-sans drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+        {/* Top Bar: Nav Left + Action Button Right */}
+        <header data-gsap="hero-nav" className="w-full flex items-center justify-between gap-4">
+          <nav className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs md:text-sm font-bold tracking-wider text-[#dedf42] uppercase font-sans drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             {navLinks.map((link, idx) => (
               <React.Fragment key={link.label}>
                 <a
                   href={link.href}
-                  className="hover:brightness-125 transition-all focus:outline-none focus:underline"
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className="hover:brightness-125 transition-all focus:outline-none focus:underline py-1"
                 >
                   {link.label}
                 </a>
-                {idx < navLinks.length - 1 && <span className="opacity-60">,</span>}
+                {idx < navLinks.length - 1 && <span className="opacity-40">,</span>}
               </React.Fragment>
             ))}
           </nav>
 
           <Link
             href={ticketHref}
-            className="text-[11px] sm:text-xs md:text-sm font-bold tracking-wider text-[#dedf42] uppercase hover:brightness-125 active:translate-y-0.5 transition-all font-sans focus:outline-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
+            className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-[#dedf42]/70 bg-[#dedf42]/10 hover:bg-[#dedf42] hover:text-black text-[#dedf42] font-bold text-[11px] sm:text-xs md:text-sm tracking-wider uppercase transition-all duration-300 shadow-md active:scale-95 flex items-center gap-1.5 group cursor-pointer backdrop-blur-sm shrink-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
           >
-            {ticketText}
+            <span>{ticketText}</span>
+            <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
           </Link>
         </header>
 
@@ -120,16 +136,13 @@ export default function HeroWayangJawi({
             {cardTagline}
           </p>
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            <span className="px-4 sm:px-5 py-1.5 sm:py-2 rounded-full border border-[#dedf42]/50 text-[9px] sm:text-xs md:text-[13px] font-bold tracking-wider text-[#dedf42] uppercase whitespace-nowrap bg-black/30 backdrop-blur-md">
-              {date}
-            </span>
+          <div className="flex items-center">
             <Link
               href={venueHref}
-              className="px-4 sm:px-5 py-1.5 sm:py-2 rounded-full border border-[#dedf42]/50 text-[9px] sm:text-xs md:text-[13px] font-bold tracking-wider text-[#dedf42] uppercase whitespace-nowrap bg-black/30 backdrop-blur-md hover:bg-[#dedf42] hover:text-[#050303] active:scale-95 transition-all flex items-center gap-1.5 group focus:outline-none focus:ring-2 focus:ring-[#dedf42]"
+              className="px-5 sm:px-6 py-2 sm:py-2.5 rounded-full border border-[#dedf42]/70 text-[10px] sm:text-xs md:text-sm font-bold tracking-wider text-[#dedf42] uppercase whitespace-nowrap bg-black/40 backdrop-blur-md hover:bg-[#dedf42] hover:text-[#050303] active:scale-95 transition-all flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-[#dedf42] shadow-lg drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] cursor-pointer"
             >
               <span>{venue}</span>
-              <span className="group-hover:translate-x-1 transition-transform">→</span>
+              <span className="transition-transform group-hover:translate-x-1 text-sm sm:text-base leading-none">&rarr;</span>
             </Link>
           </div>
         </div>

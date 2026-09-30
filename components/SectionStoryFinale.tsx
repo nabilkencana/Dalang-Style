@@ -121,7 +121,8 @@ export default function SectionStoryFinale({
               <InteractiveListPreview
                 items={articles}
                 bgColor="transparent"
-                imageSize={0.9}
+                imageSize={1.1}
+                imagePosition="left"
                 highlightColor="rgba(222, 223, 66, 0.18)"
                 activeTextColor="#dedf42"
                 inactiveTextColor="#dedf42"

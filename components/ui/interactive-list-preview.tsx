@@ -18,9 +18,10 @@ export interface InteractiveListPreviewProps {
   items?: InteractiveListItem[];
   /** Scale multiplier for the hover preview image. */
   imageSize?: number;
+  /** Horizontal positioning of hover preview image relative to the list. */
+  imagePosition?: "left" | "center" | "right";
   /** Preview image reveal / hide duration (seconds). */
   duration?: number;
-  /** Highlight bar + row text transition smoothing (seconds). */
   smoothness?: number;
   /** Pointer-follow smoothing; higher tracks faster. */
   lerp?: number;
@@ -38,9 +39,9 @@ const DEFAULT_DURATION = 0.6;
 const DEFAULT_SMOOTHNESS = 0.35;
 const DEFAULT_LERP = 0.18;
 
-const BASE_IMAGE_WIDTH_REM = 19.5;
-const BASE_IMAGE_HEIGHT_REM = 13.5;
-const IMAGE_OFFSET_MULTIPLIER = 20;
+const BASE_IMAGE_WIDTH_REM = 24.5;
+const BASE_IMAGE_HEIGHT_REM = 15.5;
+const IMAGE_OFFSET_MULTIPLIER = 16;
 const IMAGE_HIDDEN_CLIP_PATH = "inset(50%)";
 const IMAGE_VISIBLE_CLIP_PATH = "inset(0%)";
 const IMAGE_VISIBILITY_HIDDEN = "hidden";
@@ -55,6 +56,7 @@ function clampNumber(value: number, min: number, max: number, fallback: number) 
 export default function InteractiveListPreview({
   items = [],
   imageSize = DEFAULT_IMAGE_SIZE,
+  imagePosition = "left",
   duration = DEFAULT_DURATION,
   smoothness = DEFAULT_SMOOTHNESS,
   lerp = DEFAULT_LERP,
@@ -389,31 +391,40 @@ export default function InteractiveListPreview({
             ref={imageContainerRef}
             className="pointer-events-none absolute inset-0 z-40 overflow-visible"
           >
-            {items.map((item, index) => (
-              <div
-                key={`${item.client}-${index}`}
-                ref={(element) => setImageRef(index, element)}
-                className="invisible absolute left-[45%] top-1/2 -translate-y-1/2 rounded-xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] border-2 border-[#dedf42]/60 bg-black pointer-events-none"
-                style={{
-                  width: `${BASE_IMAGE_WIDTH_REM * safeImageSize}rem`,
-                  height: `${BASE_IMAGE_HEIGHT_REM * safeImageSize}rem`,
-                  willChange: "clip-path, opacity",
-                  zIndex: DEFAULT_IMAGE_Z_INDEX,
-                }}
-              >
-                <img
-                  src={item.img}
-                  alt={item.client}
-                  className="absolute inset-0 h-full w-full object-cover brightness-[0.95] contrast-[1.05]"
-                />
+            {items.map((item, index) => {
+              const positionClass =
+                imagePosition === "center"
+                  ? "left-[45%] top-1/2 -translate-y-1/2"
+                  : imagePosition === "right"
+                  ? "left-full ml-6 top-1/2 -translate-y-1/2"
+                  : "right-full mr-6 lg:mr-8 top-1/2 -translate-y-1/2";
+
+              return (
+                <div
+                  key={`${item.client}-${index}`}
+                  ref={(element) => setImageRef(index, element)}
+                  className={`invisible absolute ${positionClass} rounded-xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.95)] border-2 border-[#dedf42]/70 bg-black pointer-events-none`}
+                  style={{
+                    width: `${BASE_IMAGE_WIDTH_REM * safeImageSize}rem`,
+                    height: `${BASE_IMAGE_HEIGHT_REM * safeImageSize}rem`,
+                    willChange: "clip-path, opacity",
+                    zIndex: DEFAULT_IMAGE_Z_INDEX,
+                  }}
+                >
+                  <img
+                    src={item.img}
+                    alt={item.client}
+                    className="absolute inset-0 h-full w-full object-cover brightness-[0.95] contrast-[1.05]"
+                  />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-white/10 pointer-events-none" />
                 <div className="absolute bottom-2.5 left-3 right-3 text-[10px] font-sans font-bold text-white tracking-wider uppercase bg-black/75 px-2.5 py-1 rounded backdrop-blur-sm truncate">
                   {item.platform ? `${item.platform} • ` : ""}
                   {item.client}
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
+        </div>
 
           <div
             ref={tableRef}

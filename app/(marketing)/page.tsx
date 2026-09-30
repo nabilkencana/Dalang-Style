@@ -5,6 +5,7 @@ import SectionBimaSuci from '@/components/SectionBimaSuci';
 import SectionStoryAwakening from '@/components/SectionStoryAwakening';
 import SectionStoryFinale from '@/components/SectionStoryFinale';
 import SectionMovementMeaning from '@/components/SectionMovementMeaning';
+import SectionGalleryMuseum from '@/components/SectionGalleryMuseum';
 import SectionJoinTheNight from '@/components/SectionJoinTheNight';
 import MarqueeTicker from '@/components/MarqueeTicker';
 import GsapAnimations from '@/components/GsapAnimations';
@@ -38,6 +39,9 @@ export default function LandingPage() {
 
       {/* 8. Section 6: Interactive Meaning Carousel (From Video 00:26 - 00:34) */}
       <SectionMovementMeaning id="makna" />
+
+      {/* 9. Section 7: Galeri Museum Wayang */}
+      <SectionGalleryMuseum />
 
       {/* 9. Section 7: Join the Night / The Night Wayang Jawi (From Video 00:36 - 00:41) */}
       <SectionJoinTheNight id="join" />

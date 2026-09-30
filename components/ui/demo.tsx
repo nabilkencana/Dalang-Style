@@ -1,61 +1,82 @@
 "use client";
 
-import { WorksWheel, type WorksWheelItem } from "@/components/ui/works-wheel";
+import type { Work } from "@/components/ui/formation-utils/formation-poses";
+import Formation from "@/components/ui/formation";
 
-// Placeholder art served straight off the crafterui CDN so the demo works the
-// moment it is installed - no assets to copy into your public/. Swap the names
-// and the titles for your own index - the wheel sizes its ring to however many
-// pieces it is handed.
-const ART = (name: string) => `https://www.crafterui.com/art/${name}.jpg`;
+const rootUrl =
+  "https://d24l2zb4cwkekfpl.public.blob.vercel-storage.com/formation";
 
-const WORKS: WorksWheelItem[] = [
+const works: Work[] = [
   {
-    title: "Prismatic Rift",
-    image: ART("prismatic-rift-anime"),
-    href: "#prismatic-rift",
+    image: `${rootUrl}/vista.jpg`,
+    title: "Vantage",
   },
   {
-    title: "Ember Clouds",
-    image: ART("black-hole-ember-clouds"),
-    href: "#ember-clouds",
+    image: `${rootUrl}/mirror.jpg`,
+    title: "Mirror",
   },
   {
-    title: "Neon Portal",
-    image: ART("neon-cave-portal-silhouette"),
-    href: "#neon-portal",
+    image: `${rootUrl}/cosmos.jpg`,
+    title: "Cosmos",
   },
   {
-    title: "Red Ribbon",
-    image: ART("red-ribbon-typography"),
-    href: "#red-ribbon",
+    image: `${rootUrl}/current.jpg`,
+    title: "Current",
   },
   {
-    title: "Celestial",
-    image: ART("celestial-light-figure"),
-    href: "#celestial",
-  },
-  { title: "Uplight", image: ART("neon-portrait-uplight"), href: "#uplight" },
-  {
-    title: "Indigo Marble",
-    image: ART("indigo-liquid-marble"),
-    href: "#indigo-marble",
+    image: `${rootUrl}/portal.jpg`,
+    title: "Threshold",
   },
   {
-    title: "Launch Window",
-    image: ART("rocket-launch-gradient"),
-    href: "#launch-window",
+    image: `${rootUrl}/valley.jpg`,
+    title: "Hollow",
   },
   {
-    title: "Cosmic Wave",
-    image: ART("astronaut-cosmic-wave"),
-    href: "#cosmic-wave",
+    image: `${rootUrl}/ascent.jpg`,
+    title: "Ascent",
+  },
+  {
+    image: `${rootUrl}/array.jpg`,
+    title: "Array",
+  },
+  {
+    image: `${rootUrl}/giza.jpg`,
+    title: "Meridian",
+  },
+  {
+    image: `${rootUrl}/rift.jpg`,
+    title: "Rift",
+  },
+  {
+    image: `${rootUrl}/overlook.jpg`,
+    title: "Overlook",
+  },
+  {
+    image: `${rootUrl}/horizon.jpg`,
+    title: "Event Horizon",
+  },
+  {
+    image: `${rootUrl}/archipelago.jpg`,
+    title: "Archipelago",
+  },
+  {
+    image: `${rootUrl}/crest.jpg`,
+    title: "Crest",
+  },
+  {
+    image: `${rootUrl}/ridge.jpg`,
+    title: "Ridge",
+  },
+  {
+    image: `${rootUrl}/fathom.jpg`,
+    title: "Fathom",
   },
 ];
 
-export default function WorksWheelDemo() {
+export default function FormationDemo() {
   return (
-    <div className="bg-background text-foreground w-full h-screen">
-      <WorksWheel items={WORKS} label="Works '26" action="View" />
+    <div className="h-screen w-full">
+      <Formation works={works} />
     </div>
   );
 }
