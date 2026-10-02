@@ -363,10 +363,29 @@ export const TOKOH_CHARACTERS: Record<string, TokohCharacter> = {
   },
 };
 
+const SLUG_ALIASES: Record<string, string> = {
+  'raden-werkudara': 'sang-bima',
+  'werkudara': 'sang-bima',
+  'bima': 'sang-bima',
+  'gatotkaca': 'sang-gatotkaca',
+  'semar': 'kyai-semar',
+  'petruk': 'kyai-petruk',
+  'bagong': 'kyai-bagong',
+  'arjuna': 'sang-arjuna',
+  'gareng': 'nala-gareng',
+  'rahwana': 'prabu-rahwana',
+  'drona': 'resi-drona',
+};
+
 export function getAllTokohSlugs(): string[] {
-  return Object.keys(TOKOH_CHARACTERS);
+  const canonical = Object.keys(TOKOH_CHARACTERS);
+  const aliases = Object.keys(SLUG_ALIASES);
+  return Array.from(new Set([...canonical, ...aliases]));
 }
 
 export function getTokohBySlug(slug: string): TokohCharacter | undefined {
-  return TOKOH_CHARACTERS[slug];
+  if (!slug) return undefined;
+  const key = slug.toLowerCase();
+  const targetSlug = SLUG_ALIASES[key] || key;
+  return TOKOH_CHARACTERS[targetSlug] || TOKOH_CHARACTERS[slug];
 }

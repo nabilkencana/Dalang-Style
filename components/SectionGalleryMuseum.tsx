@@ -221,6 +221,25 @@ export default function SectionGalleryMuseum() {
     );
   }, [isClosing]);
 
+  // Listen to open-museum-modal events from Navbar
+  useEffect(() => {
+    const handleOpenModal = (e: Event) => {
+      const customEvent = e as CustomEvent<{ title?: string }>;
+      const title = customEvent.detail?.title;
+      if (!title) return;
+      const found = MUSEUM_PLACES.find((m) =>
+        m.title.toLowerCase().includes(title.toLowerCase())
+      );
+      if (found) {
+        setSelectedMuseum(found);
+      }
+    };
+
+    window.addEventListener('open-museum-modal', handleOpenModal);
+    return () => {
+      window.removeEventListener('open-museum-modal', handleOpenModal);
+    };
+  }, []);
   // Close modal on Escape key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

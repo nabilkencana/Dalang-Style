@@ -25,6 +25,7 @@ import {
   BookOpen,
   Lock,
 } from 'lucide-react';
+import KatalogGsapAnimations from '@/components/KatalogGsapAnimations';
 
 function getTraitIcon(trait: string) {
   const t = trait.toLowerCase();
@@ -119,12 +120,15 @@ export default function KatalogTokohView() {
 
   return (
     <div className="relative min-h-screen bg-[#050303] text-[#f4e7cd] overflow-x-clip selection:bg-[#dedf42] selection:text-black">
+      {/* GSAP ScrollTrigger Animations for Katalog */}
+      <KatalogGsapAnimations filterKey={`${selectedCategory}-${submittedQuery}`} />
+
       {/* 1. Ambient Theatrical Stage Background Vignettes */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(222,223,66,0.08)_0%,_rgba(11,6,4,0.7)_50%,_#050303_100%)] pointer-events-none z-0" />
       <div className="fixed inset-0 bg-repeat opacity-[0.03] pointer-events-none z-0 bg-[radial-gradient(#dedf42_1px,transparent_1px)] [background-size:24px_24px]" />
 
       {/* 2. Top Header Navigation Bar */}
-      <header className="relative z-30 w-full border-b border-[#dedf42]/15 bg-black/70 backdrop-blur-md sticky top-0">
+      <header data-gsap="katalog-header" className="relative z-30 w-full border-b border-[#dedf42]/15 bg-black/70 backdrop-blur-md sticky top-0">
         <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 h-16 sm:h-20 flex items-center justify-between gap-4">
           <Link
             href="/#cara-bermain"
@@ -153,23 +157,23 @@ export default function KatalogTokohView() {
 
       {/* 3. Hero Header Section */}
       <section className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 pt-10 sm:pt-14 md:pt-18 pb-6 sm:pb-8 text-center flex flex-col items-center">
-        <p className="text-[#dedf42]/60 text-lg sm:text-2xl font-serif tracking-[0.3em] mb-3 select-none">
+        <p data-gsap="katalog-aksara" className="text-[#dedf42]/60 text-lg sm:text-2xl font-serif tracking-[0.3em] mb-3 select-none">
           ꦏꦠꦭꦺꦴꦒ꧀ ꦠꦺꦴꦏꦺꦴꦃ ꦮꦪꦁ
         </p>
 
         {/* Main Headline */}
-        <h1 className="font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal text-[#dedf42] tracking-tight leading-[1.05] max-w-4xl">
+        <h1 data-gsap="katalog-title" className="font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal text-[#dedf42] tracking-tight leading-[1.05] max-w-4xl">
           Katalog Tokoh Pewayangan
         </h1>
 
         {/* Subtitle Description */}
-        <p className="text-xs sm:text-sm md:text-base font-sans text-[#f4e7cd]/80 max-w-2xl mt-4 leading-relaxed">
+        <p data-gsap="katalog-subtitle" className="text-xs sm:text-sm md:text-base font-sans text-[#f4e7cd]/80 max-w-2xl mt-4 leading-relaxed">
           Telusuri watak filosofis, kisah heroisme, dan pusaka sakti para ksatria,
           punakawan, serta raja-raja dalam warisan agung wiracarita pewayangan Jawa.
         </p>
 
         {/* 4. Interactive Search Bar & Category Filter Tabs */}
-        <div className="w-full max-w-3xl mt-8 sm:mt-10 flex flex-col gap-4 items-center">
+        <div data-gsap="katalog-search" className="w-full max-w-3xl mt-8 sm:mt-10 flex flex-col gap-4 items-center">
           {/* Functional Search Box with Clickable Button & Form Submit */}
           <form
             onSubmit={handleSearchSubmit}
@@ -209,7 +213,7 @@ export default function KatalogTokohView() {
           </form>
 
           {/* Quick Search Tag Chips */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[11px] text-[#f4e7cd]/70">
+          <div data-gsap="katalog-tags" className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[11px] text-[#f4e7cd]/70">
             <span className="font-sans font-medium text-xs text-[#dedf42]/80 mr-1">
               Populer:
             </span>
@@ -226,7 +230,7 @@ export default function KatalogTokohView() {
           </div>
 
           {/* Functional Category Filter Pills with Item Counts */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 w-full pt-1">
+          <div data-gsap="katalog-cats" className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 w-full pt-1">
             {CATEGORIES.map((cat) => {
               const isActive = selectedCategory === cat.id;
               return (
@@ -257,7 +261,7 @@ export default function KatalogTokohView() {
 
       {/* 5. Main Catalog Grid Section - Full Width */}
       <main className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-12">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-[#dedf42]/15 mb-8 gap-3">
+        <div data-gsap="katalog-counter" className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-[#dedf42]/15 mb-8 gap-3">
           <p className="text-xs sm:text-sm font-sans font-medium text-[#f4e7cd]/70">
             Menampilkan{' '}
             <span className="font-bold text-[#dedf42]">
@@ -311,8 +315,9 @@ export default function KatalogTokohView() {
             {filteredCharacters.map((char) => (
               <Link
                 key={char.slug}
+                data-gsap="katalog-card"
                 href={`/tokoh/${char.slug}`}
-                className="group flex flex-col rounded-2xl overflow-hidden border border-[#dedf42]/25 bg-[#120d08] hover:border-[#dedf42] hover:shadow-[0_20px_45px_-10px_rgba(222,223,66,0.18)] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#dedf42]"
+                className="group flex flex-col rounded-2xl overflow-hidden border border-[#dedf42]/25 bg-[#120d08] hover:border-[#dedf42] hover:shadow-[0_20px_45px_-10px_rgba(222,223,66,0.18)] transition-[border-color,box-shadow] duration-300 focus:outline-none focus:ring-2 focus:ring-[#dedf42]"
               >
                 {/* 16:9 Wayang Artwork Card */}
                 <div className="relative aspect-[16/9] w-full overflow-hidden bg-black">

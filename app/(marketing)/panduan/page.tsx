@@ -21,8 +21,9 @@ export default function PanduanPage() {
     if (typeof window !== 'undefined' && window.lenisInstance) {
       window.lenisInstance.scrollTo(target, {
         offset: -80,
-        duration: 1.6,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        duration: 1.25,
+        easing: (t: number) =>
+          t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
       });
     } else {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });

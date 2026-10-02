@@ -13,6 +13,7 @@ import {
   MOST_READ_FEATURE,
   MOST_READ_GRID,
 } from '@/lib/news-data';
+import BeritaGsapAnimations from '@/components/BeritaGsapAnimations';
 
 const SUB_NAV_CATEGORIES = [
   'Utama',
@@ -42,12 +43,15 @@ export default function NewsEditorialView() {
 
   return (
     <div className="relative min-h-screen bg-[#050303] text-[#f4e7cd] overflow-x-clip selection:bg-[#dedf42] selection:text-black font-sans">
+      {/* GSAP ScrollTrigger Animations for Berita */}
+      <BeritaGsapAnimations />
+
       {/* 1. Ambient Background Vignettes */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(222,223,66,0.06)_0%,_rgba(11,6,4,0.7)_50%,_#050303_100%)] pointer-events-none z-0" />
       <div className="fixed inset-0 bg-repeat opacity-[0.025] pointer-events-none z-0 bg-[radial-gradient(#dedf42_1px,transparent_1px)] [background-size:24px_24px]" />
 
       {/* Minimal floating back bar */}
-      <div className="sticky top-0 z-30 w-full bg-black/85 backdrop-blur-md border-b border-[#dedf42]/15 px-4 sm:px-6 md:px-8 lg:px-10 py-3 flex items-center justify-between">
+      <div data-gsap="berita-header" className="sticky top-0 z-30 w-full bg-black/85 backdrop-blur-md border-b border-[#dedf42]/15 px-4 sm:px-6 md:px-8 lg:px-10 py-3 flex items-center justify-between">
         <Link
           href="/"
           className="flex items-center gap-2 text-[#f4e7cd]/70 hover:text-[#dedf42] transition-colors text-xs font-bold uppercase tracking-wider font-sans group"
@@ -65,6 +69,7 @@ export default function NewsEditorialView() {
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-b border-[#dedf42]/20 pb-12">
           {/* Left: Big Feature Image (Clickable Link to Official Article) */}
           <a
+            data-gsap="berita-hero-image"
             href={HERO_STORY.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -88,7 +93,7 @@ export default function NewsEditorialView() {
           </a>
 
           {/* Right: Breaking Story Headline & Excerpt */}
-          <div className="lg:col-span-5 flex flex-col justify-center space-y-4">
+          <div data-gsap="berita-hero-text" className="lg:col-span-5 flex flex-col justify-center space-y-4">
 
             <h1 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-normal text-white leading-[1.1] tracking-tight">
               {HERO_STORY.title}
@@ -120,7 +125,7 @@ export default function NewsEditorialView() {
         {/* ========================================================================= */}
         <section className="space-y-6 border-b border-[#dedf42]/20 pb-12">
           {/* Section Header with Highlight Underline */}
-          <div className="flex items-center justify-between">
+          <div data-gsap="berita-sec2-header" className="flex items-center justify-between">
             <div className="relative">
               <h2 className="font-sans font-black text-2xl sm:text-3xl text-white tracking-tight uppercase">
                 Berita <span className="text-[#dedf42]">Lengkap</span>
@@ -137,6 +142,7 @@ export default function NewsEditorialView() {
 
           {/* Full Story Main Card (Clickable to Official Article) */}
           <a
+            data-gsap="berita-main-card"
             href={FULL_STORY_MAIN.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -185,6 +191,7 @@ export default function NewsEditorialView() {
             {FULL_STORY_CARDS.map((card) => (
               <a
                 key={card.id}
+                data-gsap="berita-sub-card"
                 href={card.sourceUrl}
                 target={card.sourceUrl?.startsWith('http') ? '_blank' : '_self'}
                 rel="noopener noreferrer"
@@ -232,7 +239,7 @@ export default function NewsEditorialView() {
         <section className="border-b border-[#dedf42]/20 pb-12 space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left Column: Big Highlighted Feature */}
-            <div className="lg:col-span-8 space-y-5">
+            <div data-gsap="berita-spotlight-main" className="lg:col-span-8 space-y-5">
               <div>
                 <span className="text-[10px] font-sans font-bold tracking-[0.25em] text-[#dedf42] uppercase block mb-1">
                   SOROTAN KHUSUS
@@ -297,6 +304,7 @@ export default function NewsEditorialView() {
                 {SPOTLIGHT_SIDE_ITEMS.map((item) => (
                   <a
                     key={item.id}
+                    data-gsap="berita-side-item"
                     href={item.sourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -333,7 +341,7 @@ export default function NewsEditorialView() {
         {/* ========================================================================= */}
         <section className="space-y-6 border-b border-[#dedf42]/20 pb-12">
           {/* Section Header */}
-          <div className="relative">
+          <div data-gsap="berita-sec4-header" className="relative">
             <h2 className="font-sans font-black text-2xl sm:text-3xl text-white tracking-tight uppercase">
               Paling <span className="text-[#dedf42]">Ditonton</span>
             </h2>
@@ -345,6 +353,7 @@ export default function NewsEditorialView() {
             {MOST_WATCHED_STORIES.map((item) => (
               <a
                 key={item.id}
+                data-gsap="berita-video-card"
                 href={item.sourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -392,7 +401,7 @@ export default function NewsEditorialView() {
         {/* ========================================================================= */}
         <section className="space-y-6 border-b border-[#dedf42]/20 pb-12">
           {/* Section Header */}
-          <div className="flex items-center justify-between">
+          <div data-gsap="berita-sec5-header" className="flex items-center justify-between">
             <div className="relative">
               <h2 className="font-sans font-black text-2xl sm:text-3xl text-white tracking-tight uppercase">
                 Paling <span className="text-[#dedf42]">Dilihat</span>
@@ -411,6 +420,7 @@ export default function NewsEditorialView() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left Big Feature Card */}
             <a
+              data-gsap="berita-read-feature"
               href={MOST_READ_FEATURE.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -451,6 +461,7 @@ export default function NewsEditorialView() {
               {MOST_READ_GRID.map((item) => (
                 <a
                   key={item.id}
+                  data-gsap="berita-grid-card"
                   href={item.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"

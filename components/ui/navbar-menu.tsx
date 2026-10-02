@@ -92,15 +92,18 @@ export const ProductItem = ({
   description,
   href,
   src,
+  onClick,
 }: {
   title: string;
   description: string;
   href: string;
   src: string;
+  onClick?: () => void;
 }) => {
   return (
     <Link
       href={href}
+      onClick={onClick}
       className="flex space-x-3.5 group p-2.5 rounded-xl hover:bg-white/[0.05] transition-colors"
     >
       <div className="relative w-24 h-16 sm:w-28 sm:h-20 flex-shrink-0 rounded-lg overflow-hidden border border-[#dedf42]/20 group-hover:border-[#dedf42] transition-colors bg-black/60 shadow-md">
@@ -127,11 +130,45 @@ export const ProductItem = ({
 export const HoveredLink = ({
   children,
   className,
+  onClick,
   ...rest
 }: React.ComponentProps<typeof Link>) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (onClick) onClick(e);
+
+    const hrefStr = typeof rest.href === 'string' ? rest.href : '';
+    if (hrefStr.includes('#')) {
+      const hashPart = hrefStr.slice(hrefStr.indexOf('#')).split('?')[0];
+      if (
+        typeof window !== 'undefined' &&
+        (window.location.pathname === '/' || !hrefStr.startsWith('/'))
+      ) {
+        e.preventDefault();
+        try {
+          const target = document.querySelector(hashPart);
+          if (target) {
+            if (window.lenisInstance) {
+              window.lenisInstance.scrollTo(target as HTMLElement, {
+                offset: -80,
+                duration: 1.25,
+                easing: (t: number) =>
+                  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+              });
+            } else {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        } catch {
+          // ignore selector errors if any
+        }
+      }
+    }
+  };
+
   return (
     <Link
       {...rest}
+      onClick={handleClick}
       className={cn(
         "text-[#cdb894] hover:text-[#dedf42] text-xs sm:text-sm font-sans transition-colors block py-0.5",
         className

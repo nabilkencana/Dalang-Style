@@ -54,8 +54,9 @@ export default function SmoothScroll() {
               e.preventDefault();
               lenis.scrollTo(target as HTMLElement, {
                 offset: -80,
-                duration: 1.6,
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                duration: 1.25,
+                easing: (t) =>
+                  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
               });
             }
           } catch {

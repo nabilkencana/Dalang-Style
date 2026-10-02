@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "motioncraft": {
+      "source": "ahmdd4vd/motioncraft",
+      "sourceType": "github",
+      "skillPath": "skills/motioncraft/SKILL.md",
+      "computedHash": "0a0f9e14b3b6408eb2d0d77579c498a7ab1bcd5755af1f78a9f4b1d4c7225df1"
+    }
+  }
+}

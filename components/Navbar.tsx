@@ -144,19 +144,19 @@ export default function Navbar({ className }: { className?: string }) {
               <span className="text-[10px] font-mono tracking-widest text-[#dedf42]/70 uppercase">
                 Pentas & Kisah
               </span>
-              <HoveredLink href="/#lakon">
+              <HoveredLink href="/#lakon" onClick={() => setActive(null)}>
                 <span className="font-semibold text-white block">Bima Suci</span>
                 <span className="text-[11px] text-[#cdb894] block">Lakon Utama Malam Ini</span>
               </HoveredLink>
-              <HoveredLink href="/#fitur">
+              <HoveredLink href="/#fitur" onClick={() => setActive(null)}>
                 <span className="font-semibold text-white block">Kisah Bayangan</span>
                 <span className="text-[11px] text-[#cdb894] block">Malam Saat Bayangan Berbicara</span>
               </HoveredLink>
-              <HoveredLink href="/#makna">
+              <HoveredLink href="/#makna" onClick={() => setActive(null)}>
                 <span className="font-semibold text-white block">Gerak & Simbolisme</span>
                 <span className="text-[11px] text-[#cdb894] block">Filosofi Gerak Pewayangan</span>
               </HoveredLink>
-              <HoveredLink href="/#berita">
+              <HoveredLink href="/#berita" onClick={() => setActive(null)}>
                 <span className="font-semibold text-white block">Warta & Artikel</span>
                 <span className="text-[11px] text-[#cdb894] block">Sorotan & Kabar Terkini</span>
               </HoveredLink>
@@ -199,24 +199,28 @@ export default function Navbar({ className }: { className?: string }) {
                 href="/tokoh/kyai-semar"
                 src="/images/tokoh/wayang-1.png"
                 description="Pamong ksatria berjiwa luhur, pengayom kebenaran."
+                onClick={() => setActive(null)}
               />
               <ProductItem
                 title="Sang Arjuna"
                 href="/tokoh/sang-arjuna"
                 src="/images/tokoh/wayang-4.png"
                 description="Penengah Pandawa, ahli panah nan sakti rupawan."
+                onClick={() => setActive(null)}
               />
               <ProductItem
                 title="Raden Werkudara"
-                href="/tokoh/raden-werkudara"
+                href="/tokoh/sang-bima"
                 src="/images/tokoh/wayang-7.png"
                 description="Ksatria perkasa berjiwa suci, pemilik Kuku Pancanaka."
+                onClick={() => setActive(null)}
               />
               <ProductItem
                 title="Gatotkaca"
-                href="/tokoh/gatotkaca"
+                href="/tokoh/sang-gatotkaca"
                 src="/images/tokoh/wayang-5.png"
                 description="Otot kawat balung wesi, ksatria gagah Pringgandani."
+                onClick={() => setActive(null)}
               />
               <div className="col-span-1 sm:col-span-2 pt-2.5 border-t border-[#dedf42]/20 flex justify-between items-center text-xs">
                 <Link
@@ -261,25 +265,74 @@ export default function Navbar({ className }: { className?: string }) {
               <span className="text-[10px] font-mono tracking-widest text-[#dedf42]/70 uppercase">
                 16 Museum Nusantara
               </span>
-              <HoveredLink href="/#galeri">
+              <HoveredLink
+                href="/#galeri"
+                onClick={() => {
+                  setActive(null);
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(
+                      new CustomEvent('open-museum-modal', {
+                        detail: { title: 'Museum Wayang Jakarta' },
+                      })
+                    );
+                  }
+                }}
+              >
                 <span className="font-semibold text-white block">Museum Wayang Kota Tua</span>
                 <span className="text-[11px] text-[#cdb894] block">Jakarta Barat</span>
               </HoveredLink>
-              <HoveredLink href="/#galeri">
+              <HoveredLink
+                href="/#galeri"
+                onClick={() => {
+                  setActive(null);
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(
+                      new CustomEvent('open-museum-modal', {
+                        detail: { title: 'Museum Wayang Sendang Mas' },
+                      })
+                    );
+                  }
+                }}
+              >
                 <span className="font-semibold text-white block">Museum Wayang Sendang Mas</span>
                 <span className="text-[11px] text-[#cdb894] block">Banyumas, Jawa Tengah</span>
               </HoveredLink>
-              <HoveredLink href="/#galeri">
+              <HoveredLink
+                href="/#galeri"
+                onClick={() => {
+                  setActive(null);
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(
+                      new CustomEvent('open-museum-modal', {
+                        detail: { title: 'Museum Radya Pustaka' },
+                      })
+                    );
+                  }
+                }}
+              >
                 <span className="font-semibold text-white block">Museum Radya Pustaka & Keraton</span>
                 <span className="text-[11px] text-[#cdb894] block">Surakarta, Jawa Tengah</span>
               </HoveredLink>
-              <HoveredLink href="/#galeri">
+              <HoveredLink
+                href="/#galeri"
+                onClick={() => {
+                  setActive(null);
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(
+                      new CustomEvent('open-museum-modal', {
+                        detail: { title: 'Museum Sonobudoyo' },
+                      })
+                    );
+                  }
+                }}
+              >
                 <span className="font-semibold text-white block">Museum Sonobudoyo & Kekayon</span>
                 <span className="text-[11px] text-[#cdb894] block">D.I. Yogyakarta</span>
               </HoveredLink>
               <div className="pt-2 border-t border-[#dedf42]/20">
                 <Link
                   href="/#galeri"
+                  onClick={() => setActive(null)}
                   className="text-[#dedf42] text-xs font-semibold hover:underline block"
                 >
                   Jelajahi Formasi 3D Semua Museum &rarr;

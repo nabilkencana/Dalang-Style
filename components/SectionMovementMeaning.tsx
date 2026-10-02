@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import BlurText from '@/components/ui/blur-text';
 
 export interface MovementSlide {
   number: number;
@@ -98,26 +99,31 @@ export default function SectionMovementMeaning({
               </button>
             </div>
 
-            {/* Headline with Smooth Cross-Fade Animation */}
-            <div className="min-h-[90px] sm:min-h-[120px] md:min-h-[140px] flex items-center justify-center mb-4 sm:mb-6">
-              <h2
+            {/* Headline with BlurText Animation */}
+            <div className="min-h-[90px] sm:min-h-[120px] md:min-h-[140px] flex items-center justify-center mb-4 sm:mb-6 w-full">
+              <BlurText
                 key={`hl-${activeIndex}`}
-                className="font-playfair text-[#dedf42] text-[clamp(28px,4.8cqi,64px)] font-normal leading-[1.08] tracking-[-0.025em] select-text animate-fadeSlideUp"
-              >
-                {currentSlide.headline}
-              </h2>
+                text={currentSlide.headline}
+                delay={80}
+                animateBy="words"
+                direction="top"
+                stepDuration={0.35}
+                className="font-playfair text-[#dedf42] text-[clamp(28px,4.8cqi,64px)] font-normal leading-[1.08] tracking-[-0.025em] select-text justify-center text-center w-full"
+              />
             </div>
 
-            {/* Subtext Paragraph with Smooth Cross-Fade Animation */}
-            <div className="min-h-[80px] sm:min-h-[95px] flex items-center justify-center max-w-[560px]">
-              <p
+            {/* Subtext Paragraph with BlurText Animation */}
+            <div className="min-h-[80px] sm:min-h-[95px] flex items-center justify-center max-w-[620px] w-full">
+              <BlurText
                 key={`st-${activeIndex}`}
-                className="font-sans font-bold text-[#dedf42] text-[clamp(8px,1.02cqi,13px)] uppercase leading-[1.48] tracking-wider select-text animate-fadeSlideUp"
-              >
-                {currentSlide.subtext}
-              </p>
+                text={currentSlide.subtext}
+                delay={30}
+                animateBy="words"
+                direction="bottom"
+                stepDuration={0.28}
+                className="font-sans font-bold text-[#dedf42] text-[clamp(8px,1.02cqi,13px)] uppercase leading-[1.48] tracking-wider select-text justify-center text-center w-full"
+              />
             </div>
-
           </div>
         </div>
     </section>
