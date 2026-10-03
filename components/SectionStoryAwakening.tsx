@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { WorksWheel, type WorksWheelItem } from '@/components/ui/works-wheel';
 import { OriginButton } from '@/components/ui/origin-button';
+import MobileTokohSection from '@/components/mobile/MobileTokohSection';
 export interface SectionStoryAwakeningProps {
   id?: string;
   headerBrandText?: string;
@@ -104,11 +105,22 @@ export default function SectionStoryAwakening({
       id={id}
       className="relative w-full bg-[#0a0a0a] text-[#000000] overflow-hidden select-none"
     >
-      <div className="relative w-full min-h-[580px] md:aspect-[1504/1128] @container overflow-hidden flex items-center justify-center py-10 md:py-0">
+      {/* ── MOBILE VIEW: Dedicated Touch-Friendly Carousel (< 768px) ── */}
+      <div className="block md:hidden w-full">
+        <MobileTokohSection
+          items={wheelItems}
+          categoryLabel={categoryLabel}
+          readMoreText={readMoreText}
+          readMoreHref={readMoreHref}
+        />
+      </div>
+
+      {/* ── DESKTOP & TABLET VIEW: Prestigious 3D WorksWheel (>= 768px) ── */}
+      <div className="hidden md:flex relative w-full md:aspect-[1504/1128] @container overflow-hidden items-center justify-center">
         {/* INNER STORY CARD - Full Width */}
         <div
           data-gsap="awaken-card"
-          className="relative w-full aspect-auto md:aspect-[1126/814] overflow-hidden bg-[#dedf42] z-20 @container"
+          className="relative w-full aspect-[1126/814] overflow-hidden bg-[#dedf42] z-20 @container"
         >
           {/* Yellow Card Canvas with authentic Bima Wayang Watermark Illustration */}
           <div className="absolute inset-0 bg-[#dedf42] pointer-events-none">

@@ -48,13 +48,13 @@ export default function Navbar({ className }: { className?: string }) {
     <motion.header
       data-gsap="hero-nav"
       animate={{
-        maxWidth: isCompact ? 460 : 1024,
+        maxWidth: isCompact ? 540 : 1040,
       }}
       transition={springConfig}
       className={cn(
-        // Always attached at top-2 (desktop) or top-0 (mobile) — NEVER a floating detached pill!
-        "fixed z-50 top-2 left-1/2 -translate-x-1/2 w-full",
-        "max-[850px]:top-0 max-[850px]:left-0 max-[850px]:right-0 max-[850px]:translate-x-0 max-[850px]:w-full max-[850px]:!max-w-none",
+        // Centered notch via inset-x-0 mx-auto with strict 1040px desktop cap
+        "fixed z-50 top-2 inset-x-0 mx-auto w-full max-w-[1040px] pointer-events-auto",
+        "max-[850px]:top-0 max-[850px]:inset-x-0 max-[850px]:!w-full max-[850px]:!max-w-none",
         className
       )}
     >
@@ -103,21 +103,21 @@ export default function Navbar({ className }: { className?: string }) {
             x: isCompact ? 45 : 0,
           }}
           transition={springConfig}
-          className="flex items-center overflow-hidden shrink-0 pointer-events-auto"
+          className="flex items-center overflow-hidden shrink-0 pointer-events-auto max-[850px]:!w-auto max-[850px]:!opacity-100 max-[850px]:!transform-none"
         >
           <Link
             href="/"
             className="flex items-center gap-2.5 group shrink-0 focus:outline-none ml-1 sm:ml-2 whitespace-nowrap"
           >
-            <WayangLogo size={28} />
+            <WayangLogo size={32} />
             <span className="text-xl sm:text-[22px] font-serif italic font-bold text-[#dedf42] tracking-tight group-hover:brightness-125 transition-all whitespace-nowrap">
               Wayang Jawi
             </span>
           </Link>
         </motion.div>
 
-        {/* ── Center Slot: Dropdown Navigation (Stable, centered, never jumps) ── */}
-        <div className="flex items-center justify-center space-x-1 sm:space-x-2 md:space-x-3.5 shrink-0 mx-auto">
+        {/* ── Center Slot: Dropdown Navigation (Desktop only, stable, centered) ── */}
+        <div className="hidden min-[850px]:flex items-center justify-center space-x-1 sm:space-x-2 md:space-x-3.5 shrink-0 mx-auto">
           {/* 1. Lakon */}
           <MenuItem
             setActive={setActive}
@@ -341,6 +341,55 @@ export default function Navbar({ className }: { className?: string }) {
             </div>
           </MenuItem>
 
+          {/* 4. Kreasi AI */}
+          <MenuItem
+            setActive={setActive}
+            active={active}
+            item="Kreasi AI"
+            title={
+              <span className="flex items-center gap-1.5 text-xs sm:text-sm font-medium tracking-wide">
+                <span>Kreasi AI</span>
+                <span className="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-[#dedf42] text-black rounded-full leading-none">
+                  BARU
+                </span>
+                <svg
+                  className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dedf42]/70 transition-transform duration-200 group-hover:rotate-180"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </span>
+            }
+          >
+            <div className="flex flex-col space-y-3.5 text-sm min-w-[260px]">
+              <span className="text-[10px] font-mono tracking-widest text-[#dedf42]/70 uppercase">
+                Studio Kreasi Tokoh
+              </span>
+              <HoveredLink href="/#kreasi" onClick={() => setActive(null)}>
+                <span className="font-semibold text-white block">Generator Tokoh AI</span>
+                <span className="text-[11px] text-[#cdb894] block">Kreasikan wayang baru lewat prompt</span>
+              </HoveredLink>
+              <HoveredLink href="/kreasi" onClick={() => setActive(null)}>
+                <span className="font-semibold text-white block">Dialog Sang Empu</span>
+                <span className="text-[11px] text-[#cdb894] block">Konsultasi filosofi & karakter</span>
+              </HoveredLink>
+              <div className="pt-2 border-t border-[#dedf42]/20">
+                <Link
+                  href="/kreasi"
+                  onClick={() => setActive(null)}
+                  className="text-[#dedf42] text-xs font-semibold hover:underline block"
+                >
+                  Buka Studio Sang Empu &rarr;
+                </Link>
+              </div>
+            </div>
+          </MenuItem>
+
         </div>
 
         {/* ── Right Slot: Katalog link + Signature Split CTA Button
@@ -454,6 +503,16 @@ export default function Navbar({ className }: { className?: string }) {
             className="text-sm font-semibold text-white hover:text-[#dedf42]"
           >
             Katalog Lengkap Tokoh
+          </Link>
+          <Link
+            href="/kreasi"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-sm font-semibold text-[#f2c76b] hover:text-[#dedf42] flex items-center justify-between"
+          >
+            <span>Sang Empu (Chatbot AI)</span>
+            <span className="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-[#dedf42] text-black rounded-full">
+              BARU
+            </span>
           </Link>
           <Link
             href="/panduan"

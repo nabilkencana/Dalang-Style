@@ -185,7 +185,7 @@ const OriginButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Ori
     const setMergedRef = React.useCallback(
       (node: HTMLElement | null) => {
         elementRef.current = node;
-        assignRef(ref as any, node);
+        assignRef(ref as React.Ref<HTMLElement>, node);
       },
       [ref]
     );
@@ -201,15 +201,15 @@ const OriginButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Ori
         className
       ),
       "data-pressed": isPressed ? "true" : "false",
-      onBlur: (event: React.FocusEvent<any>) => {
+      onBlur: (event: React.FocusEvent<HTMLButtonElement>) => {
         onBlur?.(event);
         setIsPressed(false);
         if (!event.defaultPrevented) {
           setHovered(false);
         }
       },
-      onClick: onClick as any,
-      onFocus: (event: React.FocusEvent<any>) => {
+      onClick: onClick as React.MouseEventHandler<HTMLButtonElement>,
+      onFocus: (event: React.FocusEvent<HTMLButtonElement>) => {
         onFocus?.(event);
         if (isDisabled || event.defaultPrevented) return;
         if (event.currentTarget.matches(":focus-visible")) {
@@ -217,7 +217,7 @@ const OriginButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Ori
           setHovered(true);
         }
       },
-      onKeyDown: (event: React.KeyboardEvent<any>) => {
+      onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
         onKeyDown?.(event);
 
         if (
@@ -237,7 +237,7 @@ const OriginButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Ori
         setIsPressed(true);
         setHovered(true);
       },
-      onKeyUp: (event: React.KeyboardEvent<any>) => {
+      onKeyUp: (event: React.KeyboardEvent<HTMLButtonElement>) => {
         onKeyUp?.(event);
 
         if (event.key === " " || event.key === "Enter") {
@@ -247,11 +247,11 @@ const OriginButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Ori
           }
         }
       },
-      onPointerCancel: (event: React.PointerEvent<any>) => {
+      onPointerCancel: (event: React.PointerEvent<HTMLButtonElement>) => {
         onPointerCancel?.(event);
         setIsPressed(false);
       },
-      onPointerDown: (event: React.PointerEvent<any>) => {
+      onPointerDown: (event: React.PointerEvent<HTMLButtonElement>) => {
         onPointerDown?.(event);
 
         if (event.defaultPrevented || isDisabled || event.button !== 0) {
@@ -262,18 +262,18 @@ const OriginButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Ori
         setIsPressed(true);
         setHovered(true);
       },
-      onPointerEnter: (event: React.PointerEvent<any>) => {
+      onPointerEnter: (event: React.PointerEvent<HTMLButtonElement>) => {
         onPointerEnter?.(event);
         if (isDisabled || event.defaultPrevented) return;
         updateOriginFromPointer(event);
         setHovered(true);
       },
-      onPointerLeave: (event: React.PointerEvent<any>) => {
+      onPointerLeave: (event: React.PointerEvent<HTMLButtonElement>) => {
         onPointerLeave?.(event);
         setHovered(false);
         setIsPressed(false);
       },
-      onPointerUp: (event: React.PointerEvent<any>) => {
+      onPointerUp: (event: React.PointerEvent<HTMLButtonElement>) => {
         onPointerUp?.(event);
         setIsPressed(false);
       },
@@ -318,8 +318,8 @@ const OriginButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Ori
       return (
         <MotionLink
           href={href}
-          {...(commonMotionProps as any)}
-          {...(props as any)}
+          {...(commonMotionProps as unknown as React.ComponentProps<typeof MotionLink>)}
+          {...(props as unknown as React.ComponentProps<typeof MotionLink>)}
         >
           {innerContent}
         </MotionLink>

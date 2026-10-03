@@ -20,6 +20,7 @@ export default function GsapAnimations() {
       opacity: 0,
       duration: 1.0,
       delay: 0.2,
+      clearProps: 'transform,opacity',
     });
 
     // Hero tagline with spinning leaf blooms in
