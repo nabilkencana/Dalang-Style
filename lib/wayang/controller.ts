@@ -158,12 +158,14 @@ function analyze(lms: Landmark[], aspect: number, pair: FingerPairIndices): Anal
   };
 }
 
+export type SoloStyle = 'avatar' | 'classic';
+
 export interface ControllerSettings {
   fingers: 'thumb-index' | 'thumb-pinky' | 'index-pinky';
   bodyHand: 'right' | 'left';
   characters: 'two' | 'one';
+  soloStyle?: SoloStyle;
 }
-
 export interface ControllerStatus {
   hands: number;
   mode: string;
@@ -177,6 +179,7 @@ export class Controller {
     fingers: 'thumb-index',
     bodyHand: 'right',
     characters: 'two',
+    soloStyle: 'avatar',
   };
   slots: [Slot, Slot] = [makeSlot(), makeSlot()];
   bodySlot: number = -1;
@@ -202,6 +205,9 @@ export class Controller {
 
   get puppetCount(): number {
     return this.settings.characters === 'two' ? 2 : 1;
+  }
+  setSoloStyle(style: SoloStyle) {
+    this.settings.soloStyle = style;
   }
 
   recalibrate() {
@@ -345,18 +351,23 @@ export class Controller {
     }
     if (active.length === 1) {
       this.bodySlot = active[0].i;
-    } else if (!active.some((a) => a.i === this.bodySlot) || this.prevCount < 2) {
-      const [p, q] = active;
-      const pRight = p.s.data!.palm[0] > q.s.data!.palm[0];
-      const wantRight = this.settings.bodyHand === 'right';
-      this.bodySlot = pRight === wantRight ? p.i : q.i;
-    }
-    const input = this.handInput(this.slots[this.bodySlot], view, 'one');
-    if (active.length === 1) {
       this.status.mode = 'one hand';
-    } else {
-      this.status.mode = 'two hands';
-      const aspect = this.tracker.aspect;
+      return [this.handInput(this.slots[this.bodySlot], view, 'one')];
+    }
+
+    // ── TWO HANDS SOLO MODE ──
+    const aspect = this.tracker.aspect;
+
+    if (this.settings.soloStyle === 'classic') {
+      // Classic Dalang Mode: Hand 1 = Body (Gapit), Hand 2 = Both Arms (Tuding via fingers)
+      if (!active.some((a) => a.i === this.bodySlot) || this.prevCount < 2) {
+        const [p, q] = active;
+        const pRight = p.s.data!.palm[0] > q.s.data!.palm[0];
+        const wantRight = this.settings.bodyHand === 'right';
+        this.bodySlot = pRight === wantRight ? p.i : q.i;
+      }
+      this.status.mode = 'two hands (classic)';
+      const input = this.handInput(this.slots[this.bodySlot], view, 'one');
       const other = active.find((a) => a.i !== this.bodySlot);
       if (other) {
         const rod = other.s;
@@ -371,8 +382,57 @@ export class Controller {
         input.danceTrigger = input.danceTrigger || rod.danceTrigger;
         rod.danceTrigger = false;
       }
+      return [input];
     }
-    return [input];
+
+    // ── AVATAR TWO HANDS MODE (DEFAULT & PALING ENAK) ──
+    // Tangan Kiri = Lengan Kiri Wayang, Tangan Kanan = Lengan Kanan Wayang
+    // Titik Tengah = Posisi Badan, Sudut Kemiringan = Dynamic Body Tilt, Rata-rata Ukuran = Depth
+    this.status.mode = 'avatar two hands';
+    const [p, q] = active;
+    const isPLeft = p.s.data!.palm[0] <= q.s.data!.palm[0];
+    const leftSlot = isPLeft ? p.s : q.s;
+    const rightSlot = isPLeft ? q.s : p.s;
+    const leftData = leftSlot.data!;
+    const rightData = rightSlot.data!;
+
+    // 1. Posisi badan mengikuti titik tengah (midpoint) kedua tangan dengan offset ergonomis
+    const midNormX = (leftData.palm[0] + rightData.palm[0]) * 0.5;
+    const midNormY = (leftData.palm[1] + rightData.palm[1]) * 0.5;
+    const [bodyStageX, bodyStageY] = this.toStage(midNormX / aspect, Math.min(midNormY + 0.08, 0.85), view);
+    // 2. Kemiringan dinamis tubuh dari sudut antara kedua tangan
+    const dNormX = rightData.palm[0] - leftData.palm[0];
+    const dNormY = rightData.palm[1] - leftData.palm[1];
+    const angle = Math.atan2(dNormY, Math.max(dNormX, 0.04));
+    const tilt = clamp(angle * 0.45, -0.45, 0.45);
+
+    // 3. Kedalaman tubuh (Z-depth) dari rata-rata ukuran telapak tangan
+    const avgSize = (leftData.size + rightData.size) * 0.5;
+    const depth = this.depthFor('solo_avatar', avgSize);
+
+    // 4. Pemetaan lengan: masing-masing tangan mengendalikan lengan wayang yang bersesuaian secara absolut
+    const absArm = (tip: [number, number]): ArmSpec => {
+      const [x, y] = this.toStage(tip[0] / aspect, tip[1], view);
+      return { type: 'abs', x, y, rodX: x };
+    };
+
+    const leftArm = absArm(leftData.b);
+    const rightArm = absArm(rightData.b);
+
+    const danceTrigger = leftSlot.danceTrigger || rightSlot.danceTrigger;
+    leftSlot.danceTrigger = false;
+    rightSlot.danceTrigger = false;
+
+    return [
+      {
+        active: true,
+        body: { x: bodyStageX, y: bodyStageY },
+        tilt,
+        depth,
+        arms: { left: leftArm, right: rightArm },
+        danceTrigger,
+      },
+    ];
   }
 
   cameraInput(now: number, view: ViewRect): PuppetInput[] {

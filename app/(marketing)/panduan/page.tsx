@@ -309,10 +309,10 @@ export default function PanduanPage() {
                   <li>• <strong>Tangan Kiri Dalang:</strong> Mengendalikan wayang sisi kiri panggung.</li>
                   <li>• <strong>Tangan Kanan Dalang:</strong> Mengendalikan wayang sisi kanan panggung.</li>
                   <li>• <strong>Otomatis Berhadapan:</strong> Kedua tokoh otomatis menatap satu sama lain saat saling mendekat.</li>
+                  <li>• <strong>Pintasan Cepat:</strong> Tekan tombol <kbd className="px-1.5 py-0.5 rounded bg-black text-[#dedf42] font-mono text-xs">2</kbd> di keyboard untuk beralih instan.</li>
                 </ul>
               </div>
             </div>
-
             {/* Mode 2: Satu Wayang Penuh (Dua Tangan) */}
             <div data-gsap="panduan-mode-card" className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm hover:bg-black/10 transition-all gap-4">
               <div>
@@ -331,15 +331,19 @@ export default function PanduanPage() {
                 </div>
 
                 <h3 className="font-serif italic font-bold text-xl sm:text-2xl text-black mb-2">
-                  Satu Wayang Penuh (Dua Tangan)
+                  Satu Wayang (Solo Dua Tangan)
                 </h3>
                 <p className="text-black/80 text-sm leading-relaxed mb-4">
-                  Fokus mendalam pada satu tokoh untuk gerakan artikulatif yang sangat kaya:
+                  Dua tangan dalang mengendalikan satu wayang dengan kebebasan gerak penuh dan artikulatif:
                 </p>
                 <ul className="text-xs sm:text-sm space-y-2 text-black/85">
-                  <li>• <strong>Tangan Utama (Body Hand):</strong> Mengendalikan posisi dan poros badan wayang.</li>
-                  <li>• <strong>Tangan Kedua (Arm Hand):</strong> Mengendalikan kedua lengan secara independen dan ekspresif.</li>
-                  <li>• Diaktifkan melalui tombol <strong>Settings</strong> di pojok panggung.</li>
+                  <li>• <strong>Tangan Kiri Dalang:</strong> Mengendalikan lengan kiri wayang (Tuding Kiwa) secara bebas dan luas.</li>
+                  <li>• <strong>Tangan Kanan Dalang:</strong> Mengendalikan lengan kanan wayang (Tuding Tengen) secara bebas dan luas.</li>
+                  <li>• <strong>Gerak Badan Otomatis:</strong> Poros tubuh wayang luwes melangkah mengikuti titik tengah (midpoint) kedua tangan Anda.</li>
+                  <li>• <strong>Kemiringan Dinamis:</strong> Tubuh wayang otomatis condong saat satu tangan diangkat tinggi (pose silat/serang).</li>
+                  <li>• <strong>Fallback Cerdas:</strong> Menurunkan 1 tangan otomatis mengalihkan kendali tubuh & kedua lengan ke tangan aktif.</li>
+                  <li>• <strong>Pintasan Cepat:</strong> Tekan tombol <kbd className="px-1.5 py-0.5 rounded bg-black text-[#dedf42] font-mono text-xs">1</kbd> di keyboard untuk beralih instan.</li>
+                  <li>• Tersedia juga pilihan gaya <em>Dalang Klasik (Badan + Tuding)</em> di menu Pengaturan.</li>
                 </ul>
               </div>
             </div>
@@ -360,8 +364,10 @@ export default function PanduanPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5 sm:gap-4">
             {[
+              { key: '1', label: 'Mode Solo (1 Wayang)', desc: 'Kiri = Lengan Kiri, Kanan = Lengan Kanan' },
+              { key: '2', label: 'Mode Duo (2 Wayang)', desc: '1 Tangan = 1 Tokoh berhadapan' },
               { key: 'F', label: 'Balik Wayang Kiri', desc: 'Membalik arah hadap tokoh kiri' },
               { key: 'G', label: 'Balik Wayang Kanan', desc: 'Membalik arah hadap tokoh kanan' },
               { key: 'D', label: 'Tari Kiprahan', desc: 'Memicu tarian gerak sakral instan' },

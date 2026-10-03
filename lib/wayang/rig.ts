@@ -232,8 +232,8 @@ export const CHARACTERS: Record<string, CharacterConfig> = {
     parts: BAGONG_PARTS,
     body: BAGONG_BODY,
     rest: {
-      L: [-150, 220],
-      R: [80, 270],
+      L: [-180, 420],
+      R: [140, 460],
     },
   },
 };
@@ -330,7 +330,7 @@ export class Arm {
     const f = add(sub(this.fore.dist!, this.fore.prox!), sub(this.hand.grip!, this.hand.prox!));
     this.Lf = len(f);
     this.restF = ang(f);
-    this.bend = side === 'L' ? -1 : 1;
+    this.bend = side === 'L' ? 1 : -1;
 
     this.rotU = new Spring(0, 260, 0.34);
     this.rotF = new Spring(0, 210, 0.26);
@@ -338,19 +338,19 @@ export class Arm {
     this.rodX = new Spring(0, 45, 0.75);
   }
 
-  solve(T: [number, number]): { rotU: number; rotF: number } {
+  solve(T: [number, number], flipSign: number = 1): { rotU: number; rotF: number } {
     const S = this.shoulder;
     const d = sub(T, S);
     const a = ang(d);
     const dist = clamp(len(d), Math.abs(this.Lu - this.Lf) + 40, this.Lu + this.Lf - 0.5);
     const cosA = clamp((this.Lu * this.Lu + dist * dist - this.Lf * this.Lf) / (2 * this.Lu * dist), -1, 1);
-    const thU = a + this.bend * Math.acos(cosA);
+    const effectiveBend = this.bend * flipSign;
+    const thU = a + effectiveBend * Math.acos(cosA);
     const elbow: [number, number] = [S[0] + this.Lu * Math.cos(thU), S[1] + this.Lu * Math.sin(thU)];
     const reach: [number, number] = [S[0] + dist * Math.cos(a), S[1] + dist * Math.sin(a)];
     const thF = ang(sub(reach, elbow));
     return { rotU: wrapAngle(thU - this.restU), rotF: wrapAngle(thF - this.restF) };
   }
-
   pose(B: AffineMatrix) {
     const upperM = Affine.chain(
       B,
@@ -635,7 +635,8 @@ export class Puppet {
       arm.target!.step(tgt[0], tgt[1], dt);
 
       if (canSolve && invB) {
-        arm.solution = arm.solve(Affine.apply(invB, arm.target!.x, arm.target!.y));
+        const flipSign = Math.sign(this.flipX) || 1;
+        arm.solution = arm.solve(Affine.apply(invB, arm.target!.x, arm.target!.y), flipSign);
       }
       arm.rotU.v += kick(rotV(sub(arm.upper.dist!, arm.upper.prox!), arm.rotU.x), 0.07);
       arm.rotF.v += kick(rotV([arm.Lf * Math.cos(arm.restF), arm.Lf * Math.sin(arm.restF)], arm.rotF.x), 0.1);

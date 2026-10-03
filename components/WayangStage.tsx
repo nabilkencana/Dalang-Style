@@ -135,6 +135,7 @@ export default function WayangStage() {
     characters: 'two',
     fingers: 'thumb-index',
     bodyHand: 'right',
+    soloStyle: 'avatar',
   });
 
   const [leftPuppetChar, setLeftPuppetChar] = useState<StageCharId>('arjuna');
@@ -260,7 +261,7 @@ export default function WayangStage() {
       if (val === 'one') {
         puppets[0].home = [STAGE_W / 2, 650];
         puppets[0].pos.snap(STAGE_W / 2, 650);
-        showToast('Mode 1 Wayang (Pertunjukan Solo) Aktif');
+        showToast('Mode 1 Wayang (Solo). Angkat 2 tangan untuk mengendalikan kedua lengan!');
       } else {
         puppets[0].home = [640, 650];
         puppets[0].pos.snap(640, 650);
@@ -273,6 +274,21 @@ export default function WayangStage() {
     }
     applyFacing(facingMode);
   }, [applyFacing, facingMode, showToast]);
+
+  const handleSoloStyleChange = useCallback((val: 'avatar' | 'classic') => {
+    setSettings((prev) => ({ ...prev, soloStyle: val }));
+    if (wayangRef.current.controller) {
+      wayangRef.current.controller.setSoloStyle(val);
+    }
+    try {
+      localStorage.setItem('wayang_solo_style', val);
+    } catch {}
+    showToast(
+      val === 'avatar'
+        ? 'Gaya Solo: Dua Tangan Bebas (Kiri = Lengan Kiri, Kanan = Lengan Kanan)'
+        : 'Gaya Solo: Dalang Klasik (Badan + Tuding)'
+    );
+  }, [showToast]);
 
   // Main lifecycle effect
   useEffect(() => {
@@ -357,13 +373,25 @@ export default function WayangStage() {
       ctx.fillStyle = 'rgba(20,10,4,0.35)';
       ctx.fillRect(0, 0, W, H);
 
+      const isAvatar = controller.puppetCount === 1 && controller.settings.soloStyle !== 'classic';
+
       controller.slots.forEach((slot, i) => {
         if (!slot.active || !slot.landmarks) return;
         const P = slot.landmarks.map((l) => [(1 - l.x) * W, l.y * H]);
         const isBody = controller.puppetCount === 2 ? true : i === controller.bodySlot;
-        const gold = controller.puppetCount === 2 ? slot.role !== 1 : isBody;
 
-        ctx.strokeStyle = gold ? 'rgba(242,199,107,0.9)' : 'rgba(150,210,255,0.9)';
+        let strokeColor = 'rgba(150,210,255,0.9)';
+        if (controller.puppetCount === 2) {
+          strokeColor = slot.role !== 1 ? 'rgba(242,199,107,0.9)' : 'rgba(150,210,255,0.9)';
+        } else if (isAvatar) {
+          const other = controller.slots.find((s, idx) => idx !== i && s.active && s.data);
+          const isLeft = other ? (slot.data?.palm[0] ?? 0) <= (other.data?.palm[0] ?? 0) : true;
+          strokeColor = isLeft ? 'rgba(242,199,107,0.95)' : 'rgba(150,210,255,0.95)';
+        } else {
+          strokeColor = isBody ? 'rgba(242,199,107,0.9)' : 'rgba(150,210,255,0.9)';
+        }
+
+        ctx.strokeStyle = strokeColor;
         ctx.lineWidth = 1.5 * s;
         ctx.beginPath();
         for (const [a, b] of HAND_EDGES) {
@@ -389,18 +417,47 @@ export default function WayangStage() {
           ctx.stroke();
         }
 
-        if (isBody) {
+        if (isBody && !isAvatar) {
           const c = [0, 5, 9, 13, 17].reduce(
             (acc, j) => [acc[0] + P[j][0] / 5, acc[1] + P[j][1] / 5],
             [0, 0]
           );
-          ctx.strokeStyle = gold ? '#f2c76b' : '#96d2ff';
+          ctx.strokeStyle = 'rgba(242,199,107,0.9)';
           ctx.lineWidth = 2 * s;
           ctx.beginPath();
           ctx.arc(c[0], c[1], 9 * s, 0, Math.PI * 2);
           ctx.stroke();
         }
       });
+
+      // Draw virtual body anchor bridge between two hands in Avatar Solo Mode
+      if (
+        isAvatar &&
+        controller.slots[0].active &&
+        controller.slots[1].active &&
+        controller.slots[0].landmarks &&
+        controller.slots[1].landmarks
+      ) {
+        const P0 = controller.slots[0].landmarks.map((l) => [(1 - l.x) * W, l.y * H]);
+        const P1 = controller.slots[1].landmarks.map((l) => [(1 - l.x) * W, l.y * H]);
+        const mid0 = [0, 5, 9, 13, 17].reduce((acc, j) => [acc[0] + P0[j][0] / 5, acc[1] + P0[j][1] / 5], [0, 0]);
+        const mid1 = [0, 5, 9, 13, 17].reduce((acc, j) => [acc[0] + P1[j][0] / 5, acc[1] + P1[j][1] / 5], [0, 0]);
+        const center = [(mid0[0] + mid1[0]) * 0.5, (mid0[1] + mid1[1]) * 0.5];
+
+        ctx.strokeStyle = 'rgba(242,199,107,0.5)';
+        ctx.setLineDash([3 * s, 3 * s]);
+        ctx.lineWidth = 1 * s;
+        ctx.beginPath();
+        ctx.moveTo(mid0[0], mid0[1]);
+        ctx.lineTo(mid1[0], mid1[1]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#f2c76b';
+        ctx.beginPath();
+        ctx.arc(center[0], center[1], 3.5 * s, 0, Math.PI * 2);
+        ctx.fill();
+      }
     };
 
     const cameraReady = () => controller.source === 'camera' && video.readyState >= 2;
@@ -585,7 +642,9 @@ export default function WayangStage() {
               ? status.hands === 2
                 ? 'Dua wayang · satu di setiap tangan'
                 : 'Dua wayang · 1 tangan terdeteksi'
-              : status.mode === 'two hands'
+              : status.mode === 'avatar two hands'
+              ? 'Satu wayang · tangan kiri & kanan mengendalikan kedua lengan'
+              : status.mode === 'two hands (classic)' || status.mode === 'two hands'
               ? 'Satu wayang · gapit + tuding'
               : status.mode === 'one hand'
               ? 'Satu wayang · telapak + jari'
@@ -594,7 +653,6 @@ export default function WayangStage() {
           cls = 'live';
         }
       } else if (source === 'mouse') {
-        text = 'Mouse · gulir scroll untuk kedalaman';
       } else {
         text = 'Demo';
       }
@@ -1092,17 +1150,32 @@ export default function WayangStage() {
           </select>
         </label>
         {settings.characters === 'one' && (
-          <label id="bodyhand-row">
-            Tangan Pemegang Gapit (1 Wayang, 2 Tangan)
-            <select
-              id="opt-bodyhand"
-              value={settings.bodyHand}
-              onChange={(e) => handleBodyHandChange(e.target.value as 'right' | 'left')}
-            >
-              <option value="right">Tangan kanan memegang gapit</option>
-              <option value="left">Tangan kiri memegang gapit</option>
-            </select>
-          </label>
+          <>
+            <label id="solostyle-row">
+              Gaya Kontrol Solo (2 Tangan)
+              <select
+                id="opt-solostyle"
+                value={settings.soloStyle || 'avatar'}
+                onChange={(e) => handleSoloStyleChange(e.target.value as 'avatar' | 'classic')}
+              >
+                <option value="avatar">Dua Tangan Bebas (Kiri = Lengan Kiri, Kanan = Lengan Kanan) — Paling Alami</option>
+                <option value="classic">Dalang Klasik (Tangan 1 = Badan, Tangan 2 = Lengan)</option>
+              </select>
+            </label>
+            {settings.soloStyle === 'classic' && (
+              <label id="bodyhand-row">
+                Tangan Pemegang Gapit (Badan)
+                <select
+                  id="opt-bodyhand"
+                  value={settings.bodyHand}
+                  onChange={(e) => handleBodyHandChange(e.target.value as 'right' | 'left')}
+                >
+                  <option value="right">Tangan kanan memegang gapit</option>
+                  <option value="left">Tangan kiri memegang gapit</option>
+                </select>
+              </label>
+            )}
+          </>
         )}
         <label>
           Arah Hadap Wayang

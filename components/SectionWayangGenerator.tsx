@@ -139,31 +139,29 @@ export default function SectionWayangGenerator({ id = 'kreasi' }: SectionWayangG
                         key={preset.id}
                         type="button"
                         onClick={() => setActivePresetIndex(idx)}
-                        className={`px-3 py-1 rounded-full text-xs font-mono transition-all whitespace-nowrap cursor-pointer ${
+                        className={`px-3.5 py-1 rounded-full text-xs font-mono font-semibold transition-all whitespace-nowrap cursor-pointer ${
                           activePresetIndex === idx
-                            ? 'bg-[#dedf42] text-black font-bold shadow-sm'
-                            : 'bg-white/[0.06] text-[#f5ecd9]/70 hover:text-white hover:bg-white/10'
+                            ? 'bg-[#dedf42] text-black font-bold shadow-md shadow-[#dedf42]/20 scale-105'
+                            : 'bg-white/[0.08] text-[#f5ecd9]/80 hover:text-white hover:bg-white/15'
                         }`}
                       >
-                        {preset.title.split(' ')[0]}
+                        {preset.shortName}
                       </button>
                     ))}
                   </div>
                 </div>
 
                 {/* Wayang Specimen Showcase Visual */}
-                <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-black/60 border border-[#d9a441]/25 flex items-center justify-center p-4 mb-6 group">
+                <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden bg-black/60 border border-[#d9a441]/25 flex items-center justify-center mb-6 group">
                   <Image
+                    key={activePreset.id}
                     src={activePreset.image}
                     alt={activePreset.title}
                     fill
-                    className="object-contain p-2 drop-shadow-[0_12px_30px_rgba(222,223,66,0.25)] transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 550px"
                     priority
                   />
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/80 border border-[#dedf42]/30 text-[10px] font-mono text-[#dedf42] uppercase tracking-wider backdrop-blur-sm">
-                    {activePreset.role}
-                  </div>
                 </div>
 
                 {/* Specimen Plaque */}
@@ -190,8 +188,9 @@ export default function SectionWayangGenerator({ id = 'kreasi' }: SectionWayangG
                   </div>
 
                   {/* Poetic Philosophy Excerpt */}
-                  <p className="font-sans text-xs sm:text-sm text-[#f5ecd9]/80 italic leading-relaxed pt-2 border-t border-white/10">
-                    &ldquo;Terlahir sebagai simbol keluhuran budi, menuntun sanubari manusia agar senantiasa teguh meniti jalan dharma.&rdquo;
+                  {/* Poetic Philosophy Excerpt — Khas Sesuai Tokoh */}
+                  <p className="font-sans text-xs sm:text-sm text-[#f5ecd9]/90 italic leading-relaxed pt-2 border-t border-white/10">
+                    &ldquo;{activePreset.philosophy}&rdquo;
                   </p>
                 </div>
               </div>

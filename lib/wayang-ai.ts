@@ -10,6 +10,7 @@ export interface WayangPromptParams {
 export interface WayangPreset {
   id: string;
   title: string;
+  shortName?: string;
   role: string;
   archetype: string;
   weapon: string;
@@ -18,6 +19,7 @@ export interface WayangPreset {
   prompt: string;
   image: string;
   traits: string[];
+  philosophy?: string;
 }
 
 export interface ChatMessage {
@@ -387,6 +389,7 @@ export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
   {
     id: 'preset-1',
     title: 'Raden Dananjaya (Arjuna)',
+    shortName: 'Arjuna',
     role: 'Satria Madukara • Pemanah Pinilih',
     archetype: 'ksatria',
     weapon: 'gandiwa',
@@ -394,12 +397,14 @@ export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
     visualStyle: 'prada',
     prompt:
       'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Raden Arjuna with golden Makuta headdress and archery bow.',
-    image: '/assets/thumb-arjuna.png',
+    image: '/images/tokoh/wayang-4.png',
     traits: ['Budi Luhur', 'Panah Sakti', 'Ksatria Pandawa'],
+    philosophy: 'Heninging cipta, rasa, lan karsa minangka kunci nggayuh kasampurnan jati.',
   },
   {
     id: 'preset-2',
     title: 'Raden Gatotkaca',
+    shortName: 'Gatotkaca',
     role: 'Satria Pringgadani • Otot Kawat',
     archetype: 'perkasa',
     weapon: 'cunduk',
@@ -407,12 +412,14 @@ export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
     visualStyle: 'prada',
     prompt:
       'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Gatotkaca with winged golden sunburst back-piece halo Praba.',
-    image: '/assets/thumb-gatotkaca.png',
+    image: '/images/tokoh/wayang-5.png',
     traits: ['Otot Kawat', 'Balung Wesi', 'Pelindung Angkasa'],
+    philosophy: 'Kasetyan marang nagari ngungkuli getih lan pati, sayap emas penjaga kedaulatan praja.',
   },
   {
     id: 'preset-3',
     title: 'Kyai Semar Badranaya',
+    shortName: 'Semar',
     role: 'Lurah Karangdempel • Pamong Luhur',
     archetype: 'punakawan',
     weapon: 'cunduk',
@@ -420,12 +427,14 @@ export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
     visualStyle: 'kelir',
     prompt:
       'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Semar.',
-    image: '/assets/thumb-semar.png',
+    image: '/images/tokoh/wayang-1.png',
     traits: ['Pengayom', 'Urip Iku Urup', 'Sakti Rendah Hati'],
+    philosophy: 'Urip Iku Urup — dadiya pepadhang kanggo sasama kanthi luhuring budi pekerti lan asih.',
   },
   {
     id: 'preset-4',
     title: 'Kyai Petruk Kantong Bolong',
+    shortName: 'Petruk',
     role: 'Punakawan Cerdas & Jenaka',
     archetype: 'punakawan',
     weapon: 'cunduk',
@@ -433,12 +442,14 @@ export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
     visualStyle: 'kelir',
     prompt:
       'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Petruk.',
-    image: '/assets/thumb-petruk.png',
-    traits: ['Cerdas', 'Humor', 'Dermawan'],
+    image: '/images/tokoh/wayang-2.png',
+    traits: ['Cerdas', 'Humor Filosofis', 'Dermawan'],
+    philosophy: 'Aja gumunan, aja getunan, aja kagetan — gemuyu ing madyaning panandhang nuntun kabungahan.',
   },
   {
     id: 'preset-5',
     title: 'Kyai Bagong Bawor',
+    shortName: 'Bagong',
     role: 'Punakawan Kritis & Jujur',
     archetype: 'punakawan',
     weapon: 'cunduk',
@@ -446,7 +457,8 @@ export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
     visualStyle: 'prada',
     prompt:
       'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Bagong.',
-    image: '/assets/thumb-bagong.png',
-    traits: ['Kritis', 'Jujur', 'Lugu'],
+    image: '/images/tokoh/wayang-3.png',
+    traits: ['Kritis', 'Penyuara Jujur', 'Berani'],
+    philosophy: 'Kebenaran ora kena kawungkus goroh, tetep sumringah lan kendel mbelani wong cilik.',
   },
 ];

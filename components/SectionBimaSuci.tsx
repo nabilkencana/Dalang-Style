@@ -60,7 +60,6 @@ export default function SectionBimaSuci({
     const section = sectionRef.current;
     if (!section || backgroundType !== 'youtube') return;
 
-    let wasIntersecting = false;
 
     // IntersectionObserver with hysteresis to avoid flickering on threshold boundaries
     const observer = new IntersectionObserver(

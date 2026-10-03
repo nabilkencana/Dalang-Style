@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-
+import { OriginButton } from '@/components/ui/origin-button';
 export interface SectionJoinTheNightProps {
   id?: string;
   title?: string;
@@ -73,30 +72,36 @@ export default function SectionJoinTheNight({
             </h2>
 
             {/* 3 Top Information Pills */}
+            {/* 3 Top Information Pills with OriginButton Ripple Animation */}
             <div data-gsap="join-pills" className="flex flex-wrap items-center gap-2 sm:gap-2.5 md:gap-3">
               {/* Heritage Badge Pill */}
-              <div className="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-transparent">
-                <span className="font-sans font-bold text-black text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap select-text">
-                  {pill1}
-                </span>
-              </div>
+              <OriginButton
+                fillClassName="bg-black"
+                activeTextClassName="text-[#dedf42]"
+                className="h-auto px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-transparent text-black font-sans font-bold text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap shadow-sm cursor-default"
+              >
+                {pill1}
+              </OriginButton>
 
               {/* Technology Badge Pill */}
-              <div className="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-transparent">
-                <span className="font-sans font-bold text-black text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap select-text">
-                  {pill2}
-                </span>
-              </div>
+              <OriginButton
+                fillClassName="bg-black"
+                activeTextClassName="text-[#dedf42]"
+                className="h-auto px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-transparent text-black font-sans font-bold text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap shadow-sm cursor-default"
+              >
+                {pill2}
+              </OriginButton>
 
               {/* Action Link Pill */}
-              <Link
+              {/* Action Link Pill with #dedf42 hover fill */}
+              <OriginButton
                 href={actionPill.href}
-                className="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-black text-[#dedf42] hover:bg-white hover:text-black active:scale-95 transition-all group flex items-center gap-1.5 shadow-md focus:outline-none focus:ring-2 focus:ring-black"
+                fillClassName="bg-[#dedf42]"
+                activeTextClassName="text-black"
+                className="h-auto px-5 sm:px-6 md:px-7 py-1.5 sm:py-2 rounded-full border border-black bg-black text-[#dedf42] font-sans font-bold text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap shadow-md cursor-pointer"
               >
-                <span className="font-sans font-bold text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap">
-                  {actionPill.text}
-                </span>
-              </Link>
+                {actionPill.text}
+              </OriginButton>
             </div>
           </div>
 
@@ -118,13 +123,15 @@ export default function SectionJoinTheNight({
           <div className="flex items-center justify-end">
             <div data-gsap="join-social" className="flex flex-wrap items-center justify-end gap-2 sm:gap-3 pointer-events-auto">
               {platformLinks.map((link) => (
-                <Link
+                <OriginButton
                   key={link.label}
                   href={link.href}
-                  className="px-5 sm:px-6 md:px-7 py-1.5 sm:py-2 rounded-full border border-black bg-transparent text-black font-sans font-bold text-[clamp(8px,0.95cqi,12px)] tracking-wider uppercase hover:bg-black hover:text-[#dedf42] active:scale-95 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-black"
+                  fillClassName="bg-black"
+                  activeTextClassName="text-[#dedf42]"
+                  className="h-auto px-5 sm:px-6 md:px-7 py-1.5 sm:py-2 rounded-full border border-black bg-transparent text-black font-sans font-bold text-[clamp(8px,0.95cqi,12px)] tracking-wider uppercase shadow-sm cursor-pointer"
                 >
                   {link.label}
-                </Link>
+                </OriginButton>
               ))}
             </div>
           </div>
