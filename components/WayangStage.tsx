@@ -249,6 +249,31 @@ export default function WayangStage() {
     setIsMuted(nextMuted);
   }, []);
 
+  const handleCharactersChange = useCallback((val: 'two' | 'one') => {
+    setSettings((prev) => ({ ...prev, characters: val }));
+    const controller = wayangRef.current.controller;
+    const puppets = wayangRef.current.puppets;
+    if (controller) {
+      controller.settings.characters = val;
+    }
+    if (puppets.length) {
+      if (val === 'one') {
+        puppets[0].home = [STAGE_W / 2, 650];
+        puppets[0].pos.snap(STAGE_W / 2, 650);
+        showToast('Mode 1 Wayang (Pertunjukan Solo) Aktif');
+      } else {
+        puppets[0].home = [640, 650];
+        puppets[0].pos.snap(640, 650);
+        if (puppets[1]) {
+          puppets[1].home = [1280, 650];
+          puppets[1].pos.snap(1280, 650);
+        }
+        showToast('Mode 2 Wayang (Pertunjukan Duo) Aktif');
+      }
+    }
+    applyFacing(facingMode);
+  }, [applyFacing, facingMode, showToast]);
+
   // Main lifecycle effect
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -428,7 +453,11 @@ export default function WayangStage() {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target instanceof HTMLTextAreaElement) return;
       const k = e.key.toLowerCase();
-      if (k === 'd') {
+      if (k === '1') {
+        handleCharactersChange('one');
+      } else if (k === '2') {
+        handleCharactersChange('two');
+      } else if (k === 'd') {
         controller.requestDance();
         showToast('Tari Kiprah');
       } else if (k === 'f') {
@@ -689,14 +718,6 @@ export default function WayangStage() {
     setIntroGone(true);
   };
 
-  const handleCharactersChange = (val: 'two' | 'one') => {
-    setSettings((prev) => ({ ...prev, characters: val }));
-    if (wayangRef.current.controller) {
-      wayangRef.current.controller.settings.characters = val;
-    }
-    applyFacing(facingMode);
-  };
-
   const handleFingersChange = (val: 'thumb-index' | 'thumb-pinky' | 'index-pinky') => {
     setSettings((prev) => ({ ...prev, fingers: val }));
     if (wayangRef.current.controller) {
@@ -748,39 +769,82 @@ export default function WayangStage() {
       <section id="intro" className={`panel intro ${introGone ? 'gone' : ''}`}>
         <p className="eyebrow">Wayang Kulit</p>
         <h1 className="wayang-title">
-          Dua Wayang,
-          <br />
-          Satu di Setiap Tangan
+          {settings.characters === 'two' ? (
+            <>
+              Dua Wayang,
+              <br />
+              Satu di Setiap Tangan
+            </>
+          ) : (
+            <>
+              Satu Wayang (Solo),
+              <br />
+              Dua Tangan Dalang
+            </>
+          )}
         </h1>
         <p className="lede">
-          Mainkan dua wayang kulit di atas kain kelir berlampu blencong. Kamera melacak kedua tangan Anda seperti dalang memegang gapit dan cempurit.
+          {settings.characters === 'two'
+            ? 'Mainkan dua wayang kulit di atas kain kelir berlampu blencong. Kamera melacak kedua tangan Anda seperti dalang memegang gapit dan cempurit.'
+            : 'Mainkan satu wayang solo secara leluasa dengan gestur dua tangan: satu tangan menggerakkan kedua lengan/tuding wayang, dan tangan lainnya mengendalikan posisi tubuh (gapit) serta kedalaman wayang.'}
         </p>
         <ul className="howto">
-          <li>
-            <span className="k">Tangan Kiri &amp; Kanan</span>
-            <span>Setiap tangan mengendalikan satu tokoh: tangan kiri memainkan wayang kiri, tangan kanan memainkan wayang kanan.</span>
-          </li>
-          <li>
-            <span className="k">Telapak Tangan</span>
-            <span>Tongkat badan (gapit). Tubuh wayang mengikuti gerakan telapak tangan Anda.</span>
-          </li>
-          <li>
-            <span className="k">Ibu Jari &amp; Telunjuk</span>
-            <span>Dua tangkai tangan wayang (cempurit/tuding). Rentangkan, angkat, atau satukan jari Anda.</span>
-          </li>
-          <li>
-            <span className="k">Miringkan Tangan</span>
-            <span>Wayang akan ikut condong dan miring mengikuti gerakan tangan Anda.</span>
-          </li>
+          {settings.characters === 'two' ? (
+            <>
+              <li>
+                <span className="k">Tangan Kiri &amp; Kanan</span>
+                <span>Setiap tangan mengendalikan satu tokoh: tangan kiri memainkan wayang kiri, tangan kanan memainkan wayang kanan.</span>
+              </li>
+              <li>
+                <span className="k">Telapak Tangan</span>
+                <span>Tongkat badan (gapit). Tubuh wayang mengikuti gerakan telapak tangan Anda.</span>
+              </li>
+              <li>
+                <span className="k">Ibu Jari &amp; Telunjuk / Kelingking</span>
+                <span>Dua tangkai tangan wayang (cempurit/tuding). Rentangkan, angkat, atau satukan jari Anda.</span>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <span className="k">Tangan Pengatur Tuding (Tangan 1)</span>
+                <span>Mengatur kedua tangkai tangan &amp; lengan wayang (ibu jari &amp; telunjuk/kelingking) dengan bebas di layar panggung.</span>
+              </li>
+              <li>
+                <span className="k">Tangan Pemegang Gapit (Tangan 2)</span>
+                <span>Menggerakkan posisi tubuh wayang (X/Y) dan mengatur kemiringan alami tubuh wayang.</span>
+              </li>
+              <li>
+                <span className="k">Balik Arah Hadap</span>
+                <span>Gunakan tombol F / G atau menu pengaturan untuk membalik arah hadap wayang.</span>
+              </li>
+            </>
+          )}
           <li>
             <span className="k">Mendekat ke Kamera</span>
             <span>Mengangkat wayang dari layar kelir, membuat bayangannya membesar dan mengabur lembut.</span>
           </li>
-          <li>
-            <span className="k">Jari Kelingking</span>
-            <span>Tunjukkan hanya jari kelingking: wayang akan menari kiprahan mengikuti irama ketukan gamelan.</span>
-          </li>
         </ul>
+        {/* Quick Mode Switcher in Intro */}
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+          <button
+            type="button"
+            className={`btn small ${settings.characters === 'two' ? 'primary' : ''}`}
+            style={{ flex: 1, padding: '8px 12px', fontSize: '12px' }}
+            onClick={() => handleCharactersChange('two')}
+          >
+            2 Wayang (Dua Tangan)
+          </button>
+          <button
+            type="button"
+            className={`btn small ${settings.characters === 'one' ? 'primary' : ''}`}
+            style={{ flex: 1, padding: '8px 12px', fontSize: '12px' }}
+            onClick={() => handleCharactersChange('one')}
+          >
+            1 Wayang (Solo)
+          </button>
+        </div>
+
         {/* Compact Character Selection in Intro */}
         <div className="intro-char-bar">
           <div className="char-current-pill">
@@ -833,6 +897,15 @@ export default function WayangStage() {
           <span id="status-text">{hudStatus.text}</span>
         </div>
         <div className="keys">
+          <button
+            type="button"
+            className="key-btn"
+            onClick={() => handleCharactersChange(settings.characters === 'two' ? 'one' : 'two')}
+            title="Ganti Mode 1 Wayang (Solo) / 2 Wayang (Duo) (Tekan 1 / 2)"
+          >
+            <kbd>{settings.characters === 'two' ? '1' : '2'}</kbd>{' '}
+            {settings.characters === 'two' ? '1 wayang (solo)' : '2 wayang (duo)'}
+          </button>
           <button
             type="button"
             className="key-btn"
@@ -985,6 +1058,17 @@ export default function WayangStage() {
         >
           Kembali ke Panduan
         </Link>
+        <label>
+          Mode Pertunjukan (Jumlah Wayang)
+          <select
+            id="opt-characters"
+            value={settings.characters}
+            onChange={(e) => handleCharactersChange(e.target.value as 'two' | 'one')}
+          >
+            <option value="two">2 Wayang (Dua Tangan / Ganda)</option>
+            <option value="one">1 Wayang (Pertunjukan Solo)</option>
+          </select>
+        </label>
         <button
           type="button"
           className="btn small"

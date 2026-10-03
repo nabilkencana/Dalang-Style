@@ -184,56 +184,107 @@ export function compileWayangPrompt(params: WayangPromptParams): string {
 }
 
 /**
- * Menghasilkan URL gambar wayang kulit autentik Nusantara beresolusi tinggi yang selaras dengan seluruh pameran website ini.
+ * Menghasilkan URL gambar wayang kulit autentik Nusantara yang selaras 100% dengan panggung pentas virtual (assets stage).
  */
 export function resolveWayangImage(prompt: string, characterName?: string): string {
   const p = `${prompt} ${characterName || ''}`.toLowerCase();
 
-  if (p.includes('garuda') || p.includes('elang') || p.includes('sayap') || p.includes('terbang') || p.includes('gatotkaca') || p.includes('pringgandani')) {
-    return '/images/tokoh/wayang-5.png'; // Gatotkaca / Ksatria Sayap Emas
-  }
-  if (p.includes('naga') || p.includes('perkasa') || p.includes('bima') || p.includes('werkudara') || p.includes('cakar') || p.includes('singa') || p.includes('harimau') || p.includes('pancanaka') || p.includes('gagah')) {
-    return '/images/tokoh/wayang-7.png'; // Werkudara / Bima Perkasa
-  }
-  if (p.includes('putri') || p.includes('dewi') || p.includes('sinta') || p.includes('srikandi') || p.includes('anggun') || p.includes('wanita') || p.includes('cundrik') || p.includes('cantik')) {
-    return '/images/tokoh/wayang-9.png'; // Dewi Sinta
-  }
-  if (p.includes('semar') || p.includes('ismaya') || p.includes('pamong') || p.includes('badranaya') || p.includes('bijak')) {
-    return '/images/tokoh/wayang-1.png'; // Semar Badranaya
-  }
-  if (p.includes('petruk') || p.includes('kantong') || p.includes('bolong') || p.includes('jenaka') || p.includes('humor') || p.includes('lucu')) {
-    return '/images/tokoh/wayang-2.png'; // Petruk Kantong Bolong
-  }
-  if (p.includes('gareng') || p.includes('nalagareng') || p.includes('lugu') || p.includes('rendah hati')) {
-    return '/images/tokoh/wayang-3.png'; // Gareng
-  }
-  if (p.includes('raksasa') || p.includes('raseksa') || p.includes('rahwana') || p.includes('dasamuka') || p.includes('taring') || p.includes('durgala') || p.includes('buta')) {
-    return '/images/tokoh/wayang-6.png'; // Rahwana / Prabu Dasamuka
-  }
-  if (p.includes('resi') || p.includes('drona') || p.includes('begawan') || p.includes('guru') || p.includes('pandita') || p.includes('tapa')) {
-    return '/images/tokoh/wayang-8.png'; // Resi Drona
-  }
-  if (p.includes('panah') || p.includes('gandiwa') || p.includes('arjuna') || p.includes('dananjaya') || p.includes('ksatria') || p.includes('petir') || p.includes('kilat') || p.includes('halilintar')) {
-    return '/images/tokoh/wayang-4.png'; // Raden Arjuna / Dananjaya
+  // 1. Gatotkaca (Satria Pringgadani / Garuda / Sayap / Otot Kawat)
+  if (
+    p.includes('gatotkaca') ||
+    p.includes('garuda') ||
+    p.includes('sayap') ||
+    p.includes('terbang') ||
+    p.includes('otot kawat') ||
+    p.includes('pringgandani') ||
+    p.includes('pringgadani') ||
+    p.includes('antakusuma') ||
+    p.includes('elang') ||
+    p.includes('angkasa') ||
+    p.includes('perkasa')
+  ) {
+    return '/assets/thumb-gatotkaca.png';
   }
 
-  // Fallback deterministik berbasis hash string dari koleksi master wayang autentik website
-  const masterCollection = [
-    '/images/tokoh/wayang-4.png',
-    '/images/tokoh/wayang-7.png',
-    '/images/tokoh/wayang-5.png',
-    '/images/tokoh/wayang-1.png',
-    '/images/tokoh/wayang-9.png',
-    '/images/tokoh/wayang-2.png',
-    '/images/tokoh/wayang-3.png',
-    '/images/tokoh/wayang-6.png',
-    '/images/tokoh/wayang-8.png',
+  // 2. Semar (Pamong Luhur / Ismaya / Badranaya / Urip Iku Urup)
+  if (
+    p.includes('semar') ||
+    p.includes('ismaya') ||
+    p.includes('badranaya') ||
+    p.includes('karangdempel') ||
+    p.includes('pamong') ||
+    p.includes('sesepuh') ||
+    p.includes('bijak') ||
+    p.includes('lurah') ||
+    p.includes('urip iku urup')
+  ) {
+    return '/assets/thumb-semar.png';
+  }
+
+  // 3. Petruk (Kantong Bolong / Hidung Mancung / Jenaka / Cerdas)
+  if (
+    p.includes('petruk') ||
+    p.includes('kantong') ||
+    p.includes('bolong') ||
+    p.includes('mancung') ||
+    p.includes('jenaka') ||
+    p.includes('humor') ||
+    p.includes('canda') ||
+    p.includes('kelakar') ||
+    p.includes('lucu')
+  ) {
+    return '/assets/thumb-petruk.png';
+  }
+
+  // 4. Bagong (Bawor / Kritis / Ceplas-ceplos / Lugu / Bulat)
+  if (
+    p.includes('bagong') ||
+    p.includes('bawor') ||
+    p.includes('kritis') ||
+    p.includes('ceplas') ||
+    p.includes('bulat') ||
+    p.includes('lugu') ||
+    p.includes('banyumas') ||
+    p.includes('jujur')
+  ) {
+    return '/assets/thumb-bagong.png';
+  }
+
+  // 5. Arjuna (Satria Madukara / Dananjaya / Janaka / Pemanah / Panah Gandiwa)
+  if (
+    p.includes('arjuna') ||
+    p.includes('dananjaya') ||
+    p.includes('janaka') ||
+    p.includes('madukara') ||
+    p.includes('panah') ||
+    p.includes('gandiwa') ||
+    p.includes('ksatria') ||
+    p.includes('satria') ||
+    p.includes('pandawa') ||
+    p.includes('petir') ||
+    p.includes('kilat') ||
+    p.includes('halilintar') ||
+    p.includes('keris') ||
+    p.includes('putri') ||
+    p.includes('anggun') ||
+    p.includes('cundrik')
+  ) {
+    return '/assets/thumb-arjuna.png';
+  }
+
+  // Fallback deterministik berbasis hash string dari aset panggung pentas stage
+  const stageMasterAssets = [
+    '/assets/thumb-arjuna.png',
+    '/assets/thumb-gatotkaca.png',
+    '/assets/thumb-semar.png',
+    '/assets/thumb-petruk.png',
+    '/assets/thumb-bagong.png',
   ];
   let hash = 0;
   for (let i = 0; i < p.length; i++) {
     hash = (hash * 31 + p.charCodeAt(i)) >>> 0;
   }
-  return masterCollection[hash % masterCollection.length];
+  return stageMasterAssets[hash % stageMasterAssets.length];
 }
 
 /**
@@ -252,75 +303,61 @@ export function interpretUserPrompt(userPrompt: string): {
   const p = userPrompt.toLowerCase();
 
   // Pattern detection
-  let characterName = 'Raden Kencana Wasesa';
-  let roleTitle = 'Ksatria Penjaga Nurani Bangsa';
-  let weaponName = 'Keris Kyai Jalak Sembilan';
-  let philosophy = 'Keteguhan memegang kebenaran walau badai godaan duniawi menerpa.';
-  let traits = ['Berbudi Luhur', 'Tatah Emas Prada', 'Penegak Keadilan'];
-  let descToken = 'noble refined Javanese ksatria knight with golden makuta headdress and damascene kris';
+  let characterName = 'Raden Arjuna Dananjaya';
+  let roleTitle = 'Satria Madukara • Pandawa';
+  let weaponName = 'Busur Panah Gandiwa';
+  let philosophy = 'Heninging cipta, rasa, lan karsa minangka kunci nggayuh kasampurnan.';
+  let traits = ['Budi Luhur', 'Panah Sakti', 'Ksatria Pinilih'];
+  let descToken = 'noble refined Javanese ksatria knight with golden makuta headdress and sacred archery bow';
 
-  if (p.includes('garuda') || p.includes('elang') || p.includes('sayap') || p.includes('terbang')) {
-    characterName = 'Raden Garudayana';
-    roleTitle = 'Ksatria Sayap Emas Samudra';
-    weaponName = 'Busur Panah Brajamusti';
-    philosophy = 'Ketinggian pandangan nurani yang mampu melintasi batas langit tanpa keangkuhan.';
-    traits = ['Sayap Emas', 'Penguasa Angkasa', 'Budi Luhur'];
-    descToken = 'mythical Javanese warrior knight with magnificent golden winged backpiece Praba and divine archery bow';
-  } else if (p.includes('naga') || p.includes('ular') || p.includes('sisik')) {
-    characterName = 'Arya Nagapuspa';
-    roleTitle = 'Penjaga Telaga Suci Kahyangan';
-    weaponName = 'Tombak Trisula Nagabanda';
-    philosophy = 'Kedalaman batin yang mengendalikan nafsu angkara murka hingga menjadi berkah.';
-    traits = ['Kelat Bahu Naga', 'Ketahanan Jiwa', 'Sakti Mandraguna'];
-    descToken = 'regal warrior hero adorned in golden dragon kelat bahu armor holding an ornate dragon spear';
-  } else if (p.includes('singa') || p.includes('harimau') || p.includes('cakar') || p.includes('macan')) {
-    characterName = 'Raden Singo Lodaya';
-    roleTitle = 'Ksatria Rimba Purwacarita';
-    weaponName = 'Cakar Kencana Wulung';
-    philosophy = 'Keberanian tanpa pamrih untuk membela yang lemah dan menjaga kelestarian alam.';
-    traits = ['Kuku Sakti', 'Keberanian Mutlak', 'Pemberantas Angkara'];
-    descToken = 'powerful fierce hero with golden tiger claw weapons and striped royal batik kampuh drapery';
-  } else if (p.includes('petir') || p.includes('kilat') || p.includes('halilintar') || p.includes('listrik')) {
-    characterName = 'Bambang Bajrakilat';
-    roleTitle = 'Penakluk Guntur Mahameru';
-    weaponName = 'Gada Geledek Petir';
-    philosophy = 'Ketegasan mengambil keputusan di saat genting demi kemaslahatan bersama.';
-    traits = ['Cahaya Petir', 'Keputusan Cepat', 'Tatap Tegas'];
-    descToken = 'electric aura warrior prince holding a crackling golden lightning bolt mace';
-  } else if (p.includes('putri') || p.includes('dewi') || p.includes('anggun') || p.includes('cantik') || p.includes('wanita') || p.includes('srikandi')) {
-    characterName = 'Dewi Retno Kumalasari';
-    roleTitle = 'Putri Penyejuk Jagad';
-    weaponName = 'Cundrik Pusaka Ratu';
-    philosophy = 'Kelembutan tutur kata dan ketulusan hati yang mampu meluluhkan kekerasan amarah.';
-    traits = ['Anggun Bijak', 'Selendang Kencana', 'Pengayom Damai'];
-    descToken = 'graceful royal Javanese princess with tiered golden crown and glowing silk batik sash';
-  } else if (p.includes('punakawan') || p.includes('lucu') || p.includes('jenaka') || p.includes('humor') || p.includes('semar') || p.includes('petruk') || p.includes('bagong')) {
-    characterName = 'Kyai Sabdo Rahayu';
-    roleTitle = 'Pamong Nurani Rakyat Jelata';
-    weaponName = 'Cunduk Manik Astagina';
-    philosophy = 'Urip Iku Urup — hidup yang bermakna adalah yang menjadi pelita bagi sesama.';
-    traits = ['Pamong Luhur', 'Humor Filosofis', 'Rendah Hati'];
-    descToken = 'wise witty smiling Punakawan elder puppet with traditional kain and divine forehead jewel';
-  } else if (p.includes('raksasa') || p.includes('raseksa') || p.includes('taring') || p.includes('gagah') || p.includes('besar') || p.includes('rahwana')) {
-    characterName = 'Prabu Kaladurgala';
-    roleTitle = 'Maharaja Raksasa Berjiwa Luhur';
-    weaponName = 'Gada Wesi Kuning';
-    philosophy = 'Kekuatan fisik sebesar apa pun harus tunduk pada bimbingan budi pekerti yang mulia.';
-    traits = ['Taring Emas', 'Kekuatan Raksasa', 'Tunduk Kebaikan'];
-    descToken = 'colossal majestic giant king with golden fangs and richly chiseled leather armor';
+  if (p.includes('gatotkaca') || p.includes('garuda') || p.includes('sayap') || p.includes('terbang') || p.includes('otot kawat') || p.includes('pringgandani')) {
+    characterName = 'Raden Gatotkaca';
+    roleTitle = 'Satria Pringgadani • Otot Kawat Balung Wesi';
+    weaponName = 'Kutang Antakusuma & Aji Brajamusti';
+    philosophy = 'Keberanian membela tanah tumpah darah walau jiwa raga menjadi taruhannya.';
+    traits = ['Otot Kawat', 'Balung Wesi', 'Pelindung Angkasa'];
+    descToken = 'mighty flying warrior hero with golden sunburst praba backpiece and celestial armor';
+  } else if (p.includes('semar') || p.includes('ismaya') || p.includes('pamong') || p.includes('bijak')) {
+    characterName = 'Kyai Semar Badranaya';
+    roleTitle = 'Lurah Karangdempel • Pamong Para Ksatria';
+    weaponName = 'Aji Pangabaran Manik Astagina';
+    philosophy = 'Urip Iku Urup — hidup yang bermakna adalah yang menjadi pelita bagi sesama manusia.';
+    traits = ['Pamong Luhur', 'Urip Iku Urup', 'Rendah Hati'];
+    descToken = 'wise smiling Punakawan elder puppet with traditional drapery and celestial light';
+  } else if (p.includes('petruk') || p.includes('kantong') || p.includes('bolong') || p.includes('jenaka') || p.includes('humor')) {
+    characterName = 'Kyai Petruk Kantong Bolong';
+    roleTitle = 'Punakawan Cerdas & Tangkas';
+    weaponName = 'Pusaka Gandala & Kapak Petruk';
+    philosophy = 'Aja gumunan, aja getunan, aja kagetan — hadapi lika-liku dunia dengan hati lapang dan akal jernih.';
+    traits = ['Cerdas', 'Humor Filosofis', 'Dermawan'];
+    descToken = 'tall witty long-nosed shadow puppet with joyful gesture and royal sash';
+  } else if (p.includes('bagong') || p.includes('bawor') || p.includes('kritis') || p.includes('lugu') || p.includes('jujur')) {
+    characterName = 'Kyai Bagong Bawor';
+    roleTitle = 'Punakawan Kritis & Berani';
+    weaponName = 'Kuku Pancasona & Kata Benar';
+    philosophy = 'Kebenaran tidak boleh ditutup-tutupi hanya karena takut pada kekuasaan duniawi.';
+    traits = ['Kritis', 'Penyuara Jujur', 'Berani'];
+    descToken = 'round stout outspoken puppet with expressive wide eyes and honest posture';
+  } else if (p.includes('naga') || p.includes('perkasa') || p.includes('cakar') || p.includes('harimau')) {
+    characterName = 'Raden Werkudara';
+    roleTitle = 'Satria Jodhipati • Penegak Keadilan';
+    weaponName = 'Kuku Pancanaka & Gada Rujakpala';
+    philosophy = 'Lurus tanpa kompromi membela dharma dan menumpas segala bentuk angkara murka.';
+    traits = ['Kuku Pancanaka', 'Jujur Mutlak', 'Gagah Perkasa'];
+    descToken = 'towering muscular hero with checkered poleng sarong and glowing thumb claws';
   }
 
   const greeting =
-    `Rahayu, sahabat dalang. Dari kehendak ciptamu, Sang Empu telah menatah sosok **${characterName}**, sang ${roleTitle}. ` +
-    `Tokoh ini memegang pusaka **${weaponName}**, yang membawa wejangan filosofis: *"${philosophy}"*. ` +
-    `Klik tombol **Lihat di Canvas** di bawah untuk menyaksikan tatahan wayang ini di atas panggung kain kelir:`;
+    `Rahayu, sahabat dalang. Dari gagasan ciptamu, Sang Empu telah menatah sosok **${characterName}**, sang ${roleTitle}. ` +
+    `Tokoh ini memegang pusaka **${weaponName}**, dengan falsafah adiluhung: *"${philosophy}"*. ` +
+    `Klik tombol **Lihat di Canvas** di bawah untuk mementaskan tokoh ini langsung pada panggung kanvas virtual:`;
 
   const compiledPrompt =
     `Traditional Indonesian Javanese Wayang Kulit flat leather shadow puppet of ${characterName}, ` +
-    `${descToken}, holding ${weaponName}, inspired by user concept: "${userPrompt}". ` +
+    `${descToken}, holding ${weaponName}, inspired by concept: "${userPrompt}". ` +
     `Style: authentic traditional Javanese Wayang Kulit flat leather puppet artwork, meticulous perforated leather chiseling (tatah sungging), ` +
-    `intricate gold leaf prada gilding accents, sharp crisp silhouette, centered composition on warm aged golden-brown parchment backdrop with blencong oil lamp lighting, ` +
-    `masterpiece royal heritage artifact, 8k resolution, museum conservation quality, full body shadow puppet, no 3D anime, no human face, no modern text`;
+    `intricate gold leaf prada accents, centered composition on warm aged golden kelir screen backdrop with soft blencong lamp lighting, ` +
+    `royal museum artifact quality, 8k resolution, full body puppet matching stage assets`;
 
   const imageUrl = resolveWayangImage(userPrompt, characterName);
 
@@ -349,54 +386,67 @@ export function getWayangImageUrl(prompt: string, _width = 1024, _height = 1024,
 export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
   {
     id: 'preset-1',
-    title: 'Raden Dananjaya Emas',
-    role: 'Ksatria Pemanah Pinilih',
+    title: 'Raden Dananjaya (Arjuna)',
+    role: 'Satria Madukara • Pemanah Pinilih',
     archetype: 'ksatria',
     weapon: 'gandiwa',
     costume: 'makuta',
     visualStyle: 'prada',
     prompt:
-      'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of a noble refined Javanese ksatria knight with elegant slender posture and calm expression, crowned with an intricate tiered golden Makuta headdress with delicate carvings, holding a magnificent sacred golden archery bow Gandiva with glowing arrows. Style: authentic traditional Javanese Wayang Kulit leather puppet styling, meticulous perforated leather chiseled craftsmanship (tatah sungging), gold foil prada accents, sharp silhouette. Masterpiece heritage artifact, 8k resolution.',
-    image: '/images/tokoh/wayang-4.png',
+      'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Raden Arjuna with golden Makuta headdress and archery bow.',
+    image: '/assets/thumb-arjuna.png',
     traits: ['Budi Luhur', 'Panah Sakti', 'Ksatria Pandawa'],
   },
   {
     id: 'preset-2',
-    title: 'Werkudara Samudra',
-    role: 'Satria Gagah Perkasa',
-    archetype: 'perkasa',
-    weapon: 'pancanaka',
-    costume: 'poleng',
-    visualStyle: 'prada',
-    prompt:
-      'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of a mighty towering warrior hero Werkudara archetype with powerful stance and fierce royal mustache, wearing traditional black-and-white checkered sacred Poleng ceremonial sarong drapery, sharp gleaming golden thumbnail claw weapon Pancanaka ready for strike. Style: authentic traditional Javanese Wayang Kulit leather puppet styling, gold foil prada accents. Masterpiece heritage artifact.',
-    image: '/images/tokoh/wayang-7.png',
-    traits: ['Kuku Pancanaka', 'Pencari Hakikat', 'Jujur Mutlak'],
-  },
-  {
-    id: 'preset-3',
-    title: 'Sang Pamong Ismaya',
-    role: 'Pamong Luhur Rakyat',
-    archetype: 'punakawan',
-    weapon: 'cunduk',
-    costume: 'selendang',
-    visualStyle: 'kelir',
-    prompt:
-      'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of a wise witty Punakawan servant elder Semar archetype with friendly smiling demeanor, draped in shimmering gold-threaded royal Javanese batik waist sash, radiating a pinnacle jewel spire emitting warm golden celestial beams. Style: shadow puppet cast upon translucent white cotton kelir canvas backlit by a warm flickering blencong oil flame lamp.',
-    image: '/images/tokoh/wayang-1.png',
-    traits: ['Pengayom', 'Urip Iku Urup', 'Sakti Rendah Hati'],
-  },
-  {
-    id: 'preset-4',
-    title: 'Ksatria Pringgandani',
-    role: 'Satria Penjaga Angkasa',
+    title: 'Raden Gatotkaca',
+    role: 'Satria Pringgadani • Otot Kawat',
     archetype: 'perkasa',
     weapon: 'cunduk',
     costume: 'praba',
     visualStyle: 'prada',
     prompt:
-      'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of a mighty warrior hero with winged golden sunburst back-piece halo Praba behind shoulders, flying posture, muscular leather silhouette, tatah sungging gilding. Masterpiece heritage artifact, 8k resolution.',
-    image: '/images/tokoh/wayang-5.png',
+      'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Gatotkaca with winged golden sunburst back-piece halo Praba.',
+    image: '/assets/thumb-gatotkaca.png',
     traits: ['Otot Kawat', 'Balung Wesi', 'Pelindung Angkasa'],
+  },
+  {
+    id: 'preset-3',
+    title: 'Kyai Semar Badranaya',
+    role: 'Lurah Karangdempel • Pamong Luhur',
+    archetype: 'punakawan',
+    weapon: 'cunduk',
+    costume: 'selendang',
+    visualStyle: 'kelir',
+    prompt:
+      'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Semar.',
+    image: '/assets/thumb-semar.png',
+    traits: ['Pengayom', 'Urip Iku Urup', 'Sakti Rendah Hati'],
+  },
+  {
+    id: 'preset-4',
+    title: 'Kyai Petruk Kantong Bolong',
+    role: 'Punakawan Cerdas & Jenaka',
+    archetype: 'punakawan',
+    weapon: 'cunduk',
+    costume: 'selendang',
+    visualStyle: 'kelir',
+    prompt:
+      'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Petruk.',
+    image: '/assets/thumb-petruk.png',
+    traits: ['Cerdas', 'Humor', 'Dermawan'],
+  },
+  {
+    id: 'preset-5',
+    title: 'Kyai Bagong Bawor',
+    role: 'Punakawan Kritis & Jujur',
+    archetype: 'punakawan',
+    weapon: 'cunduk',
+    costume: 'poleng',
+    visualStyle: 'prada',
+    prompt:
+      'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Bagong.',
+    image: '/assets/thumb-bagong.png',
+    traits: ['Kritis', 'Jujur', 'Lugu'],
   },
 ];

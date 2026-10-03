@@ -26,8 +26,8 @@ export const FINGER_PAIRS: Record<string, FingerPairIndices> = {
 };
 
 const LOST_MS = 320;
-const PINKY_HOLD_MS = 300;
-const PINKY_REARM_MS = 350;
+const PINKY_HOLD_MS = 600;
+const PINKY_REARM_MS = 400;
 
 export interface SlotFilterData {
   palm: [number, number];
@@ -35,6 +35,7 @@ export interface SlotFilterData {
   b: [number, number];
   size: number;
   roll: number;
+  yaw: number;
 }
 
 export interface Slot {
@@ -51,6 +52,7 @@ export interface Slot {
     by: OneEuro;
     size: OneEuro;
     roll: OneEuro;
+    yaw: OneEuro;
   };
   leftIsA: boolean;
   role: number | null;
@@ -79,6 +81,7 @@ function makeSlot(): Slot {
       by: pos(),
       size: new OneEuro(0.7, 1.5),
       roll: new OneEuro(1.2, 2.5),
+      yaw: new OneEuro(1.2, 2.5),
     },
     leftIsA: true,
     role: null,
@@ -110,6 +113,7 @@ interface AnalyzedHand {
   palm: [number, number];
   size: number;
   roll: number;
+  yaw: number;
   a: [number, number];
   b: [number, number];
   aBase: [number, number];
@@ -139,11 +143,14 @@ function analyze(lms: Landmark[], aspect: number, pair: FingerPairIndices): Anal
     middle.tipPip < 1.02 &&
     ring.tipPip < 1.12;
 
+  const palmTwist = lms[5] && lms[17] ? (lms[5].z - lms[17].z) * 4 : 0;
+
   return {
     pinkySign,
     palm: avg(WRIST, INDEX_MCP, MIDDLE_MCP, RING_MCP, PINKY_MCP),
     size: Math.max(d(WRIST, MIDDLE_MCP), d(INDEX_MCP, PINKY_MCP) * 1.3),
     roll: Math.atan2(P[MIDDLE_MCP][0] - P[WRIST][0], -(P[MIDDLE_MCP][1] - P[WRIST][1])),
+    yaw: palmTwist,
     a: P[pair.a],
     b: P[pair.b],
     aBase: P[pair.aBase],
@@ -233,21 +240,9 @@ export class Controller {
       const { h, lm } = hands[hi];
       const dt = s.active ? clamp((ts - s.lastTs) / 1000, 1 / 240, 0.2) : 1 / 30;
 
-      s.pinky = h.pinkySign;
-      if (h.pinkySign) {
-        s.pinkyOn += dt * 1000;
-        s.pinkyOff = 0;
-        if (s.pinkyArmed && s.pinkyOn >= PINKY_HOLD_MS) {
-          s.danceTrigger = true;
-          s.pinkyArmed = false;
-        }
-      } else {
-        s.pinkyOff += dt * 1000;
-        if (s.pinkyOff >= PINKY_REARM_MS) {
-          s.pinkyOn = 0;
-          s.pinkyArmed = true;
-        }
-      }
+      // Auto-dance trigger from pinky gesture is disabled to prevent accidental interruptions while playing.
+      // Dance is triggered on demand via the Tari Kiprah button or pressing 'D'.
+      s.pinky = false;
       s.active = true;
       s.lastSeen = ts;
       s.lastTs = ts;
@@ -255,9 +250,7 @@ export class Controller {
       s.landmarks = lm;
       const f = s.f;
 
-      const side = (h.bBase[0] - h.aBase[0]) / h.size;
-      if (side > 0.12) s.leftIsA = true;
-      else if (side < -0.12) s.leftIsA = false;
+      s.leftIsA = h.a[0] <= h.b[0];
 
       s.data = {
         palm: [f.px.filter(h.palm[0], dt), f.py.filter(h.palm[1], dt)],
@@ -265,6 +258,7 @@ export class Controller {
         b: [f.bx.filter(h.b[0], dt), f.by.filter(h.b[1], dt)],
         size: f.size.filter(h.size, dt),
         roll: f.roll.filter(h.roll, dt),
+        yaw: f.yaw.filter(h.yaw, dt),
       };
     }
     for (const s of this.slots) {
@@ -305,6 +299,7 @@ export class Controller {
     });
     const A = rel(d.a),
       B = rel(d.b);
+    const leftIsA = d.a[0] <= d.b[0];
     const danceTrigger = slot.danceTrigger;
     slot.danceTrigger = false;
     return {
@@ -312,7 +307,7 @@ export class Controller {
       body: { x, y },
       tilt: clamp(d.roll * 0.65, -0.45, 0.45),
       depth: this.depthFor(calibKey, d.size),
-      arms: { left: slot.leftIsA ? A : B, right: slot.leftIsA ? B : A },
+      arms: { left: leftIsA ? A : B, right: leftIsA ? B : A },
       danceTrigger,
     };
   }
@@ -371,7 +366,8 @@ export class Controller {
         };
         const A = abs(rod.data!.a),
           B = abs(rod.data!.b);
-        input.arms = { left: rod.leftIsA ? A : B, right: rod.leftIsA ? B : A };
+        const leftIsA = rod.data!.a[0] <= rod.data!.b[0];
+        input.arms = { left: leftIsA ? A : B, right: leftIsA ? B : A };
         input.danceTrigger = input.danceTrigger || rod.danceTrigger;
         rod.danceTrigger = false;
       }

@@ -267,6 +267,7 @@ export interface PuppetInput {
   depth?: number;
   arms?: { left?: ArmSpec; right?: ArmSpec };
   danceTrigger?: boolean;
+  facing?: number;
 }
 
 export interface StickPoint {
