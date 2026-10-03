@@ -18,7 +18,7 @@ export default function SectionBimaSuci({
   youtubeVideoId = 'sQyQ31bysTQ',
   backgroundType = 'youtube',
   backgroundImage = '/images/bima-stage-clean-v2.png',
-  lakonSubtitle = 'LAKON BIMA SUCI',
+  lakonSubtitle = 'SEJARAH WAYANG KULIT',
   accentColor = '#dedf42',
   className = '',
 }: SectionBimaSuciProps) {
@@ -62,24 +62,25 @@ export default function SectionBimaSuci({
 
     let wasIntersecting = false;
 
-    // IntersectionObserver triggers strictly once on crossing threshold
+    // IntersectionObserver with hysteresis to avoid flickering on threshold boundaries
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const isNowIntersecting = entry.isIntersecting && entry.intersectionRatio >= 0.25;
-          if (isNowIntersecting && !wasIntersecting) {
-            wasIntersecting = true;
-            isVisibleRef.current = true;
-            playWithSoundAndCaptions();
-          } else if (!entry.isIntersecting && wasIntersecting) {
-            wasIntersecting = false;
-            isVisibleRef.current = false;
-            pauseVideo();
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+            if (!isVisibleRef.current) {
+              isVisibleRef.current = true;
+              playWithSoundAndCaptions();
+            }
+          } else if (!entry.isIntersecting || entry.intersectionRatio < 0.05) {
+            if (isVisibleRef.current) {
+              isVisibleRef.current = false;
+              pauseVideo();
+            }
           }
         });
       },
       {
-        threshold: [0.25],
+        threshold: [0.05, 0.2],
       }
     );
 
@@ -155,7 +156,7 @@ export default function SectionBimaSuci({
       {/* Theatrical Canvas Container — Cinematic on Mobile & Theatrical on Desktop */}
       <div
         data-gsap="bima-card"
-        className="relative w-full overflow-hidden bg-[#000000] shadow-[0_25px_80px_rgba(0,0,0,0.95)] aspect-video sm:aspect-[1504/1128]"
+        className="relative w-full overflow-hidden bg-[#000000] shadow-[0_25px_80px_rgba(0,0,0,0.95)] aspect-video sm:aspect-[1504/1128] transform-gpu"
       >
         {/* Yellow Frame Box - Expanded to fill screen boldly */}
         <div
@@ -186,14 +187,16 @@ export default function SectionBimaSuci({
           )}
         </div>
 
-        {/* Top Center Label: TONIGHT LAKON (centered on top yellow border line) */}
-        <div data-gsap="bima-label" className="absolute top-[13.65%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#000000] px-3 sm:px-6 md:px-8 z-30 pointer-events-auto">
-          <span
-            className="font-sans font-bold text-[clamp(9px,1.1cqi,15px)] tracking-[0.22em] sm:tracking-[0.28em] uppercase whitespace-nowrap select-text"
-            style={{ color: accentColor }}
-          >
-            {lakonSubtitle}
-          </span>
+        {/* Top Center Label: (centered right on top yellow border line) */}
+        <div className="absolute top-[5%] sm:top-[8%] md:top-[10%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-auto">
+          <div data-gsap="bima-label" className="bg-[#000000] px-3 sm:px-6 md:px-8">
+            <span
+              className="font-sans font-bold text-[clamp(9px,1.1cqi,15px)] tracking-[0.22em] sm:tracking-[0.28em] uppercase whitespace-nowrap select-text"
+              style={{ color: accentColor }}
+            >
+              {lakonSubtitle}
+            </span>
+          </div>
         </div>
       </div>
     </section>

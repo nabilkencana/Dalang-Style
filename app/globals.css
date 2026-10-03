@@ -79,6 +79,11 @@ html.lenis body {
   overscroll-behavior: contain;
 }
 
+/* Prevent embedded iframes from hijacking scroll events during active inertia glide */
+body.is-scrolling iframe {
+  pointer-events: none !important;
+}
+
 /* ─── Global scroll-reveal system ──────────────────────────────────────── */
 /* pending: start state — invisible, slightly below */
 [data-reveal="pending"] {
