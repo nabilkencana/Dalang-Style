@@ -73,7 +73,7 @@ export default function HeroStageBackdrop({
       opacity: 0.035 + (i % 2 === 0 ? 0.025 : 0.015),
     }));
 
-    let startTime = performance.now();
+    const startTime = performance.now();
 
     const render = (now: number) => {
       if (destroyed) return;

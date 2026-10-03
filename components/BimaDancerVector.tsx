@@ -9,7 +9,6 @@ export interface BimaDancerVectorProps {
 
 export default function BimaDancerVector({
   className = '',
-  glowColor = '#dedf42',
 }: BimaDancerVectorProps) {
   return (
     <svg

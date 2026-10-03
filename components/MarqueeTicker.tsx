@@ -59,6 +59,7 @@ export default function MarqueeTicker({
         // Start slightly off-screen right, move left slowly with scroll
         const startOffset = window.innerWidth * 0.25;
         const x = startOffset - progress * (startOffset + scrollRange);
+        setTranslateX(x);
         ticking = false;
       });
     }

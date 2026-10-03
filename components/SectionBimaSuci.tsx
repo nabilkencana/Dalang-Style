@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 
 export interface SectionBimaSuciProps {
   id?: string;
@@ -11,6 +11,7 @@ export interface SectionBimaSuciProps {
   accentColor?: string;
   className?: string;
 }
+
 
 export default function SectionBimaSuci({
   id = 'lakon',
@@ -24,8 +25,8 @@ export default function SectionBimaSuci({
   const sectionRef = useRef<HTMLElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const isVisibleRef = useRef(false);
-
-  // Send control commands to YouTube iframe via postMessage
+  const hasUnmutedRef = useRef(false);
+  const hasActivatedCaptionsRef = useRef(false);
   const sendYtCommand = useCallback((func: string, args: unknown[] = []) => {
     if (!iframeRef.current?.contentWindow) return;
     try {
@@ -38,64 +39,112 @@ export default function SectionBimaSuci({
     }
   }, []);
 
+  const activateEnglishCaptions = useCallback(() => {
+    sendYtCommand('loadModule', ['captions']);
+    setTimeout(() => {
+      sendYtCommand('setOption', ['captions', 'track', { languageCode: 'en' }]);
+    }, 300);
+  }, [sendYtCommand]);
+
   const playWithSoundAndCaptions = useCallback(() => {
     sendYtCommand('playVideo');
     sendYtCommand('unMute');
     sendYtCommand('setVolume', [100]);
-    // Explicitly activate native YouTube closed captions track
-    sendYtCommand('loadModule', ['captions']);
-    sendYtCommand('setOption', ['captions', 'track', { languageCode: 'en' }]);
-  }, [sendYtCommand]);
+    activateEnglishCaptions();
+  }, [activateEnglishCaptions, sendYtCommand]);
 
   const pauseVideo = useCallback(() => {
     sendYtCommand('pauseVideo');
   }, [sendYtCommand]);
-
   useEffect(() => {
     const section = sectionRef.current;
     if (!section || backgroundType !== 'youtube') return;
 
-    // IntersectionObserver to auto-play with sound when entering, pause when leaving
+    let wasIntersecting = false;
+
+    // IntersectionObserver triggers strictly once on crossing threshold
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
+          const isNowIntersecting = entry.isIntersecting && entry.intersectionRatio >= 0.25;
+          if (isNowIntersecting && !wasIntersecting) {
+            wasIntersecting = true;
             isVisibleRef.current = true;
             playWithSoundAndCaptions();
-          } else if (!entry.isIntersecting) {
+          } else if (!entry.isIntersecting && wasIntersecting) {
+            wasIntersecting = false;
             isVisibleRef.current = false;
             pauseVideo();
           }
         });
       },
       {
-        threshold: [0, 0.25, 0.5, 0.75],
+        threshold: [0.25],
       }
     );
 
     observer.observe(section);
 
+    // Handshake to YouTube player until ready
+    let attempts = 0;
+    const handshakeInterval = setInterval(() => {
+      if (hasActivatedCaptionsRef.current || attempts > 20) {
+        clearInterval(handshakeInterval);
+        return;
+      }
+      attempts++;
+      sendYtCommand('listening');
+    }, 400);
+
+    const handleYtMessage = (e: MessageEvent) => {
+      try {
+        const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+        if (data && (data.event === 'onReady' || data.event === 'initialDelivery')) {
+          if (!hasActivatedCaptionsRef.current) {
+            hasActivatedCaptionsRef.current = true;
+            clearInterval(handshakeInterval);
+            activateEnglishCaptions();
+          }
+        }
+      } catch {}
+    };
+
+    window.addEventListener('message', handleYtMessage);
+
+    // Backup timer in case event was already sent before listener attached
+    const initTimer = setTimeout(() => {
+      if (!hasActivatedCaptionsRef.current) {
+        hasActivatedCaptionsRef.current = true;
+        clearInterval(handshakeInterval);
+        activateEnglishCaptions();
+      }
+    }, 2000);
+
     // Browser audio policy: user gesture required to un-mute
     const handleFirstGesture = () => {
+      if (hasUnmutedRef.current) return;
+      hasUnmutedRef.current = true;
       if (isVisibleRef.current) {
         sendYtCommand('unMute');
         sendYtCommand('setVolume', [100]);
-        sendYtCommand('loadModule', ['captions']);
-        sendYtCommand('setOption', ['captions', 'track', { languageCode: 'en' }]);
+        activateEnglishCaptions();
       }
+      window.removeEventListener('click', handleFirstGesture);
+      window.removeEventListener('keydown', handleFirstGesture);
     };
 
     window.addEventListener('click', handleFirstGesture, { passive: true });
     window.addEventListener('keydown', handleFirstGesture, { passive: true });
-    window.addEventListener('scroll', handleFirstGesture, { passive: true });
 
     return () => {
       observer.disconnect();
+      clearInterval(handshakeInterval);
+      clearTimeout(initTimer);
+      window.removeEventListener('message', handleYtMessage);
       window.removeEventListener('click', handleFirstGesture);
       window.removeEventListener('keydown', handleFirstGesture);
-      window.removeEventListener('scroll', handleFirstGesture);
     };
-  }, [backgroundType, pauseVideo, playWithSoundAndCaptions, sendYtCommand]);
+  }, [backgroundType, pauseVideo, playWithSoundAndCaptions, activateEnglishCaptions, sendYtCommand]);
 
   return (
     <section
@@ -103,29 +152,29 @@ export default function SectionBimaSuci({
       id={id}
       className={`relative w-full bg-[#000000] text-[#f4e7cd] overflow-hidden select-none py-2 sm:py-3 md:py-4 ${className}`}
     >
-      {/* 1504 x 1128 Canvas Ratio Container matching Reference (4:3) */}
+      {/* Theatrical Canvas Container — Cinematic on Mobile & Theatrical on Desktop */}
       <div
         data-gsap="bima-card"
-        className="relative w-full overflow-hidden bg-[#000000] shadow-[0_25px_80px_rgba(0,0,0,0.95)]"
-        style={{ aspectRatio: '1504 / 1128' }}
+        className="relative w-full overflow-hidden bg-[#000000] shadow-[0_25px_80px_rgba(0,0,0,0.95)] aspect-video sm:aspect-[1504/1128]"
       >
-        {/* Yellow Frame Box - The video is fitted cleanly inside */}
+        {/* Yellow Frame Box - Expanded to fill screen boldly */}
         <div
           data-gsap="bima-frame"
-          className="absolute inset-[13.65%_6.25%_13.74%_6.25%] overflow-hidden z-10"
+          className="absolute inset-[5%_2%_5%_2%] sm:inset-[8%_4%_8%_4%] md:inset-[10%_5%_10%_5%] overflow-hidden z-10"
           style={{
             border: `1.5px solid ${accentColor}`,
           }}
         >
-          {/* 1. Video strictly contained inside the yellow box with native subtitles enabled */}
+          {/* 1. Video strictly contained inside the yellow box — BOLD & EXPANDED */}
           {backgroundType === 'youtube' && youtubeVideoId ? (
-            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <div className="absolute inset-0 overflow-hidden pointer-events-auto z-0 bg-black flex items-center justify-center">
               <iframe
                 ref={iframeRef}
-                src={`https://www.youtube-nocookie.com/embed/${youtubeVideoId}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeVideoId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&playsinline=1&cc_load_policy=1&cc_lang_pref=en&hl=en`}
+                src={`https://www.youtube.com/embed/${youtubeVideoId}?si=PRutH_g9LIdRt4ZU&enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeVideoId}&controls=1&cc_load_policy=1&cc_lang_pref=en&hl=en`}
                 title="Lakon Bima Suci - Latar Video YouTube"
-                className="absolute bottom-0 left-1/2 w-[118%] sm:w-[112%] h-[118%] sm:h-[112%] -translate-x-1/2 object-cover pointer-events-none opacity-95 filter contrast-[1.1] brightness-[0.92]"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                className="w-full h-full object-cover pointer-events-auto filter contrast-[1.05] brightness-[0.96]"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
               />
             </div>
@@ -135,15 +184,6 @@ export default function SectionBimaSuci({
               style={{ backgroundImage: `url(${backgroundImage})` }}
             />
           )}
-
-          {/* Clickable overlay → opens YouTube in new tab */}
-          <a
-            href={`https://www.youtube.com/watch?v=${youtubeVideoId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute inset-0 z-20 cursor-pointer"
-            aria-label="Tonton video di YouTube"
-          />
         </div>
 
         {/* Top Center Label: TONIGHT LAKON (centered on top yellow border line) */}

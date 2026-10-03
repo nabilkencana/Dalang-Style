@@ -7,8 +7,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 const cormorant = Cormorant_Garamond({
   variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  weight: ["400", "700"],
 });
 
 const playfair = Playfair_Display({
@@ -24,9 +23,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Wayang Kulit — Digital Hand Puppetry",
+  title: "Wayang Jawi — Panggung Wayang Kulit Digital Interaktif",
   description:
-    "Play two leather shadow puppets on the lamp-lit kelir. Your webcam tracks both hands, just as a dalang holds the sticks.",
+    "Menghidupkan seni wayang kulit lewat panggung digital interaktif, pelacakan gestur dalang AI, dan dialog kreasi sastra nusantara.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/images/wayang-gunungan-logo.png",
+  },
 };
 
 export default function RootLayout({

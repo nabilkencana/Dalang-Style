@@ -98,7 +98,7 @@ export const Scene5Outro: React.FC = () => {
             textShadow: '0 4px 18px rgba(0, 0, 0, 0.8)',
           }}
         >
-          "Menghidupkan Tradisi di Layar Masa Depan"
+          &ldquo;Menghidupkan Tradisi di Layar Masa Depan&rdquo;
         </p>
 
         {/* Live URL Pill */}

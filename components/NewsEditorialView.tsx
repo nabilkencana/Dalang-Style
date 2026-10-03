@@ -15,32 +15,8 @@ import {
 } from '@/lib/news-data';
 import BeritaGsapAnimations from '@/components/BeritaGsapAnimations';
 
-const SUB_NAV_CATEGORIES = [
-  'Utama',
-  'Warisan UNESCO',
-  'Seni Pentas',
-  'Lakon Bima Suci',
-  'Maestro Dalang',
-  'Filosofi Gunungan',
-  'Punakawan',
-  'Sains & Budaya',
-  'Opini',
-];
-
 export default function NewsEditorialView() {
-  const [activeCategory, setActiveCategory] = useState('Utama');
   const [showFullSpotlight, setShowFullSpotlight] = useState(false);
-  const [emailInput, setEmailInput] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (emailInput.trim()) {
-      setSubscribed(true);
-      setEmailInput('');
-    }
-  };
-
   return (
     <div className="relative min-h-screen bg-[#050303] text-[#f4e7cd] overflow-x-clip selection:bg-[#dedf42] selection:text-black font-sans">
       {/* GSAP ScrollTrigger Animations for Berita */}
