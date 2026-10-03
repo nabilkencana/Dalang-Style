@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 export default function CameraPage() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [statusMessage, setStatusMessage] = useState('Waiting for camera preview...');
+  const [statusMessage, setStatusMessage] = useState('Menunggu pratinjau kamera...');
   const [statusHidden, setStatusHidden] = useState(false);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function CameraPage() {
       if (destroyed) return;
       const wayang = openerWayang();
       if (!wayang) {
-        setStatusMessage('Main Wayang window is not available.');
+        setStatusMessage('Jendela panggung Wayang utama tidak tersedia.');
         setStatusHidden(false);
         animId = requestAnimationFrame(draw);
         return;
@@ -42,7 +42,7 @@ export default function CameraPage() {
         setStatusHidden(true);
         wayang.drawCamera?.(ctx, canvas.width, canvas.height);
       } else {
-        setStatusMessage('Start the camera from the main window.');
+        setStatusMessage('Nyalakan kamera dari jendela panggung utama.');
         setStatusHidden(false);
       }
       animId = requestAnimationFrame(draw);

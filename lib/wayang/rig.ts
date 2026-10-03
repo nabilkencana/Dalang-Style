@@ -33,7 +33,7 @@ const LEFT: { upper: PartConfig; fore: PartConfig; hand: PartConfig } = {
   hand: { src: 'assets/hand-1.png', size: [108, 124], prox: [91.7, 67.5], grip: [52, 76] },
 };
 
-const mirrorPiece = (p: PartConfig, src: string): PartConfig => {
+export const mirrorPiece = (p: PartConfig, src: string): PartConfig => {
   const out: PartConfig = { src, size: p.size };
   if (p.prox) out.prox = rot180(p.prox, p.size);
   if (p.dist) out.dist = rot180(p.dist, p.size);
@@ -51,17 +51,191 @@ export const PARTS: Record<string, PartConfig> = {
   handR: mirrorPiece(LEFT.hand, 'assets/hand-r.png'),
 };
 
-export const BODY = {
-  anchor: [345, 760] as [number, number],
-  shoulder: { L: [247.5, 432.5] as [number, number], R: [442.5, 432.5] as [number, number] },
-  stickTop: [346, 318] as [number, number],
-  stickFoot: [346, 1334] as [number, number],
+export interface BodyConfig {
+  anchor: [number, number];
+  shoulder: { L: [number, number]; R: [number, number] };
+  stickTop: [number, number];
+  stickFoot: [number, number];
+  ties: number[];
+}
+
+export const BODY: BodyConfig = {
+  anchor: [345, 760],
+  shoulder: { L: [247.5, 432.5], R: [442.5, 432.5] },
+  stickTop: [346, 318],
+  stickFoot: [346, 1334],
   ties: [470, 1010, 1262],
 };
 
-const REST: Record<'L' | 'R', [number, number]> = {
+export const REST: Record<'L' | 'R', [number, number]> = {
   L: [-150, 250],
   R: [70, 330],
+};
+
+const SEMAR_LEFT: { upper: PartConfig; fore: PartConfig; hand: PartConfig } = {
+  upper: { src: 'assets/semar/upper-arm-1.png', size: [420, 145], prox: [380, 117], dist: [63, 48] },
+  fore: { src: 'assets/semar/forearm-1.png', size: [350, 221], prox: [299, 179], dist: [66, 36] },
+  hand: { src: 'assets/semar/hand-1.png', size: [220, 185], prox: [196, 30], grip: [46, 81] },
+};
+
+const SEMAR_PARTS: Record<string, PartConfig> = {
+  body: { src: 'assets/semar/body.png', size: [993, 1302] },
+  upperL: SEMAR_LEFT.upper,
+  foreL: SEMAR_LEFT.fore,
+  handL: SEMAR_LEFT.hand,
+  upperR: mirrorPiece(SEMAR_LEFT.upper, 'assets/semar/upper-arm-r.png'),
+  foreR: mirrorPiece(SEMAR_LEFT.fore, 'assets/semar/forearm-r.png'),
+  handR: mirrorPiece(SEMAR_LEFT.hand, 'assets/semar/hand-r.png'),
+};
+
+const SEMAR_BODY: BodyConfig = {
+  anchor: [456, 761],
+  shoulder: { L: [275, 500], R: [541, 409] },
+  stickTop: [456, 250],
+  stickFoot: [456, 1260],
+  ties: [480, 950, 1200],
+};
+
+const PETRUK_LEFT: { upper: PartConfig; fore: PartConfig; hand: PartConfig } = {
+  upper: { src: 'assets/petruk/upper-arm-1.png', size: [340, 105], prox: [305, 65], dist: [29, 31] },
+  fore: { src: 'assets/petruk/forearm-1.png', size: [360, 73], prox: [328, 38], dist: [30, 35] },
+  hand: { src: 'assets/petruk/hand-1.png', size: [160, 210], prox: [137, 19], grip: [81, 130] },
+};
+
+const PETRUK_PARTS: Record<string, PartConfig> = {
+  body: { src: 'assets/petruk/body.png', size: [706, 1530] },
+  upperL: PETRUK_LEFT.upper,
+  foreL: PETRUK_LEFT.fore,
+  handL: PETRUK_LEFT.hand,
+  upperR: mirrorPiece(PETRUK_LEFT.upper, 'assets/petruk/upper-arm-r.png'),
+  foreR: mirrorPiece(PETRUK_LEFT.fore, 'assets/petruk/forearm-r.png'),
+  handR: mirrorPiece(PETRUK_LEFT.hand, 'assets/petruk/hand-r.png'),
+};
+
+const PETRUK_BODY: BodyConfig = {
+  anchor: [260, 780],
+  shoulder: { L: [306, 424], R: [532, 423] },
+  stickTop: [260, 280],
+  stickFoot: [260, 1480],
+  ties: [480, 1020, 1380],
+};
+
+const BAGONG_LEFT: { upper: PartConfig; fore: PartConfig; hand: PartConfig } = {
+  upper: { src: 'assets/bagong/upper-arm-1.png', size: [340, 120], prox: [316, 96], dist: [21, 58] },
+  fore: { src: 'assets/bagong/forearm-1.png', size: [340, 75], prox: [317, 41], dist: [33, 42] },
+  hand: { src: 'assets/bagong/hand-1.png', size: [240, 120], prox: [218, 94], grip: [22, 35] },
+};
+
+const BAGONG_PARTS: Record<string, PartConfig> = {
+  body: { src: 'assets/bagong/body.png', size: [699, 1497] },
+  upperL: BAGONG_LEFT.upper,
+  foreL: BAGONG_LEFT.fore,
+  handL: BAGONG_LEFT.hand,
+  upperR: mirrorPiece(BAGONG_LEFT.upper, 'assets/bagong/upper-arm-r.png'),
+  foreR: mirrorPiece(BAGONG_LEFT.fore, 'assets/bagong/forearm-r.png'),
+  handR: mirrorPiece(BAGONG_LEFT.hand, 'assets/bagong/hand-r.png'),
+};
+
+const BAGONG_BODY: BodyConfig = {
+  anchor: [340, 750],
+  shoulder: { L: [182, 434], R: [524, 427] },
+  stickTop: [340, 260],
+  stickFoot: [340, 1420],
+  ties: [470, 960, 1260],
+};
+
+const GATOTKACA_LEFT: { upper: PartConfig; fore: PartConfig; hand: PartConfig } = {
+  upper: { src: 'assets/gatotkaca/upper-arm-1.png', size: [340, 103], prox: [309.9, 70.8], dist: [26.9, 42.0] },
+  fore: { src: 'assets/gatotkaca/forearm-1.png', size: [350, 106], prox: [313.7, 36.8], dist: [29.3, 72.0] },
+  hand: { src: 'assets/gatotkaca/hand-1.png', size: [240, 167], prox: [218.8, 142.8], grip: [64.2, 13.7] },
+};
+
+const GATOTKACA_RIGHT: { upper: PartConfig; fore: PartConfig; hand: PartConfig } = {
+  upper: { src: 'assets/gatotkaca/upper-arm-r.png', size: [340, 83], prox: [310.7, 45.3], dist: [28.6, 49.4] },
+  fore: { src: 'assets/gatotkaca/forearm-r.png', size: [350, 87], prox: [315.7, 43.5], dist: [28.8, 42.6] },
+  hand: { src: 'assets/gatotkaca/hand-r.png', size: [240, 183], prox: [216.6, 157.0], grip: [51.3, 12.9] },
+};
+
+const GATOTKACA_PARTS: Record<string, PartConfig> = {
+  body: { src: 'assets/gatotkaca/body.png', size: [710, 1500] },
+  upperL: GATOTKACA_LEFT.upper,
+  foreL: GATOTKACA_LEFT.fore,
+  handL: GATOTKACA_LEFT.hand,
+  upperR: GATOTKACA_RIGHT.upper,
+  foreR: GATOTKACA_RIGHT.fore,
+  handR: GATOTKACA_RIGHT.hand,
+};
+
+const GATOTKACA_BODY: BodyConfig = {
+  anchor: [355, 780],
+  shoulder: { L: [190.0, 492.9], R: [481.3, 493.1] },
+  stickTop: [355, 180],
+  stickFoot: [355, 1460],
+  ties: [480, 980, 1320],
+};
+
+export interface CharacterConfig {
+  id: string;
+  name: string;
+  javaneseName?: string;
+  parts: Record<string, PartConfig>;
+  body: BodyConfig;
+  rest: Record<'L' | 'R', [number, number]>;
+}
+
+export const CHARACTERS: Record<string, CharacterConfig> = {
+  arjuna: {
+    id: 'arjuna',
+    name: 'Arjuna',
+    javaneseName: 'ꦗꦤꦏ',
+    parts: PARTS,
+    body: BODY,
+    rest: REST,
+  },
+  gatotkaca: {
+    id: 'gatotkaca',
+    name: 'Gatotkaca',
+    javaneseName: 'ꦒꦠꦺꦴꦠ꧀ꦏꦕ',
+    parts: GATOTKACA_PARTS,
+    body: GATOTKACA_BODY,
+    rest: {
+      L: [-160, 240],
+      R: [90, 280],
+    },
+  },
+  semar: {
+    id: 'semar',
+    name: 'Kyai Semar',
+    javaneseName: 'ꦱꦼꦩꦂ',
+    parts: SEMAR_PARTS,
+    body: SEMAR_BODY,
+    rest: {
+      L: [-140, 200],
+      R: [90, 260],
+    },
+  },
+  petruk: {
+    id: 'petruk',
+    name: 'Petruk (Kantong Bolong)',
+    javaneseName: 'ꦥꦺꦠꦿꦸꦏ꧀',
+    parts: PETRUK_PARTS,
+    body: PETRUK_BODY,
+    rest: {
+      L: [-160, 220],
+      R: [100, 280],
+    },
+  },
+  bagong: {
+    id: 'bagong',
+    name: 'Kyai Bagong (Bawor)',
+    javaneseName: 'ꦧꦒꦺꦴꦁ',
+    parts: BAGONG_PARTS,
+    body: BAGONG_BODY,
+    rest: {
+      L: [-150, 220],
+      R: [80, 270],
+    },
+  },
 };
 
 export interface ViewRect {
@@ -122,6 +296,7 @@ export type RenderItem = RenderItemPart | RenderItemStick;
 
 export class Arm {
   side: 'L' | 'R';
+  char: CharacterConfig;
   upper: PartConfig;
   fore: PartConfig;
   hand: PartConfig;
@@ -140,12 +315,13 @@ export class Arm {
   solution: { rotU: number; rotF: number } = { rotU: 0, rotF: 0 };
   initialized: boolean = false;
 
-  constructor(side: 'L' | 'R') {
+  constructor(side: 'L' | 'R', char: CharacterConfig = CHARACTERS.arjuna) {
     this.side = side;
-    this.upper = PARTS['upper' + side];
-    this.fore = PARTS['fore' + side];
-    this.hand = PARTS['hand' + side];
-    this.shoulder = BODY.shoulder[side];
+    this.char = char;
+    this.upper = char.parts['upper' + side] || PARTS['upper' + side];
+    this.fore = char.parts['fore' + side] || PARTS['fore' + side];
+    this.hand = char.parts['hand' + side] || PARTS['hand' + side];
+    this.shoulder = char.body.shoulder[side] || BODY.shoulder[side];
 
     const u = sub(this.upper.dist!, this.upper.prox!);
     this.Lu = len(u);
@@ -208,6 +384,8 @@ export interface ActiveDanceState {
 }
 
 export class Puppet {
+  char: CharacterConfig;
+  charId: string;
   baseScale: number = 0.53;
   scale: number = 0.53;
   home: [number, number];
@@ -238,7 +416,23 @@ export class Puppet {
   lastRotV: number = 0;
   prevFrame: Map<string, RenderItem> = new Map();
 
-  constructor({ x = 960, y = 650, facing = 1 }: { x?: number; y?: number; facing?: number } = {}) {
+  constructor({
+    x = 960,
+    y = 650,
+    facing = 1,
+    character = 'arjuna',
+  }: {
+    x?: number;
+    y?: number;
+    facing?: number;
+    character?: string | CharacterConfig;
+  } = {}) {
+    const charConfig =
+      typeof character === 'string'
+        ? CHARACTERS[character] || CHARACTERS.arjuna
+        : character || CHARACTERS.arjuna;
+    this.char = charConfig;
+    this.charId = charConfig.id;
     this.home = [x, y];
     this.pos = new Spring2(x, y, 240, 0.62);
     this.bodyTarget = [x, y];
@@ -247,9 +441,19 @@ export class Puppet {
     this.facing = facing;
     this.flip = { from: facing, to: facing, t: 1 };
     this.flipX = facing;
-    this.arms = { L: new Arm('L'), R: new Arm('R') };
+    this.arms = { L: new Arm('L', charConfig), R: new Arm('R', charConfig) };
     this.B = Affine.identity();
     this.dSpring = { x: new Spring(0, 620, 0.32), y: new Spring(0, 620, 0.3), tilt: new Spring(0, 520, 0.3) };
+  }
+
+  setCharacter(character: string | CharacterConfig) {
+    const charConfig =
+      typeof character === 'string'
+        ? CHARACTERS[character] || CHARACTERS.arjuna
+        : character || CHARACTERS.arjuna;
+    this.char = charConfig;
+    this.charId = charConfig.id;
+    this.arms = { L: new Arm('L', charConfig), R: new Arm('R', charConfig) };
   }
 
   get dancing(): boolean {
@@ -278,7 +482,7 @@ export class Puppet {
       Affine.translate(this.pos.x + this.danceOffset[0], this.pos.y + bob + this.danceOffset[1]),
       Affine.rotate(this.tilt.x + this.danceTilt),
       Affine.scale(this.scale * this.flipX, this.scale),
-      Affine.translate(-BODY.anchor[0], -BODY.anchor[1])
+      Affine.translate(-this.char.body.anchor[0], -this.char.body.anchor[1])
     );
   }
 
@@ -392,8 +596,8 @@ export class Puppet {
     };
     const snappy = D !== null;
 
-    const sL = Affine.apply(B, ...BODY.shoulder.L);
-    const sR = Affine.apply(B, ...BODY.shoulder.R);
+    const sL = Affine.apply(B, ...this.char.body.shoulder.L);
+    const sR = Affine.apply(B, ...this.char.body.shoulder.R);
     const isLeft = sL[0] <= sR[0];
     const specs: Record<'L' | 'R', ArmSpec | undefined> = isLeft
       ? { L: input.arms?.left, R: input.arms?.right }
@@ -410,7 +614,7 @@ export class Puppet {
       } else if (spec?.type === 'abs') {
         tgt = [spec.x ?? 0, spec.y ?? 0];
       } else {
-        tgt = Affine.apply(B, ...add(arm.shoulder, REST[side]));
+        tgt = Affine.apply(B, ...add(arm.shoulder, this.char.rest[side] || REST[side]));
       }
       if (D) {
         const v = side === 'L' ? D.front : D.back;
@@ -461,13 +665,13 @@ export class Puppet {
 
     const tilt = this.surfaceTilt;
     const armItems = (side: 'L' | 'R'): RenderItemPart[] => [
-      { kind: 'part', id: 'upper' + side, key: 'upper' + side, m: poses[side].upperM, tilt },
-      { kind: 'part', id: 'fore' + side, key: 'fore' + side, m: poses[side].foreM, tilt },
-      { kind: 'part', id: 'hand' + side, key: 'hand' + side, m: poses[side].handM, tilt },
+      { kind: 'part', id: 'upper' + side, key: `${this.charId}_upper${side}`, m: poses[side].upperM, tilt },
+      { kind: 'part', id: 'fore' + side, key: `${this.charId}_fore${side}`, m: poses[side].foreM, tilt },
+      { kind: 'part', id: 'hand' + side, key: `${this.charId}_hand${side}`, m: poses[side].handM, tilt },
     ];
 
-    const top = Affine.apply(B, ...BODY.stickTop);
-    const foot = Affine.apply(B, ...BODY.stickFoot);
+    const top = Affine.apply(B, ...this.char.body.stickTop);
+    const foot = Affine.apply(B, ...this.char.body.stickFoot);
     const axis = sub(foot, top);
     const axisLen = len(axis);
     const dir: [number, number] = [axis[0] / axisLen, axis[1] / axisLen];
@@ -488,7 +692,7 @@ export class Puppet {
         { p: handleStart, w: 26 * s },
         { p: end, w: 30 * s },
       ],
-      ties: BODY.ties.map((y) => [(y - BODY.stickTop[1] + 10) * s, 9 * s]),
+      ties: this.char.body.ties.map((y) => [(y - this.char.body.stickTop[1] + 10) * s, 9 * s]),
     };
 
     const rods: RenderItemStick[] = (['L', 'R'] as const).map((side) => {
@@ -514,7 +718,7 @@ export class Puppet {
     const front = back === 'R' ? 'L' : 'R';
     const items: RenderItem[] = [
       ...armItems(back),
-      { kind: 'part', id: 'body', key: 'body', m: B, tilt },
+      { kind: 'part', id: 'body', key: `${this.charId}_body`, m: B, tilt },
       gapit,
       ...armItems(front),
       ...rods,
@@ -529,11 +733,12 @@ export class Puppet {
       next.set(item.id, item);
       const prev = this.prevFrame.get(item.id);
       if (prev) {
-        const moved = item.kind === 'part' && prev.kind === 'part'
-          ? partTravel(prev, item)
-          : item.kind === 'stick' && prev.kind === 'stick'
-          ? stickTravel(prev, item)
-          : 0;
+        const moved =
+          item.kind === 'part' && prev.kind === 'part'
+            ? partTravel(prev, item)
+            : item.kind === 'stick' && prev.kind === 'stick'
+            ? stickTravel(prev, item)
+            : 0;
         if (moved > 8) {
           const strength = clamp((moved - 8) / 24, 0, 1);
           for (const [s, a] of [[0.33, 0.3], [0.66, 0.45]] as const) {
@@ -562,7 +767,15 @@ function rodLimit(spring: Spring, target: number, maxDev: number) {
   }
 }
 
-const PART_SIZE = (key: string): [number, number] => PARTS[key]?.size ?? [100, 100];
+const PART_SIZE = (key: string): [number, number] => {
+  if (PARTS[key]?.size) return PARTS[key].size;
+  const match = key.match(/^([^_]+)_(.+)$/);
+  if (match) {
+    const [, charId, partKey] = match;
+    return CHARACTERS[charId]?.parts[partKey]?.size ?? [100, 100];
+  }
+  return [100, 100];
+};
 
 function partTravel(a: RenderItemPart, b: RenderItemPart): number {
   const [w, h] = PART_SIZE(b.key);
