@@ -18,13 +18,24 @@ import {
   Trash2,
   Swords,
   Scroll,
+  Maximize2,
+  X,
+  Volume2,
+  RotateCcw,
+  Sparkles,
+  ZoomIn,
+  ZoomOut,
 } from 'lucide-react';
 import {
   interpretUserPrompt,
   getWayangImageUrl,
+  resolveWayangImage,
   type ChatMessage,
   type WayangPreset,
 } from '@/lib/wayang-ai';
+import { GamelanAudioEngine } from '@/lib/wayang/audio';
+import { ThinkingTool } from '@/components/ui/thinking-tool';
+import { ImageGeneration } from '@/components/ui/ai-chat-image-generation-1';
 
 const QUICK_INSPIRATIONS = [
   { label: '🦅 Ksatria Garuda Emas', prompt: 'Ksatria sakti bertubuh tegap dengan sayap garuda emas dan busur panah bercahaya' },
@@ -61,11 +72,57 @@ function KreasiWayangContent() {
 
   const [inputText, setInputText] = useState(initialPromptParam);
   const [isTyping, setIsTyping] = useState(false);
+  const [thinkingStep, setThinkingStep] = useState('Menimbang watak sukma & kasta satria...');
+  const [thinkingStageIndex, setThinkingStageIndex] = useState(1);
   const [spotlight, setSpotlight] = useState<SpotlightCharacter | null>(null);
   const [generatedCreations, setGeneratedCreations] = useState<WayangPreset[]>([]);
   const [copiedPhilosophy, setCopiedPhilosophy] = useState(false);
 
+  // ── Canvas Modal & Interactive Stage State ──
+  const [isCanvasModalOpen, setIsCanvasModalOpen] = useState(false);
+  const [canvasFlipped, setCanvasFlipped] = useState(false);
+  const [canvasZoom, setCanvasZoom] = useState(1);
+  const [canvasBlencong, setCanvasBlencong] = useState(true);
+  const [audioFeedback, setAudioFeedback] = useState('');
+
   const chatScrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const spotlightSectionRef = useRef<HTMLDivElement | null>(null);
+  const audioEngineRef = useRef<GamelanAudioEngine | null>(null);
+
+  const getAudio = () => {
+    if (!audioEngineRef.current) {
+      audioEngineRef.current = new GamelanAudioEngine();
+    }
+    return audioEngineRef.current;
+  };
+
+  const playSoundEffect = (type: 'cempala' | 'gong' | 'kenong') => {
+    try {
+      const audio = getAudio();
+      if (type === 'cempala') {
+        audio.playCempala();
+        setAudioFeedback('Ketukan Cempala');
+      } else if (type === 'gong') {
+        audio.playGong();
+        setAudioFeedback('Gong Ageng');
+      } else if (type === 'kenong') {
+        audio.playKenong(440);
+        setAudioFeedback('Suara Kenong');
+      }
+      setTimeout(() => setAudioFeedback(''), 1500);
+    } catch {}
+  };
+
+  // Open Canvas Modal
+  const openCanvasModal = useCallback((char?: SpotlightCharacter | null) => {
+    if (char) {
+      setSpotlight(char);
+    }
+    setCanvasFlipped(false);
+    setCanvasZoom(1);
+    setIsCanvasModalOpen(true);
+    playSoundEffect('cempala');
+  }, []);
 
   // Auto-scroll ONLY the chat box internally — NEVER jump or scroll the browser window
   const scrollToBottom = () => {
@@ -79,7 +136,8 @@ function KreasiWayangContent() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isTyping]);
+  }, [messages, isTyping, thinkingStep]);
+
   const handleSendMessage = useCallback(
     async (textToSend?: string) => {
       const prompt = (textToSend ?? inputText).trim();
@@ -95,20 +153,42 @@ function KreasiWayangContent() {
 
       setMessages((prev) => [...prev, newUserMsg]);
       if (!textToSend) setInputText('');
+      
+      // Start thinking animation
       setIsTyping(true);
+      setThinkingStageIndex(1);
+      setThinkingStep(`Sang Empu sedang menimbang watak sukma dan kasta ksatria dari konsep "${prompt}"...`);
 
-      // Interpret concept via API (uses Gemini AI if API key is set, or local fallback)
+      // Stage progression timers for live visual feedback
+      const stage2Timer = setTimeout(() => {
+        setThinkingStageIndex(2);
+        setThinkingStep('Memilih pusaka sakti dan meramu falsafah batin yang adiluhung...');
+      }, 750);
+
+      const stage3Timer = setTimeout(() => {
+        setThinkingStageIndex(3);
+        setThinkingStep('Menatah sungging wujud wayang kulit beraksen emas prada di atas kain kelir...');
+      }, 1500);
+
+      // Minimum duration ~2.2s so the user visibly sees the thinking shimmer animation and progression
+      const minThinkingDelay = new Promise((resolve) => setTimeout(resolve, 2200));
+
+      // Interpret concept via API or local fallback
       let interpretation = interpretUserPrompt(prompt);
-      let generatedImageUrl = getWayangImageUrl(interpretation.compiledPrompt, 1024, 1024);
+      let generatedImageUrl = resolveWayangImage(prompt, interpretation.characterName);
 
       try {
-        const res = await fetch('/api/kreasi-wayang', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt }),
-        });
-        if (res.ok) {
-          const data = await res.json();
+        const [apiRes] = await Promise.all([
+          fetch('/api/kreasi-wayang', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt }),
+          }).catch(() => null),
+          minThinkingDelay,
+        ]);
+
+        if (apiRes && apiRes.ok) {
+          const data = await apiRes.json();
           if (data && data.characterName) {
             interpretation = {
               characterName: data.characterName,
@@ -118,75 +198,76 @@ function KreasiWayangContent() {
               traits: Array.isArray(data.traits) ? data.traits : ['Luhur Budi', 'Waspada'],
               greeting: data.greeting || `Karakter **${data.characterName}** berhasil ditatah oleh Sang Empu AI.`,
               compiledPrompt: data.compiledPrompt || prompt,
+              imageUrl: resolveWayangImage(data.compiledPrompt || prompt, data.characterName),
             };
-            if (data.imageUrl) {
-              generatedImageUrl = data.imageUrl;
-            }
+            generatedImageUrl = interpretation.imageUrl;
           }
         }
       } catch {
-        // Fallback to local interpretation
+        await minThinkingDelay;
+      } finally {
+        clearTimeout(stage2Timer);
+        clearTimeout(stage3Timer);
       }
 
-      // Preload image in background
-      const testImg = new window.Image();
-      testImg.src = generatedImageUrl;
-      const finalizeBotResponse = (finalUrl: string) => {
-        const empuMsg: ChatMessage = {
-          id: `empu-${Date.now()}`,
-          sender: 'empu',
-          text: interpretation.greeting,
-          timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
-          characterName: interpretation.characterName,
-          roleTitle: interpretation.roleTitle,
-          imageUrl: finalUrl,
-          weaponName: interpretation.weaponName,
-          philosophy: interpretation.philosophy,
-          traits: interpretation.traits,
-          promptRecipe: interpretation.compiledPrompt,
-        };
+      const reasoningText = `Menafsirkan konsep ksatria "${interpretation.characterName}": Menimbang watak "${interpretation.roleTitle}", memilih pusaka ${interpretation.weaponName}, meramu falsafah batin "${interpretation.philosophy}", serta menatah ornamen tatah sungging emas prada beresolusi tinggi di atas kain kelir.`;
 
-        setMessages((prev) => [...prev, empuMsg]);
-        setIsTyping(false);
-        // Update spotlight canvas with newly created character
-        const newSpotlight: SpotlightCharacter = {
-          name: interpretation.characterName,
-          role: interpretation.roleTitle,
-          imageUrl: finalUrl,
-          weapon: interpretation.weaponName || 'Pusaka Sakti',
-          philosophy: interpretation.philosophy,
-          traits: interpretation.traits,
-          promptRecipe: interpretation.compiledPrompt,
-        };
-        setSpotlight(newSpotlight);
-
-        // Record in purely AI-generated creations history
-        setGeneratedCreations((prev) => [
-          {
-            id: `gen-${Date.now()}`,
-            title: interpretation.characterName,
-            role: interpretation.roleTitle,
-            archetype: 'AI Generation',
-            weapon: interpretation.weaponName || '',
-            costume: '',
-            visualStyle: 'AI Cipta',
-            prompt: interpretation.compiledPrompt,
-            image: finalUrl,
-            traits: interpretation.traits || [],
-          },
-          ...prev,
-        ]);
+      const empuMsg: ChatMessage = {
+        id: `empu-${Date.now()}`,
+        sender: 'empu',
+        text: interpretation.greeting,
+        timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+        characterName: interpretation.characterName,
+        roleTitle: interpretation.roleTitle,
+        imageUrl: generatedImageUrl,
+        weaponName: interpretation.weaponName,
+        philosophy: interpretation.philosophy,
+        traits: interpretation.traits,
+        promptRecipe: interpretation.compiledPrompt,
+        reasoning: reasoningText,
       };
 
-      // Deliver bot response immediately without waiting for image network delay
-      finalizeBotResponse(generatedImageUrl);
+      setMessages((prev) => [...prev, empuMsg]);
+      setIsTyping(false);
+
+      // Update spotlight canvas with newly created character
+      const newSpotlight: SpotlightCharacter = {
+        name: interpretation.characterName,
+        role: interpretation.roleTitle,
+        imageUrl: generatedImageUrl,
+        weapon: interpretation.weaponName || 'Pusaka Sakti',
+        philosophy: interpretation.philosophy,
+        traits: interpretation.traits,
+        promptRecipe: interpretation.compiledPrompt,
+      };
+      setSpotlight(newSpotlight);
+
+      // Record in purely AI-generated creations history
+      setGeneratedCreations((prev) => [
+        {
+          id: `gen-${Date.now()}`,
+          title: interpretation.characterName,
+          role: interpretation.roleTitle,
+          archetype: 'AI Generation',
+          weapon: interpretation.weaponName || '',
+          costume: '',
+          visualStyle: 'AI Cipta',
+          prompt: interpretation.compiledPrompt,
+          image: generatedImageUrl,
+          traits: interpretation.traits || [],
+        },
+        ...prev,
+      ]);
+
+      // Play soft gong chime for creation completion
+      playSoundEffect('gong');
     },
     [inputText, isTyping]
   );
 
-  // Apply generated creation to spotlight
+  // Apply generated creation to spotlight & open canvas
   const handleApplyPreset = useCallback((preset: WayangPreset) => {
-    setSpotlight({
+    const char: SpotlightCharacter = {
       name: preset.title,
       role: preset.role,
       imageUrl: preset.image,
@@ -194,8 +275,10 @@ function KreasiWayangContent() {
       philosophy: 'Mahakarya tatahan Sang Empu AI.',
       traits: preset.traits,
       promptRecipe: preset.prompt,
-    });
-  }, []);
+    };
+    setSpotlight(char);
+    openCanvasModal(char);
+  }, [openCanvasModal]);
 
   // Clear chat history
   const handleClearChat = useCallback(() => {
@@ -223,7 +306,6 @@ function KreasiWayangContent() {
       <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10">
         {/* ── Header Title ── */}
         <header className="text-center max-w-3xl mx-auto mb-10">
-
           <h1 className="font-serif italic font-bold text-4xl sm:text-5xl lg:text-6xl text-[#050303] leading-[1.05] tracking-tight mb-4">
             Dialog Kreasi <span className="not-italic font-normal">Sang Empu</span>
           </h1>
@@ -289,22 +371,46 @@ function KreasiWayangContent() {
                             : 'bg-[#1e130c] border border-[#d9a441]/25 text-[#f5ecd9] rounded-tl-none'
                         }`}
                       >
+                        {/* Thinking Thought Component above message text if generated by Sang Empu */}
+                        {!isUser && msg.imageUrl && (
+                          <div className="mb-3 pb-2.5 border-b border-white/10">
+                            <ThinkingTool
+                              state="thought"
+                              thoughtLabel="Nalar & Tatahan Sang Empu"
+                              content={
+                                msg.reasoning ||
+                                `Sang Empu telah menimbang watak sukma "${msg.characterName || 'Tokoh Wayang'}", memilih pusaka sakti ${msg.weaponName || 'Pusaka Keraton'}, meramu falsafah batin "${msg.philosophy || 'Urip Iku Urup'}", serta menatah figur wayang kulit autentik Nusantara beraksen emas prada.`
+                              }
+                              defaultOpen={false}
+                              className="text-xs"
+                            />
+                          </div>
+                        )}
+
                         {/* Text Content */}
                         <div className="whitespace-pre-wrap">{msg.text}</div>
 
                         {/* If message generated a character image */}
                         {msg.imageUrl && (
                           <div className="mt-3.5 pt-3 border-t border-white/10 flex flex-col gap-2.5">
-                            <div className="relative aspect-square w-full max-w-[280px] rounded-xl overflow-hidden bg-black/80 border border-[#d9a441]/30 mx-auto group">
-                              <Image
-                                src={msg.imageUrl}
-                                alt={msg.characterName || 'Wayang'}
-                                fill
-                                unoptimized
-                                className="object-contain p-2"
-                                sizes="280px"
-                              />
-                            </div>
+                            <ImageGeneration
+                              duration={2800}
+                              startingText="Sang Empu menyiapkan kelir & bilah tatah..."
+                              generatingText="Menatah wujud wayang kulit beraksen emas prada..."
+                              completedText="Wayang kulit berhasil ditatah sempurna."
+                              className="max-w-[280px] mx-auto"
+                            >
+                              <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-black/85 border border-[#d9a441]/30 mx-auto group">
+                                <Image
+                                  src={msg.imageUrl}
+                                  alt={msg.characterName || 'Wayang'}
+                                  fill
+                                  unoptimized
+                                  className="object-contain p-2"
+                                  sizes="280px"
+                                />
+                              </div>
+                            </ImageGeneration>
 
                             {msg.characterName && (
                               <div className="flex items-center justify-between text-xs pt-1">
@@ -313,8 +419,8 @@ function KreasiWayangContent() {
                                 </span>
                                 <button
                                   type="button"
-                                  onClick={() =>
-                                    setSpotlight({
+                                  onClick={() => {
+                                    const charData: SpotlightCharacter = {
                                       name: msg.characterName || '',
                                       role: msg.roleTitle || '',
                                       imageUrl: msg.imageUrl || '',
@@ -322,11 +428,13 @@ function KreasiWayangContent() {
                                       philosophy: msg.philosophy || '',
                                       traits: msg.traits || [],
                                       promptRecipe: msg.promptRecipe || '',
-                                    })
-                                  }
-                                  className="text-[11px] font-mono text-[#dedf42] hover:underline flex items-center gap-1"
+                                    };
+                                    openCanvasModal(charData);
+                                  }}
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#dedf42] hover:bg-[#eae853] text-black text-[11px] font-mono font-bold transition-all shadow-md active:scale-95 cursor-pointer"
                                 >
-                                  <span>Lihat di Kanvas</span> &rarr;
+                                  <Maximize2 className="w-3 h-3" />
+                                  <span>Lihat di Canvas</span>
                                 </button>
                               </div>
                             )}
@@ -341,17 +449,25 @@ function KreasiWayangContent() {
                   );
                 })}
 
-                {/* Typing Indicator */}
+                {/* Typing / Thinking Shimmer Indicator */}
                 {isTyping && (
-                  <div className="flex gap-3 items-center text-xs text-[#dedf42] font-mono animate-pulse">
-                    <div className="w-8 h-8 rounded-full bg-black border border-[#dedf42]/40 flex items-center justify-center">
-                      <Flame className="w-4 h-4 text-[#dedf42]" />
+                  <div className="flex gap-3 items-start text-xs animate-fadeIn">
+                    <div className="w-8 h-8 rounded-full bg-black border border-[#dedf42]/40 text-[#dedf42] flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(222,223,66,0.3)]">
+                      <Flame className="w-4 h-4 text-[#dedf42] animate-pulse" />
                     </div>
-                    <div className="bg-[#1e130c] border border-[#d9a441]/25 px-4 py-2.5 rounded-2xl rounded-tl-none flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#dedf42] animate-bounce" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#dedf42] animate-bounce [animation-delay:0.2s]" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#dedf42] animate-bounce [animation-delay:0.4s]" />
-                      <span className="ml-1 text-[#f5ecd9]/70">Sang Empu sedang menatah kulit...</span>
+                    <div className="bg-[#1e130c] border border-[#d9a441]/35 p-4 rounded-2xl rounded-tl-none max-w-[85%] space-y-3 shadow-lg w-full">
+                      <ThinkingTool
+                        state="thinking"
+                        thinkingLabel="Sang Empu Sedang Menalar & Menatah..."
+                        content={thinkingStep}
+                        defaultOpen={true}
+                      />
+                      <div className="flex items-center gap-2 pt-2 text-[11px] text-[#dedf42] font-mono border-t border-white/10">
+                        <span className="w-2 h-2 rounded-full bg-[#dedf42] animate-ping" />
+                        <span className="text-[#f5ecd9]/90 font-sans">
+                          Tahap {thinkingStageIndex}/3: {thinkingStep}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -403,19 +519,36 @@ function KreasiWayangContent() {
                 </form>
               </div>
             </div>
+
             {/* ── RIGHT PANEL: Spotlight Canvas of Active Character (5 cols) — Matched Height h-[720px] ── */}
-            <div className="lg:col-span-5 bg-[#150c08] border border-[#d9a441]/30 rounded-2xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.85)] flex flex-col justify-between h-[720px] overflow-y-auto [scrollbar-width:thin]">
+            <div
+              ref={spotlightSectionRef}
+              className="lg:col-span-5 bg-[#150c08] border border-[#d9a441]/30 rounded-2xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.85)] flex flex-col justify-between h-[720px] overflow-y-auto [scrollbar-width:thin]"
+            >
               <div className="flex items-center justify-between border-b border-[#d9a441]/20 pb-3">
                 <div className="flex items-center gap-2 text-[#f2c76b]">
                   <Flame className="w-4 h-4 text-[#dedf42]" />
                   <span className="font-mono text-xs uppercase tracking-wider">Spotlight Kanvas Tokoh</span>
                 </div>
+                {spotlight && (
+                  <button
+                    type="button"
+                    onClick={() => openCanvasModal(spotlight)}
+                    className="text-[11px] font-mono text-[#dedf42] hover:underline flex items-center gap-1"
+                  >
+                    <Maximize2 className="w-3 h-3" />
+                    <span>Perbesar</span>
+                  </button>
+                )}
               </div>
 
               {spotlight ? (
                 <div className="flex-1 flex flex-col justify-between py-2 space-y-4">
                   {/* Large Image Viewport */}
-                  <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-black/85 border border-[#d9a441]/35 flex items-center justify-center shadow-inner group">
+                  <div
+                    onClick={() => openCanvasModal(spotlight)}
+                    className="relative aspect-square w-full rounded-xl overflow-hidden bg-black/85 border border-[#d9a441]/35 flex items-center justify-center shadow-inner group cursor-pointer"
+                  >
                     <Image
                       src={spotlight.imageUrl}
                       alt={spotlight.name}
@@ -428,17 +561,11 @@ function KreasiWayangContent() {
 
                     <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black via-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-between">
                       <span className="font-serif text-xs text-[#f2c76b] italic">
-                        Karya Sang Empu AI
+                        Klik untuk Buka di Canvas
                       </span>
-                      <a
-                        href={spotlight.imageUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[#f5ecd9]"
-                        title="Buka Gambar Resolusi Penuh"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
+                      <div className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[#f5ecd9]">
+                        <Maximize2 className="w-3.5 h-3.5" />
+                      </div>
                     </div>
                   </div>
 
@@ -476,6 +603,16 @@ function KreasiWayangContent() {
                       </div>
                     </div>
 
+                    {/* Interactive Canvas Button */}
+                    <button
+                      type="button"
+                      onClick={() => openCanvasModal(spotlight)}
+                      className="w-full py-2.5 px-4 rounded-xl bg-[#dedf42] hover:bg-[#eae853] text-black font-sans font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer active:scale-98"
+                    >
+                      <Maximize2 className="w-4 h-4" />
+                      <span>Uji di Kanvas Pentas</span>
+                    </button>
+
                     {/* Actions Bar */}
                     <div className="grid grid-cols-2 gap-2 pt-1">
                       <a
@@ -496,7 +633,7 @@ function KreasiWayangContent() {
                           setCopiedPhilosophy(true);
                           setTimeout(() => setCopiedPhilosophy(false), 2000);
                         }}
-                        className="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-black/70 hover:bg-[#d9a441] border border-[#d9a441]/40 text-xs font-mono text-[#f5ecd9] hover:text-black transition-all"
+                        className="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-black/70 hover:bg-[#d9a441] border border-[#d9a441]/40 text-xs font-mono text-[#f5ecd9] hover:text-black transition-all cursor-pointer"
                       >
                         {copiedPhilosophy ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                         {copiedPhilosophy ? 'Tersalin' : 'Salin Kisah'}
@@ -536,7 +673,6 @@ function KreasiWayangContent() {
           </div>
         </div>
 
-        {/* ── Community Inspiration Section ── */}
         {/* ── AI Generated History Section (Only contains actual AI generations) ── */}
         <section className="pt-8 border-t-2 border-black/20">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
@@ -561,7 +697,10 @@ function KreasiWayangContent() {
                   className="bg-black/95 text-[#f5ecd9] border border-black rounded-2xl p-5 flex flex-col justify-between shadow-xl hover:border-[#dedf42]/60 transition-all group"
                 >
                   <div>
-                    <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-black/60 border border-white/5 mb-4 flex items-center justify-center">
+                    <div
+                      onClick={() => handleApplyPreset(creation)}
+                      className="relative aspect-square w-full rounded-xl overflow-hidden bg-black/60 border border-white/5 mb-4 flex items-center justify-center cursor-pointer"
+                    >
                       <Image
                         src={creation.image}
                         alt={creation.title}
@@ -590,10 +729,10 @@ function KreasiWayangContent() {
                   <button
                     type="button"
                     onClick={() => handleApplyPreset(creation)}
-                    className="w-full py-2.5 px-3.5 rounded-xl bg-black hover:bg-[#dedf42] text-[#dedf42] hover:text-black border border-[#dedf42]/40 text-xs font-mono font-semibold transition-all inline-flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+                    className="w-full py-2.5 px-3.5 rounded-xl bg-black hover:bg-[#dedf42] text-[#dedf42] hover:text-black border border-[#dedf42]/40 text-xs font-mono font-semibold transition-all inline-flex items-center justify-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
                   >
-                    <Wand2 className="w-3.5 h-3.5" />
-                    Lihat di Kanvas
+                    <Maximize2 className="w-3.5 h-3.5" />
+                    Lihat di Canvas
                   </button>
                 </div>
               ))}
@@ -613,6 +752,255 @@ function KreasiWayangContent() {
           )}
         </section>
       </div>
+
+      {/* ── 🌟 INTERACTIVE KANVAS STUDIO PENTAS MODAL ── */}
+      {isCanvasModalOpen && spotlight && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-8 bg-black/85 backdrop-blur-xl animate-fadeSlideUp"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsCanvasModalOpen(false);
+          }}
+        >
+          <div className="relative w-full max-w-5xl bg-[#0e0805] text-[#f5ecd9] border-2 border-[#d9a441]/50 rounded-3xl shadow-[0_30px_100px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col max-h-[90vh]">
+            {/* Modal Header Bar */}
+            <div className="p-4 sm:p-5 bg-black/80 border-b border-[#d9a441]/25 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-[#dedf42] text-black flex items-center justify-center shadow-[0_0_15px_rgba(222,223,66,0.4)]">
+                  <Flame className="w-5 h-5 text-black" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest text-[#dedf42] uppercase block">
+                    PANGGUNG KANVAS VIRTUAL SANG EMPU
+                  </span>
+                  <h3 className="font-serif italic text-lg sm:text-xl font-bold text-[#f5ecd9]">
+                    {spotlight.name}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Header Actions */}
+              <div className="flex items-center gap-2">
+                {audioFeedback && (
+                  <span className="hidden sm:inline-block px-2.5 py-1 rounded-full bg-[#dedf42]/20 text-[#dedf42] text-[11px] font-mono animate-pulse">
+                    🎵 {audioFeedback}
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setIsCanvasModalOpen(false)}
+                  className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-[#f5ecd9] transition-all cursor-pointer"
+                  title="Tutup Kanvas"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Body: Split Virtual Canvas & Details */}
+            <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-y-auto">
+              {/* ── LEFT: Virtual Kelir Canvas (7 cols) ── */}
+              <div className="lg:col-span-7 relative min-h-[380px] sm:min-h-[440px] flex flex-col items-center justify-center p-6 overflow-hidden border-b lg:border-b-0 lg:border-r border-[#d9a441]/20 select-none">
+                {/* Authentic Kelir Stage Backdrop with Blencong Radial Light */}
+                <div
+                  className={`absolute inset-0 transition-opacity duration-700 ${
+                    canvasBlencong ? 'opacity-100' : 'opacity-40'
+                  }`}
+                  style={{
+                    background:
+                      'radial-gradient(circle at 50% 45%, rgba(120, 75, 25, 0.7) 0%, rgba(45, 22, 8, 0.9) 50%, #080402 100%)',
+                  }}
+                />
+
+                {/* Blencong Flame Flare Animation */}
+                {canvasBlencong && (
+                  <div className="absolute top-8 w-40 h-40 bg-[#ffb732] rounded-full blur-[80px] opacity-25 animate-pulse pointer-events-none" />
+                )}
+
+                {/* Cloth Fabric Grain Texture */}
+                <div className="absolute inset-0 bg-[radial-gradient(#ffffff_0.5px,transparent_0.5px)] opacity-[0.05] [background-size:16px_16px] pointer-events-none" />
+
+                {/* The Character Wayang Puppet on Canvas */}
+                <div
+                  className="relative w-full h-full max-h-[460px] flex items-center justify-center z-10 transition-all duration-300"
+                  style={{
+                    transform: `scale(${canvasZoom}) scaleX(${canvasFlipped ? -1 : 1})`,
+                  }}
+                >
+                  <div className="relative w-[320px] h-[380px] sm:w-[380px] sm:h-[440px]">
+                    <Image
+                      src={spotlight.imageUrl}
+                      alt={spotlight.name}
+                      fill
+                      unoptimized
+                      className="object-contain drop-shadow-[0_15px_35px_rgba(222,223,66,0.35)]"
+                      sizes="(max-width: 768px) 100vw, 440px"
+                      priority
+                    />
+                  </div>
+                </div>
+
+                {/* Interactive Stage Controls Floating Bar */}
+                <div className="absolute bottom-4 inset-x-4 z-20 flex items-center justify-between gap-2 p-2 rounded-2xl bg-black/80 backdrop-blur-md border border-[#d9a441]/30">
+                  <div className="flex items-center gap-1.5">
+                    {/* Flip Direction */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCanvasFlipped((prev) => !prev);
+                        playSoundEffect('cempala');
+                      }}
+                      className="p-2 rounded-xl bg-white/10 hover:bg-[#dedf42] hover:text-black text-[#f5ecd9] text-xs font-mono transition-all flex items-center gap-1 cursor-pointer"
+                      title="Balik Arah Hadap Wayang"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Balik Hadap</span>
+                    </button>
+
+                    {/* Blencong Glow Toggle */}
+                    <button
+                      type="button"
+                      onClick={() => setCanvasBlencong((prev) => !prev)}
+                      className={`p-2 rounded-xl text-xs font-mono transition-all flex items-center gap-1 cursor-pointer ${
+                        canvasBlencong
+                          ? 'bg-[#dedf42] text-black font-bold'
+                          : 'bg-white/10 text-[#f5ecd9] hover:bg-white/20'
+                      }`}
+                      title="Nyalakan / Matikan Efek Api Blencong"
+                    >
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Blencong</span>
+                    </button>
+                  </div>
+
+                  {/* Audio triggers */}
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => playSoundEffect('gong')}
+                      className="p-2 rounded-xl bg-white/10 hover:bg-[#dedf42] hover:text-black text-[#f5ecd9] text-xs font-mono transition-all flex items-center gap-1 cursor-pointer"
+                      title="Pukul Gong Ageng"
+                    >
+                      <Volume2 className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Gong</span>
+                    </button>
+
+                    {/* Zoom in / out */}
+                    <button
+                      type="button"
+                      onClick={() => setCanvasZoom((prev) => Math.max(0.75, prev - 0.25))}
+                      className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-[#f5ecd9] text-xs transition-all cursor-pointer"
+                      title="Perkecil"
+                    >
+                      <ZoomOut className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCanvasZoom((prev) => Math.min(1.75, prev + 0.25))}
+                      className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-[#f5ecd9] text-xs transition-all cursor-pointer"
+                      title="Perbesar"
+                    >
+                      <ZoomIn className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* ── RIGHT: Character Dossier & Actions (5 cols) ── */}
+              <div className="lg:col-span-5 p-6 flex flex-col justify-between space-y-5 bg-[#140b07]">
+                <div className="space-y-4">
+                  <div>
+                    <span className="text-[10px] font-mono tracking-widest text-[#dedf42] uppercase block">
+                      HASIL TATAHAN ADILUHUNG
+                    </span>
+                    <h2 className="font-serif italic font-bold text-2xl sm:text-3xl text-[#f5ecd9] mt-0.5">
+                      {spotlight.name}
+                    </h2>
+                    <p className="text-xs font-sans text-[#dedf42] mt-0.5">{spotlight.role}</p>
+                  </div>
+
+                  {/* Sifat & Watak */}
+                  {spotlight.traits && spotlight.traits.length > 0 && (
+                    <div className="space-y-1.5">
+                      <span className="text-[11px] font-mono text-[#f5ecd9]/60 uppercase tracking-wider block">
+                        Watak & Karakter:
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {spotlight.traits.map((t, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2.5 py-1 rounded-full text-xs font-mono bg-[#dedf42]/10 text-[#dedf42] border border-[#dedf42]/30"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Pusaka */}
+                  <div className="p-3.5 rounded-2xl bg-black/60 border border-white/10 space-y-1.5">
+                    <div className="flex items-center gap-2 text-[#dedf42]">
+                      <Swords className="w-4 h-4" />
+                      <span className="font-mono text-xs font-bold uppercase">Pusaka / Senjata Sakti</span>
+                    </div>
+                    <p className="text-xs text-[#f5ecd9]/90 leading-relaxed pl-6 font-medium">
+                      {spotlight.weapon}
+                    </p>
+                  </div>
+
+                  {/* Filosofi Luhur */}
+                  <div className="p-3.5 rounded-2xl bg-black/60 border border-white/10 space-y-1.5">
+                    <div className="flex items-center gap-2 text-[#dedf42]">
+                      <Scroll className="w-4 h-4" />
+                      <span className="font-mono text-xs font-bold uppercase">Falsafah Batin & Ajaran</span>
+                    </div>
+                    <p className="text-xs text-[#f5ecd9]/80 italic leading-relaxed pl-6">
+                      &ldquo;{spotlight.philosophy}&rdquo;
+                    </p>
+                  </div>
+                </div>
+
+                {/* Primary CTA Action Buttons */}
+                <div className="space-y-2.5 pt-2 border-t border-white/10">
+                  <Link
+                    href="/stage"
+                    className="w-full py-3.5 px-5 rounded-2xl bg-[#dedf42] hover:bg-[#eae853] text-black font-sans font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg active:scale-98"
+                  >
+                    <span>Pentaskan di Panggung Dalang AI</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <a
+                      href={spotlight.imageUrl}
+                      download={`${spotlight.name.toLowerCase().replace(/\s+/g, '-')}.png`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-2.5 px-3 rounded-xl bg-black hover:bg-[#d9a441] border border-[#d9a441]/40 text-xs font-mono text-[#f5ecd9] hover:text-black transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      Unduh PNG
+                    </a>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(`Tokoh: ${spotlight.name} (${spotlight.role})\nPusaka: ${spotlight.weapon}\nFilosofi: ${spotlight.philosophy}`);
+                        setCopiedPhilosophy(true);
+                        setTimeout(() => setCopiedPhilosophy(false), 2000);
+                      }}
+                      className="py-2.5 px-3 rounded-xl bg-black hover:bg-[#d9a441] border border-[#d9a441]/40 text-xs font-mono text-[#f5ecd9] hover:text-black transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                    >
+                      {copiedPhilosophy ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      {copiedPhilosophy ? 'Tersalin' : 'Salin Kisah'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -145,8 +145,8 @@ export default function Navbar({ className }: { className?: string }) {
                 Pentas & Kisah
               </span>
               <HoveredLink href="/#lakon" onClick={() => setActive(null)}>
-                <span className="font-semibold text-white block">Bima Suci</span>
-                <span className="text-[11px] text-[#cdb894] block">Lakon Utama Malam Ini</span>
+                <span className="font-semibold text-white block">Sejarah Wayang Kulit</span>
+                <span className="text-[11px] text-[#cdb894] block">Sejarah Wayang Kulit</span>
               </HoveredLink>
               <HoveredLink href="/#fitur" onClick={() => setActive(null)}>
                 <span className="font-semibold text-white block">Kisah Bayangan</span>

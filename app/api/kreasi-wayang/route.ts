@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { interpretUserPrompt, getWayangImageUrl } from '@/lib/wayang-ai';
+import { interpretUserPrompt, resolveWayangImage } from '@/lib/wayang-ai';
 
 interface GeminiResponse {
   candidates?: Array<{
@@ -39,7 +39,7 @@ Berikan respons HANYA berupa objek JSON murni (tanpa markdown backtick, tanpa te
   "philosophy": "Nasihat hidup dan falsafah batin tokoh dalam 1-2 kalimat bahasa Indonesia yang mendalam dan bermakna",
   "traits": ["Sifat 1", "Sifat 2", "Sifat 3"],
   "greeting": "Kalimat bertutur puitis dari Sang Empu dalam bahasa Indonesia memperkenalkan wujud dan filosofi tokoh ini (2-3 kalimat)",
-  "compiledPrompt": "Detailed English prompt for generating authentic traditional Indonesian Wayang Kulit flat leather shadow puppet with tatah sungging gold accents, museum conservation quality, 8k resolution, isolated clean background"
+  "compiledPrompt": "Detailed English prompt for generating authentic traditional Indonesian Javanese Wayang Kulit flat leather shadow puppet with intricate tatah sungging perforated leather craftsmanship, gold leaf prada accents, centered composition on warm golden parchment kelir backdrop with soft blencong lamp lighting, museum conservation quality, 8k resolution, no 3D anime, no human face"
 }`;
 
         const geminiPayload = {
@@ -75,16 +75,16 @@ Berikan respons HANYA berupa objek JSON murni (tanpa markdown backtick, tanpa te
 
           try {
             const parsed = JSON.parse(cleanJson);
-            const seed = Math.floor(Date.now() % 999999);
-            const imageUrl = getWayangImageUrl(parsed.compiledPrompt || prompt, 1024, 1024, seed);
+            const characterName = parsed.characterName || 'Raden Cipta Mandiri';
+            const imageUrl = resolveWayangImage(parsed.compiledPrompt || prompt, characterName);
 
             return NextResponse.json({
-              characterName: parsed.characterName || 'Raden Cipta Mandiri',
+              characterName,
               roleTitle: parsed.roleTitle || 'Ksatria Cipta Pewayangan',
               weaponName: parsed.weaponName || 'Pusaka Kyai Cundamanik',
               philosophy: parsed.philosophy || 'Urip iku urup — hidup yang menyala memberi terang bagi sesama.',
               traits: Array.isArray(parsed.traits) ? parsed.traits : ['Luhur Budi', 'Waspada', 'Teguh'],
-              greeting: parsed.greeting || `Karakter **${parsed.characterName}** berhasil ditatah oleh Sang Empu AI.`,
+              greeting: parsed.greeting || `Karakter **${characterName}** berhasil ditatah oleh Sang Empu AI.`,
               compiledPrompt: parsed.compiledPrompt,
               imageUrl,
               source: 'gemini-ai',
@@ -100,8 +100,7 @@ Berikan respons HANYA berupa objek JSON murni (tanpa markdown backtick, tanpa te
 
     // ── 2. Local Fallback Interpreter (Runs without API key) ──
     const local = interpretUserPrompt(prompt);
-    const seed = Math.floor(Date.now() % 999999);
-    const imageUrl = getWayangImageUrl(local.compiledPrompt, 1024, 1024, seed);
+    const imageUrl = resolveWayangImage(local.compiledPrompt || prompt, local.characterName);
 
     return NextResponse.json({
       characterName: local.characterName,

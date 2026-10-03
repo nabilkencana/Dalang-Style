@@ -19,6 +19,7 @@
     "@remotion/media-utils": "^4.0.532",
     "@remotion/tailwind-v4": "^4.0.532",
     "@remotion/transitions": "^4.0.532",
+    "@tabler/icons-react": "^3.48.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^13.4.6",

@@ -32,6 +32,7 @@ export interface ChatMessage {
   traits?: string[];
   weaponName?: string;
   philosophy?: string;
+  reasoning?: string;
 }
 
 export const ARCHETYPES = [
@@ -164,7 +165,7 @@ export const ASPECT_RATIOS = {
 } as const;
 
 /**
- * Menyusun formula prompt terstruktur berstandar kurasi seni Wayang Kulit.
+ * Menyusun formula prompt terstruktur berstandar kurasi seni Wayang Kulit autentik Nusantara.
  */
 export function compileWayangPrompt(params: WayangPromptParams): string {
   const arc = ARCHETYPES.find((a) => a.id === params.archetype)?.promptToken || params.archetype;
@@ -174,15 +175,69 @@ export function compileWayangPrompt(params: WayangPromptParams): string {
   const userExtra = params.userNotes ? `, ${params.userNotes}` : '';
 
   return (
-    `Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of a ${arc}, ` +
+    `Traditional Indonesian Javanese Wayang Kulit flat leather shadow puppet of a ${arc}, ` +
     `${cst}, ${wpn}${userExtra}. Style: ${sty}. ` +
-    `Masterpiece heritage artifact, fine perforated leather chiseling (tatah sungging), gilded gold leaf, ` +
-    `isolated clean composition, cinematic lighting, 8k resolution, museum conservation quality, no modern watermarks`
+    `Authentic flat chiseled perforated buffalo leather craftsmanship (tatah sungging), intricate gold leaf prada accents, ` +
+    `traditional horn puppet rods (cempurit), centered composition against warm aged parchment kelir screen with soft blencong oil lamp glow, ` +
+    `exquisite Indonesian royal palace heirloom artifact, 8k resolution, museum heritage conservation quality, masterpiece, sharp silhouette, no modern text, no 3D anime, no real human photography`
   );
 }
 
 /**
- * Menafsirkan prompt teks bebas pengguna (natural language) ke dalam nama tokoh, filosofi, dan resep visual.
+ * Menghasilkan URL gambar wayang kulit autentik Nusantara beresolusi tinggi yang selaras dengan seluruh pameran website ini.
+ */
+export function resolveWayangImage(prompt: string, characterName?: string): string {
+  const p = `${prompt} ${characterName || ''}`.toLowerCase();
+
+  if (p.includes('garuda') || p.includes('elang') || p.includes('sayap') || p.includes('terbang') || p.includes('gatotkaca') || p.includes('pringgandani')) {
+    return '/images/tokoh/wayang-5.png'; // Gatotkaca / Ksatria Sayap Emas
+  }
+  if (p.includes('naga') || p.includes('perkasa') || p.includes('bima') || p.includes('werkudara') || p.includes('cakar') || p.includes('singa') || p.includes('harimau') || p.includes('pancanaka') || p.includes('gagah')) {
+    return '/images/tokoh/wayang-7.png'; // Werkudara / Bima Perkasa
+  }
+  if (p.includes('putri') || p.includes('dewi') || p.includes('sinta') || p.includes('srikandi') || p.includes('anggun') || p.includes('wanita') || p.includes('cundrik') || p.includes('cantik')) {
+    return '/images/tokoh/wayang-9.png'; // Dewi Sinta
+  }
+  if (p.includes('semar') || p.includes('ismaya') || p.includes('pamong') || p.includes('badranaya') || p.includes('bijak')) {
+    return '/images/tokoh/wayang-1.png'; // Semar Badranaya
+  }
+  if (p.includes('petruk') || p.includes('kantong') || p.includes('bolong') || p.includes('jenaka') || p.includes('humor') || p.includes('lucu')) {
+    return '/images/tokoh/wayang-2.png'; // Petruk Kantong Bolong
+  }
+  if (p.includes('gareng') || p.includes('nalagareng') || p.includes('lugu') || p.includes('rendah hati')) {
+    return '/images/tokoh/wayang-3.png'; // Gareng
+  }
+  if (p.includes('raksasa') || p.includes('raseksa') || p.includes('rahwana') || p.includes('dasamuka') || p.includes('taring') || p.includes('durgala') || p.includes('buta')) {
+    return '/images/tokoh/wayang-6.png'; // Rahwana / Prabu Dasamuka
+  }
+  if (p.includes('resi') || p.includes('drona') || p.includes('begawan') || p.includes('guru') || p.includes('pandita') || p.includes('tapa')) {
+    return '/images/tokoh/wayang-8.png'; // Resi Drona
+  }
+  if (p.includes('panah') || p.includes('gandiwa') || p.includes('arjuna') || p.includes('dananjaya') || p.includes('ksatria') || p.includes('petir') || p.includes('kilat') || p.includes('halilintar')) {
+    return '/images/tokoh/wayang-4.png'; // Raden Arjuna / Dananjaya
+  }
+
+  // Fallback deterministik berbasis hash string dari koleksi master wayang autentik website
+  const masterCollection = [
+    '/images/tokoh/wayang-4.png',
+    '/images/tokoh/wayang-7.png',
+    '/images/tokoh/wayang-5.png',
+    '/images/tokoh/wayang-1.png',
+    '/images/tokoh/wayang-9.png',
+    '/images/tokoh/wayang-2.png',
+    '/images/tokoh/wayang-3.png',
+    '/images/tokoh/wayang-6.png',
+    '/images/tokoh/wayang-8.png',
+  ];
+  let hash = 0;
+  for (let i = 0; i < p.length; i++) {
+    hash = (hash * 31 + p.charCodeAt(i)) >>> 0;
+  }
+  return masterCollection[hash % masterCollection.length];
+}
+
+/**
+ * Menafsirkan prompt teks bebas pengguna (natural language) ke dalam nama tokoh, filosofi, dan resep visual autentik.
  */
 export function interpretUserPrompt(userPrompt: string): {
   characterName: string;
@@ -192,6 +247,7 @@ export function interpretUserPrompt(userPrompt: string): {
   traits: string[];
   greeting: string;
   compiledPrompt: string;
+  imageUrl: string;
 } {
   const p = userPrompt.toLowerCase();
 
@@ -201,7 +257,7 @@ export function interpretUserPrompt(userPrompt: string): {
   let weaponName = 'Keris Kyai Jalak Sembilan';
   let philosophy = 'Keteguhan memegang kebenaran walau badai godaan duniawi menerpa.';
   let traits = ['Berbudi Luhur', 'Tatah Emas Prada', 'Penegak Keadilan'];
-  let descToken = 'noble refined Javanese ksatria knight with golden headdress and damascene kris';
+  let descToken = 'noble refined Javanese ksatria knight with golden makuta headdress and damascene kris';
 
   if (p.includes('garuda') || p.includes('elang') || p.includes('sayap') || p.includes('terbang')) {
     characterName = 'Raden Garudayana';
@@ -231,40 +287,42 @@ export function interpretUserPrompt(userPrompt: string): {
     philosophy = 'Ketegasan mengambil keputusan di saat genting demi kemaslahatan bersama.';
     traits = ['Cahaya Petir', 'Keputusan Cepat', 'Tatap Tegas'];
     descToken = 'electric aura warrior prince holding a crackling golden lightning bolt mace';
-  } else if (p.includes('putri') || p.includes('dewi') || p.includes('anggun') || p.includes('cantik') || p.includes('wanita')) {
+  } else if (p.includes('putri') || p.includes('dewi') || p.includes('anggun') || p.includes('cantik') || p.includes('wanita') || p.includes('srikandi')) {
     characterName = 'Dewi Retno Kumalasari';
     roleTitle = 'Putri Penyejuk Jagad';
     weaponName = 'Cundrik Pusaka Ratu';
     philosophy = 'Kelembutan tutur kata dan ketulusan hati yang mampu meluluhkan kekerasan amarah.';
     traits = ['Anggun Bijak', 'Selendang Kencana', 'Pengayom Damai'];
     descToken = 'graceful royal Javanese princess with tiered golden crown and glowing silk batik sash';
-  } else if (p.includes('punakawan') || p.includes('lucu') || p.includes('jenaka') || p.includes('humor')) {
+  } else if (p.includes('punakawan') || p.includes('lucu') || p.includes('jenaka') || p.includes('humor') || p.includes('semar') || p.includes('petruk') || p.includes('bagong')) {
     characterName = 'Kyai Sabdo Rahayu';
     roleTitle = 'Pamong Nurani Rakyat Jelata';
     weaponName = 'Cunduk Manik Astagina';
     philosophy = 'Urip Iku Urup — hidup yang bermakna adalah yang menjadi pelita bagi sesama.';
     traits = ['Pamong Luhur', 'Humor Filosofis', 'Rendah Hati'];
     descToken = 'wise witty smiling Punakawan elder puppet with traditional kain and divine forehead jewel';
-  } else if (p.includes('raksasa') || p.includes('raseksa') || p.includes('taring') || p.includes('gagah') || p.includes('besar')) {
+  } else if (p.includes('raksasa') || p.includes('raseksa') || p.includes('taring') || p.includes('gagah') || p.includes('besar') || p.includes('rahwana')) {
     characterName = 'Prabu Kaladurgala';
     roleTitle = 'Maharaja Raksasa Berjiwa Luhur';
     weaponName = 'Gada Wesi Kuning';
     philosophy = 'Kekuatan fisik sebesar apa pun harus tunduk pada bimbingan budi pekerti yang mulia.';
     traits = ['Taring Emas', 'Kekuatan Raksasa', 'Tunduk Kebaikan'];
-    descToken = 'colossal majestic giant king with golden fangs and richly carved leather armor';
+    descToken = 'colossal majestic giant king with golden fangs and richly chiseled leather armor';
   }
 
   const greeting =
     `Rahayu, sahabat dalang. Dari kehendak ciptamu, Sang Empu telah menatah sosok **${characterName}**, sang ${roleTitle}. ` +
     `Tokoh ini memegang pusaka **${weaponName}**, yang membawa wejangan filosofis: *"${philosophy}"*. ` +
-    `Perhatikan tatah sungging dan kilau prada emasnya di atas kain kelir berikut:`;
+    `Klik tombol **Lihat di Canvas** di bawah untuk menyaksikan tatahan wayang ini di atas panggung kain kelir:`;
 
   const compiledPrompt =
-    `Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of ${characterName}, ` +
+    `Traditional Indonesian Javanese Wayang Kulit flat leather shadow puppet of ${characterName}, ` +
     `${descToken}, holding ${weaponName}, inspired by user concept: "${userPrompt}". ` +
-    `Style: authentic traditional Javanese Wayang Kulit leather puppet styling, meticulous perforated leather chiseled craftsmanship (tatah sungging), ` +
-    `gold foil prada accents, sharp crisp silhouette, illuminated by warm blencong oil flame lamp glow, ` +
-    `masterpiece heritage artifact, isolated clean composition, 8k resolution, museum conservation quality, no modern text`;
+    `Style: authentic traditional Javanese Wayang Kulit flat leather puppet artwork, meticulous perforated leather chiseling (tatah sungging), ` +
+    `intricate gold leaf prada gilding accents, sharp crisp silhouette, centered composition on warm aged golden-brown parchment backdrop with blencong oil lamp lighting, ` +
+    `masterpiece royal heritage artifact, 8k resolution, museum conservation quality, full body shadow puppet, no 3D anime, no human face, no modern text`;
+
+  const imageUrl = resolveWayangImage(userPrompt, characterName);
 
   return {
     characterName,
@@ -274,16 +332,15 @@ export function interpretUserPrompt(userPrompt: string): {
     traits,
     greeting,
     compiledPrompt,
+    imageUrl,
   };
 }
 
 /**
- * Menghasilkan URL gambar keyless dari Pollinations AI Flux engine.
+ * Menghasilkan URL gambar wayang kulit autentik Nusantara.
  */
-export function getWayangImageUrl(prompt: string, width = 1024, height = 1024, seed?: number): string {
-  const finalSeed = seed ?? Math.floor(Date.now() % 1000000);
-  const encoded = encodeURIComponent(prompt);
-  return `https://image.pollinations.ai/prompt/${encoded}?width=${width}&height=${height}&seed=${finalSeed}&nologo=true`;
+export function getWayangImageUrl(prompt: string, _width = 1024, _height = 1024, _seed?: number): string {
+  return resolveWayangImage(prompt);
 }
 
 /**
