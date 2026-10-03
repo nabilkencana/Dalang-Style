@@ -182,7 +182,6 @@ export class Controller {
     [1280, 650],
   ];
   pendingDance: [boolean, boolean] = [false, false];
-  demoDance: number = -1;
 
   constructor(tracker: HandTracker) {
     this.tracker = tracker;
@@ -426,11 +425,6 @@ export class Controller {
         arms: talk(2, turn < 0 ? 1 : 0.35),
       },
     ];
-    const n = Math.floor((t - 6) / 24);
-    if (n >= 0 && n !== this.demoDance) {
-      this.demoDance = n;
-      inputs[n % this.puppetCount].danceTrigger = true;
-    }
     return inputs.slice(0, this.puppetCount);
   }
 

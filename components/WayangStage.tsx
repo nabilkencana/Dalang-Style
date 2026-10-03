@@ -923,7 +923,7 @@ export default function WayangStage() {
       </div>
       {/* Home Button */}
       <Link
-        href="/"
+        href="/panduan"
         className="icon-btn"
         style={{ right: '108px' }}
         aria-label="Kembali ke Beranda"
@@ -979,11 +979,11 @@ export default function WayangStage() {
       <aside id="settings" className="panel settings" hidden={!showSettings}>
         <h2>Pengaturan</h2>
         <Link
-          href="/"
+          href="/panduan"
           className="btn small"
           style={{ textAlign: 'center', display: 'block', textDecoration: 'none' }}
         >
-          Kembali ke Beranda
+          Kembali ke Panduan
         </Link>
         <button
           type="button"
