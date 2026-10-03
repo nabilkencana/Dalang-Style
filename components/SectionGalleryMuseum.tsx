@@ -334,7 +334,6 @@ export default function SectionGalleryMuseum() {
       id="galeri"
       aria-label="Galeri Museum Wayang Indonesia"
       className="relative w-full bg-[#0a0a0a] overflow-hidden flex flex-col justify-center"
-      // Height diperbesar ke bawah agar lebih lega dan enak dilihat (96vh / min 880px / max 1180px)
       style={{
         height: 'clamp(820px, 96vh, 1180px)',
         minHeight: '820px',

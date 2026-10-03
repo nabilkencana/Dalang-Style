@@ -7,6 +7,7 @@ import SectionStoryFinale from '@/components/SectionStoryFinale';
 import SectionWayangGenerator from '@/components/SectionWayangGenerator';
 import SectionMovementMeaning from '@/components/SectionMovementMeaning';
 import SectionGalleryMuseum from '@/components/SectionGalleryMuseum';
+import SectionFAQ from '@/components/SectionFAQ';
 import SectionJoinTheNight from '@/components/SectionJoinTheNight';
 import TextMarquee from '@/components/ui/text-marquee';
 import GsapAnimations from '@/components/GsapAnimations';
@@ -61,7 +62,10 @@ export default function LandingPage() {
       {/* 9. Section 7: Galeri Museum Wayang */}
       <SectionGalleryMuseum />
 
-      {/* 9. Section 7: Join the Night / The Night Wayang Jawi (From Video 00:36 - 00:41) */}
+      {/* 10. Section 8: Pustaka Tanya Jawab & Panduan Budaya (FAQ Tabs) */}
+      <SectionFAQ id="faq" />
+
+      {/* 11. Section 9: Join the Night / The Night Wayang Jawi */}
       <SectionJoinTheNight id="join" />
     </div>
   );
