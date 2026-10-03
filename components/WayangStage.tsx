@@ -98,7 +98,7 @@ const CHARACTER_LIST = [
 
 function getCharShortName(nameOrId?: string): string {
   if (!nameOrId) return '';
-  const fullName = (CHARACTERS as any)[nameOrId]?.name || nameOrId;
+  const fullName = (CHARACTERS as Record<string, { name?: string }>)[nameOrId]?.name || nameOrId;
   return fullName.replace(/^(Kyai|Raden|Prabu|Sang)\s+/i, '').split(/[\s(/]+/)[0];
 }
 
@@ -1256,7 +1256,7 @@ export default function WayangStage() {
                       key={`left-${c.id}`}
                       type="button"
                       className={`slot-choice-btn ${leftPuppetChar === c.id ? 'active' : ''}`}
-                      onClick={() => handleLeftCharChange(c.id as any)}
+                      onClick={() => handleLeftCharChange(c.id as StageCharId)}
                     >
                       {getCharShortName(c.name)}
                     </button>
@@ -1313,7 +1313,7 @@ export default function WayangStage() {
                         key={`right-${c.id}`}
                         type="button"
                         className={`slot-choice-btn ${rightPuppetChar === c.id ? 'active' : ''}`}
-                        onClick={() => handleRightCharChange(c.id as any)}
+                        onClick={() => handleRightCharChange(c.id as StageCharId)}
                       >
                         {getCharShortName(c.name)}
                       </button>

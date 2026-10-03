@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WorksWheel, type WorksWheelItem } from '@/components/ui/works-wheel';
 import { OriginButton } from '@/components/ui/origin-button';
 import MobileTokohSection from '@/components/mobile/MobileTokohSection';
@@ -99,12 +100,78 @@ export default function SectionStoryAwakening({
   readMoreHref = '/katalog',
   aksaraText = 'ꦠꦺꦴꦏꦺꦴꦃ ꦮꦪꦁ ꦥꦸꦂꦮ ꦤꦸꦱꦤ꧀ꦠꦫ',
 }: SectionStoryAwakeningProps) {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  const [controlledTurn, setControlledTurn] = useState(1);
+
+  // ── GSAP ScrollTrigger: User diwajibkan melihat tokoh-tokohnya terlebih dahulu ──
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const mm = gsap.matchMedia();
+
+    // On desktop/tablet, pin the section and drive through all characters with comfortable scroll
+    mm.add('(min-width: 768px)', () => {
+      const count = wheelItems.length;
+      // Allocate 380px per character so user has ample time to appreciate each character without rapid spinning
+      const charScrollDist = (count - 1) * 380;
+      const overlayDist = window.innerHeight;
+      const totalPinDist = charScrollDist + overlayDist;
+
+      const trigger = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top top',
+        end: `+=${totalPinDist}`,
+        pin: true,
+        pinSpacing: false,
+        scrub: 0.9,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          // Phase 1: User cycles through all characters
+          const charRatio = charScrollDist / totalPinDist;
+          const charProgress = Math.min(1, self.progress / charRatio);
+          const targetTurn = 1 + charProgress * (count - 1);
+          setControlledTurn(targetTurn);
+        },
+      });
+
+      scrollTriggerRef.current = trigger;
+
+      return () => {
+        trigger.kill();
+        scrollTriggerRef.current = null;
+      };
+    });
+
+    return () => mm.revert();
+  }, [wheelItems.length]);
+
+  const handleSelectCharacter = (index: number) => {
+    if (typeof window === 'undefined') return;
+    const count = wheelItems.length;
+    const charScrollDist = (count - 1) * 380;
+    const st = scrollTriggerRef.current;
+    if (st) {
+      const targetScroll = st.start + (index / (count - 1)) * charScrollDist;
+      if (window.lenisInstance) {
+        window.lenisInstance.scrollTo(targetScroll, { immediate: false });
+      } else {
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      }
+    } else {
+      setControlledTurn(index + 1);
+    }
+  };
+
   return (
-    <section
-      data-gsap="awaken-section"
-      id={id}
-      className="relative w-full bg-[#0a0a0a] text-[#000000] overflow-hidden select-none"
-    >
+    <>
+      <section
+        ref={sectionRef}
+        data-gsap="awaken-section"
+        id={id}
+        className="relative min-h-screen w-full bg-[#0a0a0a] text-[#000000] overflow-hidden select-none z-10"
+      >
       {/* ── MOBILE VIEW: Dedicated Touch-Friendly Carousel (< 768px) ── */}
       <div className="block md:hidden w-full">
         <MobileTokohSection
@@ -115,12 +182,14 @@ export default function SectionStoryAwakening({
         />
       </div>
 
-      {/* ── DESKTOP & TABLET VIEW: Prestigious 3D WorksWheel (>= 768px) ── */}
-      <div className="hidden md:flex relative w-full md:aspect-[1504/1128] @container overflow-hidden items-center justify-center">
-        {/* INNER STORY CARD - Full Width */}
+      {/* ── DESKTOP & TABLET VIEW: Full-Width Viewport-Fitting Pinned Stage (>= 768px) ── */}
+      <div className="hidden md:flex relative w-full h-screen min-h-[700px] max-h-[1040px] @container overflow-hidden items-center justify-center">
+        {/* INNER STORY CARD - 100% Full Width Edge-to-Edge */}
+        {/* INNER STORY CARD - 100% Full Width Edge-to-Edge Flow Art Container */}
         <div
           data-gsap="awaken-card"
-          className="relative w-full aspect-[1126/814] overflow-hidden bg-[#dedf42] z-20 @container"
+          className="flow-art-container relative w-full h-full overflow-hidden bg-[#dedf42] z-20 @container flex flex-col justify-between will-change-transform"
+          style={{ transformOrigin: 'bottom left' }}
         >
           {/* Yellow Card Canvas with authentic Bima Wayang Watermark Illustration */}
           <div className="absolute inset-0 bg-[#dedf42] pointer-events-none">
@@ -176,15 +245,15 @@ export default function SectionStoryAwakening({
             <div className="w-[1px] flex-1 bg-black/85" />
           </div>
 
-          {/* CARD CONTENT LAYER */}
-          <div className="relative md:absolute inset-0 flex flex-col items-center justify-between pt-[7.5%] pb-[7.2%] px-[7%] pointer-events-none z-20 gap-5 md:gap-0">
-            {/* Top Section: Category Label + Main Headline */}
+          {/* CARD CONTENT LAYER — Perfectly spaced between notch and bottom fold */}
+          <div className="relative md:absolute inset-0 flex flex-col items-center justify-between pt-24 sm:pt-28 md:pt-28 pb-6 sm:pb-8 md:pb-8 px-6 sm:px-12 pointer-events-none z-20">
+            {/* Top Section: Category Label + Main Headline (Safely below notch) */}
             <div data-gsap="awaken-text" className="w-full flex flex-col items-center text-center pointer-events-auto">
-              {/* Category Label: "A STORY OF INNER AWAKENING" */}
-              <p className="font-sans font-bold text-black text-[clamp(8px,1.15cqi,13.5px)] tracking-[0.24em] sm:tracking-[0.28em] uppercase mb-2 sm:mb-3 md:mb-3.5 select-text">
+
+              {/* Category Label */}
+              <p className="font-sans font-bold text-black text-[clamp(8px,1.15cqi,13.5px)] tracking-[0.24em] sm:tracking-[0.28em] uppercase mb-1.5 select-text">
                 {categoryLabel}
               </p>
-
               {/* Headline: 3 Lines in Playfair Display */}
               <h2 className="font-playfair text-black text-[clamp(17px,3.52cqi,41px)] font-normal leading-[1.20] tracking-[-0.02em] max-w-[530px] select-text">
                 {headline.map((line, idx) => (
@@ -195,23 +264,23 @@ export default function SectionStoryAwakening({
               </h2>
             </div>
 
-            {/* Middle Section: Interactive 3D WorksWheel Component */}
+            {/* Middle Section: Interactive 3D WorksWheel Component (Enlarged) */}
             <div
               data-gsap="awaken-wheel"
-              className="w-full flex-1 min-h-[340px] sm:min-h-[420px] md:min-h-[480px] my-1 sm:my-2 pointer-events-auto flex items-center justify-center overflow-hidden"
+              className="w-full flex-1 min-h-[340px] sm:min-h-[400px] md:min-h-[460px] my-auto pointer-events-auto flex items-center justify-center overflow-hidden"
             >
               <WorksWheel
                 items={wheelItems}
                 label={wheelLabel}
                 action="Jelajahi"
-                className="bg-transparent text-black min-h-[320px] sm:min-h-[400px] md:min-h-[460px] w-full"
+                controlledTurn={controlledTurn}
+                onSelectCharacter={handleSelectCharacter}
+                className="bg-transparent text-black min-h-[340px] sm:min-h-[400px] md:min-h-[460px] w-full"
               />
             </div>
-
-            {/* Bottom Section: "READ MORE →" Pill Button with Origin Ripple Animation */}
-            <div data-gsap="awaken-cta" className="pointer-events-auto mt-2 md:mt-0">
+            {/* Bottom Section: "READ MORE →" Pill Button (100% visible on screen) */}
+            <div data-gsap="awaken-cta" className="pointer-events-auto mt-auto pb-4 sm:pb-6">
               <OriginButton
-                href={readMoreHref}
                 fillClassName="bg-black"
                 activeTextClassName="text-[#dedf42]"
                 className="h-auto px-6 sm:px-8 py-2 sm:py-2.5 rounded-full border-[1.5px] border-black text-black font-sans font-bold text-[clamp(8px,1.05cqi,13px)] tracking-wider uppercase bg-transparent shadow-sm"
@@ -223,5 +292,12 @@ export default function SectionStoryAwakening({
         </div>
       </div>
     </section>
+      {/* Spacer div: Holds Section Kreasi AI until user has viewed all 9 characters */}
+      <div
+        className="hidden md:block w-full pointer-events-none"
+        style={{ height: `${(wheelItems.length - 1) * 380}px` }}
+        aria-hidden="true"
+      />
+    </>
   );
 }

@@ -45,6 +45,15 @@ body {
   animation: marquee 25s linear infinite;
 }
 
+@keyframes meaningProgressFill {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
 @keyframes fadeSlideUp {
   0% {
     opacity: 0;

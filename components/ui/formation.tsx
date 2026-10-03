@@ -7,7 +7,7 @@ import type {
 } from "react";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-
+import { ArrowUpRight } from "lucide-react";
 import type {
   FmLayout,
   FormationMode,
@@ -764,7 +764,7 @@ export const Formation = ({ works, onCardClick }: FormationProps): ReactNode => 
               // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- the card is a composite of DOM children that <img> cannot hold; role="img" deliberately presents it as one labelled picture
               role="img"
               aria-label={card.work.title}
-              className="absolute left-1/2 top-1/2 cursor-pointer transition-[filter] hover:brightness-110"
+              className="group absolute left-1/2 top-1/2 cursor-pointer transition-[filter] hover:brightness-105"
               style={{ opacity: 0, transformStyle: "preserve-3d" }}
               onClick={(e) => {
                 if (!hasMovedRef.current && !isDragging(S)) {
@@ -804,6 +804,16 @@ export const Formation = ({ works, onCardClick }: FormationProps): ReactNode => 
                       filter: "saturate(0.98) contrast(1.03)",
                     }}
                   />
+
+                  {/* ── Hover Overlay: Dark Tint + Gold Border ── */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-[12px] border-2 border-[#dedf42]" />
+
+                  {/* ── Center Hover Affordance: Large Diagonal Arrow Icon (Sesuai Permintaan) ── */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#dedf42] text-black flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-300">
+                      <ArrowUpRight className="w-7 h-7 sm:w-8 sm:h-8 stroke-[3]" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

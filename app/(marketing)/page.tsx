@@ -10,7 +10,6 @@ import SectionGalleryMuseum from '@/components/SectionGalleryMuseum';
 import SectionJoinTheNight from '@/components/SectionJoinTheNight';
 import TextMarquee from '@/components/ui/text-marquee';
 import GsapAnimations from '@/components/GsapAnimations';
-
 export default function LandingPage() {
   return (
     <div className="relative overflow-hidden bg-[#dedf42]">
@@ -49,10 +48,10 @@ export default function LandingPage() {
       <SectionBimaSuci />
 
 
-      {/* 6. Section 4: A Story of Inner Awakening */}
+      {/* 6. Section 4: A Story of Inner Awakening (Tokoh Wayang Pinned Character Journey) */}
       <SectionStoryAwakening id="cara-bermain" />
 
-      {/* 6.5. Section: Kreasi AI - Custom Wayang Generator */}
+      {/* 6.5. Section: Kreasi AI - Custom Wayang Generator (Fan-In Overlay 30° -> 0°) */}
       <SectionWayangGenerator id="kreasi" />
        {/* 7. Section 5: Articles & Editorial News (#berita) */}
       <SectionStoryFinale id="berita" />

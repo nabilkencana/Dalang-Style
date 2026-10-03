@@ -14,7 +14,8 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import { motion, AnimatePresence } from "framer-motion";
+import { OriginButton } from "@/components/ui/origin-button";
 import { cn } from "@/lib/utils";
 export interface WorksWheelItem {
   /** Project name. Shown beside the front card and in the index. */
@@ -40,6 +41,12 @@ export interface WorksWheelProps extends Omit<
   action?: string;
   /** Whether the wheel starts as a flat ring (0) or open drum (1). @default 'drum' */
   initialMode?: "ring" | "drum";
+  /** Controlled turn value from parent ScrollTrigger (1 to items.length) */
+  controlledTurn?: number;
+  /** Callback when active index changes */
+  onActiveChange?: (index: number) => void;
+  /** Callback when an index item is clicked */
+  onSelectCharacter?: (index: number) => void;
 }
 
 /* Geometry. The card is measured against the stage; everything else is measured
@@ -48,12 +55,12 @@ export interface WorksWheelProps extends Omit<
    swinging on a huge drum. The three that matter are tuned together: STEP
    against DRUM sets how hard the neighbours rotate away, and DRUM against LENS
    decides whether they land inside the frame or run off it. */
-const CARD_H = 0.50; // front card height, of the stage
-const CARD_MAX_W = 0.54; // ... but never wider than this much of the stage
+const CARD_H = 0.58; // front card height (enlarged significantly for bold, majestic wayang presentation)
+const CARD_MAX_W = 0.62; // ... proportional width (~640px-680px on desktop)
 const CARD_RATIO = 1.78; // card width / height (matches 1024x572 wayang cards)
-const STEP = 36; // degrees between cards on the drum
-const DRUM = 2.15; // drum radius, in card heights
-const LENS = 2.4; // perspective distance (punchier 3D depth)
+const STEP = 46; // degrees between cards on drum (rotates neighbours away faster into depth)
+const DRUM = 2.45; // drum radius (pushes top/bottom neighbours further back in Z-space)
+const LENS = 2.4; // perspective distance
 const RING_R = 1.18; // ring radius
 /* The drum alone hangs the work on a plumb line. It isn't one: the strip curves
    away round an arc whose centre sits off to the LEFT, so the piece at the front
@@ -67,14 +74,10 @@ const INDEX = 0.04; // the index down the right-hand side
     edge-on, and further round it would stack up on the vanishing point. */
 const CULL = 1.6;
 
-/** How much of a wheel-notch or a dragged pixel counts as one item. */
-const WHEEL_UNITS = 900;
+/** How much of a dragged pixel counts as one item. */
 const DRAG_UNITS = 420;
-/** Quiet time after the last wheel event before the wheel settles on an item. */
-const SETTLE = 140;
-/** Fraction of the remaining distance closed each frame. 1 = no smoothing. */
-const EASE = 0.12;
-
+/** Fraction of the remaining distance closed each frame. Tuned to 0.08 for buttery cinematic glide. */
+const EASE = 0.08;
 const clamp = (v: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -112,6 +115,9 @@ export function WorksWheel({
   label = "TOKOH WAYANG",
   action = "Jelajahi",
   initialMode = "drum",
+  controlledTurn,
+  onActiveChange,
+  onSelectCharacter,
   className,
   ...props
 }: WorksWheelProps) {
@@ -195,13 +201,14 @@ export function WorksWheel({
       const m = 1;
       const pos = t - 1;
 
+      // Organic living blencong light breathing animation
+      const now = performance.now();
+      const flameTime = now * 0.0018;
+
       // The drum is pulled back so its front face lands on the picture plane.
-      // That set-back has to arrive with the drum, or the ring would sit at the
-      // far side of the perspective and render at half its size.
       if (wheelRef.current) {
         wheelRef.current.style.transform = `translateZ(${-m * drumR}px)`;
       }
-
       for (let i = 0; i < count; i++) {
         const d = i - pos;
         const drumDeg = d * STEP;
@@ -227,22 +234,31 @@ export function WorksWheel({
           const contrast = m > 0 ? Math.max(0.88, 1 - absD * 0.06) : 1;
           card.style.filter = `brightness(${brightness}) contrast(${contrast})`;
 
-          // 2. Dynamic 3D Cast Shadow behind each card (angle-dependent elevation)
+          // Dynamic Blencong flame micro-breathing (subtle organic flame flicker)
+          const flickerX = Math.sin(flameTime * 1.5 + i * 1.2) * 3.5;
+          const flickerY = Math.cos(flameTime * 1.2 + i * 1.2) * 2.5;
+          const flickerAlpha = Math.sin(flameTime * 2.0 + i) * 0.03;
+
+          // 2. Translucent Box Shadow tilted deeply to bottom-left (-X, +Y) with zero blur & flame breathing
           const shadowLayer = card.querySelector(".card-shadow-layer") as HTMLElement | null;
           if (shadowLayer) {
-            const shadowY = d < -0.1 ? 32 : d > 0.1 ? -14 : 26;
-            const shadowBlur = Math.round(lerp(24, 60, Math.max(0, 1 - absD * 0.5)));
-            const shadowSpread = Math.round(lerp(-4, -14, Math.max(0, 1 - absD * 0.5)));
-            const shadowAlpha = (Math.max(0.25, 0.82 - absD * 0.28) * m).toFixed(2);
-            shadowLayer.style.boxShadow = `0 ${shadowY}px ${shadowBlur}px ${shadowSpread}px rgba(0, 0, 0, ${shadowAlpha}), 0 10px 24px -6px rgba(0, 0, 0, ${(Number(shadowAlpha) * 0.6).toFixed(2)})`;
+            // Tilted deeply to bottom-left (-32px, +30px) proportional to enlarged card
+            const shadowX = -32 + Math.round(flickerX * 0.7) - Math.round(d * 5);
+            const shadowY = 30 + Math.round(flickerY * 0.7) + Math.round(d * 12);
+            const shadowAlpha = (Math.max(0.12, 0.34 - absD * 0.12 + flickerAlpha) * m).toFixed(2);
+            shadowLayer.style.boxShadow = `${shadowX}px ${shadowY}px 0px 0px rgba(0, 0, 0, ${shadowAlpha})`;
           }
 
-          // 3. Floating 3D Back-Shadow Plane (creates visible depth separation into 3D space)
+          // 3. Floating 3D Back-Shadow Card — Decoupled in 3D space (-28px Z) for genuine parallax
           const backShadow = card.querySelector(".card-back-shadow") as HTMLElement | null;
           if (backShadow) {
-            const backShadowOpacity = Math.max(0, 1 - absD * 0.40) * m;
+            const backShadowOpacity = Math.max(0, 0.38 - absD * 0.15 + flickerAlpha) * m;
             backShadow.style.opacity = String(backShadowOpacity);
-            backShadow.style.transform = `translateZ(-28px) translateY(${d * 18}px) scale(${Math.max(0.72, 1 - absD * 0.14)})`;
+            // Deep in Z-space (-28px) with rotation stretch and perspective skewing
+            const bsX = -32 + flickerX - d * 7;
+            const bsY = 30 + flickerY + d * 14;
+            const bsSkew = d * -2.5;
+            backShadow.style.transform = `translateZ(-28px) translateX(${bsX}px) translateY(${bsY}px) skewX(${bsSkew}deg)`;
           }
         }
         const face = card?.firstElementChild as HTMLElement | null;
@@ -265,29 +281,23 @@ export function WorksWheel({
     },
     [last],
   );
-
-  // Native listener, because the wheel has to be cancellable - and it only
-  // cancels while it still has somewhere to go, so the page scrolls on at
-  // either end instead of trapping the reader.
+  // When controlled externally by ScrollTrigger, update target smoothly & auto-snap when stopped
   React.useEffect(() => {
-    const el = stageRef.current;
-    if (!el) return;
-    const onWheel = (event: WheelEvent) => {
-      const next = target.current + event.deltaY / WHEEL_UNITS;
-      if (next > 1 && next < last + 1) event.preventDefault();
-      to(next);
+    if (controlledTurn !== undefined && Number.isFinite(controlledTurn)) {
+      to(controlledTurn);
+
+      // Auto-snap to nearest whole integer character when user stops scrolling
       window.clearTimeout(settling.current);
-      settling.current = window.setTimeout(
-        () => to(Math.round(target.current)),
-        SETTLE,
-      );
-    };
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => {
-      el.removeEventListener("wheel", onWheel);
-      window.clearTimeout(settling.current);
-    };
-  }, [to, last]);
+      settling.current = window.setTimeout(() => {
+        to(Math.round(target.current));
+      }, 180);
+    }
+  }, [controlledTurn, to]);
+  React.useEffect(() => {
+    onActiveChange?.(active);
+  }, [active, onActiveChange]);
+
+
 
   const drag = React.useRef<number | null>(null);
   const settling = React.useRef(0);
@@ -295,7 +305,6 @@ export function WorksWheel({
   return (
     <section
       aria-label={label}
-      data-lenis-prevent
       className={cn(
         "bg-background text-foreground relative h-full min-h-[26rem] w-full overflow-hidden select-none",
         className,
@@ -309,7 +318,6 @@ export function WorksWheel({
         aria-label={label}
         aria-activedescendant={`works-wheel-${active}`}
         className="focus-visible:outline-foreground absolute inset-0 cursor-grab touch-pan-x outline-none focus-visible:outline-2 focus-visible:-outline-offset-4 active:cursor-grabbing"
-        data-lenis-prevent
         style={{ perspective: `${metrics.depth}px` }}
         onPointerDown={(event) => {
           drag.current = event.clientY;
@@ -385,13 +393,12 @@ export function WorksWheel({
                     marginTop: -metrics.cardH / 2,
                   }}
                 >
-                  {/* Floating 3D Back-Shadow Plane — casts genuine shadow behind the card into 3D space */}
+                  {/* Dynamic Floating 3D Back-Shadow Card — exact unblurred box decoupled in 3D space */}
                   <div
                     aria-hidden="true"
-                    className="card-back-shadow pointer-events-none absolute -inset-3 rounded-2xl bg-black/80 blur-xl -z-10 transition-opacity duration-75"
-                    style={{ transform: "translateZ(-28px)" }}
+                    className="card-back-shadow pointer-events-none absolute inset-0 size-full rounded-xl bg-black/30 border border-black/30 -z-10 will-change-transform"
+                    style={{ transform: "translateZ(-28px) translateX(-32px) translateY(30px)" }}
                   />
-
                   {/* Main Card Face with Dynamic 3D Box Shadow */}
                   <span className="card-shadow-layer relative block size-full overflow-hidden rounded-xl border-[2px] border-black/90 bg-[#120d08] transition-shadow duration-75">
                     <img
@@ -414,37 +421,54 @@ export function WorksWheel({
       </div>
 
       {/* Ring title and front-card title trade places across the transition */}
-      {/* Enhanced Active Character Description Panel on Left */}
+      {/* Enhanced Active Character Description Panel on Left — Smooth AnimatePresence Crossfade */}
       <div
         ref={titleRef}
-        className="pointer-events-none absolute top-1/2 left-[1%] sm:left-[2%] md:left-[2.5%] -translate-y-1/2 tracking-tight opacity-100 max-w-[185px] sm:max-w-[210px] md:max-w-[230px] z-30"
+        className="pointer-events-none absolute top-1/2 left-[1%] sm:left-[2%] md:left-[2%] -translate-y-1/2 tracking-tight opacity-100 max-w-[260px] sm:max-w-[300px] md:max-w-[340px] lg:max-w-[360px] z-30"
       >
-        <div className="pointer-events-auto bg-[#dedf42]/95 backdrop-blur-md p-3 sm:p-4 rounded-xl border border-black/25 shadow-lg select-text">
-          {items[active]?.role && (
-            <span className="text-[9px] sm:text-[10px] font-sans font-bold tracking-[0.22em] text-black/70 uppercase block mb-1">
-              {items[active]?.role}
-            </span>
-          )}
-          <h3 className="font-playfair text-lg sm:text-2xl md:text-3xl font-bold text-black uppercase leading-tight">
-            {items[active]?.title}
-          </h3>
-          {items[active]?.description && (
-            <p className="text-[10px] sm:text-[11.5px] font-sans font-medium text-black/80 leading-relaxed mt-2 select-text">
-              {items[active]?.description}
-            </p>
-          )}
-          {items[active]?.href && (
-            <Link
-              href={items[active].href!}
-              className="inline-flex items-center gap-1.5 mt-3 px-3.5 py-1.5 rounded-full border border-black/80 bg-black text-[#dedf42] text-[10px] sm:text-xs font-sans font-bold tracking-wider uppercase hover:bg-black/85 active:scale-95 transition-all shadow-sm group"
+        <div className="pointer-events-auto bg-[#dedf42]/95 backdrop-blur-md p-4 sm:p-5 md:p-6 rounded-2xl border-2 border-black/35 shadow-2xl select-text min-h-[220px] flex flex-col justify-between overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={items[active]?.title || active}
+              initial={{ opacity: 0, y: 12, filter: "blur(3px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -10, filter: "blur(3px)" }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              className="flex-1 flex flex-col justify-between"
             >
-              <span>Detail Tokoh</span>
-              <span className="group-hover:translate-x-1 transition-transform">→</span>
-            </Link>
-          )}
+              <div>
+                {items[active]?.role && (
+                  <span className="text-[10px] sm:text-xs font-mono font-bold tracking-[0.24em] text-black/75 uppercase block mb-1.5">
+                    {items[active]?.role}
+                  </span>
+                )}
+                <h3 className="font-playfair text-xl sm:text-3xl md:text-4xl font-bold text-black uppercase leading-tight">
+                  {items[active]?.title}
+                </h3>
+                {items[active]?.description && (
+                  <p className="text-xs sm:text-sm font-sans font-medium text-black/85 leading-relaxed mt-2.5 select-text">
+                    {items[active]?.description}
+                  </p>
+                )}
+              </div>
+
+              {items[active]?.href && (
+                <div className="mt-4">
+                  <OriginButton
+                    href={items[active].href!}
+                    fillClassName="bg-[#dedf42]"
+                    activeTextClassName="text-black"
+                    className="h-auto px-5 sm:px-6 py-2 sm:py-2.5 rounded-full border-2 border-black/80 bg-black text-[#dedf42] font-sans font-bold text-xs sm:text-sm tracking-wider uppercase shadow-md inline-flex items-center gap-2 group cursor-pointer"
+                  >
+                    <span>Detail Tokoh</span>
+                    <span className="transition-transform group-hover:translate-x-1 text-sm sm:text-base">→</span>
+                  </OriginButton>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
-      {/* Right Index List */}
       <ol
         className="text-current opacity-75 absolute top-[7.5%] right-[2.5%] text-right leading-[1.75] z-30 pointer-events-auto"
         style={{ fontSize: metrics.index }}
@@ -453,9 +477,11 @@ export function WorksWheel({
           <li key={item.title}>
             <button
               type="button"
-              onClick={() => to(i + 1)}
+              onClick={() => {
+                to(i + 1);
+                onSelectCharacter?.(i);
+              }}
               className={cn(
-                "focus-visible:outline-current cursor-pointer transition-all outline-none focus-visible:outline-1 hover:opacity-100",
                 i === active && "font-bold opacity-100 underline underline-offset-2",
               )}
             >
