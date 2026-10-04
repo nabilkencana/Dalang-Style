@@ -3,11 +3,11 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { Renderer, STAGE_W, STAGE_H, RenderFrame } from '@/lib/wayang/render';
-import { Puppet, CHARACTERS, ViewRect } from '@/lib/wayang/rig';
+import { Puppet, CHARACTERS, ViewRect, Arm, CharacterConfig } from '@/lib/wayang/rig';
 import { HandTracker } from '@/lib/wayang/tracking';
 import { Controller, ControllerSettings } from '@/lib/wayang/controller';
 import { BackgroundMusic, BeatClock } from '@/lib/wayang/audio';
-import { clamp, noise1 } from '@/lib/wayang/math';
+import { clamp, noise1, Affine, AffineMatrix } from '@/lib/wayang/math';
 
 const HAND_EDGES: [number, number][] = [
   [0, 1],
@@ -30,6 +30,7 @@ const HAND_EDGES: [number, number][] = [
   [17, 18],
   [18, 19],
   [19, 20],
+  [33, 0],
   [0, 17],
 ];
 
@@ -56,26 +57,29 @@ declare global {
 const CHARACTER_LIST = [
   {
     id: 'arjuna',
-    name: 'Arjuna',
+    name: 'Raden Arjuna',
     javanese: 'ꦗꦤꦏ',
     role: 'Satria Madukara · Pandawa',
-    desc: 'Karakter satria halus, berwibawa, lincah dan berjiwa ksatria pembela kebenaran.',
+    desc: 'Karakter satria halus, berwibawa, lincah, berbusana prada emas, dan berjiwa ksatria pembela kebenaran.',
+    weapon: 'Busur Gandiwa & Keris Pulanggeni',
     thumb: '/assets/thumb-arjuna.png',
   },
   {
     id: 'gatotkaca',
-    name: 'Gatotkaca',
+    name: 'Raden Gatotkaca',
     javanese: 'ꦒꦠꦺꦴꦠ꧀ꦏꦕ',
     role: 'Satria Pringgadani · Otot Kawat Balung Wesi',
     desc: 'Kesatria perkasa gagah berani berkutang Antakusuma, mampu terbang melesat di angkasa dan sakti mandraguna.',
+    weapon: 'Kutang Antakusuma & Aji Brajamusti',
     thumb: '/assets/thumb-gatotkaca.png',
   },
   {
     id: 'semar',
-    name: 'Semar',
+    name: 'Kyai Semar',
     javanese: 'ꦱꦼꦩꦂ',
     role: 'Lurah Karangdempel · Punakawan',
-    desc: 'Sesepuh bijaksana berkharisma luhur, berbadan bulat karismatik, pamong para ksatria.',
+    desc: 'Sesepuh bijaksana berkharisma luhur, berbadan bulat karismatik, pamong para ksatria yang arif dan mengayomi.',
+    weapon: 'Kentut Sakti & Petuah Luhur',
     thumb: '/assets/thumb-semar.png',
   },
   {
@@ -83,15 +87,17 @@ const CHARACTER_LIST = [
     name: 'Petruk (Kantong Bolong)',
     javanese: 'ꦥꦺꦠꦿꦸꦏ꧀',
     role: 'Punakawan Cerdas & Jenaka',
-    desc: 'Berhidung mancung panjang, postur semampai, tangkas, jenaka, dan penuh kelakar ceria.',
+    desc: 'Berhidung mancung panjang, postur semampai tinggi, tangkas, cerdas berdiplomasi, dan penuh kelakar ceria.',
+    weapon: 'Tombak Petruk & Kelakar Filosofis',
     thumb: '/assets/thumb-petruk.png',
   },
   {
     id: 'bagong',
-    name: 'Bagong (Bawor)',
+    name: 'Kyai Bagong (Bawor)',
     javanese: 'ꦧꦒꦺꦴꦁ',
     role: 'Punakawan Kritis & Jujur',
-    desc: 'Bertubuh bulat pendek dengan mata melotot, ceplas-ceplos, lugu, jenaka, dan berani bersuara jujur.',
+    desc: 'Bertubuh bulat pendek dengan mata melotot, ceplas-ceplos, lugu, jenaka, berani bersuara jujur menyuarakan rakyat.',
+    weapon: 'Sindiran Lugas & Candatawa',
     thumb: '/assets/thumb-bagong.png',
   },
 ] as const;
@@ -103,6 +109,192 @@ function getCharShortName(nameOrId?: string): string {
 }
 
 type StageCharId = (typeof CHARACTER_LIST)[number]['id'];
+
+const vecAdd = (a: [number, number], b: [number, number]): [number, number] => [a[0] + b[0], a[1] + b[1]];
+
+/**
+ * WayangPuppetThumbnail:
+ * Menggambar wayang kulit lengkap dengan kedua lengan, siku, pergelangan, jari tangan,
+ * gapit bambu/sungu, dan tuding tangan sesuai inverse kinematics wayang tradisional.
+ */
+const WayangPuppetThumbnail = React.memo(function WayangPuppetThumbnail({
+  charId,
+  className = '',
+  width = 150,
+  height = 200,
+}: {
+  charId: StageCharId;
+  className?: string;
+  width?: number;
+  height?: number;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let isMounted = true;
+    const charDef: CharacterConfig = CHARACTERS[charId] || CHARACTERS.arjuna;
+
+    const partKeys = ['body', 'upperL', 'foreL', 'handL', 'upperR', 'foreR', 'handR'];
+    const loadedImgs: Record<string, HTMLImageElement> = {};
+    let loadCount = 0;
+
+    const renderWayang = () => {
+      if (!canvas || !ctx || !isMounted) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const W = width;
+      const H = height;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+
+      ctx.save();
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, W, H);
+
+      const bodyConfig = charDef.body;
+      const bodyPart = charDef.parts.body;
+      if (!bodyPart) {
+        ctx.restore();
+        return;
+      }
+
+      // Hitung skala pas agar kepala sampai ujung gapit muat estetis
+      const scale = Math.min(W / (bodyPart.size[0] * 1.42), H / (bodyPart.size[1] * 1.06)) * 0.95;
+      const cx = W * 0.48;
+      const cy = H * 0.54;
+
+      const B: AffineMatrix = Affine.chain(
+        Affine.translate(cx, cy),
+        Affine.scale(scale, scale),
+        Affine.translate(-bodyConfig.anchor[0], -bodyConfig.anchor[1])
+      );
+
+      const armL = new Arm('L', charDef);
+      const armR = new Arm('R', charDef);
+
+      const restL = charDef.rest.L;
+      const targetL = Affine.apply(B, ...vecAdd(armL.shoulder, restL));
+      const invB = Affine.invert(B);
+      if (invB) {
+        const solL = armL.solve(Affine.apply(invB, targetL[0], targetL[1]));
+        armL.rotU.snap(solL.rotU);
+        armL.rotF.snap(solL.rotF);
+        armL.rotH.snap(solL.rotF);
+
+        const restR = charDef.rest.R;
+        const targetR = Affine.apply(B, ...vecAdd(armR.shoulder, restR));
+        const solR = armR.solve(Affine.apply(invB, targetR[0], targetR[1]));
+        armR.rotU.snap(solR.rotU);
+        armR.rotF.snap(solR.rotF);
+        armR.rotH.snap(solR.rotF);
+      }
+
+      const poseL = armL.pose(B);
+      const poseR = armR.pose(B);
+
+      const drawPart = (img: HTMLImageElement | undefined, m: AffineMatrix) => {
+        if (!img || !img.complete || img.naturalWidth === 0) return;
+        ctx.save();
+        ctx.transform(m[0], m[1], m[2], m[3], m[4], m[5]);
+        ctx.drawImage(img, 0, 0);
+        ctx.restore();
+      };
+
+      const drawStick = (topP: [number, number], botP: [number, number], widthPx: number, color: string) => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(topP[0], topP[1]);
+        ctx.lineTo(botP[0], botP[1]);
+        ctx.lineWidth = Math.max(1.2, widthPx);
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = color;
+        ctx.stroke();
+        ctx.restore();
+      };
+
+      // Efek bayangan kelir lembut di belakang wayang
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.55)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetX = 3;
+      ctx.shadowOffsetY = 5;
+
+      // 1. Lengan Belakang (Tangan Kanan R)
+      drawPart(loadedImgs.upperR, poseR.upperM);
+      drawPart(loadedImgs.foreR, poseR.foreM);
+      drawPart(loadedImgs.handR, poseR.handM);
+
+      // Tuding Tangan Belakang
+      const gripR = poseR.grip;
+      drawStick(gripR, [gripR[0] - 12 * scale, H + 12], 2.2 * scale, '#4a2a12');
+
+      // 2. Badan Utama Wayang (Torso & Kepala)
+      drawPart(loadedImgs.body, B);
+
+      // Gapit Utama (Tongkat Badan Sungu Kerbau)
+      const stickTop = Affine.apply(B, ...bodyConfig.stickTop);
+      const stickFoot = Affine.apply(B, ...bodyConfig.stickFoot);
+      drawStick(stickTop, [stickFoot[0], H + 25], 4.2 * scale, '#d59a35');
+      drawStick(stickTop, [stickFoot[0], H + 25], 2.0 * scale, '#fae19c');
+
+      // Tali pengikat gapit (Ties)
+      bodyConfig.ties.forEach((tieY) => {
+        const tiePos = Affine.apply(B, bodyConfig.stickTop[0], tieY);
+        ctx.fillStyle = '#fce5b2';
+        ctx.beginPath();
+        ctx.arc(tiePos[0], tiePos[1], 2.5 * scale, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // 3. Lengan Depan (Tangan Kiri L)
+      drawPart(loadedImgs.upperL, poseL.upperM);
+      drawPart(loadedImgs.foreL, poseL.foreM);
+      drawPart(loadedImgs.handL, poseL.handM);
+
+      // Tuding Tangan Depan
+      const gripL = poseL.grip;
+      drawStick(gripL, [gripL[0] + 16 * scale, H + 12], 2.2 * scale, '#361c0a');
+
+      ctx.restore();
+    };
+
+    const onImageLoaded = () => {
+      loadCount++;
+      if (loadCount === partKeys.length) {
+        renderWayang();
+      }
+    };
+
+    partKeys.forEach((key) => {
+      const partConfig = (charDef.parts as any)[key];
+      if (!partConfig) {
+        loadCount++;
+        return;
+      }
+      const img = new Image();
+      img.src = partConfig.src.startsWith('/') ? partConfig.src : `/${partConfig.src}`;
+      img.onload = onImageLoaded;
+      img.onerror = onImageLoaded;
+      loadedImgs[key] = img;
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [charId, width, height]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className={`wayang-thumb-canvas ${className}`}
+      style={{ width, height, display: 'block' }}
+      aria-label={`Pratinjau lengkap wayang ${charId} beserta kedua tangannya`}
+    />
+  );
+});
 
 export default function WayangStage() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -119,6 +311,7 @@ export default function WayangStage() {
   const [hudStatus, setHudStatus] = useState({ text: 'Demo', cls: '' });
   const [showSettings, setShowSettings] = useState(false);
   const [showCharModal, setShowCharModal] = useState(false);
+  const [activeSlotTab, setActiveSlotTab] = useState<'left' | 'right'>('left');
   const [uiHidden, setUiHidden] = useState(false);
   const [toastText, setToastText] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
@@ -154,6 +347,7 @@ export default function WayangStage() {
     cameraWin: Window | null;
     showPreview: boolean;
     toastTimer: NodeJS.Timeout | number | null;
+    basePuppetSize: number;
   }>({
     renderer: null,
     puppets: [],
@@ -166,6 +360,7 @@ export default function WayangStage() {
     cameraWin: null,
     showPreview: true,
     toastTimer: null,
+    basePuppetSize: 0.53,
   });
 
   const showToast = useCallback((text: string) => {
@@ -233,7 +428,7 @@ export default function WayangStage() {
         `popup,width=${w},height=${Math.round(w / aspect)}`
       );
       if (!newWin) {
-        showToast('Pop-up blocked. Allow pop-ups for this site to open the camera window.');
+        showToast('Pop-up blocked. Izinkan pop-up di browser untuk membuka jendela kamera.');
       } else {
         wayangRef.current.cameraWin = newWin;
         setIsPoppedOut(true);
@@ -254,20 +449,26 @@ export default function WayangStage() {
     setSettings((prev) => ({ ...prev, characters: val }));
     const controller = wayangRef.current.controller;
     const puppets = wayangRef.current.puppets;
+    const view = wayangRef.current.view;
     if (controller) {
       controller.settings.characters = val;
     }
     if (puppets.length) {
+      const aspect = view.w / Math.max(1, view.h);
+      const puppetY = view.y + view.h * 0.62;
       if (val === 'one') {
-        puppets[0].home = [STAGE_W / 2, 650];
-        puppets[0].pos.snap(STAGE_W / 2, 650);
+        const centerX = view.x + view.w * 0.5;
+        puppets[0].home = [centerX, puppetY];
+        puppets[0].pos.snap(centerX, puppetY);
         showToast('Mode 1 Wayang (Solo). Angkat 2 tangan untuk mengendalikan kedua lengan!');
       } else {
-        puppets[0].home = [640, 650];
-        puppets[0].pos.snap(640, 650);
+        const leftX = view.x + view.w * (aspect < 0.8 ? 0.28 : 0.33);
+        const rightX = view.x + view.w * (aspect < 0.8 ? 0.72 : 0.67);
+        puppets[0].home = [leftX, puppetY];
+        puppets[0].pos.snap(leftX, puppetY);
         if (puppets[1]) {
-          puppets[1].home = [1280, 650];
-          puppets[1].pos.snap(1280, 650);
+          puppets[1].home = [rightX, puppetY];
+          puppets[1].pos.snap(rightX, puppetY);
         }
         showToast('Mode 2 Wayang (Pertunjukan Duo) Aktif');
       }
@@ -311,8 +512,8 @@ export default function WayangStage() {
     }
 
     const puppets = [
-      new Puppet({ x: 640, facing: -1, character: leftPuppetChar }),
-      new Puppet({ x: 1280, facing: 1, character: rightPuppetChar }),
+      new Puppet({ x: 640, y: 650, facing: -1, character: leftPuppetChar }),
+      new Puppet({ x: 1280, y: 650, facing: 1, character: rightPuppetChar }),
     ];
     const tracker = new HandTracker(video);
     const controller = new Controller(tracker);
@@ -325,6 +526,7 @@ export default function WayangStage() {
     wayangRef.current.controller = controller;
     wayangRef.current.music = music;
     wayangRef.current.beatClock = beatClock;
+    wayangRef.current.basePuppetSize = puppetSize;
 
     applyFacing('target');
 
@@ -346,23 +548,64 @@ export default function WayangStage() {
 
     const pctx = preview.getContext('2d');
 
+    // Responsive Stage Resize Handler (Mendukung Mobile, Tablet, dan Desktop)
     const handleResize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       renderer.resize(Math.round(w * dpr), Math.round(h * dpr));
+
+      const aspect = w / Math.max(1, h);
       const s = Math.max(w / STAGE_W, h / STAGE_H);
+      const viewW = w / s;
+      const viewH = h / s;
+      const viewX = (STAGE_W - viewW) / 2;
+      const viewY = (STAGE_H - viewH) / 2;
+
       wayangRef.current.view = {
-        w: w / s,
-        h: h / s,
-        x: (STAGE_W - w / s) / 2,
-        y: (STAGE_H - h / s) / 2,
+        w: viewW,
+        h: viewH,
+        x: viewX,
+        y: viewY,
       };
+
+      // Skala responsif wayang agar di layar sempit / HP / Tablet kedua wayang muat rapih dan tidak terpotong
+      const isNarrow = aspect < 1.45;
+      const curBase = wayangRef.current.basePuppetSize || 0.53;
+      const responsiveScale = isNarrow
+        ? curBase * Math.max(0.60, Math.min(1.0, 0.42 + 0.40 * aspect))
+        : curBase;
+
+      const currentPuppets = wayangRef.current.puppets;
+      if (currentPuppets.length > 0) {
+        for (const p of currentPuppets) {
+          p.baseScale = responsiveScale;
+        }
+
+        const isTwo = wayangRef.current.controller?.settings.characters !== 'one';
+        const puppetY = viewY + viewH * 0.62;
+
+        if (isTwo) {
+          const leftSpacing = aspect < 0.8 ? 0.28 : 0.33;
+          const rightSpacing = aspect < 0.8 ? 0.72 : 0.67;
+          const leftX = viewX + viewW * leftSpacing;
+          const rightX = viewX + viewW * rightSpacing;
+
+          currentPuppets[0].home = [leftX, puppetY];
+          if (currentPuppets[1]) {
+            currentPuppets[1].home = [rightX, puppetY];
+          }
+        } else {
+          const centerX = viewX + viewW * 0.5;
+          currentPuppets[0].home = [centerX, puppetY];
+        }
+      }
     };
 
     window.addEventListener('resize', handleResize);
     handleResize();
 
+    // Camera drawer with aspect ratio preservation (anti-gepeng)
     const drawCamera = (ctx: CanvasRenderingContext2D, W: number, H: number) => {
       const s = Math.max(1, W / 480);
       ctx.save();
@@ -370,7 +613,7 @@ export default function WayangStage() {
       ctx.scale(-1, 1);
       ctx.drawImage(video, 0, 0, W, H);
       ctx.restore();
-      ctx.fillStyle = 'rgba(20,10,4,0.35)';
+      ctx.fillStyle = 'rgba(20,10,4,0.32)';
       ctx.fillRect(0, 0, W, H);
 
       const isAvatar = controller.puppetCount === 1 && controller.settings.soloStyle !== 'classic';
@@ -395,8 +638,10 @@ export default function WayangStage() {
         ctx.lineWidth = 1.5 * s;
         ctx.beginPath();
         for (const [a, b] of HAND_EDGES) {
-          ctx.moveTo(P[a][0], P[a][1]);
-          ctx.lineTo(P[b][0], P[b][1]);
+          if (P[a] && P[b]) {
+            ctx.moveTo(P[a][0], P[a][1]);
+            ctx.lineTo(P[b][0], P[b][1]);
+          }
         }
         ctx.stroke();
 
@@ -404,12 +649,14 @@ export default function WayangStage() {
         const pair = pairKey === 'thumb-pinky' ? [4, 20] : pairKey === 'index-pinky' ? [8, 20] : [4, 8];
         ctx.fillStyle = '#ff6b4a';
         for (const t of pair) {
-          ctx.beginPath();
-          ctx.arc(P[t][0], P[t][1], 4 * s, 0, Math.PI * 2);
-          ctx.fill();
+          if (P[t]) {
+            ctx.beginPath();
+            ctx.arc(P[t][0], P[t][1], 4 * s, 0, Math.PI * 2);
+            ctx.fill();
+          }
         }
 
-        if (slot.pinky) {
+        if (slot.pinky && P[20]) {
           ctx.strokeStyle = '#ffe28a';
           ctx.lineWidth = 2.5 * s;
           ctx.beginPath();
@@ -419,7 +666,7 @@ export default function WayangStage() {
 
         if (isBody && !isAvatar) {
           const c = [0, 5, 9, 13, 17].reduce(
-            (acc, j) => [acc[0] + P[j][0] / 5, acc[1] + P[j][1] / 5],
+            (acc, j) => [acc[0] + (P[j]?.[0] || 0) / 5, acc[1] + (P[j]?.[1] || 0) / 5],
             [0, 0]
           );
           ctx.strokeStyle = 'rgba(242,199,107,0.9)';
@@ -479,19 +726,19 @@ export default function WayangStage() {
     };
 
     // User interaction starts background sound
-    const handleFirstGesture = (e: MouseEvent | KeyboardEvent) => {
-      if ((e.target as HTMLElement)?.closest?.('.sound-btn') || ('key' in e && e.key?.toLowerCase() === 'm')) return;
+    const handleFirstGesture = (e: MouseEvent | KeyboardEvent | TouchEvent) => {
+      if ((e.target as HTMLElement)?.closest?.('.sound-btn') || ('key' in e && (e as KeyboardEvent).key?.toLowerCase() === 'm')) return;
       music.start().then(() => {
         if (music.started) {
-          window.removeEventListener('pointerdown', handleFirstGesture, true);
-          window.removeEventListener('keydown', handleFirstGesture, true);
+          window.removeEventListener('pointerdown', handleFirstGesture as any, true);
+          window.removeEventListener('keydown', handleFirstGesture as any, true);
         }
       });
     };
-    window.addEventListener('pointerdown', handleFirstGesture, true);
-    window.addEventListener('keydown', handleFirstGesture, true);
+    window.addEventListener('pointerdown', handleFirstGesture as any, true);
+    window.addEventListener('keydown', handleFirstGesture as any, true);
 
-    // Pointer events for mouse control
+    // Pointer events for mouse & touch control
     const onPointerMove = (e: PointerEvent) => {
       const v = wayangRef.current.view;
       controller.mouse.x = v.x + (e.clientX / window.innerWidth) * v.w;
@@ -504,6 +751,7 @@ export default function WayangStage() {
     };
 
     canvas.addEventListener('pointermove', onPointerMove);
+    canvas.addEventListener('pointerdown', onPointerMove);
     canvas.addEventListener('wheel', onWheel, { passive: false });
 
     // Keyboard controls
@@ -622,13 +870,24 @@ export default function WayangStage() {
 
       renderer.render(frame);
 
-      // Draw camera preview
+      // Draw camera preview (Preserve Aspect Ratio - Fix Kamera Gepeng)
       const popped = !!wayangRef.current.cameraWin && !wayangRef.current.cameraWin.closed;
       if (!popped && wayangRef.current.showPreview && cameraReady() && pctx) {
+        const vidW = video.videoWidth;
+        const vidH = video.videoHeight;
+        if (vidW > 0 && vidH > 0) {
+          const streamAspect = vidW / vidH;
+          const targetW = 320;
+          const targetH = Math.max(120, Math.round(targetW / streamAspect));
+          if (preview.width !== targetW || preview.height !== targetH) {
+            preview.width = targetW;
+            preview.height = targetH;
+          }
+        }
         drawCamera(pctx, preview.width, preview.height);
       }
 
-      // Update HUD
+      // Update HUD status
       const { source, status } = controller;
       let text = '';
       let cls = '';
@@ -653,6 +912,7 @@ export default function WayangStage() {
           cls = 'live';
         }
       } else if (source === 'mouse') {
+        text = 'Mouse / Sentuh Layar · gulir scroll untuk kedalaman';
       } else {
         text = 'Demo';
       }
@@ -672,9 +932,10 @@ export default function WayangStage() {
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('keydown', onKeyDown);
-      window.removeEventListener('pointerdown', handleFirstGesture, true);
-      window.removeEventListener('keydown', handleFirstGesture, true);
+      window.removeEventListener('pointerdown', handleFirstGesture as any, true);
+      window.removeEventListener('keydown', handleFirstGesture as any, true);
       canvas.removeEventListener('pointermove', onPointerMove);
+      canvas.removeEventListener('pointerdown', onPointerMove);
       canvas.removeEventListener('wheel', onWheel);
 
       tracker.stop();
@@ -698,7 +959,7 @@ export default function WayangStage() {
     if (mode === 'mouse') {
       controller.source = 'mouse';
       setControlMode('mouse');
-      showToast('Mode kontrol: Mouse');
+      showToast('Mode kontrol: Mouse / Sentuhan');
       return;
     }
 
@@ -707,7 +968,7 @@ export default function WayangStage() {
       controller.source = 'camera';
       controller.recalibrate();
       setControlMode('camera');
-      if (preview) {
+      if (preview && tracker.aspect) {
         preview.height = Math.round(preview.width / tracker.aspect);
       }
       showToast('Mode kontrol: Kamera aktif');
@@ -723,7 +984,7 @@ export default function WayangStage() {
         controller.source = 'camera';
         controller.recalibrate();
         setControlMode('camera');
-        if (preview) {
+        if (preview && tracker.aspect) {
           preview.height = Math.round(preview.width / tracker.aspect);
         }
         showToast('Kamera aktif. Arahkan tangan Anda ke kamera.');
@@ -754,15 +1015,15 @@ export default function WayangStage() {
       setControlMode('camera');
       setIntroStatus({ text: '', isError: false });
       setIntroGone(true);
-      if (preview) {
+      if (preview && tracker.aspect) {
         preview.height = Math.round(preview.width / tracker.aspect);
       }
     } catch (err: unknown) {
       console.error(err);
       const isAllowedError = (err as { name?: string })?.name === 'NotAllowedError';
       const msg = isAllowedError
-        ? 'Izin kamera diblokir. Izinkan di bilah alamat browser, atau mainkan dengan mouse.'
-        : `Kamera tidak tersedia (${(err as Error)?.message || err}). Anda tetap dapat bermain dengan mouse.`;
+        ? 'Izin kamera diblokir. Izinkan di bilah alamat browser, atau mainkan dengan mouse / sentuhan.'
+        : `Kamera tidak tersedia (${(err as Error)?.message || err}). Anda tetap dapat bermain dengan mouse / sentuhan.`;
       setIntroStatus({ text: msg, isError: true });
       setCameraDisabled(false);
     }
@@ -798,6 +1059,7 @@ export default function WayangStage() {
 
   const handleSizeChange = (val: number) => {
     setPuppetSize(val);
+    wayangRef.current.basePuppetSize = val;
     for (const p of wayangRef.current.puppets) {
       p.baseScale = val;
     }
@@ -818,6 +1080,9 @@ export default function WayangStage() {
   const previewBoxHidden =
     !showPreview || controlMode !== 'camera' || isPoppedOut;
 
+  const activeCharId = activeSlotTab === 'left' ? leftPuppetChar : rightPuppetChar;
+  const activeCharData = CHARACTER_LIST.find((c) => c.id === activeCharId) || CHARACTER_LIST[0];
+
   return (
     <div className={uiHidden ? 'ui-hidden' : ''}>
       <canvas id="stage" ref={canvasRef} aria-label="Panggung wayang kulit" />
@@ -825,7 +1090,7 @@ export default function WayangStage() {
 
       {/* Intro Overlay */}
       <section id="intro" className={`panel intro ${introGone ? 'gone' : ''}`}>
-        <p className="eyebrow">Wayang Kulit</p>
+        <p className="eyebrow">Wayang Kulit Digital</p>
         <h1 className="wayang-title">
           {settings.characters === 'two' ? (
             <>
@@ -844,51 +1109,53 @@ export default function WayangStage() {
         <p className="lede">
           {settings.characters === 'two'
             ? 'Mainkan dua wayang kulit di atas kain kelir berlampu blencong. Kamera melacak kedua tangan Anda seperti dalang memegang gapit dan cempurit.'
-            : 'Mainkan satu wayang solo secara leluasa dengan gestur dua tangan: satu tangan menggerakkan kedua lengan/tuding wayang, dan tangan lainnya mengendalikan posisi tubuh (gapit) serta kedalaman wayang.'}
+            : 'Mainkan satu wayang solo secara leluasa dengan gestur dua tangan: satu tangan menggerakkan kedua lengan wayang, dan tangan lainnya mengendalikan posisi tubuh (gapit) serta kedalaman wayang.'}
         </p>
+
         <ul className="howto">
           {settings.characters === 'two' ? (
             <>
               <li>
                 <span className="k">Tangan Kiri &amp; Kanan</span>
-                <span>Setiap tangan mengendalikan satu tokoh: tangan kiri memainkan wayang kiri, tangan kanan memainkan wayang kanan.</span>
+                <span>Setiap tangan memainkan satu tokoh: tangan kiri menggerakkan wayang kiri, tangan kanan menggerakkan wayang kanan.</span>
               </li>
               <li>
                 <span className="k">Telapak Tangan</span>
-                <span>Tongkat badan (gapit). Tubuh wayang mengikuti gerakan telapak tangan Anda.</span>
+                <span>Tongkat badan (gapit). Posisi wayang mengikuti telapak tangan Anda.</span>
               </li>
               <li>
-                <span className="k">Ibu Jari &amp; Telunjuk / Kelingking</span>
-                <span>Dua tangkai tangan wayang (cempurit/tuding). Rentangkan, angkat, atau satukan jari Anda.</span>
+                <span className="k">Jari Tangan</span>
+                <span>Tangkai tangan wayang (cempurit). Rentangkan atau gerakkan jemari untuk mengayunkan kedua lengan wayang.</span>
               </li>
             </>
           ) : (
             <>
               <li>
-                <span className="k">Tangan Pengatur Tuding (Tangan 1)</span>
-                <span>Mengatur kedua tangkai tangan &amp; lengan wayang (ibu jari &amp; telunjuk/kelingking) dengan bebas di layar panggung.</span>
+                <span className="k">Tangan Tuding</span>
+                <span>Mengatur kedua tangkai tangan &amp; lengan wayang (ibu jari &amp; telunjuk/kelingking) dengan bebas di panggung.</span>
               </li>
               <li>
-                <span className="k">Tangan Pemegang Gapit (Tangan 2)</span>
+                <span className="k">Tangan Gapit</span>
                 <span>Menggerakkan posisi tubuh wayang (X/Y) dan mengatur kemiringan alami tubuh wayang.</span>
               </li>
               <li>
-                <span className="k">Balik Arah Hadap</span>
+                <span className="k">Arah Hadap</span>
                 <span>Gunakan tombol F / G atau menu pengaturan untuk membalik arah hadap wayang.</span>
               </li>
             </>
           )}
           <li>
-            <span className="k">Mendekat ke Kamera</span>
-            <span>Mengangkat wayang dari layar kelir, membuat bayangannya membesar dan mengabur lembut.</span>
+            <span className="k">Maju / Mundur</span>
+            <span>Mendekat ke kamera mengangkat wayang dari kain kelir, membuat bayangannya membesar dan mengabur dramatis.</span>
           </li>
         </ul>
-        {/* Quick Mode Switcher in Intro */}
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+
+        {/* Mode Switcher in Intro */}
+        <div className="intro-mode-toggle">
           <button
             type="button"
             className={`btn small ${settings.characters === 'two' ? 'primary' : ''}`}
-            style={{ flex: 1, padding: '8px 12px', fontSize: '12px' }}
+            style={{ flex: 1 }}
             onClick={() => handleCharactersChange('two')}
           >
             2 Wayang (Dua Tangan)
@@ -896,7 +1163,7 @@ export default function WayangStage() {
           <button
             type="button"
             className={`btn small ${settings.characters === 'one' ? 'primary' : ''}`}
-            style={{ flex: 1, padding: '8px 12px', fontSize: '12px' }}
+            style={{ flex: 1 }}
             onClick={() => handleCharactersChange('one')}
           >
             1 Wayang (Solo)
@@ -911,7 +1178,7 @@ export default function WayangStage() {
               <strong>{getCharShortName(leftPuppetChar)}</strong>
               {settings.characters === 'two' && (
                 <>
-                  , <strong>{getCharShortName(rightPuppetChar)}</strong>
+                  {' & '}<strong>{getCharShortName(rightPuppetChar)}</strong>
                 </>
               )}
             </span>
@@ -922,7 +1189,7 @@ export default function WayangStage() {
             className="btn-select-char"
             onClick={() => setShowCharModal(true)}
           >
-            Pilih Tokoh
+            Ganti Tokoh...
           </button>
         </div>
 
@@ -936,7 +1203,7 @@ export default function WayangStage() {
             Mulai Kamera
           </button>
           <button id="use-mouse" className="btn" onClick={handleUseMouse}>
-            Gunakan Mouse
+            Gunakan Mouse / Sentuh
           </button>
         </div>
         <p
@@ -995,7 +1262,15 @@ export default function WayangStage() {
             }}
             title="Balik Arah Tokoh Kanan (Tekan G)"
           >
-            <kbd>G</kbd> balik tokoh kiri / kanan
+            <kbd>G</kbd> balik hadap
+          </button>
+          <button
+            type="button"
+            className="key-btn"
+            onClick={() => setShowCharModal(true)}
+            title="Pilih Tokoh Wayang"
+          >
+            <kbd>T</kbd> pilih tokoh
           </button>
           <button
             type="button"
@@ -1014,7 +1289,7 @@ export default function WayangStage() {
             }}
             title="Kalibrasi Kedalaman (Tekan C)"
           >
-            <kbd>C</kbd> kalibrasi kedalaman
+            <kbd>C</kbd> kalibrasi
           </button>
           <button
             type="button"
@@ -1036,7 +1311,7 @@ export default function WayangStage() {
             onClick={() => toggleCameraWindow()}
             title="Buka Kamera di Jendela Terpisah (Tekan P)"
           >
-            <kbd>P</kbd> pisah jendela kamera
+            <kbd>P</kbd> pisah jendela
           </button>
           <button
             type="button"
@@ -1052,63 +1327,87 @@ export default function WayangStage() {
           </button>
         </div>
       </div>
-      {/* Home Button */}
-      <Link
-        href="/panduan"
-        className="icon-btn"
-        style={{ right: '108px' }}
-        aria-label="Kembali ke Beranda"
-        title="Kembali ke Beranda"
-      >
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
-        </svg>
-      </Link>
 
-      {/* Sound Toggle */}
-      <button
-        id="sound-toggle"
-        className="icon-btn sound-btn"
-        aria-label={isMuted ? 'Nyalakan suara musik' : 'Bisukan musik'}
-        aria-pressed={isMuted}
-        onClick={toggleMusic}
-      >
-        <svg className="on" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Zm-2.5-8.8v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6Z"
-          />
-        </svg>
-        <svg className="off" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M4 9v6h4l5 4V5L8 9H4Zm12.6 3 2.7-2.7-1.4-1.4-2.7 2.7-2.7-2.7-1.4 1.4 2.7 2.7-2.7 2.7 1.4 1.4 2.7-2.7 2.7 2.7 1.4-1.4-2.7-2.7Z"
-            transform="translate(2 0)"
-          />
-        </svg>
-      </button>
+      {/* Floating Action Buttons */}
+      <div className="top-floating-actions">
+        {/* Character Selection Quick Button */}
+        <button
+          type="button"
+          className="icon-btn"
+          aria-label="Pilih Tokoh Wayang"
+          title="Pilih Tokoh Wayang"
+          onClick={() => setShowCharModal(true)}
+        >
+          <span style={{ fontSize: '15px' }}>🎭</span>
+        </button>
 
-      {/* Settings Toggle */}
-      <button
-        id="settings-toggle"
-        className="icon-btn"
-        aria-label="Pengaturan"
-        aria-expanded={showSettings}
-        onClick={() => setShowSettings((prev) => !prev)}
-      >
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.3 7.3 0 0 0-1.7-1L15 3h-4l-.4 2.7a7.3 7.3 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.3 7.3 0 0 0 1.7 1L11 21h4l.4-2.7a7.3 7.3 0 0 0 1.7-1l2.5 1 2-3.5ZM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"
-            transform="translate(-1 0)"
-          />
-        </svg>
-      </button>
+        {/* Home Button */}
+        <Link
+          href="/panduan"
+          className="icon-btn"
+          aria-label="Kembali ke Beranda"
+          title="Kembali ke Beranda"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+        </Link>
+
+        {/* Sound Toggle */}
+        <button
+          id="sound-toggle"
+          className="icon-btn sound-btn"
+          aria-label={isMuted ? 'Nyalakan suara musik' : 'Bisukan musik'}
+          aria-pressed={isMuted}
+          onClick={toggleMusic}
+        >
+          <svg className="on" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Zm-2.5-8.8v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6Z"
+            />
+          </svg>
+          <svg className="off" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M4 9v6h4l5 4V5L8 9H4Zm12.6 3 2.7-2.7-1.4-1.4-2.7 2.7-2.7-2.7-1.4 1.4 2.7 2.7-2.7 2.7 1.4 1.4 2.7-2.7 2.7 2.7 1.4-1.4-2.7-2.7Z"
+              transform="translate(2 0)"
+            />
+          </svg>
+        </button>
+
+        {/* Settings Toggle */}
+        <button
+          id="settings-toggle"
+          className="icon-btn"
+          aria-label="Pengaturan"
+          aria-expanded={showSettings}
+          onClick={() => setShowSettings((prev) => !prev)}
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.3 7.3 0 0 0-1.7-1L15 3h-4l-.4 2.7a7.3 7.3 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.3 7.3 0 0 0 1.7 1L11 21h4l.4-2.7a7.3 7.3 0 0 0 1.7-1l2.5 1 2-3.5ZM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"
+              transform="translate(-1 0)"
+            />
+          </svg>
+        </button>
+      </div>
 
       {/* Settings Panel */}
       <aside id="settings" className="panel settings" hidden={!showSettings}>
-        <h2>Pengaturan</h2>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h2>Pengaturan</h2>
+          <button
+            type="button"
+            className="char-modal-close"
+            style={{ width: '28px', height: '28px' }}
+            onClick={() => setShowSettings(false)}
+          >
+            ✕
+          </button>
+        </div>
         <Link
           href="/panduan"
           className="btn small"
@@ -1131,10 +1430,23 @@ export default function WayangStage() {
           type="button"
           className="btn small"
           style={{ width: '100%', margin: '4px 0 8px', borderColor: 'rgba(217, 164, 65, 0.6)' }}
-          onClick={() => setShowCharModal(true)}
+          onClick={() => {
+            setShowSettings(false);
+            setShowCharModal(true);
+          }}
         >
-          Pilih Tokoh Wayang...
+          🎭 Ganti Tokoh Wayang...
         </button>
+        <label>
+          Mode Kontrol
+          <select
+            value={controlMode}
+            onChange={(e) => switchControlMode(e.target.value as 'camera' | 'mouse')}
+          >
+            <option value="camera">Kamera (Pelacakan Tangan AI)</option>
+            <option value="mouse">Mouse / Sentuhan Layar</option>
+          </select>
+        </label>
         <label>
           Jari Pengendali Tangan (Tuding)
           <select
@@ -1145,7 +1457,7 @@ export default function WayangStage() {
             }
           >
             <option value="thumb-index">Ibu Jari + Telunjuk</option>
-            <option value="thumb-pinky">Ibu Jari + Kelingking (rentang lebih lebar)</option>
+            <option value="thumb-pinky">Ibu Jari + Kelingking (rentang lebar)</option>
             <option value="index-pinky">Telunjuk + Kelingking</option>
           </select>
         </label>
@@ -1186,7 +1498,7 @@ export default function WayangStage() {
           >
             <option value="target">Saling berhadapan</option>
             <option value="walk">Menghadap arah berjalan</option>
-            <option value="manual">Manual (tekan F / G untuk membalik)</option>
+            <option value="manual">Manual (tekan F / G)</option>
           </select>
         </label>
         <label className="row">
@@ -1211,8 +1523,8 @@ export default function WayangStage() {
           <input
             type="range"
             id="opt-size"
-            min="0.36"
-            max="0.72"
+            min="0.32"
+            max="0.75"
             step="0.01"
             value={puppetSize}
             onChange={(e) => handleSizeChange(parseFloat(e.target.value))}
@@ -1232,7 +1544,7 @@ export default function WayangStage() {
         </label>
       </aside>
 
-      {/* Preview Box */}
+      {/* Preview Box (Camera Live Feed with correct aspect ratio) */}
       <div id="preview-box" hidden={previewBoxHidden}>
         <canvas id="preview" ref={previewRef} width={320} height={180} />
         <button
@@ -1266,7 +1578,7 @@ export default function WayangStage() {
         </div>
       )}
 
-      {/* Character Selection Pop-Up Modal */}
+      {/* Character Selection Pop-Up Modal (Responsive Mobile, Tablet & Desktop) */}
       {showCharModal && (
         <div
           id="char-modal-backdrop"
@@ -1282,8 +1594,8 @@ export default function WayangStage() {
                 <h2 id="char-modal-title">Pilih Tokoh Wayang</h2>
                 <p>
                   {settings.characters === 'two'
-                    ? 'Tentukan tokoh wayang untuk posisi sisi kiri dan sisi kanan panggung.'
-                    : 'Tentukan tokoh wayang yang dimainkan di panggung.'}
+                    ? 'Pilih tokoh wayang lengkap dengan kedua tangannya untuk sisi kiri dan sisi kanan panggung.'
+                    : 'Pilih tokoh wayang lengkap dengan kedua tangannya untuk dimainkan.'}
                 </p>
               </div>
               <button
@@ -1299,47 +1611,96 @@ export default function WayangStage() {
               </button>
             </header>
 
+            {/* Segmented Slot Selector Tabs for Mobile / Tablet */}
+            {settings.characters === 'two' && (
+              <div className="char-slot-segmented">
+                <button
+                  type="button"
+                  className={`char-tab-btn ${activeSlotTab === 'left' ? 'active' : ''}`}
+                  onClick={() => setActiveSlotTab('left')}
+                >
+                  <span className="tab-indicator left-ind">Kiri</span>
+                  <span className="tab-name">{getCharShortName(leftPuppetChar)}</span>
+                </button>
+                <button
+                  type="button"
+                  className="char-tab-swap-btn"
+                  title="Tukar Posisi Kiri dan Kanan"
+                  onClick={() => {
+                    const temp = leftPuppetChar;
+                    handleLeftCharChange(rightPuppetChar);
+                    handleRightCharChange(temp);
+                  }}
+                >
+                  ⇄ Tukar
+                </button>
+                <button
+                  type="button"
+                  className={`char-tab-btn ${activeSlotTab === 'right' ? 'active' : ''}`}
+                  onClick={() => setActiveSlotTab('right')}
+                >
+                  <span className="tab-indicator right-ind">Kanan</span>
+                  <span className="tab-name">{getCharShortName(rightPuppetChar)}</span>
+                </button>
+              </div>
+            )}
+
+            {/* Main Stage Slots / Character Showcase */}
             <div className={`stage-slots-container ${settings.characters === 'one' ? 'single-slot' : ''}`}>
+              {/* Desktop Dual View / Mobile Active Tab View */}
               {/* Slot Tokoh Sisi Kiri */}
-              <div className="stage-slot-box">
+              <div className={`stage-slot-box ${activeSlotTab === 'left' ? 'mobile-active' : 'mobile-hidden-on-small'}`}>
                 <div className="slot-header">
                   <span className="slot-label">
-                    {settings.characters === 'two' ? 'Tokoh Sisi Kiri' : 'Tokoh Wayang'}
+                    {settings.characters === 'two' ? '🎭 Tokoh Sisi Kiri' : '🎭 Tokoh Wayang (Solo)'}
                   </span>
+                  <span className="slot-active-badge">Aktif</span>
                 </div>
+
                 {(() => {
                   const leftInfo = CHARACTER_LIST.find((c) => c.id === leftPuppetChar) || CHARACTER_LIST[0];
                   return (
                     <div className="slot-preview-card">
                       <div className="slot-img-wrap">
-                        <img src={leftInfo.thumb} alt={leftInfo.name} />
+                        {/* Render Wayang Lengkap Beserta Kedua Tangannya */}
+                        <WayangPuppetThumbnail charId={leftInfo.id as StageCharId} width={130} height={175} />
                       </div>
                       <div className="slot-details">
                         <span className="slot-javanese">{leftInfo.javanese}</span>
                         <h4>{leftInfo.name}</h4>
                         <span className="slot-role">{leftInfo.role}</span>
+                        <div className="slot-weapon-badge">
+                          <span className="weapon-icon">⚔</span> {leftInfo.weapon}
+                        </div>
                         <p className="slot-desc">{leftInfo.desc}</p>
                       </div>
                     </div>
                   );
                 })()}
-                <div className="slot-buttons-group">
-                  {CHARACTER_LIST.map((c) => (
-                    <button
-                      key={`left-${c.id}`}
-                      type="button"
-                      className={`slot-choice-btn ${leftPuppetChar === c.id ? 'active' : ''}`}
-                      onClick={() => handleLeftCharChange(c.id as StageCharId)}
-                    >
-                      {getCharShortName(c.name)}
-                    </button>
-                  ))}
+
+                <div className="slot-character-grid">
+                  <span className="grid-heading">Pilih Karakter untuk Sisi Kiri:</span>
+                  <div className="slot-buttons-group">
+                    {CHARACTER_LIST.map((c) => (
+                      <button
+                        key={`left-${c.id}`}
+                        type="button"
+                        className={`slot-choice-btn ${leftPuppetChar === c.id ? 'active' : ''}`}
+                        onClick={() => handleLeftCharChange(c.id as StageCharId)}
+                      >
+                        <span className="choice-thumb-mini">
+                          <img src={c.thumb} alt={c.name} />
+                        </span>
+                        <span className="choice-name">{getCharShortName(c.name)}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Middle Swap Button (if 2 puppets) */}
+              {/* Middle Swap Button (Desktop) */}
               {settings.characters === 'two' && (
-                <div className="slot-swap-divider">
+                <div className="slot-swap-divider desktop-only-swap">
                   <button
                     type="button"
                     className="btn-swap-slots"
@@ -1360,37 +1721,50 @@ export default function WayangStage() {
 
               {/* Slot Tokoh Sisi Kanan (if 2 puppets) */}
               {settings.characters === 'two' && (
-                <div className="stage-slot-box">
+                <div className={`stage-slot-box ${activeSlotTab === 'right' ? 'mobile-active' : 'mobile-hidden-on-small'}`}>
                   <div className="slot-header">
-                    <span className="slot-label">Tokoh Sisi Kanan</span>
+                    <span className="slot-label">🎭 Tokoh Sisi Kanan</span>
+                    <span className="slot-active-badge">Aktif</span>
                   </div>
+
                   {(() => {
                     const rightInfo = CHARACTER_LIST.find((c) => c.id === rightPuppetChar) || CHARACTER_LIST[2];
                     return (
                       <div className="slot-preview-card">
                         <div className="slot-img-wrap">
-                          <img src={rightInfo.thumb} alt={rightInfo.name} />
+                          {/* Render Wayang Lengkap Beserta Kedua Tangannya */}
+                          <WayangPuppetThumbnail charId={rightInfo.id as StageCharId} width={130} height={175} />
                         </div>
                         <div className="slot-details">
                           <span className="slot-javanese">{rightInfo.javanese}</span>
                           <h4>{rightInfo.name}</h4>
                           <span className="slot-role">{rightInfo.role}</span>
+                          <div className="slot-weapon-badge">
+                            <span className="weapon-icon">⚔</span> {rightInfo.weapon}
+                          </div>
                           <p className="slot-desc">{rightInfo.desc}</p>
                         </div>
                       </div>
                     );
                   })()}
-                  <div className="slot-buttons-group">
-                    {CHARACTER_LIST.map((c) => (
-                      <button
-                        key={`right-${c.id}`}
-                        type="button"
-                        className={`slot-choice-btn ${rightPuppetChar === c.id ? 'active' : ''}`}
-                        onClick={() => handleRightCharChange(c.id as StageCharId)}
-                      >
-                        {getCharShortName(c.name)}
-                      </button>
-                    ))}
+
+                  <div className="slot-character-grid">
+                    <span className="grid-heading">Pilih Karakter untuk Sisi Kanan:</span>
+                    <div className="slot-buttons-group">
+                      {CHARACTER_LIST.map((c) => (
+                        <button
+                          key={`right-${c.id}`}
+                          type="button"
+                          className={`slot-choice-btn ${rightPuppetChar === c.id ? 'active' : ''}`}
+                          onClick={() => handleRightCharChange(c.id as StageCharId)}
+                        >
+                          <span className="choice-thumb-mini">
+                            <img src={c.thumb} alt={c.name} />
+                          </span>
+                          <span className="choice-name">{getCharShortName(c.name)}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
@@ -1411,7 +1785,7 @@ export default function WayangStage() {
                 className="btn primary btn-modal-done"
                 onClick={() => setShowCharModal(false)}
               >
-                Selesai
+                Selesai &amp; Mainkan
               </button>
             </footer>
           </div>
