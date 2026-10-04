@@ -9,7 +9,7 @@ import Formation from '@/components/ui/formation';
 // ── 16 Foto Real Tempat/Gedung Museum di Indonesia (Tanpa Duplikasi) ──────────
 const MUSEUM_PLACES: Work[] = [
   {
-    image: '/images/museum/places/museum-wayang-jakarta.jpg',
+    image: '/images/museum/places/museum-wayang-jakarta.webp',
     title: 'Museum Wayang Jakarta',
     location: 'Kawasan Kota Tua, Jakarta Barat',
     year: 'Diresmikan 13 Agustus 1975',
@@ -18,7 +18,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Wayang Kulit Purwa Klasik', 'Gedung Kolonial Batavia', 'Koleksi Wayang Si Unyil'],
   },
   {
-    image: '/images/museum/places/museum-wayang-banyumas.jpg',
+    image: '/images/museum/places/museum-wayang-banyumas.webp',
     title: 'Museum Wayang Sendang Mas',
     location: 'Kecamatan Banyumas, Kabupaten Banyumas, Jawa Tengah',
     year: 'Didirikan 21 Desember 1983',
@@ -27,7 +27,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Wayang Gagrag Banyumasan', 'Ikon Punakawan Bawor', 'Gamelan Slendro Pusaka'],
   },
   {
-    image: '/images/museum/places/museum-gubug-wayang-gerbang.jpg',
+    image: '/images/museum/places/museum-gubug-wayang-gerbang.webp',
     title: 'Museum Gubug Wayang',
     location: 'Jl. R.A. Kartini, Kota Mojokerto, Jawa Timur',
     year: 'Diresmikan 15 Agustus 2015',
@@ -36,7 +36,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Koleksi Topeng Panji', 'Wayang Golek Menak', 'Wayang Sasak Lombok'],
   },
   {
-    image: '/images/museum/places/museum-radya-pustaka.jpg',
+    image: '/images/museum/places/museum-radya-pustaka.webp',
     title: 'Museum Radya Pustaka',
     location: 'Kompleks Taman Sriwedari, Kota Surakarta, Jawa Tengah',
     year: 'Didirikan 28 Oktober 1890',
@@ -45,7 +45,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Museum Tertua di Indonesia', 'Canthik Kapal Rajamala', 'Wayang Madya Pakubuwana'],
   },
   {
-    image: '/images/museum/places/museum-sonobudoyo.jpg',
+    image: '/images/museum/places/museum-sonobudoyo.webp',
     title: 'Museum Sonobudoyo',
     location: 'Alun-Alun Utara, Kota Yogyakarta, D.I. Yogyakarta',
     year: 'Diresmikan 6 November 1935',
@@ -54,7 +54,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Wayang Kulit Kanjeng Kyai Pradapa', 'Arsitektur Joglo Keraton', 'Pertunjukan Kelir Malam'],
   },
   {
-    image: '/images/museum/places/museum-kraton-jogja.jpg',
+    image: '/images/museum/places/museum-kraton-jogja.webp',
     title: 'Museum Keraton Yogyakarta',
     location: 'Kedaton Sri Sultan Hamengku Buwono, D.I. Yogyakarta',
     year: 'Didirikan sejak 1755',
@@ -63,7 +63,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Wayang Kagungan Dalem', 'Busana Tari Wayang Wong', 'Kompleks Istana Sultan'],
   },
   {
-    image: '/images/museum/places/museum-mangkunegaran-pendopo.jpg',
+    image: '/images/museum/places/museum-mangkunegaran-pendopo.webp',
     title: 'Museum Pura Mangkunegaran',
     location: 'Jl. Ronggowarsito, Kota Surakarta, Jawa Tengah',
     year: 'Didirikan sejak 1757',
@@ -72,7 +72,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Pendopo Ageng Terbesar', 'Wayang Kulit Bersepuh Prada Emas', 'Naskah Wayang Serat Tripama'],
   },
   {
-    image: '/images/museum/places/museum-keraton-solo.jpg',
+    image: '/images/museum/places/museum-keraton-solo.webp',
     title: 'Museum Keraton Surakarta',
     location: 'Kori Kamandungan, Baluwarti, Kota Surakarta, Jawa Tengah',
     year: 'Didirikan sejak 1745',
@@ -81,7 +81,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Menara Bersejarah Sanggabuana', 'Kereta Kencana Pusaka', 'Wayang Kulit Kyai Kadung'],
   },
   {
-    image: '/images/museum/places/museum-sri-baduga.jpg',
+    image: '/images/museum/places/museum-sri-baduga.webp',
     title: 'Museum Sri Baduga',
     location: 'Jl. BKR No. 185, Tegallega, Kota Bandung, Jawa Barat',
     year: 'Diresmikan 5 Juni 1980',
@@ -90,7 +90,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Arsitektur Panggung Sunda', 'Koleksi Wayang Golek Si Cepot', 'Naskah Lalakon Sunda'],
   },
   {
-    image: '/images/museum/places/museum-nasional.jpg',
+    image: '/images/museum/places/museum-nasional.webp',
     title: 'Museum Nasional Indonesia',
     location: 'Jl. Medan Merdeka Barat No. 12, Jakarta Pusat',
     year: 'Didirikan 24 April 1778',
@@ -99,7 +99,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Museum Tertua Asia Tenggara', 'Koleksi Wayang Beber Abad 17', 'Gedung Arsitektur Gajah'],
   },
   {
-    image: '/images/museum/places/museum-indonesia-gedung.jpg',
+    image: '/images/museum/places/museum-indonesia-gedung.webp',
     title: 'Museum Indonesia',
     location: 'Gedung Museum Indonesia, Cipayung, Jakarta Timur',
     year: 'Diresmikan 20 April 1980',
@@ -108,7 +108,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Arsitektur Megah Kori Agung', 'Diorama Akbar Bharatayuddha', 'Galeri Etnografi Wayang'],
   },
   {
-    image: '/images/museum/places/museum-benteng-vredeburg.jpg',
+    image: '/images/museum/places/museum-benteng-vredeburg.webp',
     title: 'Museum Benteng Vredeburg',
     location: 'Titik Nol Kilometer, Jl. Margo Mulyo, Kota Yogyakarta',
     year: 'Dibangun sejak 1760',
@@ -117,7 +117,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Benteng Kolonial Berparit', 'Titik Nol Kilometer Malioboro', 'Pentas Seni Budaya Tradisi'],
   },
   {
-    image: '/images/museum/places/museum-sejarah-jakarta.jpg',
+    image: '/images/museum/places/museum-sejarah-jakarta.webp',
     title: 'Museum Fatahillah (Sejarah Jakarta)',
     location: 'Taman Fatahillah No. 1, Kota Tua Jakarta Barat',
     year: 'Diresmikan 30 Maret 1974',
@@ -126,7 +126,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Eks Balaikota Batavia 1710', 'Meriam Legendaris Si Jagur', 'Pusat Sejarah Kota Tua'],
   },
   {
-    image: '/images/museum/places/museum-bali-denpasar.jpg',
+    image: '/images/museum/places/museum-bali-denpasar.webp',
     title: 'Museum Bali',
     location: 'Jl. Mayor Wisnu No. 1, Dangin Puri, Denpasar Timur, Bali',
     year: 'Didirikan 8 Desember 1931',
@@ -135,7 +135,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Kompleks Puri & Kori Agung Bali', 'Wayang Parwa Sakral', 'Koleksi Topeng Barong & Rangda'],
   },
   {
-    image: '/images/museum/places/museum-puri-lukisan.jpg',
+    image: '/images/museum/places/museum-puri-lukisan.webp',
     title: 'Museum Puri Lukisan',
     location: 'Jl. Raya Ubud, Kecamatan Ubud, Kabupaten Gianyar, Bali',
     year: 'Didirikan tahun 1956',
@@ -144,7 +144,7 @@ const MUSEUM_PLACES: Work[] = [
     highlights: ['Museum Seni Tertua di Bali', 'Lukisan Klasik Wayang Kamasan', 'Taman Teratai Asri Ubud'],
   },
   {
-    image: '/images/museum/places/museum-mpu-tantular.jpg',
+    image: '/images/museum/places/museum-mpu-tantular.webp',
     title: 'Museum Negeri Mpu Tantular',
     location: 'Jl. Raya Buduran, Kabupaten Sidoarjo, Jawa Timur',
     year: 'Didirikan 23 Mei 1972',

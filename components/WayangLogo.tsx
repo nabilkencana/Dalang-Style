@@ -27,7 +27,7 @@ export default function WayangLogo({
         style={{ width: size, height: size }}
       >
         <Image
-          src="/images/wayang-gunungan-logo.png"
+          src="/images/wayang-gunungan-logo.webp"
           alt="Wayang Jawi Gunungan Logo"
           width={size * 2}
           height={size * 2}

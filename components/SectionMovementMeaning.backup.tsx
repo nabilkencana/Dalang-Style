@@ -41,7 +41,7 @@ export default function SectionMovementMeaning({
   id = 'makna',
   slides = DEFAULT_SLIDES,
   autoPlayInterval = 5000,
-  backgroundImage = '/images/wayang-movement-bg.png',
+  backgroundImage = '/images/wayang-movement-bg.webp',
 }: SectionMovementMeaningProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);

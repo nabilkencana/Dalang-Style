@@ -42,7 +42,7 @@ export default function SectionStoryAwakening({
       'NIGHT, STRENGTH ALONE IS NOT',
       'ENOUGH.',
     ],
-    imageSrc: '/images/story-bima-portrait.png',
+    imageSrc: '/images/story-bima-portrait.webp',
     imageAlt: 'Wayang Wong Bima mask and costume portrait',
   },
   block2 = {
@@ -56,7 +56,7 @@ export default function SectionStoryAwakening({
       'INTO THE VAST, UNKNOWN DEPTHS',
       'OF THE OCEAN.',
     ],
-    imageSrc: '/images/story-ocean-battle.png',
+    imageSrc: '/images/story-ocean-battle.webp',
     imageAlt: 'Bima encountering mystical forces in the deep ocean',
   },
   readMoreText = 'READ MORE →',
@@ -101,7 +101,7 @@ export default function SectionStoryAwakening({
           {/* Yellow Card Canvas with authentic Bima Wayang Watermark Illustration */}
           <div className="absolute inset-0 bg-[#dedf42] pointer-events-none">
             <Image
-              src="/images/story-awakening-card-bg.png"
+              src="/images/story-awakening-card-bg.webp"
               alt="Bima Illustration Watermark Canvas"
               fill
               priority

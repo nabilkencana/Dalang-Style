@@ -42,7 +42,7 @@ export default function SectionJoinTheNight({
     { label: 'KREDIT & TENTANG KITA', href: '/kredit' },
   ],
   brandTitle = 'Panggung Wayang Jawi',
-  backgroundImage = '/images/join-night-canvas-bg.png',
+  backgroundImage = '/images/join-night-canvas-bg.webp',
 }: SectionJoinTheNightProps) {
   return (
     <section

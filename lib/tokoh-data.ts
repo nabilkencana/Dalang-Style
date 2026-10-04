@@ -27,7 +27,7 @@ export const TOKOH_CHARACTERS: Record<string, TokohCharacter> = {
     role: 'Punakawan • Pamong Para Ksatria',
     subtitle: 'Semar Badranaya — Tokoh Pamong Sejati',
     aksara: 'ꦏꦾꦲꦶ ꦱꦼꦩꦂ',
-    image: '/images/tokoh/wayang-1.png',
+    image: '/images/tokoh/wayang-1.webp',
     badge: 'PUNAKAWAN',
     origin:
       'Penjelmaan Batara Ismaya yang turun ke marcapada (dunia manusia) sebagai abdi sekaligus pamong pengayom para ksatria berbudi luhur. Semar digambarkan bertubuh tambun, berkuncung putih, memiliki mata berair (menangis untuk kesusahan rakyat) namun bibir tersenyum (melambangkan ketabahan dan kegembiraan batin).',
@@ -63,7 +63,7 @@ export const TOKOH_CHARACTERS: Record<string, TokohCharacter> = {
     role: 'Punakawan • Cerdas & Jenaka',
     subtitle: 'Petruk Kantong Bolong — Simbol Ketangkasan Berpikir',
     aksara: 'ꦏꦾꦲꦶ ꦥꦺꦠꦿꦸꦏ꧀',
-    image: '/images/tokoh/wayang-2.png',
+    image: '/images/tokoh/wayang-2.webp',
     badge: 'PUNAKAWAN',
     origin:
       'Putra kedua Semar berhidung panjang menjulang dan bertubuh jangkung. Petruk adalah sosok yang cerdas, tangkas berbicara, dan pandai mencairkan suasana tegang dengan lelucon filosofis yang menyentil kebenaran.',
@@ -99,7 +99,7 @@ export const TOKOH_CHARACTERS: Record<string, TokohCharacter> = {
     role: 'Punakawan • Kritis & Jujur',
     subtitle: 'Bagong Bawor — Penyuara Kebenaran Tanpa Takut',
     aksara: 'ꦏꦾꦲꦶ ꦧꦒꦺꦴꦁ',
-    image: '/images/tokoh/wayang-3.png',
+    image: '/images/tokoh/wayang-3.webp',
     badge: 'PUNAKAWAN',
     origin:
       'Putra bungsu Semar yang tercipta dari bayangan Semar sendiri atas kehendak Sang Hyang Tunggal. Berwujud bulat pendek dengan mata melotot dan bibir tebal terbuka lebar, Bagong berbicara dengan nada suara berat bergemuruh.',
@@ -135,7 +135,7 @@ export const TOKOH_CHARACTERS: Record<string, TokohCharacter> = {
     role: 'Satria Pandawa • Penengah Pandawa',
     subtitle: 'Permadi — Ksatria Tampan Berhati Baja',
     aksara: 'ꦱꦁ ꦲꦂꦗꦸꦤ',
-    image: '/images/tokoh/wayang-4.png',
+    image: '/images/tokoh/wayang-4.webp',
     badge: 'PANDAWA',
     origin:
       'Anak ketiga Prabu Pandu Dewanata dan Dewi Kunti (penengah Pandawa Lima), merupakan titisan Batara Indra sang dewa petir dan keindahan. Menguasai kadipaten Madukara dengan ketampanan yang memikat seluruh jagad dan kemahiran memanah tanpa tanding.',
@@ -175,7 +175,7 @@ export const TOKOH_CHARACTERS: Record<string, TokohCharacter> = {
     role: 'Satria Pandawa • Ksatria Pringgandani',
     subtitle: 'Raden Tetuka — Otot Kawat Balung Wesi',
     aksara: 'ꦱꦁ ꦒꦠꦺꦴꦠ꧀ꦏꦕ',
-    image: '/images/tokoh/wayang-5.png',
+    image: '/images/tokoh/wayang-5.webp',
     badge: 'PANDAWA',
     origin:
       'Putra perkasa Sang Werkudara (Bima) dengan Dewi Arimbi (bangsawan bangsa raseksa). Sejak bayi dicelup ke dalam kawah Candradimuka dan ditempa dengan berbagai pusaka para dewa, menjadikannya ksatria sakti bertubuh sekuat baja yang mampu terbang di angkasa tanpa sayap.',
@@ -215,7 +215,7 @@ export const TOKOH_CHARACTERS: Record<string, TokohCharacter> = {
     role: 'Punakawan • Bijak & Bersahaja',
     subtitle: 'Gareng Cakruk — Lambang Kehati-hatian Melangkah',
     aksara: 'ꦤꦭ ꦒꦫꦺꦁ',
-    image: '/images/tokoh/wayang-6.png',
+    image: '/images/tokoh/wayang-6.webp',
     badge: 'PUNAKAWAN',
     origin:
       'Anak sulung Semar (putra angkat) yang memiliki tubuh serba simbolik: mata juling, tangan bengkok/ceko, dan kaki berjingkit pincang. Dahulu bernama Bambang Sukodadi, seorang ksatria tampan yang bertarung melawan Petruk karena kesombongan, hingga wajah dan raga mereka berubah saling menyadarkan.',
@@ -251,7 +251,7 @@ export const TOKOH_CHARACTERS: Record<string, TokohCharacter> = {
     role: 'Satria Pandawa • Werkudara Perkasa',
     subtitle: 'Bratasena — Ksatria Jujur Pencari Tirta Suci',
     aksara: 'ꦱꦁ ꦧꦶꦩ',
-    image: '/images/tokoh/wayang-7.png',
+    image: '/images/tokoh/wayang-7.webp',
     badge: 'PANDAWA',
     origin:
       'Putra kedua Pandu dan Kunti, titisan Batara Bayu sang dewa angin. Bertubuh raksasa tegap dengan kuku jempol sakti Pancanaka. Bima tidak pernah menggunakan bahasa krama inggil yang feodal kepada siapa pun kecuali kepada Sang Hyang Dewa Ruci dan ibundanya, lambang kejujuran nurani yang tak kenal kepalsuan.',
@@ -291,7 +291,7 @@ export const TOKOH_CHARACTERS: Record<string, TokohCharacter> = {
     role: 'Prabu Alengka • Dasamuka',
     subtitle: 'Rahwana — Raja Angkara Berkepala Sepuluh',
     aksara: 'ꦥꦿꦧꦸ ꦫꦃꦮꦤ',
-    image: '/images/tokoh/wayang-8.png',
+    image: '/images/tokoh/wayang-8.webp',
     badge: 'ALENGKA',
     origin:
       'Raja raksasa sakti penguasa kerajaan Alengka Diraja. Memiliki sepuluh kepala (Dasamuka) yang menggambarkan sepuluh hawa nafsu duniawi yang rakus dan tak terkendali. Rahwana memiliki kesaktian luar biasa berkat Aji Pancasona dan Rawarontek yang membuatnya tak bisa mati jika jasadnya masih menyentuh bumi.',
@@ -331,7 +331,7 @@ export const TOKOH_CHARACTERS: Record<string, TokohCharacter> = {
     role: 'Pujangga Hastina • Guru Besar',
     subtitle: 'Begawan Drona — Guru Sakti Padepokan Sokalima',
     aksara: 'ꦉꦱꦶ ꦢꦿꦺꦴꦤ',
-    image: '/images/tokoh/wayang-9.png',
+    image: '/images/tokoh/wayang-9.webp',
     badge: 'HASTINA',
     origin:
       'Brahmana sakti pendiri padepokan Sokalima yang menjadi guru agung ilmu memanah, senjata, dan strategi perang bagi seratus Kurawa dan lima Pandawa. Memiliki ikatan batin yang sangat dalam kepada putranya, Aswatama, dan murid kesayangannya, Arjuna.',

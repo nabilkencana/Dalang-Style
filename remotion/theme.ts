@@ -21,15 +21,15 @@ export const FONTS = {
 } as const;
 
 export const ASSETS = {
-  heroImage: staticFile('images/dalang-hero-masterpiece.png'),
+  heroImage: staticFile('images/dalang-hero-masterpiece.webp'),
   heroLoop: staticFile('videos/hero-dalang-loop.mp4'),
-  bimaSuciTitle: staticFile('images/title-bima-suci-full.png'),
-  gunungan: staticFile('images/articles/wiki-gunungan.png'),
+  bimaSuciTitle: staticFile('images/title-bima-suci-full.webp'),
+  gunungan: staticFile('images/articles/wiki-gunungan.webp'),
   tokoh: [
-    { name: 'Arjuna', role: 'Ksatria Penengah Pandawa', file: staticFile('images/tokoh/wayang-1.png') },
-    { name: 'Bima (Werkudara)', role: 'Pemberani & Penegak Kebenaran', file: staticFile('images/tokoh/wayang-2.png') },
-    { name: 'Gatotkaca', role: 'Otot Kawat Tulang Besi', file: staticFile('images/tokoh/wayang-3.png') },
-    { name: 'Semar', role: 'Pamong Luhur & Bijaksana', file: staticFile('images/tokoh/wayang-4.png') },
+    { name: 'Arjuna', role: 'Ksatria Penengah Pandawa', file: staticFile('images/tokoh/wayang-1.webp') },
+    { name: 'Bima (Werkudara)', role: 'Pemberani & Penegak Kebenaran', file: staticFile('images/tokoh/wayang-2.webp') },
+    { name: 'Gatotkaca', role: 'Otot Kawat Tulang Besi', file: staticFile('images/tokoh/wayang-3.webp') },
+    { name: 'Semar', role: 'Pamong Luhur & Bijaksana', file: staticFile('images/tokoh/wayang-4.webp') },
   ],
   gestures: {
     duel: staticFile('videos/gestures/mode-dua-wayang.mp4'),
@@ -38,8 +38,8 @@ export const ASSETS = {
     lengan: staticFile('videos/gestures/gesture-02-lengan.mp4'),
   },
   museums: [
-    { title: 'Museum Wayang Jakarta', file: staticFile('images/museum/places/museum-wayang-jakarta.jpg') },
-    { title: 'Museum Sonobudoyo Yogyakarta', file: staticFile('images/museum/places/museum-sonobudoyo.jpg') },
-    { title: 'Museum Radya Pustaka Surakarta', file: staticFile('images/museum/places/museum-radya-pustaka.jpg') },
+    { title: 'Museum Wayang Jakarta', file: staticFile('images/museum/places/museum-wayang-jakarta.webp') },
+    { title: 'Museum Sonobudoyo Yogyakarta', file: staticFile('images/museum/places/museum-sonobudoyo.webp') },
+    { title: 'Museum Radya Pustaka Surakarta', file: staticFile('images/museum/places/museum-radya-pustaka.webp') },
   ],
 } as const;

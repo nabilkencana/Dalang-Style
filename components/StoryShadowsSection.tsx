@@ -18,7 +18,7 @@ export default function StoryShadowsSection({
   id = 'fitur',
   tagline = ['KETIKA KELIR', 'BERTUTUR KATA'],
   headline = 'Jauh sebelum cahaya layar mengisi peradaban, leluhur bertutur lewat tarian siluet di selembar kelir. Tangan sang dalang, percik blencong, dan tatahan kulit menjelma cermin jagad ksatria, dewa, dan sukma manusia.',
-  photoSrc = '/images/dalang-story-photo.png',
+  photoSrc = '/images/dalang-story-photo.webp',
   photoAlt = 'Dalang memainkan Wayang Kulit di balik layar kelir yang bercahaya',
   poeticLines = [
     ['TABUHAN SLENDRO BERDENGUNG,', 'MENYAPA HENING MALAM.'],
