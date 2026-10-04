@@ -14,7 +14,7 @@
   [![MediaPipe](https://img.shields.io/badge/MediaPipe-Vision_AI-FF6F00?style=for-the-badge&logo=google)](https://developers.google.com/mediapipe)
   [![GSAP](https://img.shields.io/badge/GSAP-ScrollTrigger-88CE02?style=for-the-badge&logo=greensock)](https://greensock.com/)
   [![Remotion](https://img.shields.io/badge/Remotion-Video_in_React-0B84F3?style=for-the-badge&logo=remotion)](https://www.remotion.dev/)
-
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
   <p align="center">
     <em>"Menghidupkan seni wayang kulit lewat panggung digital interaktif, pelacakan gestur dalang AI berbasis kamera, dan dialog kreasi sastra nusantara."</em>
   </p>
@@ -261,7 +261,13 @@ Gunakan struktur panduan berikut saat merekam video presentasi karya:
 
 ---
 
+## 📄 9. Lisensi (*License*)
+
+Proyek ini didistribusikan di bawah lisensi resmi **MIT License**. Kode sumber terbuka secara bebas untuk keperluan pembelajaran, pelestarian kebudayaan, penelitian, maupun pengembangan lebih lanjut. Lihat berkas [LICENSE](LICENSE) untuk ketentuan hukum lengkap.
+
+---
+
 <div align="center">
   <p>Dibuat dengan segenap cinta untuk Kebudayaan Nusantara 🇮🇩</p>
-  <p><strong>© 2026 Wayang Jawi Team. Hak Cipta Dilindungi Undang-Undang.</strong></p>
+  <p><strong>© 2026 nabilkencana &amp; Wayang Jawi Contributors. Lisensi MIT.</strong></p>
 </div>
