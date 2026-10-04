@@ -1650,12 +1650,12 @@ export default function WayangStage() {
               {/* Desktop Dual View / Mobile Active Tab View */}
               {/* Slot Tokoh Sisi Kiri */}
               <div className={`stage-slot-box ${activeSlotTab === 'left' ? 'mobile-active' : 'mobile-hidden-on-small'}`}>
-                <div className="slot-header">
+                {/* <div className="slot-header">
                   <span className="slot-label">
                     {settings.characters === 'two' ? ' Tokoh Sisi Kiri' : ' Tokoh Wayang (Solo)'}
                   </span>
                   <span className="slot-active-badge">Aktif</span>
-                </div>
+                </div> */}
 
                 {(() => {
                   const leftInfo = CHARACTER_LIST.find((c) => c.id === leftPuppetChar) || CHARACTER_LIST[0];
@@ -1722,10 +1722,10 @@ export default function WayangStage() {
               {/* Slot Tokoh Sisi Kanan (if 2 puppets) */}
               {settings.characters === 'two' && (
                 <div className={`stage-slot-box ${activeSlotTab === 'right' ? 'mobile-active' : 'mobile-hidden-on-small'}`}>
-                  <div className="slot-header">
+                  {/* <div className="slot-header">
                     <span className="slot-label"> Tokoh Sisi Kanan</span>
                     <span className="slot-active-badge">Aktif</span>
-                  </div>
+                  </div> */}
 
                   {(() => {
                     const rightInfo = CHARACTER_LIST.find((c) => c.id === rightPuppetChar) || CHARACTER_LIST[2];
