@@ -30,21 +30,21 @@ const DEFAULT_PREVIEW_ARTICLES: InteractiveListItem[] = [
     client: 'Wayang Puppet Theatre: Masterpiece of Oral and Intangible Heritage',
     platform: 'UNESCO ICH OFFICIAL',
     services: 'Buka Berita',
-    img: '/images/articles/unesco-page.png',
+    img: '/images/articles/unesco-page.webp',
     href: 'https://ich.unesco.org/en/RL/wayang-puppet-theatre-00063',
   },
   {
     client: 'Sejarah & Filosofi Gunungan Wayang Kulit, Simbol Kosmologi Jawa',
     platform: 'KOMPAS.COM BUDAYA',
     services: 'Buka Berita',
-    img: '/images/articles/kompas-page.png',
+    img: '/images/articles/kompas-page.webp',
     href: 'https://regional.kompas.com/read/2022/02/02/180653778/sejarah-dan-filosofi-gunungan-wayang-kulit-digunakan-dalam-uang-logam?page=all',
   },
   {
     client: '7 Alasan Wayang Menjadi Warisan Budaya Tak Benda UNESCO',
     platform: 'KEMENDIKBUD RI',
     services: 'Buka Berita',
-    img: '/images/articles/kemendikbud-page.png',
+    img: '/images/articles/kemendikbud-page.webp',
     href: 'https://itjen.kemendikdasmen.go.id/web/?p=8640',
   },
 ];
@@ -65,7 +65,7 @@ export default function SectionStoryFinale({
   articles = DEFAULT_PREVIEW_ARTICLES,
   brand = { line1: 'Wayang', line2: 'Jawi' },
   tagline = 'KISAH-KISAH LELUHUR,\nDIHIDUPKAN KEMBALI\nSETELAH GELAP. TIDAK SEMUA\nYANG LAMA HARUS TETAP\nDI MASA LALU.',
-  backdropImage = '/images/section5-dancers-backdrop-clean.png',
+  backdropImage = '/images/section5-dancers-backdrop-clean.webp',
 }: SectionStoryFinaleProps) {
   return (
     <section

@@ -23,7 +23,7 @@ export default function StoryShadowsSection({
     'Hands, light, and leather carved figures became',
     'heroes, gods, and legends.',
   ],
-  photoSrc = '/images/dalang-story-photo.png',
+  photoSrc = '/images/dalang-story-photo.webp',
   photoAlt = 'Dalang performing Wayang Kulit behind the illuminated kelir screen',
   poeticLines = [
     ['THE RHYTHMIC ECHO OF', 'GAMELAN FILLS THE AIR.'],
@@ -46,7 +46,7 @@ export default function StoryShadowsSection({
         {/* Subtle authentic dalang watermark background texture */}
         <div className="absolute inset-0 pointer-events-none opacity-30 md:opacity-40">
           <Image
-            src="/images/story-section-backdrop.png"
+            src="/images/story-section-backdrop.webp"
             alt="Wayang Jawi Background Canvas"
             fill
             sizes="100vw"

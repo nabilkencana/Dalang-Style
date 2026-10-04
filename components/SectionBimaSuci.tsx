@@ -17,7 +17,7 @@ export default function SectionBimaSuci({
   id = 'lakon',
   youtubeVideoId = 'sQyQ31bysTQ',
   backgroundType = 'youtube',
-  backgroundImage = '/images/bima-stage-clean-v2.png',
+  backgroundImage = '/images/bima-stage-clean-v2.webp',
   lakonSubtitle = 'SEJARAH WAYANG KULIT',
   accentColor = '#dedf42',
   className = '',

@@ -193,7 +193,7 @@ export default function HeroStageBackdrop({
     <div className={`relative w-full h-full overflow-hidden select-none pointer-events-none ${className}`}>
       {/* 1. Dramatic Traditional Performers Base (Cleaned of text, pure characters with motion blur) */}
       <Image
-        src="/images/hero-dancers-backdrop.png"
+        src="/images/hero-dancers-backdrop.webp"
         alt="Wayang Performance Backdrop"
         fill
         priority
@@ -210,7 +210,7 @@ export default function HeroStageBackdrop({
           {/* Left Wayang Kulit Hero (Raden Satria in dramatic sabet pose) */}
           <div className="relative w-[18%] sm:w-[20%] md:w-[22%] lg:w-[24%] h-[68%] sm:h-[75%] md:h-[82%] opacity-65 hover:opacity-85 transition-opacity duration-700 select-none animate-pulse-slow">
             <Image
-              src="/images/wayang-puppet-dramatic.png"
+              src="/images/wayang-puppet-dramatic.webp"
               alt="Wayang Kulit Satria"
               fill
               className="object-contain object-bottom drop-shadow-[0_0_25px_rgba(217,164,65,0.45)] transform -scale-x-100 rotate-[4deg]"
@@ -220,7 +220,7 @@ export default function HeroStageBackdrop({
           {/* Right Wayang Kulit Hero (Facing character creating dramatic stage confrontation) */}
           <div className="relative w-[18%] sm:w-[20%] md:w-[22%] lg:w-[24%] h-[68%] sm:h-[75%] md:h-[82%] opacity-65 hover:opacity-85 transition-opacity duration-700 select-none">
             <Image
-              src="/images/wayang-puppet-dramatic.png"
+              src="/images/wayang-puppet-dramatic.webp"
               alt="Wayang Kulit Satria"
               fill
               className="object-contain object-bottom drop-shadow-[0_0_25px_rgba(217,164,65,0.45)] transform -rotate-[4deg]"

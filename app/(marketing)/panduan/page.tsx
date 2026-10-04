@@ -53,7 +53,7 @@ export default function PanduanPage() {
       {/* ── Background Watermark Canvas ── */}
       <div className="fixed inset-0 bg-[#dedf42] pointer-events-none -z-10">
         <Image
-          src="/images/story-awakening-card-bg.png"
+          src="/images/story-awakening-card-bg.webp"
           alt="Bima Illustration Watermark Canvas"
           fill
           priority

@@ -42,7 +42,7 @@ export default function HeroWayangJawi({
   date = 'JUN 21TH 2026',
   venue = 'YASINTHA CAMPUS',
   venueHref = '/stage',
-  cardBackground = '/images/wayang-stage-bg.png',
+  cardBackground = '/images/wayang-stage-bg.webp',
 }: HeroWayangJawiProps) {
   return (
     <section className="relative w-full bg-[#dedf42] text-[#000000] overflow-hidden select-none">

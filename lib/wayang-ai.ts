@@ -397,7 +397,7 @@ export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
     visualStyle: 'prada',
     prompt:
       'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Raden Arjuna with golden Makuta headdress and archery bow.',
-    image: '/images/tokoh/wayang-4.png',
+    image: '/images/tokoh/wayang-4.webp',
     traits: ['Budi Luhur', 'Panah Sakti', 'Ksatria Pandawa'],
     philosophy: 'Heninging cipta, rasa, lan karsa minangka kunci nggayuh kasampurnan jati.',
   },
@@ -412,7 +412,7 @@ export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
     visualStyle: 'prada',
     prompt:
       'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Gatotkaca with winged golden sunburst back-piece halo Praba.',
-    image: '/images/tokoh/wayang-5.png',
+    image: '/images/tokoh/wayang-5.webp',
     traits: ['Otot Kawat', 'Balung Wesi', 'Pelindung Angkasa'],
     philosophy: 'Kasetyan marang nagari ngungkuli getih lan pati, sayap emas penjaga kedaulatan praja.',
   },
@@ -427,7 +427,7 @@ export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
     visualStyle: 'kelir',
     prompt:
       'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Semar.',
-    image: '/images/tokoh/wayang-1.png',
+    image: '/images/tokoh/wayang-1.webp',
     traits: ['Pengayom', 'Urip Iku Urup', 'Sakti Rendah Hati'],
     philosophy: 'Urip Iku Urup — dadiya pepadhang kanggo sasama kanthi luhuring budi pekerti lan asih.',
   },
@@ -442,7 +442,7 @@ export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
     visualStyle: 'kelir',
     prompt:
       'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Petruk.',
-    image: '/images/tokoh/wayang-2.png',
+    image: '/images/tokoh/wayang-2.webp',
     traits: ['Cerdas', 'Humor Filosofis', 'Dermawan'],
     philosophy: 'Aja gumunan, aja getunan, aja kagetan — gemuyu ing madyaning panandhang nuntun kabungahan.',
   },
@@ -457,7 +457,7 @@ export const PRESET_WAYANG_CREATIONS: WayangPreset[] = [
     visualStyle: 'prada',
     prompt:
       'Full-body authentic traditional Indonesian Wayang Kulit flat leather shadow puppet of Bagong.',
-    image: '/images/tokoh/wayang-3.png',
+    image: '/images/tokoh/wayang-3.webp',
     traits: ['Kritis', 'Penyuara Jujur', 'Berani'],
     philosophy: 'Kebenaran ora kena kawungkus goroh, tetep sumringah lan kendel mbelani wong cilik.',
   },

@@ -120,7 +120,7 @@ export function GestureMediaHoverCard({
 export function Gesture01Visual() {
   return (
     <GestureMediaHoverCard
-      imageSrc="/images/gestures/gesture-01-poros.png"
+      imageSrc="/images/gestures/gesture-01-poros.webp"
       imageAlt="Gestur 01: Pusat Poros Telapak Tangan"
       videoSrc="/videos/gestures/gesture-01-poros.mp4"
       badgeTitle="PUSAT POROS TELAPAK"
@@ -132,7 +132,7 @@ export function Gesture01Visual() {
 export function Gesture02Visual() {
   return (
     <GestureMediaHoverCard
-      imageSrc="/images/gestures/gesture-02-lengan.png"
+      imageSrc="/images/gestures/gesture-02-lengan.webp"
       imageAlt="Gestur 02: Kendali Lengan Wayang"
       videoSrc="/videos/gestures/gesture-02-lengan.mp4"
       badgeTitle="KENDALI LENGAN"
@@ -144,7 +144,7 @@ export function Gesture02Visual() {
 export function Gesture03Visual() {
   return (
     <GestureMediaHoverCard
-      imageSrc="/images/gestures/gesture-03-kiprahan.png"
+      imageSrc="/images/gestures/gesture-03-kiprahan.webp"
       imageAlt="Gestur 03: Tari Kiprahan Sakral"
       videoSrc="/videos/gestures/gesture-03-kiprahan.mp4"
       badgeTitle="TARI KIPRAHAN"
@@ -156,7 +156,7 @@ export function Gesture03Visual() {
 export function Gesture04Visual() {
   return (
     <GestureMediaHoverCard
-      imageSrc="/images/gestures/gesture-04-kedalaman.png"
+      imageSrc="/images/gestures/gesture-04-kedalaman.webp"
       imageAlt="Gestur 04: Kedalaman Z-Axis (Tajam vs Baur)"
       videoSrc="/videos/gestures/gesture-04-kedalaman.mp4"
       badgeTitle="Z-AXIS KEDALAMAN"
@@ -168,7 +168,7 @@ export function Gesture04Visual() {
 export function ModeDuaWayangVisual() {
   return (
     <GestureMediaHoverCard
-      imageSrc="/images/gestures/mode-dua-wayang.png"
+      imageSrc="/images/gestures/mode-dua-wayang.webp"
       imageAlt="Mode Standar: Dua Wayang Dua Tangan"
       videoSrc="/videos/gestures/mode-dua-wayang.mp4"
       badgeTitle="MODE DUA WAYANG"
@@ -180,7 +180,7 @@ export function ModeDuaWayangVisual() {
 export function ModeSatuWayangVisual() {
   return (
     <GestureMediaHoverCard
-      imageSrc="/images/gestures/mode-satu-wayang.png"
+      imageSrc="/images/gestures/mode-satu-wayang.webp"
       imageAlt="Mode Lanjutan: Satu Wayang Penuh Dua Tangan"
       videoSrc="/videos/gestures/mode-satu-wayang.mp4"
       badgeTitle="KENDALI SATU WAYANG PENUH"

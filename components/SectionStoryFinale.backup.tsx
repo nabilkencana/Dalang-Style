@@ -49,7 +49,7 @@ export default function SectionStoryFinale({
   ],
   brand = { line1: 'Wayang', line2: 'Jawi' },
   tagline = 'ANCESTRAL STORIES,\nREIMAGINED AFTER\nDARK. NOT EVERYTHING\nOLD IS MEANT TO STAY IN\nTHE PAST.',
-  backdropImage = '/images/section5-dancers-backdrop.png',
+  backdropImage = '/images/section5-dancers-backdrop.webp',
 }: SectionStoryFinaleProps) {
   return (
     <section

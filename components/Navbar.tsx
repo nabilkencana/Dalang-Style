@@ -213,28 +213,28 @@ export default function Navbar({ className }: { className?: string }) {
               <ProductItem
                 title="Kyai Semar"
                 href="/tokoh/kyai-semar"
-                src="/images/tokoh/wayang-1.png"
+                src="/images/tokoh/wayang-1.webp"
                 description="Pamong ksatria berjiwa luhur, pengayom kebenaran."
                 onClick={() => setActive(null)}
               />
               <ProductItem
                 title="Sang Arjuna"
                 href="/tokoh/sang-arjuna"
-                src="/images/tokoh/wayang-4.png"
+                src="/images/tokoh/wayang-4.webp"
                 description="Penengah Pandawa, ahli panah nan sakti rupawan."
                 onClick={() => setActive(null)}
               />
               <ProductItem
                 title="Raden Werkudara"
                 href="/tokoh/sang-bima"
-                src="/images/tokoh/wayang-7.png"
+                src="/images/tokoh/wayang-7.webp"
                 description="Ksatria perkasa berjiwa suci, pemilik Kuku Pancanaka."
                 onClick={() => setActive(null)}
               />
               <ProductItem
                 title="Gatotkaca"
                 href="/tokoh/sang-gatotkaca"
-                src="/images/tokoh/wayang-5.png"
+                src="/images/tokoh/wayang-5.webp"
                 description="Otot kawat balung wesi, ksatria gagah Pringgandani."
                 onClick={() => setActive(null)}
               />
