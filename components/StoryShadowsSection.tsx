@@ -31,10 +31,100 @@ export default function StoryShadowsSection({
       id={id}
       className="relative w-full bg-[#0a0a0a] text-[#dedf42] overflow-hidden select-none"
     >
-      {/* Main Theatrical Black Card - Full Width, no yellow wrapper */}
+      {/* ── MOBILE VIEW: Editorial Vertical Flow (< 768px) ── */}
+      <div className="block md:hidden w-full px-5 py-14 space-y-8 bg-[#0a0a0a]">
+        {/* Top Tagline & Headline */}
+        <div data-gsap="story-tagline" className="space-y-3">
+          <p className="font-mono text-xs font-bold text-[#dedf42] uppercase tracking-[0.24em]">
+            {tagline.join(' • ')}
+          </p>
+          <div className="text-left">
+            <ScrollReveal
+              baseOpacity={0.05}
+              enableBlur={true}
+              baseRotation={0}
+              blurStrength={8}
+              rotationEnd="bottom center"
+              wordAnimationEnd="bottom center"
+              textClassName="font-playfair text-[#dedf42] text-lg sm:text-xl font-normal leading-relaxed tracking-tight select-text"
+            >
+              {headline}
+            </ScrollReveal>
+          </div>
+        </div>
+
+        {/* Center: Interactive 3D Dalang Flip Card */}
+        <div data-gsap="story-photo" className="w-full flex justify-center py-2">
+          <div className="w-full max-w-[360px] aspect-[441/388] rounded-xl overflow-hidden shadow-2xl border border-white/15">
+            <FlipCard
+              width="100%"
+              height="100%"
+              radius={8}
+              background="#0a0a0a"
+              color="#dedf42"
+              tilt
+              tiltMax={10}
+              glare
+              glareOpacity={0.2}
+              shadow
+              className="w-full h-full"
+              ariaLabel="Foto pertunjukan Sang Dalang (ketuk untuk melihat filosofi pakeliran)"
+              front={
+                <div className="relative w-full h-full bg-[#0a0a0a] overflow-hidden">
+                  <Image
+                    src={photoSrc}
+                    alt={photoAlt}
+                    fill
+                    sizes="100vw"
+                    className="object-cover object-center pointer-events-none"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+                  <div className="absolute bottom-3 right-3 pointer-events-none">
+                    <span className="text-[10px] font-sans text-[#f4e7cd]/90 bg-black/80 backdrop-blur-sm px-3 py-1 rounded-full border border-white/15 flex items-center gap-1.5 shadow-lg">
+                      <span>Ketuk untuk membalik</span>
+                      <span className="text-[#dedf42]">↺</span>
+                    </span>
+                  </div>
+                </div>
+              }
+              back={
+                <div className="relative w-full h-full p-5 flex flex-col justify-between bg-gradient-to-br from-[#1a140b] via-[#0d0905] to-[#040202] text-[#f4e7cd] select-text shadow-2xl">
+                  <div>
+                    <div className="flex items-center justify-between text-[#dedf42]/80 text-[10px] font-sans font-bold tracking-[0.22em] uppercase mb-1.5">
+                      <span>FILOSOFI PAKELIRAN</span>
+                      <span className="font-serif tracking-widest text-[#dedf42]">ꦥꦏꦼꦭꦶꦫꦤ꧀</span>
+                    </div>
+                    <h3 className="font-playfair text-[#dedf42] text-xl font-normal tracking-tight leading-snug">
+                      Sang Dalang & Jagad Kelir
+                    </h3>
+                  </div>
+                  <p className="text-xs text-[#f4e7cd]/90 leading-relaxed font-sans font-normal my-2">
+                    Di balik selembar kelir putih, Sang Dalang bertindak sebagai cermin semesta — menyatukan cipta, sukma bayangan, dan nyala api blencong untuk menyingkap hakikat watak manusia.
+                  </p>
+                  <div className="pt-2.5 border-t border-[#dedf42]/20 flex items-center justify-between text-[10px] font-sans text-[#dedf42]">
+                    <span className="font-semibold uppercase tracking-wider">✦ Cipta • Rasa • Karsa</span>
+                    <span className="text-[#f4e7cd]/70">Ketuk balik ↻</span>
+                  </div>
+                </div>
+              }
+            />
+          </div>
+        </div>
+
+        {/* Bottom: Poetic Stanzas */}
+        <div className="border-t border-[#dedf42]/20 pt-6 space-y-4">
+          {poeticLines.map((stanza, sIdx) => (
+            <p key={sIdx} data-gsap="story-stanza" className="font-sans font-semibold text-[#dedf42]/90 text-xs uppercase tracking-wider leading-relaxed">
+              {stanza.join(' ')}
+            </p>
+          ))}
+        </div>
+      </div>
+
+      {/* ── DESKTOP & TABLET VIEW: Exact Theatrical Reference Ratio (>= 768px) ── */}
       <div
         data-gsap="story-card"
-        className="relative w-full aspect-[1354/846] overflow-hidden bg-[#0a0a0a] @container"
+        className="hidden md:block relative w-full aspect-[1354/846] overflow-hidden bg-[#0a0a0a] @container"
       >
         {/* Solid deep pitch-black backdrop */}
         <div className="absolute inset-0 bg-[#0a0a0a]" />

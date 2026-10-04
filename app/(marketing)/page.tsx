@@ -13,7 +13,7 @@ import TextMarquee from '@/components/ui/text-marquee';
 import GsapAnimations from '@/components/GsapAnimations';
 export default function LandingPage() {
   return (
-    <div className="relative overflow-hidden bg-[#dedf42]">
+    <div className="relative overflow-hidden bg-[#0b0604]">
       {/* GSAP ScrollTrigger Animations Controller */}
       <GsapAnimations />
       {/* 2. Section 1: Hero Wayang Jawi */}

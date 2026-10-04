@@ -151,6 +151,14 @@ export function WorksWheel({
     return () => query.removeEventListener("change", read);
   }, []);
 
+  const activePillRef = React.useRef<HTMLButtonElement | null>(null);
+  React.useEffect(() => {
+    activePillRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [active]);
   React.useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
@@ -357,7 +365,7 @@ export function WorksWheel({
       >
         <div
           ref={wheelRef}
-          className="absolute top-1/2 left-1/2 [transform-style:preserve-3d]"
+          className="absolute top-[34%] sm:top-1/2 left-1/2 [transform-style:preserve-3d]"
         >
           {items.map((item, i) => {
             return (
@@ -424,44 +432,44 @@ export function WorksWheel({
       {/* Enhanced Active Character Description Panel on Left — Smooth AnimatePresence Crossfade */}
       <div
         ref={titleRef}
-        className="pointer-events-none absolute top-1/2 left-[1%] sm:left-[2%] md:left-[2%] -translate-y-1/2 tracking-tight opacity-100 max-w-[260px] sm:max-w-[300px] md:max-w-[340px] lg:max-w-[360px] z-30"
+        className="pointer-events-none absolute bottom-1.5 inset-x-2 sm:inset-x-auto sm:bottom-auto sm:top-1/2 sm:left-[2%] sm:-translate-y-1/2 tracking-tight opacity-100 max-w-full sm:max-w-[300px] md:max-w-[340px] lg:max-w-[360px] z-30"
       >
-        <div className="pointer-events-auto bg-[#dedf42]/95 backdrop-blur-md p-4 sm:p-5 md:p-6 rounded-2xl border-2 border-black/35 shadow-2xl select-text min-h-[220px] flex flex-col justify-between overflow-hidden">
+        <div className="pointer-events-auto bg-[#dedf42]/95 backdrop-blur-md p-3 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl border border-black/35 sm:border-2 shadow-xl select-text min-h-0 sm:min-h-[220px] flex flex-col justify-between overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={items[active]?.title || active}
-              initial={{ opacity: 0, y: 12, filter: "blur(3px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -10, filter: "blur(3px)" }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
               className="flex-1 flex flex-col justify-between"
             >
               <div>
                 {items[active]?.role && (
-                  <span className="text-[10px] sm:text-xs font-mono font-bold tracking-[0.24em] text-black/75 uppercase block mb-1.5">
+                  <span className="text-[9px] sm:text-xs font-mono font-bold tracking-[0.24em] text-black/75 uppercase block mb-0.5 sm:mb-1.5">
                     {items[active]?.role}
                   </span>
                 )}
-                <h3 className="font-playfair text-xl sm:text-3xl md:text-4xl font-bold text-black uppercase leading-tight">
+                <h3 className="font-playfair text-lg sm:text-2xl md:text-4xl font-bold text-black uppercase leading-tight">
                   {items[active]?.title}
                 </h3>
                 {items[active]?.description && (
-                  <p className="text-xs sm:text-sm font-sans font-medium text-black/85 leading-relaxed mt-2.5 select-text">
+                  <p className="text-[11px] sm:text-xs md:text-sm font-sans font-medium text-black/85 leading-relaxed mt-1 sm:mt-2.5 line-clamp-2 sm:line-clamp-none select-text">
                     {items[active]?.description}
                   </p>
                 )}
               </div>
 
               {items[active]?.href && (
-                <div className="mt-4">
+                <div className="mt-2.5 sm:mt-4">
                   <OriginButton
                     href={items[active].href!}
                     fillClassName="bg-[#dedf42]"
                     activeTextClassName="text-black"
-                    className="h-auto px-5 sm:px-6 py-2 sm:py-2.5 rounded-full border-2 border-black/80 bg-black text-[#dedf42] font-sans font-bold text-xs sm:text-sm tracking-wider uppercase shadow-md inline-flex items-center gap-2 group cursor-pointer"
+                    className="h-auto px-4 sm:px-6 py-1.5 sm:py-2.5 rounded-full border-2 border-black/80 bg-black text-[#dedf42] font-sans font-bold text-[11px] sm:text-sm tracking-wider uppercase shadow-md inline-flex items-center gap-1.5 sm:gap-2 group cursor-pointer"
                   >
                     <span>Detail Tokoh</span>
-                    <span className="transition-transform group-hover:translate-x-1 text-sm sm:text-base">→</span>
+                    <span className="transition-transform group-hover:translate-x-1 text-xs sm:text-base">→</span>
                   </OriginButton>
                 </div>
               )}
@@ -469,8 +477,37 @@ export function WorksWheel({
           </AnimatePresence>
         </div>
       </div>
+
+      {/* Mobile Horizontal Character Selector Button Bar (< 640px) */}
+      <div className="sm:hidden absolute top-2.5 inset-x-2 z-30 pointer-events-auto">
+        <div className="flex items-center gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-pan-x px-2 py-1">
+          {items.map((item, i) => {
+            const isActive = i === active;
+            return (
+              <button
+                key={item.title}
+                ref={isActive ? activePillRef : null}
+                type="button"
+                onClick={() => {
+                  to(i + 1);
+                  onSelectCharacter?.(i);
+                }}
+                className={cn(
+                  "px-3 py-1 rounded-full text-xs font-mono font-semibold whitespace-nowrap cursor-pointer transition-all shrink-0",
+                  isActive
+                    ? "bg-black text-[#dedf42] font-bold shadow-md scale-105"
+                    : "bg-black/10 text-black/80 hover:bg-black/20 hover:text-black border border-black/20"
+                )}
+              >
+                {item.title}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <ol
-        className="text-current opacity-75 absolute top-[7.5%] right-[2.5%] text-right leading-[1.75] z-30 pointer-events-auto"
+        className="text-current opacity-75 absolute top-[7.5%] right-[2.5%] text-right leading-[1.75] z-30 pointer-events-auto hidden sm:block"
         style={{ fontSize: metrics.index }}
       >
         {items.map((item, i) => (

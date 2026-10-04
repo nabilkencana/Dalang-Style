@@ -169,14 +169,14 @@ export default function GsapAnimations() {
 
     // Poster card entrance
     gsap.from('[data-gsap="awaken-card"]', {
-      scale: 0.9,
-      opacity: 0.2,
-      duration: 1.3,
+      scale: 0.95,
+      opacity: 0.7,
+      duration: 1.0,
       ease: 'power2.out',
       scrollTrigger: {
         trigger: '#cara-bermain',
-        start: 'top 80%',
-        end: 'top 30%',
+        start: 'top 90%',
+        end: 'top 50%',
         scrub: 1,
       },
     });
@@ -190,8 +190,8 @@ export default function GsapAnimations() {
       stagger: 0.14,
       scrollTrigger: {
         trigger: '#cara-bermain',
-        start: 'top 68%',
-        toggleActions: 'play none none reverse',
+        start: 'top 75%',
+        toggleActions: 'play none none none',
       },
     });
 
@@ -204,21 +204,21 @@ export default function GsapAnimations() {
       stagger: 0.18,
       scrollTrigger: {
         trigger: '#cara-bermain',
-        start: 'top 60%',
-        toggleActions: 'play none none reverse',
+        start: 'top 70%',
+        toggleActions: 'play none none none',
       },
     });
 
     // WorksWheel 3D wheel entrance
     gsap.from('[data-gsap="awaken-wheel"]', {
-      scale: 0.88,
+      scale: 0.92,
       opacity: 0,
-      duration: 1.1,
+      duration: 1.0,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: '#cara-bermain',
-        start: 'top 65%',
-        toggleActions: 'play none none reverse',
+        start: 'top 75%',
+        toggleActions: 'play none none none',
       },
     });
     // Read More CTA pill button
@@ -229,8 +229,8 @@ export default function GsapAnimations() {
       ease: 'back.out(2)',
       scrollTrigger: {
         trigger: '#cara-bermain',
-        start: 'top 65%',
-        toggleActions: 'play none none reverse',
+        start: 'top 75%',
+        toggleActions: 'play none none none',
       },
     });
 

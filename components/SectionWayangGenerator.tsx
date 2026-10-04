@@ -49,9 +49,29 @@ export default function SectionWayangGenerator({ id = 'kreasi' }: SectionWayangG
 
     const mm = gsap.matchMedia();
 
-    // Desktop & Tablet: Menindihi section sebelumnya dengan rotasi menyapu 30° -> 0° dari bottom-left
+    // Desktop & Tablet (>= 768px): Menindihi section sebelumnya dengan rotasi menyapu 30° -> 0° dari bottom-left
     mm.add('(min-width: 768px)', () => {
       gsap.set(innerRef.current, { rotation: 30, transformOrigin: 'bottom left' });
+
+      const tween = gsap.to(innerRef.current, {
+        rotation: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'top top',
+          scrub: true,
+        },
+      });
+
+      return () => {
+        if (tween.scrollTrigger) tween.scrollTrigger.kill();
+      };
+    });
+
+    // Mobile (< 768px): Menindihi section sebelumnya dengan rotasi menyapu 18° -> 0° yang anggun & presisi
+    mm.add('(max-width: 767px)', () => {
+      gsap.set(innerRef.current, { rotation: 18, transformOrigin: 'bottom left' });
 
       const tween = gsap.to(innerRef.current, {
         rotation: 0,
@@ -133,7 +153,8 @@ export default function SectionWayangGenerator({ id = 'kreasi' }: SectionWayangG
                   </div>
 
                   {/* Archetype Quick Selector */}
-                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+                  {/* Archetype Quick Selector — Smooth Touch Scroll */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                     {PRESET_WAYANG_CREATIONS.map((preset, idx) => (
                       <button
                         key={preset.id}

@@ -4,10 +4,13 @@ import React, { useState, useRef } from "react";
 import Link from "next/link";
 import {
   motion,
+  AnimatePresence,
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
 import { Menu, MenuItem, ProductItem, HoveredLink } from "@/components/ui/navbar-menu";
+import StaggeredMenu, { StaggeredMenuItem, StaggeredMenuSocialItem } from "@/components/ui/StaggeredMenu";
+
 import WayangLogo from "@/components/WayangLogo";
 import { cn } from "@/lib/utils";
 const springConfig = {
@@ -16,10 +19,24 @@ const springConfig = {
   damping: 26,
   mass: 0.65,
 };
+const STAGGERED_MENU_ITEMS: StaggeredMenuItem[] = [
+  { label: 'Lakon Bima Suci', link: '/#lakon' },
+  { label: 'Tokoh Wayang', link: '/#cara-bermain' },
+  { label: 'Galeri Museum', link: '/#galeri' },
+  { label: 'Warta Budaya', link: '/berita' },
+  { label: 'Katalog Tokoh', link: '/katalog' },
+  { label: 'Sang Empu AI', link: '/kreasi', badge: 'BARU', highlight: true },
+  { label: 'Mainkan Wayang', link: '/panduan' },
+];
+
+const STAGGERED_SOCIAL_ITEMS: StaggeredMenuSocialItem[] = [
+  { label: 'Panggung Wayang', link: '/stage' },
+  { label: 'Kamera AI', link: '/camera' },
+  { label: 'Kredit & Refleksi', link: '/kredit' },
+];
 
 export default function Navbar({ className }: { className?: string }) {
   const [active, setActive] = useState<string | null>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
 
   // Smooth scroll tracking with hysteresis to prevent jitter
@@ -45,7 +62,7 @@ export default function Navbar({ className }: { className?: string }) {
   });
 
   return (
-    <motion.header
+      <motion.header
       data-gsap="hero-nav"
       animate={{
         maxWidth: isCompact ? 540 : 1040,
@@ -54,7 +71,7 @@ export default function Navbar({ className }: { className?: string }) {
       className={cn(
         // Centered notch via inset-x-0 mx-auto with strict 1040px desktop cap
         "fixed z-50 top-2 inset-x-0 mx-auto w-full max-w-[1040px] pointer-events-auto",
-        "max-[850px]:top-0 max-[850px]:inset-x-0 max-[850px]:!w-full max-[850px]:!max-w-none",
+        "max-[850px]:top-0 max-[850px]:inset-x-0 max-[850px]:!w-full max-[850px]:!max-w-none max-[850px]:z-[80]",
         className
       )}
     >
@@ -402,7 +419,7 @@ export default function Navbar({ className }: { className?: string }) {
             x: isCompact ? -45 : 0,
           }}
           transition={springConfig}
-          className="flex items-center justify-end gap-3.5 shrink-0 overflow-hidden pointer-events-auto mr-1 sm:mr-2"
+          className="hidden min-[850px]:flex items-center justify-end gap-3.5 shrink-0 overflow-hidden pointer-events-auto mr-1 sm:mr-2"
         >
 
           {/* Exact Split Button from rbp-saas-template [ Mainkan Wayang | ↘ ] */}
@@ -436,93 +453,21 @@ export default function Navbar({ className }: { className?: string }) {
           </Link>
         </motion.div>
 
-        {/* Mobile Hamburger Button */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle mobile menu"
-          className="min-[850px]:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 text-[#dedf42] shrink-0"
-        >
-          <div className="w-5 h-3.5 relative flex flex-col justify-between">
-            <span
-              className={cn(
-                "block h-0.5 w-full bg-[#dedf42] transition-transform",
-                mobileMenuOpen && "rotate-45 translate-y-1.5"
-              )}
-            />
-            <span
-              className={cn(
-                "block h-0.5 w-full bg-[#dedf42] transition-opacity",
-                mobileMenuOpen && "opacity-0"
-              )}
-            />
-            <span
-              className={cn(
-                "block h-0.5 w-full bg-[#dedf42] transition-transform",
-                mobileMenuOpen && "-rotate-45 -translate-y-1.5"
-              )}
-            />
-          </div>
-        </button>
-      </Menu>
-
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="min-[850px]:hidden bg-[#16100b]/98 backdrop-blur-2xl border-b border-x border-[#dedf42]/30 px-6 py-5 rounded-b-3xl shadow-2xl flex flex-col space-y-4 animate-in slide-in-from-top-4 duration-200">
-          <Link
-            href="/#lakon"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-sm font-semibold text-white hover:text-[#dedf42]"
-          >
-            Lakon Bima Suci
-          </Link>
-          <Link
-            href="/#cara-bermain"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-sm font-semibold text-white hover:text-[#dedf42]"
-          >
-            Tokoh Wayang (3D Wheel)
-          </Link>
-          <Link
-            href="/#galeri"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-sm font-semibold text-white hover:text-[#dedf42]"
-          >
-            Galeri 16 Museum Nusantara
-          </Link>
-          <Link
-            href="/berita"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-sm font-semibold text-white hover:text-[#dedf42]"
-          >
-            Warta & Refleksi Budaya
-          </Link>
-          <Link
-            href="/katalog"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-sm font-semibold text-white hover:text-[#dedf42]"
-          >
-            Katalog Lengkap Tokoh
-          </Link>
-          <Link
-            href="/kreasi"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-sm font-semibold text-[#f2c76b] hover:text-[#dedf42] flex items-center justify-between"
-          >
-            <span>Sang Empu (Chatbot AI)</span>
-            <span className="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-[#dedf42] text-black rounded-full">
-              BARU
-            </span>
-          </Link>
-          <Link
-            href="/panduan"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-sm font-bold text-[#dedf42]"
-          >
-            Mainkan Wayang &rarr;
-          </Link>
+        {/* Mobile StaggeredMenu Trigger & Panel — React Bits GSAP Animation (Mobile Only) */}
+        <div className="min-[850px]:hidden flex items-center shrink-0 mr-1 sm:mr-2">
+          <StaggeredMenu
+            items={STAGGERED_MENU_ITEMS}
+            socialItems={STAGGERED_SOCIAL_ITEMS}
+            colors={['#3d2814', '#1f130a', '#0b0604']}
+            accentColor="#dedf42"
+            panelBackground="#0d0805"
+            textColor="#f4e7cd"
+            displaySocials={true}
+            displayItemNumbering={true}
+            isFixed={true}
+          />
         </div>
-      )}
+      </Menu>
     </motion.header>
   );
 }

@@ -805,14 +805,19 @@ export const Formation = ({ works, onCardClick }: FormationProps): ReactNode => 
                     }}
                   />
 
-                  {/* ── Hover Overlay: Dark Tint + Gold Border ── */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-[12px] border-2 border-[#dedf42]" />
+                  {/* ── Hover & Active Touch Overlay: Dark Tint + Gold Border ── */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 group-active:opacity-100 group-focus:opacity-100 transition-opacity duration-300 pointer-events-none rounded-[12px] border-2 border-[#dedf42]" />
 
-                  {/* ── Center Hover Affordance: Large Diagonal Arrow Icon (Sesuai Permintaan) ── */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#dedf42] text-black flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-300">
-                      <ArrowUpRight className="w-7 h-7 sm:w-8 sm:h-8 stroke-[3]" />
+                  {/* ── Center Hover Affordance: Large Diagonal Arrow Icon (Desktop & Mobile on Touch/Hover) ── */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 opacity-0 group-hover:opacity-100 group-active:opacity-100 group-focus:opacity-100 transition-all duration-300">
+                    <div className="w-10 h-10 sm:w-12 md:w-14 sm:h-12 md:h-14 rounded-full bg-[#dedf42] text-black flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 group-active:scale-100 transition-transform duration-300">
+                      <ArrowUpRight className="w-5 h-5 sm:w-7 md:w-8 sm:h-7 md:h-8 stroke-[3]" />
                     </div>
+                  </div>
+
+                  {/* ── Mobile Corner Icon Affordance (Always visible on mobile to invite interaction) ── */}
+                  <div className="sm:hidden absolute top-2 right-2 pointer-events-none z-10 size-6 rounded-full bg-black/70 backdrop-blur-sm border border-[#dedf42]/80 text-[#dedf42] flex items-center justify-center shadow-lg group-hover:opacity-0 group-active:opacity-0 transition-opacity">
+                    <ArrowUpRight className="size-3.5 stroke-[2.5]" />
                   </div>
                 </div>
               </div>
@@ -841,8 +846,8 @@ export const Formation = ({ works, onCardClick }: FormationProps): ReactNode => 
         </span>
       </footer>
 
-      {/* Formation dock */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-50 flex justify-center px-4 pb-6 sm:inset-x-auto sm:bottom-auto sm:right-0 sm:top-5 sm:justify-end sm:px-0 sm:pr-6">
+      {/* Formation dock — Top right on desktop, bottom centered on mobile */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-6 sm:bottom-auto sm:top-5 sm:right-6 sm:inset-x-auto z-40 flex justify-center px-3 sm:px-0">
         <div
           role="tablist"
           data-fm-ui
