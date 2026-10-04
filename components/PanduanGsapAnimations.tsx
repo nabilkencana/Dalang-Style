@@ -141,6 +141,7 @@ export default function PanduanGsapAnimations() {
       },
     });
 
+    // Desktop: Hotkey Keyboard Cards Stagger
     gsap.from('[data-gsap="panduan-hotkey-card"]', {
       scale: 0.92,
       y: 15,
@@ -150,11 +151,25 @@ export default function PanduanGsapAnimations() {
       ease: 'back.out(1.5)',
       scrollTrigger: {
         trigger: '[data-gsap="panduan-hotkey-section"]',
-        start: 'top 82%',
+        start: 'top 85%',
         toggleActions: 'play none none none',
       },
     });
 
+    // Mobile: Touch Control Cards Stagger
+    gsap.from('[data-gsap="panduan-touch-card"]', {
+      scale: 0.94,
+      y: 15,
+      opacity: 0,
+      stagger: 0.06,
+      duration: 0.55,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '[data-gsap="panduan-hotkey-section"]',
+        start: 'top 88%',
+        toggleActions: 'play none none none',
+      },
+    });
     // ─────────────────────────────────────────────────────────────
     // 5. TIPS & OPTIMALISASI KAMERA
     // ─────────────────────────────────────────────────────────────

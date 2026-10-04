@@ -23,9 +23,8 @@ const STAGGERED_MENU_ITEMS: StaggeredMenuItem[] = [
   { label: 'Lakon Bima Suci', link: '/#lakon' },
   { label: 'Tokoh Wayang', link: '/#cara-bermain' },
   { label: 'Galeri Museum', link: '/#galeri' },
-  { label: 'Warta Budaya', link: '/berita' },
-  { label: 'Katalog Tokoh', link: '/katalog' },
-  { label: 'Sang Empu AI', link: '/kreasi', badge: 'BARU', highlight: true },
+  { label: 'Warta Budaya', link: '/#berita' },
+  { label: 'Sang Empu AI', link: '/#kreasi', badge: 'BARU', highlight: true },
   { label: 'Mainkan Wayang', link: '/panduan' },
 ];
 
