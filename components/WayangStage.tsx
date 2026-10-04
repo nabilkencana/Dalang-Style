@@ -1331,15 +1331,15 @@ export default function WayangStage() {
       {/* Floating Action Buttons */}
       <div className="top-floating-actions">
         {/* Character Selection Quick Button */}
-        <button
+        {/* <button
           type="button"
           className="icon-btn"
           aria-label="Pilih Tokoh Wayang"
           title="Pilih Tokoh Wayang"
           onClick={() => setShowCharModal(true)}
         >
-          <span style={{ fontSize: '15px' }}>🎭</span>
-        </button>
+          <span style={{ fontSize: '15px' }}></span>
+        </button> */}
 
         {/* Home Button */}
         <Link
@@ -1435,7 +1435,7 @@ export default function WayangStage() {
             setShowCharModal(true);
           }}
         >
-          🎭 Ganti Tokoh Wayang...
+          Ganti Tokoh Wayang
         </button>
         <label>
           Mode Kontrol
@@ -1652,7 +1652,7 @@ export default function WayangStage() {
               <div className={`stage-slot-box ${activeSlotTab === 'left' ? 'mobile-active' : 'mobile-hidden-on-small'}`}>
                 <div className="slot-header">
                   <span className="slot-label">
-                    {settings.characters === 'two' ? '🎭 Tokoh Sisi Kiri' : '🎭 Tokoh Wayang (Solo)'}
+                    {settings.characters === 'two' ? ' Tokoh Sisi Kiri' : ' Tokoh Wayang (Solo)'}
                   </span>
                   <span className="slot-active-badge">Aktif</span>
                 </div>
@@ -1723,7 +1723,7 @@ export default function WayangStage() {
               {settings.characters === 'two' && (
                 <div className={`stage-slot-box ${activeSlotTab === 'right' ? 'mobile-active' : 'mobile-hidden-on-small'}`}>
                   <div className="slot-header">
-                    <span className="slot-label">🎭 Tokoh Sisi Kanan</span>
+                    <span className="slot-label"> Tokoh Sisi Kanan</span>
                     <span className="slot-active-badge">Aktif</span>
                   </div>
 

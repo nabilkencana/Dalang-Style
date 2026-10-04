@@ -7,6 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "echo \"No test specified\" && exit 0",
     "lint": "eslint",
     "video:preview": "remotion studio remotion/index.ts",
     "video:render": "remotion render remotion/index.ts DalangShowcase out/dalang-showcase.mp4 --gl=angle"

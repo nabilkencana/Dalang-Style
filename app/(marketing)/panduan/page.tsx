@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -14,12 +14,28 @@ import {
 import PanduanGsapAnimations from '@/components/PanduanGsapAnimations';
 
 export default function PanduanPage() {
+  const [deviceTab, setDeviceTab] = useState<'mobile' | 'desktop'>('desktop');
+
+  // Auto-detect device type on mount and on screen resize
+  useEffect(() => {
+    const handleDeviceDetect = () => {
+      if (typeof window !== 'undefined') {
+        const isMobileScreen = window.innerWidth < 768;
+        setDeviceTab(isMobileScreen ? 'mobile' : 'desktop');
+      }
+    };
+
+    handleDeviceDetect();
+    window.addEventListener('resize', handleDeviceDetect);
+    return () => window.removeEventListener('resize', handleDeviceDetect);
+  }, []);
+
   const handleScrollToGestur = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const target = document.getElementById('gestur-utama');
     if (!target) return;
-    if (typeof window !== 'undefined' && window.lenisInstance) {
-      window.lenisInstance.scrollTo(target, {
+    if (typeof window !== 'undefined' && (window as unknown as { lenisInstance?: { scrollTo: (t: HTMLElement, opt: object) => void } }).lenisInstance) {
+      (window as unknown as { lenisInstance: { scrollTo: (t: HTMLElement, opt: object) => void } }).lenisInstance.scrollTo(target, {
         offset: -80,
         duration: 1.25,
         easing: (t: number) =>
@@ -34,7 +50,7 @@ export default function PanduanPage() {
     <div className="relative w-full min-h-screen bg-[#dedf42] text-[#050303] selection:bg-black selection:text-[#dedf42] overflow-x-hidden pt-28 pb-20">
       {/* GSAP ScrollTrigger Animations Controller for Panduan */}
       <PanduanGsapAnimations />
-      {/* ── Background Watermark Canvas (Same as Section 4 SectionStoryAwakening) ── */}
+      {/* ── Background Watermark Canvas ── */}
       <div className="fixed inset-0 bg-[#dedf42] pointer-events-none -z-10">
         <Image
           src="/images/story-awakening-card-bg.png"
@@ -64,22 +80,15 @@ export default function PanduanPage() {
         </div>
 
         {/* ── Hero Title Section ── */}
-        <div className="pt-10 pb-14 text-center max-w-4xl mx-auto">
+        <div className="pt-10 pb-8 text-center max-w-4xl mx-auto">
           <span data-gsap="panduan-kicker" className="inline-block px-4 py-1.5 rounded-full bg-black text-[#dedf42] text-xs font-mono font-bold tracking-widest uppercase mb-4 shadow-sm">
-            <span className="hidden md:inline">TUTORIAL & PANDUAN PANGGUNG</span>
-            <span className="md:hidden inline">PANDUAN MENDALANG • PONSEL & AI</span>
+            TUTORIAL & PANDUAN PANGGUNG DALANG
           </span>
           <h1 data-gsap="panduan-title" className="font-serif italic font-bold text-4xl sm:text-6xl lg:text-7xl text-[#050303] leading-[1.02] tracking-tight">
-            <span className="hidden md:inline">Seni Mendalang di Ujung Jemari Anda</span>
-            <span className="md:hidden inline">Hidupkan Lakon dari Genggaman Ponsel</span>
+            Seni Mendalang di Ujung Jemari Anda
           </h1>
           <p data-gsap="panduan-subtitle" className="mt-5 text-base sm:text-lg lg:text-xl font-sans text-black/80 leading-relaxed font-normal max-w-2xl mx-auto">
-            <span className="hidden md:inline">
-              Pelajari bagaimana kecerdasan buatan membaca gerak tangan, jemari cempurit, dan gestur sakral Anda untuk menghidupkan boneka wayang kulit di Panggung Virtual Wayang Jawi.
-            </span>
-            <span className="md:hidden inline">
-              Arahkan kamera depan ponsel ke tangan Anda. Kecerdasan buatan Wayang Jawi membaca liukan jemari menjadi tarian wayang kulit yang adiluhung secara langsung.
-            </span>
+            Pelajari bagaimana kecerdasan buatan dan antarmuka panggung membaca gerak tangan, jemari cempurit, serta sentuhan layar untuk menghidupkan boneka wayang kulit di Panggung Virtual Wayang Jawi.
           </p>
 
           <div data-gsap="panduan-cta" className="mt-8 flex items-center justify-center gap-4 flex-wrap">
@@ -87,8 +96,7 @@ export default function PanduanPage() {
               href="/stage"
               className="px-6 sm:px-8 py-3 rounded-full bg-black text-[#dedf42] font-sans font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-neutral-800 active:scale-95 transition-[background-color,transform,box-shadow] duration-200 shadow-lg flex items-center gap-2"
             >
-              <span className="hidden md:inline">Masuk ke Panggung Sekarang</span>
-              <span className="md:hidden inline">Buka Panggung HP Sekarang</span>
+              <span>Buka Panggung Wayang</span>
               <span className="text-base">&rarr;</span>
             </Link>
             <a
@@ -96,19 +104,22 @@ export default function PanduanPage() {
               onClick={handleScrollToGestur}
               className="px-6 sm:px-7 py-3 rounded-full border border-black/40 text-black font-sans font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-black/10 active:scale-95 transition-all cursor-pointer shadow-sm"
             >
-              <span className="hidden md:inline">Pelajari 4 Gestur Inti &darr;</span>
-              <span className="md:hidden inline">Pelajari 4 Gestur Tangan &darr;</span>
+              <span>Pelajari 4 Gestur Inti &darr;</span>
             </a>
           </div>
         </div>
 
         {/* ── 4 GESTUR UTAMA TANGAN (CARDS) ── */}
         <section id="gestur-utama" className="py-8 scroll-mt-24">
-          <div data-gsap="panduan-gestur-header" className="flex items-center gap-3 mb-8">
+          <div data-gsap="panduan-gestur-header" className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
             <h2 className="font-serif italic font-bold text-2xl sm:text-3xl lg:text-4xl text-[#050303]">
-              <span className="hidden md:inline">Empat Gestur Inti Pelacakan Tangan</span>
-              <span className="md:hidden inline">4 Gestur Tangan di Depan Kamera HP</span>
+              {deviceTab === 'mobile'
+                ? 'Empat Gestur Tangan di Depan Kamera Ponsel'
+                : 'Empat Gestur Inti Pelacakan AI Tangan (Webcam)'}
             </h2>
+            <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
+              {deviceTab === 'mobile' ? 'MODE PONSEL / TABLET' : 'MODE DESKTOP / PC'}
+            </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
@@ -130,37 +141,41 @@ export default function PanduanPage() {
                 </div>
 
                 <h3 className="font-serif italic font-bold text-2xl sm:text-3xl text-[#050303] mb-3">
-                  <span className="hidden md:inline">Gerak Batang Gapit Utama</span>
-                  <span className="md:hidden inline">Telapak Tangan: Kendali Badan Wayang</span>
+                  {deviceTab === 'mobile'
+                    ? 'Telapak Tangan & Sentuhan Kelir: Posisi Badan'
+                    : 'Gerak Batang Gapit Utama & Kursor Mouse'}
                 </h3>
                 <p className="text-black/80 text-sm sm:text-base leading-relaxed font-sans font-normal mb-5">
-                  <span className="hidden md:inline">
-                    Posisi pusat telapak tangan Anda (*palm center*) langsung memandu koordinat tubuh wayang di atas kain kelir.
-                  </span>
-                  <span className="md:hidden inline">
-                    Pusat telapak tangan Anda mengarahkan posisi badan wayang melangkah di atas kelir panggung.
-                  </span>
+                  {deviceTab === 'mobile'
+                    ? 'Pusat telapak tangan Anda di depan kamera depan atau sentuhan langsung jari di layar HP memandu koordinat tubuh wayang di atas kelir panggung.'
+                    : 'Posisi titik tengah telapak tangan (*palm center*) atau drag kursor mouse langsung memandu koordinat posisi tubuh wayang di atas kain kelir.'}
                 </p>
                 <div className="space-y-2 text-xs sm:text-sm font-sans text-black/85">
                   <div className="flex items-start gap-2">
                     <span className="font-bold text-black">•</span>
-                    <span><strong>Geser Kiri/Kanan:</strong> Wayang melangkah melintasi layar panggung.</span>
+                    <span><strong>Geser Kiri/Kanan:</strong> Wayang melangkah melintasi layar panggung {deviceTab === 'mobile' ? 'ponsel' : 'lebar'}.</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="font-bold text-black">•</span>
-                    <span><strong>Angkat/Turunkan:</strong> Wayang melompat atau menunduk dalam sikap sembah takzim.</span>
+                    <span><strong>Angkat/Turunkan:</strong> Wayang melompat terbang atau menunduk dalam sikap sembah takzim.</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="font-bold text-black">•</span>
-                    <span><strong>Miringkan Telapak:</strong> Condongkan badan wayang saat terbang atau bertarung.</span>
+                    <span>
+                      {deviceTab === 'mobile'
+                        ? 'Sentuh & Drag: Anda juga dapat menyentuh dan menggeser langsung wayang di layar kelir HP.'
+                        : 'Miringkan Telapak: Condongkan badan wayang secara dinamis saat adegan terbang atau perang tanding.'}
+                    </span>
                   </div>
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
-                <span className="hidden md:inline">Titik Deteksi AI: Wrist & Sendi Telapak (0, 5, 9, 13, 17)</span>
-                <span className="md:hidden inline">Sensor HP: Deteksi 21 titik sendi tangan secara instan</span>
+                {deviceTab === 'mobile'
+                  ? 'Sensor Ponsel: Deteksi 21 titik sendi kamera potret tanpa distorsi (anti-gepeng)'
+                  : 'Sensor Webcam: Deteksi 21 titik sendi telapak tangan & pergelangan'}
               </div>
             </div>
+
             {/* Gestur 2: Kendali Lengan Wayang */}
             <div data-gsap="panduan-gestur-card" className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
               <div>
@@ -179,16 +194,14 @@ export default function PanduanPage() {
                 </div>
 
                 <h3 className="font-serif italic font-bold text-2xl sm:text-3xl text-[#050303] mb-3">
-                  <span className="hidden md:inline">Gerak Tangan & Siku Wayang</span>
-                  <span className="md:hidden inline">Ibu Jari & Telunjuk: Tuding Lengan Wayang</span>
+                  {deviceTab === 'mobile'
+                    ? 'Ibu Jari & Telunjuk: Tuding Lengan di HP'
+                    : 'Gerak Tangkai Cempurit & Siku Wayang'}
                 </h3>
                 <p className="text-black/80 text-sm sm:text-base leading-relaxed font-sans font-normal mb-5">
-                  <span className="hidden md:inline">
-                    Ujung jari jemari Anda menggantikan batang tangkai cempurit tanduk kerbau yang biasa dipegang dalang tradisional.
-                  </span>
-                  <span className="md:hidden inline">
-                    Jemari Anda menggantikan bilah tangkai cempurit kerbau untuk menggerakkan kedua tangan wayang.
-                  </span>
+                  {deviceTab === 'mobile'
+                    ? 'Jemari Anda menggantikan bilah cempurit tanduk kerbau. Kamera depan HP membaca sudut jemari untuk mengartikulasikan lengan wayang secara presisi.'
+                    : 'Ujung jari jemari Anda menggantikan batang tangkai cempurit tanduk kerbau yang biasa dipegang dalang profesional di balik layar kelir.'}
                 </p>
                 <div className="space-y-2 text-xs sm:text-sm font-sans text-black/85">
                   <div className="flex items-start gap-2">
@@ -206,10 +219,12 @@ export default function PanduanPage() {
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
-                <span className="hidden md:inline">Opsi Ekstra: Mode Thumb-Pinky untuk rentangan tangan lebih lebar</span>
-                <span className="md:hidden inline">Sensitivitas Gerak: Presisi tinggi membaca liukan jari cempurit</span>
+                {deviceTab === 'mobile'
+                  ? 'Kamera Depan HP: Jarak nyaman tangan 40–70 cm dari layar ponsel'
+                  : 'Sensitivitas Lengan: Dapat disetel di menu Pengaturan (Split / Klasik)'}
               </div>
             </div>
+
             {/* Gestur 3: Tarian Sakral Kiprahan */}
             <div data-gsap="panduan-gestur-card" className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
               <div>
@@ -218,7 +233,7 @@ export default function PanduanPage() {
                     GESTUR 03 • TARIAN SAKRAL
                   </span>
                   <span className="px-3 py-1 rounded-full bg-black text-[#dedf42] text-[11px] font-mono font-bold">
-                    PINKY SIGN (KELINGKING)
+                    {deviceTab === 'mobile' ? 'KELINGKING / TOMBOL D' : 'PINKY SIGN / TOMBOL [D]'}
                   </span>
                 </div>
 
@@ -228,37 +243,41 @@ export default function PanduanPage() {
                 </div>
 
                 <h3 className="font-serif italic font-bold text-2xl sm:text-3xl text-[#050303] mb-3">
-                  <span className="hidden md:inline">Pemicu Tari Kiprahan Otomatis</span>
-                  <span className="md:hidden inline">Kelingking: Pemicu Tari Sakral Kiprahan</span>
+                  {deviceTab === 'mobile'
+                    ? 'Kelingking & Tombol [D]: Tari Kiprah di HP'
+                    : 'Pemicu Tari Kiprahan Sakral Otomatis'}
                 </h3>
                 <p className="text-black/80 text-sm sm:text-base leading-relaxed font-sans font-normal mb-5">
-                  <span className="hidden md:inline">
-                    Acungkan jari kelingking Anda tegak ke atas, sementara jari telunjuk, tengah, dan manis terlipat di telapak tangan.
-                  </span>
-                  <span className="md:hidden inline">
-                    Tegakkan jari kelingking ke atas untuk memicu tarian gerak tubuh rancak secara otomatis.
-                  </span>
+                  {deviceTab === 'mobile'
+                    ? 'Tegakkan jari kelingking ke atas di depan kamera HP atau ketuk tombol [D] Tari Kiprah di bar bawah panggung HP untuk memicu tarian dinamis.'
+                    : 'Acungkan jari kelingking Anda tegak ke atas atau tekan tombol keyboard [D] untuk memicu gerakan tari dinamis penari keraton secara seketika.'}
                 </p>
                 <div className="space-y-2 text-xs sm:text-sm font-sans text-black/85">
                   <div className="flex items-start gap-2">
                     <span className="font-bold text-black">•</span>
-                    <span><strong>Kunci Pose Kelingking:</strong> Sensor AI langsung mendeteksi pose sakral penari keraton.</span>
+                    <span><strong>Pose Kelingking:</strong> Sensor AI mendeteksi pose jari sakral penari keraton Jawa.</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="font-bold text-black">•</span>
-                    <span><strong>Gerak Tari Rancak:</strong> Boneka wayang menari dengan gerak tubuh berirama dinamis.</span>
+                    <span><strong>Gerak Tubuh Berirama:</strong> Boneka wayang bergoyang luwes mengikuti pola tari kiprah klasik.</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="font-bold text-black">•</span>
-                    <span><strong>Selaras Tabuhan Gendang:</strong> Gerakan terkalibrasi selaras dengan tabuhan gendang gamelan.</span>
+                    <span>
+                      {deviceTab === 'mobile'
+                        ? 'Tombol Cepat HP: Tombol [D] di HUD bawah ponsel langsung mengaktifkan tari kiprah.'
+                        : 'Selaras Gamelan: Gerakan diselaraskan dengan tabuhan kendang pengiring.'}
+                    </span>
                   </div>
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
-                <span className="hidden md:inline">Pintasan Keyboard Alternatif: Tekan tombol [ D ]</span>
-                <span className="md:hidden inline">Di Layar HP: Acungkan kelingking atau ketuk tombol Tari di panggung</span>
+                {deviceTab === 'mobile'
+                  ? 'Aksi Cepat HP: Ketuk tombol [D] di bar kontrol bawah panggung ponsel'
+                  : 'Pintasan Keyboard: Tekan tombol [ D ] di keyboard'}
               </div>
             </div>
+
             {/* Gestur 4: Jarak Kedalaman & Bayangan Kelir */}
             <div data-gsap="panduan-gestur-card" className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:bg-black/10 transition-all gap-5">
               <div>
@@ -267,7 +286,7 @@ export default function PanduanPage() {
                     GESTUR 04 • KEDALAMAN (Z-AXIS)
                   </span>
                   <span className="px-3 py-1 rounded-full bg-black text-[#dedf42] text-[11px] font-mono font-bold">
-                    JARAK KE KAMERA
+                    {deviceTab === 'mobile' ? 'JARAK KE LAYAR HP' : 'JARAK WEBCAM / MOUSE WHEEL'}
                   </span>
                 </div>
 
@@ -277,16 +296,14 @@ export default function PanduanPage() {
                 </div>
 
                 <h3 className="font-serif italic font-bold text-2xl sm:text-3xl text-[#050303] mb-3">
-                  <span className="hidden md:inline">Efek Bayangan Tajam vs Baur</span>
-                  <span className="md:hidden inline">Jarak ke Layar: Efek Bayangan Kelir Blencong</span>
+                  {deviceTab === 'mobile'
+                    ? 'Jarak Tangan ke HP: Bayangan Api Blencong'
+                    : 'Efek Kedalaman & Bayangan Kelir Blencong'}
                 </h3>
                 <p className="text-black/80 text-sm sm:text-base leading-relaxed font-sans font-normal mb-5">
-                  <span className="hidden md:inline">
-                    Dalam seni wayang kulit asli, jarak boneka terhadap lampu blencong dan kain kelir menentukan ketajaman bayangan.
-                  </span>
-                  <span className="md:hidden inline">
-                    Maju-mundurkan tangan Anda di depan kamera HP untuk mengatur ketajaman bayangan siluet wayang.
-                  </span>
+                  {deviceTab === 'mobile'
+                    ? 'Maju-mundurkan tangan Anda di hadapan kamera HP untuk mengatur ketajaman bayangan siluet wayang di layar kelir virtual.'
+                    : 'Dalam pakeliran wayang kulit asli, jarak boneka terhadap api blencong menentukan ketajaman siluet bayangan di kain kelir.'}
                 </p>
                 <div className="space-y-2 text-xs sm:text-sm font-sans text-black/85">
                   <div className="flex items-start gap-2">
@@ -299,24 +316,29 @@ export default function PanduanPage() {
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="font-bold text-black">•</span>
-                    <span><strong>Nyala Api Blencong:</strong> Lampu minyak kelapa digital bergetar realistis dengan efek nyala api alami.</span>
+                    <span>
+                      {deviceTab === 'mobile'
+                        ? 'Api Blencong Digital: Nyala api minyak kelapa berkedip hidup di latar belakang panggung HP.'
+                        : 'Scroll Wheel Mouse: Putar roda mouse untuk mengatur kedalaman secara manual.'}
+                    </span>
                   </div>
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-black/20 text-[11px] font-mono text-black/60 uppercase tracking-wider">
-                <span className="hidden md:inline">Kontrol Mouse Alternatif: Gunakan Scroll Wheel untuk zoom kedalaman</span>
-                <span className="md:hidden inline">Rekomendasi HP: Jaga jarak tangan 40–70 cm dari kamera depan</span>
+                {deviceTab === 'mobile'
+                  ? 'Responsif Layar Ponsel: Skala wayang menyesuaikan proporsi layar HP secara otomatis'
+                  : 'Kontrol Desktop: Kombinasi AI tracking dan scroll wheel mouse'}
               </div>
             </div>
           </div>
         </section>
+
         {/* ── DUA MODE PERTUNJUKAN ── */}
         <section data-gsap="panduan-mode-section" className="py-12 border-t border-black/20">
           <div data-gsap="panduan-mode-header" className="flex items-center gap-3 mb-6">
             <span className="w-3 h-3 rounded-full bg-black shrink-0" />
             <h2 className="font-serif italic font-bold text-2xl sm:text-3xl lg:text-4xl text-[#050303]">
-              <span className="hidden md:inline">Dua Mode Karakter Panggung</span>
-              <span className="md:hidden inline">2 Pilihan Mode Main di Layar Ponsel</span>
+              Dua Mode Karakter Panggung Wayang
             </h2>
           </div>
 
@@ -339,26 +361,24 @@ export default function PanduanPage() {
                 </div>
 
                 <h3 className="font-serif italic font-bold text-xl sm:text-2xl text-black mb-2">
-                  <span className="hidden md:inline">Dua Wayang (Dua Tangan)</span>
-                  <span className="md:hidden inline">Mode Duo (2 Tangan = 2 Tokoh)</span>
+                  Mode Duo (2 Tangan = 2 Tokoh Berhadapan)
                 </h3>
                 <p className="text-black/80 text-sm leading-relaxed mb-4">
-                  <span className="hidden md:inline">
-                    Sangat ideal untuk adegan dialog, perdebatan batin, atau pertempuran dua satria:
-                  </span>
-                  <span className="md:hidden inline">
-                    Sangat pas untuk adegan dialog, wejangan batin, atau laga dua ksatria berhadapan:
-                  </span>
+                  Sangat ideal untuk adegan dialog sakral, wejangan batin, atau pertempuran dua satria:
                 </p>
                 <ul className="text-xs sm:text-sm space-y-2 text-black/85">
-                  <li>• <strong>Tangan Kiri Dalang:</strong> Mengendalikan wayang sisi kiri panggung.</li>
-                  <li>• <strong>Tangan Kanan Dalang:</strong> Mengendalikan wayang sisi kanan panggung.</li>
+                  <li>• <strong>Tangan Kiri Dalang:</strong> Mengendalikan tokoh di sisi kiri panggung kelir.</li>
+                  <li>• <strong>Tangan Kanan Dalang:</strong> Mengendalikan tokoh di sisi kanan panggung kelir.</li>
                   <li>• <strong>Otomatis Berhadapan:</strong> Kedua tokoh otomatis menatap satu sama lain saat saling mendekat.</li>
-                  <li className="hidden md:list-item">• <strong>Pintasan Cepat:</strong> Tekan tombol <kbd className="px-1.5 py-0.5 rounded bg-black text-[#dedf42] font-mono text-xs">2</kbd> di keyboard untuk beralih instan.</li>
-                  <li className="md:hidden list-item">• <strong>Ganti Cepat:</strong> Ketuk tombol mode di pojok panggung HP kapan saja.</li>
+                  {deviceTab === 'desktop' ? (
+                    <li>• <strong>Pintasan Keyboard:</strong> Tekan tombol <kbd className="px-1.5 py-0.5 rounded bg-black text-[#dedf42] font-mono text-xs">2</kbd> di keyboard untuk beralih instan.</li>
+                  ) : (
+                    <li>• <strong>Tombol Sentuh HP:</strong> Ketuk tombol <span className="font-mono font-bold bg-black text-[#dedf42] px-1.5 py-0.5 rounded text-xs">1 / 2</span> di bar bawah layar untuk beralih mode.</li>
+                  )}
                 </ul>
               </div>
             </div>
+
             {/* Mode 2: Satu Wayang Penuh (Dua Tangan) */}
             <div data-gsap="panduan-mode-card" className="bg-black/5 border-2 border-black/80 rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-sm hover:bg-black/10 transition-all gap-4">
               <div>
@@ -377,167 +397,217 @@ export default function PanduanPage() {
                 </div>
 
                 <h3 className="font-serif italic font-bold text-xl sm:text-2xl text-black mb-2">
-                  <span className="hidden md:inline">Satu Wayang (Solo Dua Tangan)</span>
-                  <span className="md:hidden inline">Mode Solo (2 Tangan = 1 Tokoh Bebas)</span>
+                  Mode Solo (2 Tangan = 1 Tokoh Bebas Artikulatif)
                 </h3>
                 <p className="text-black/80 text-sm leading-relaxed mb-4">
-                  <span className="hidden md:inline">
-                    Dua tangan dalang mengendalikan satu wayang dengan kebebasan gerak penuh dan artikulatif:
-                  </span>
-                  <span className="md:hidden inline">
-                    Kendalikan satu tokoh wayang dengan kebebasan gerak penuh menggunakan kedua tangan Anda:
-                  </span>
+                  Kendalikan satu tokoh wayang dengan kebebasan artikulasi gerak penuh menggunakan kedua tangan Anda:
                 </p>
                 <ul className="text-xs sm:text-sm space-y-2 text-black/85">
                   <li>• <strong>Tangan Kiri Dalang:</strong> Mengendalikan lengan kiri wayang (Tuding Kiwa) secara bebas dan luas.</li>
                   <li>• <strong>Tangan Kanan Dalang:</strong> Mengendalikan lengan kanan wayang (Tuding Tengen) secara bebas dan luas.</li>
                   <li>• <strong>Gerak Badan Otomatis:</strong> Poros tubuh wayang luwes melangkah mengikuti titik tengah (midpoint) kedua tangan Anda.</li>
                   <li>• <strong>Kemiringan Dinamis:</strong> Tubuh wayang otomatis condong saat satu tangan diangkat tinggi (pose silat/serang).</li>
-                  <li className="hidden md:list-item">• <strong>Fallback Cerdas:</strong> Menurunkan 1 tangan otomatis mengalihkan kendali tubuh & kedua lengan ke tangan aktif.</li>
-                  <li className="hidden md:list-item">• <strong>Pintasan Cepat:</strong> Tekan tombol <kbd className="px-1.5 py-0.5 rounded bg-black text-[#dedf42] font-mono text-xs">1</kbd> di keyboard untuk beralih instan.</li>
-                  <li className="md:hidden list-item">• <strong>Ganti Cepat:</strong> Ketuk tombol mode di layar panggung untuk beralih instan.</li>
-                  <li className="hidden md:list-item">• Tersedia juga pilihan gaya <em>Dalang Klasik (Badan + Tuding)</em> di menu Pengaturan.</li>
+                  {deviceTab === 'desktop' ? (
+                    <li>• <strong>Pintasan Keyboard:</strong> Tekan tombol <kbd className="px-1.5 py-0.5 rounded bg-black text-[#dedf42] font-mono text-xs">1</kbd> di keyboard untuk beralih instan.</li>
+                  ) : (
+                    <li>• <strong>Tombol Sentuh HP:</strong> Ketuk tombol mode di layar ponsel untuk mengaktifkan kendali solo.</li>
+                  )}
                 </ul>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── TABEL HOTKEYS KEYBOARD ── */}
+        {/* ── KENDALI PANGGUNG: MOBILE TOUCH HUD VS DESKTOP HOTKEYS (PERFECTLY ALIGNED) ── */}
         <section data-gsap="panduan-hotkey-section" className="py-12 border-t border-black/20">
           <div data-gsap="panduan-hotkey-header">
             <div className="flex items-center gap-3 mb-4">
               <span className="w-3 h-3 rounded-full bg-black shrink-0" />
               <h2 className="font-serif italic font-bold text-2xl sm:text-3xl lg:text-4xl text-[#050303]">
-                <span className="hidden md:inline">Pintasan Keyboard Dalang (Hotkeys)</span>
-                <span className="md:hidden inline">Pusat Kendali Sentuh di Layar Ponsel</span>
+                {deviceTab === 'mobile'
+                  ? 'Pusat Kendali & Tombol HUD di Panggung Ponsel'
+                  : 'Pintasan Keyboard & Kontrol Panggung Desktop'}
               </h2>
             </div>
             <p className="text-black/70 text-sm mb-8 font-sans">
-              <span className="hidden md:inline">
-                Gunakan tombol-tombol pintasan berikut di keyboard saat berada di panggung untuk aksi kilat tanpa harus membuka menu:
-              </span>
-              <span className="md:hidden inline">
-                Di panggung ponsel, Anda tidak butuh keyboard fisik. Cukup ketuk ikon-ikon aksi cepat di layar panggung untuk kontrol instan:
-              </span>
+              {deviceTab === 'mobile'
+                ? 'Semua tombol dan fitur berikut tersedia langsung di panggung ponsel (HUD bawah, pojok atas, dan panel pengaturan):'
+                : 'Gunakan tombol-tombol pintasan berikut di keyboard saat berada di panggung untuk kendali instan:'}
             </p>
           </div>
 
-          {/* ── DESKTOP: Tabel Hotkeys Keyboard ── */}
-          <div className="hidden md:grid grid-cols-2 sm:grid-cols-5 gap-3.5 sm:gap-4">
-            {[
-              { key: '1', label: 'Mode Solo (1 Wayang)', desc: 'Kiri = Lengan Kiri, Kanan = Lengan Kanan' },
-              { key: '2', label: 'Mode Duo (2 Wayang)', desc: '1 Tangan = 1 Tokoh berhadapan' },
-              { key: 'F', label: 'Balik Wayang Kiri', desc: 'Membalik arah hadap tokoh kiri' },
-              { key: 'G', label: 'Balik Wayang Kanan', desc: 'Membalik arah hadap tokoh kanan' },
-              { key: 'D', label: 'Tari Kiprahan', desc: 'Memicu tarian gerak sakral instan' },
-              { key: 'M', label: 'Musik Gamelan', desc: 'Putar / bisukan tabuhan BGM' },
-              { key: 'H', label: 'Clean Mode', desc: 'Sembunyikan / munculkan UI panggung' },
-              { key: 'C', label: 'Kalibrasi Ulang', desc: 'Reset titik nol sensor tangan & AI' },
-              { key: 'P', label: 'Pop-out Kamera', desc: 'Buka jendela preview terpisah' },
-              { key: 'V', label: 'Toggle Preview', desc: 'Tampilkan / sembunyikan kamera' },
-            ].map((hk) => (
-              <div
-                key={hk.key}
-                data-gsap="panduan-hotkey-card"
-                className="bg-black text-[#dedf42] rounded-xl p-4 flex flex-col justify-between shadow-md hover:scale-[1.02] transition-transform"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="w-8 h-8 rounded-lg bg-[#dedf42] text-black font-mono font-bold text-base flex items-center justify-center shadow">
-                    {hk.key}
-                  </span>
-                  <span className="text-[10px] font-mono tracking-widest text-[#dedf42]/70 uppercase">KEY</span>
+          {deviceTab === 'mobile' ? (
+            /* ── MOBILE: Kartu Kendali Sentuh Layar HP (Sesuaikan 100% dengan sesi mobile stage) ── */
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-stretch">
+              {[
+                {
+                  badge: '1 / 2',
+                  tag: 'HUD BAWAH',
+                  label: 'Mode 1 / 2 Wayang',
+                  desc: 'Beralih instan antara mode Solo (2 tangan = 1 wayang artikulatif) atau Duo (2 tangan = 2 wayang).',
+                },
+                {
+                  badge: 'D',
+                  tag: 'HUD BAWAH',
+                  label: 'Tari Kiprah',
+                  desc: 'Tombol tap cepat untuk memicu tarian sakral kiprahan rancak seketika tanpa perlu gestur kelingking.',
+                },
+                {
+                  badge: 'F / G',
+                  tag: 'HUD BAWAH',
+                  label: 'Balik Arah Hadap',
+                  desc: 'Tombol F untuk membalik arah hadap tokoh kiri, dan tombol G untuk membalik arah hadap tokoh kanan.',
+                },
+                {
+                  badge: '🎭',
+                  tag: 'POJOK ATAS',
+                  label: 'Lemari Tokoh Wayang',
+                  desc: 'Membuka modal pemilihan tokoh Slot Kiri & Kanan dengan pratinjau wayang berengsel lengkap dengan kedua tangan.',
+                },
+                {
+                  badge: '🔊',
+                  tag: 'POJOK ATAS',
+                  label: 'Musik Gamelan',
+                  desc: 'Putar atau bisukan tabuhan gending gamelan Slendro Manyura pengiring panggung pewayangan.',
+                },
+                {
+                  badge: '⚙',
+                  tag: 'POJOK ATAS',
+                  label: 'Menu Pengaturan',
+                  desc: 'Buka panel pengaturan bergulir (scrollable) untuk ukuran wayang, jari tuding, arah hadap, dan volume.',
+                },
+                {
+                  badge: 'C',
+                  tag: 'HUD BAWAH',
+                  label: 'Kalibrasi Sensor AI',
+                  desc: 'Setel ulang kalibrasi titik nol sensor tangan bila gerakan wayang terasa melenceng dari frame kamera.',
+                },
+                {
+                  badge: 'H',
+                  tag: 'HUD BAWAH',
+                  label: 'Sembunyikan UI',
+                  desc: 'Sembunyikan seluruh tombol antarmuka untuk menikmati panggung bersih atau perekaman video pertunjukan.',
+                },
+                {
+                  badge: 'V',
+                  tag: 'HUD BAWAH',
+                  label: 'Pratinjau Kamera',
+                  desc: 'Tampilkan atau sembunyikan kotak pratinjau kamera depan potret anti-gepeng di sudut panggung.',
+                },
+                {
+                  badge: '👆',
+                  tag: 'LAYAR KELIR',
+                  label: 'Sentuhan Langsung',
+                  desc: 'Geser langsung tubuh wayang di atas kain kelir HP dengan sentuhan jari tanpa memerlukan kamera depan.',
+                },
+              ].map((action, idx) => (
+                <div
+                  key={idx}
+                  data-gsap="panduan-touch-card"
+                  className="h-full flex flex-col justify-between p-4 rounded-xl bg-black text-[#dedf42] border border-black/20 shadow-md hover:scale-[1.02] transition-transform"
+                >
+                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#dedf42]/15">
+                    <span className="w-10 h-8 rounded-lg bg-[#dedf42] text-black font-mono font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 shadow-sm">
+                      {action.badge}
+                    </span>
+                    <span className="text-[9px] font-mono tracking-widest text-[#dedf42]/90 uppercase px-2 py-0.5 rounded-full bg-white/10">
+                      {action.tag}
+                    </span>
+                  </div>
+                  <div className="flex-1 flex flex-col justify-start">
+                    <h4 className="font-sans font-bold text-sm sm:text-base text-white mb-1.5 leading-snug">
+                      {action.label}
+                    </h4>
+                    <p className="text-white/70 text-xs sm:text-[13px] leading-relaxed">
+                      {action.desc}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-sans font-bold text-sm text-white">{hk.label}</h4>
-                  <p className="text-white/60 text-xs mt-1 leading-snug">{hk.desc}</p>
+              ))}
+            </div>
+          ) : (
+            /* ── DESKTOP: Tabel Hotkeys Keyboard & Mouse (Sesuaikan 100% dengan sesi desktop stage) ── */
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 items-stretch">
+              {[
+                { key: '1', label: 'Mode Solo (1 Tokoh)', tag: 'HOTKEY', desc: 'Dua tangan bebas (Kiri = Lengan Kiri, Kanan = Lengan Kanan).' },
+                { key: '2', label: 'Mode Duo (2 Tokoh)', tag: 'HOTKEY', desc: '1 Tangan = 1 Tokoh panggung berhadapan.' },
+                { key: 'F', label: 'Balik Tokoh Kiri', tag: 'HOTKEY', desc: 'Membalik arah hadap tokoh sisi kiri panggung.' },
+                { key: 'G', label: 'Balik Tokoh Kanan', tag: 'HOTKEY', desc: 'Membalik arah hadap tokoh sisi kanan panggung.' },
+                { key: 'D', label: 'Tari Kiprahan', tag: 'HOTKEY', desc: 'Memicu gerakan tarian sakral kiprahan secara instan.' },
+                { key: 'M', label: 'Musik Gamelan', tag: 'HOTKEY', desc: 'Putar atau bisukan tabuhan musik latar gamelan.' },
+                { key: 'H', label: 'Clean Mode (UI)', tag: 'HOTKEY', desc: 'Sembunyikan / munculkan tombol antarmuka panggung.' },
+                { key: 'C', label: 'Kalibrasi Ulang', tag: 'HOTKEY', desc: 'Reset titik nol sensor tangan & AI pelacakan.' },
+                { key: 'P', label: 'Pisah Jendela Kamera', tag: 'HOTKEY', desc: 'Buka pratinjau kamera di jendela pop-out terpisah.' },
+                { key: 'V', label: 'Pratinjau Kamera', tag: 'HOTKEY', desc: 'Tampilkan / sembunyikan kotak kamera di panggung.' },
+              ].map((hk) => (
+                <div
+                  key={hk.key}
+                  data-gsap="panduan-hotkey-card"
+                  className="h-full flex flex-col justify-between p-4 rounded-xl bg-black text-[#dedf42] border border-black/20 shadow-md hover:scale-[1.02] transition-transform"
+                >
+                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#dedf42]/15">
+                    <span className="w-8 h-8 rounded-lg bg-[#dedf42] text-black font-mono font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">
+                      {hk.key}
+                    </span>
+                    <span className="text-[9px] font-mono tracking-widest text-[#dedf42]/90 uppercase px-2 py-0.5 rounded-full bg-white/10">
+                      {hk.tag}
+                    </span>
+                  </div>
+                  <div className="flex-1 flex flex-col justify-start">
+                    <h4 className="font-sans font-bold text-sm text-white mb-1.5 leading-snug">
+                      {hk.label}
+                    </h4>
+                    <p className="text-white/70 text-xs leading-relaxed">
+                      {hk.desc}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-
-          {/* ── MOBILE: Kartu Kendali Sentuh Layar HP ── */}
-          <div className="grid md:hidden grid-cols-2 gap-3.5">
-            {[
-              { icon: '1 / 2', label: 'Ganti Mode Tokoh', desc: 'Beralih instan antara mode 1 Wayang (Solo) atau 2 Wayang (Duo).' },
-              { icon: '⇄', label: 'Balik Hadap Tokoh', desc: 'Ketuk untuk memutar arah hadap tokoh menghadap lawan atau berpaling.' },
-              { icon: '✦', label: 'Tarian Kiprahan', desc: 'Memicu tarian sakral kiprahan langsung tanpa gestur kelingking.' },
-              { icon: '♫', label: 'Musik Gamelan', desc: 'Putar atau heningkan gending gamelan Slendro pengiring panggung.' },
-              { icon: '⛶', label: 'Fokus Kelir Penuh', desc: 'Sembunyikan seluruh tombol UI untuk tangkapan layar / video bersih.' },
-              { icon: '⟳', label: 'Kalibrasi Sensor', desc: 'Setel ulang posisi nol sensor tangan bila gerak terasa melenceng.' },
-            ].map((action, idx) => (
-              <div
-                key={idx}
-                data-gsap="panduan-touch-card"
-                className="bg-black text-[#dedf42] rounded-xl p-3.5 flex flex-col justify-between shadow-md"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="w-8 h-8 rounded-lg bg-[#dedf42] text-black font-mono font-bold text-xs flex items-center justify-center shadow">
-                    {action.icon}
-                  </span>
-                  <span className="text-[9px] font-mono tracking-widest text-[#dedf42]/70 uppercase">SENTUH</span>
-                </div>
-                <div>
-                  <h4 className="font-sans font-bold text-xs text-white">{action.label}</h4>
-                  <p className="text-white/60 text-[11px] mt-1 leading-snug">{action.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* ── TIPS OPTIMALISASI RUANGAN & KAMERA ── */}
         <section className="py-12 border-t border-black/20">
           <div data-gsap="panduan-tips-box" className="bg-[#140e0a] text-[#dedf42] rounded-3xl p-8 sm:p-10 shadow-2xl border border-black/50">
             <span className="text-xs font-mono font-bold tracking-widest text-[#dedf42]/70 uppercase block mb-2">
-              TIPS & REKOMENDASI PERFORMA
+              TIPS & REKOMENDASI PERFORMA ({deviceTab === 'mobile' ? 'PONSEL' : 'DESKTOP'})
             </span>
             <h3 className="font-serif italic font-bold text-2xl sm:text-3xl text-white mb-6">
-              <span className="hidden md:inline">Optimalisasi Kamera untuk Respon Gerak Terbaik</span>
-              <span className="md:hidden inline">Tips Menata Ponsel untuk Respon Gerak Terbaik</span>
+              {deviceTab === 'mobile'
+                ? 'Tips Menata Ponsel untuk Respon Gerak Terbaik'
+                : 'Optimalisasi Ruangan & Webcam untuk Respon Gerak Terbaik'}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm text-[#f4e7cd]/80 font-sans">
               <div data-gsap="panduan-tips-col" className="border-l-2 border-[#dedf42]/40 pl-4">
                 <h4 className="font-bold text-[#dedf42] mb-1">
-                  <span className="hidden md:inline">Pencahayaan Depan</span>
-                  <span className="md:hidden inline">Cahaya Depan Jelas</span>
+                  {deviceTab === 'mobile' ? 'Cahaya Depan Terang' : 'Pencahayaan Depan'}
                 </h4>
                 <p className="leading-relaxed">
-                  <span className="hidden md:inline">
-                    Pastikan tangan Anda tersinari dari arah depan atau samping. Hindari cahaya lampu yang terlalu terang persis di belakang tubuh (*backlight*).
-                  </span>
-                  <span className="md:hidden inline">
-                    Pastikan ruangan terang dan cahaya menyinari tangan dari arah depan ponsel. Hindari membelakangi jendela atau lampu terang (*backlight*).
-                  </span>
+                  {deviceTab === 'mobile'
+                    ? 'Pastikan ruangan terang dan cahaya menyinari tangan dari arah depan ponsel. Hindari membelakangi jendela atau lampu terang (backlight).'
+                    : 'Pastikan tangan Anda tersinari dari arah depan atau samping. Hindari cahaya lampu yang terlalu terang persis di belakang tubuh (backlight).'}
                 </p>
               </div>
               <div data-gsap="panduan-tips-col" className="border-l-2 border-[#dedf42]/40 pl-4">
                 <h4 className="font-bold text-[#dedf42] mb-1">
-                  <span className="hidden md:inline">Jarak Ideal Webcam</span>
-                  <span className="md:hidden inline">Sandaran HP Stabil</span>
+                  {deviceTab === 'mobile' ? 'Sandaran HP Stabil (40–70 cm)' : 'Jarak Ideal Webcam (60–100 cm)'}
                 </h4>
                 <p className="leading-relaxed">
-                  <span className="hidden md:inline">
-                    Duduk dengan jarak sekitar 60 cm hingga 1 meter dari kamera agar seluruh telapak dan pergelangan tangan tertangkap penuh dalam frame.
-                  </span>
-                  <span className="md:hidden inline">
-                    Sandarkan ponsel di meja atau dudukan (*stand*) setinggi dada. Jaga jarak tangan sekitar 40–70 cm agar seluruh jemari tertangkap frame kamera depan.
-                  </span>
+                  {deviceTab === 'mobile'
+                    ? 'Sandarkan ponsel di meja atau dudukan (stand) setinggi dada. Jaga jarak tangan sekitar 40–70 cm agar seluruh jemari tertangkap frame kamera depan.'
+                    : 'Duduk dengan jarak sekitar 60 cm hingga 1 meter dari kamera agar seluruh telapak dan pergelangan tangan tertangkap penuh dalam frame 16:9.'}
                 </p>
               </div>
               <div data-gsap="panduan-tips-col" className="border-l-2 border-[#dedf42]/40 pl-4">
                 <h4 className="font-bold text-[#dedf42] mb-1">
-                  <span className="hidden md:inline">Akselerasi GPU</span>
-                  <span className="md:hidden inline">Performa Halus 60 FPS</span>
+                  {deviceTab === 'mobile' ? 'Performa Halus 60 FPS di HP' : 'Akselerasi GPU & WebGL'}
                 </h4>
                 <p className="leading-relaxed">
-                  <span className="hidden md:inline">
-                    Sistem AI MediaPipe otomatis menggunakan akselerasi WebGL/GPU pada peramban Anda untuk latensi super rendah di 60 FPS.
-                  </span>
-                  <span className="md:hidden inline">
-                    AI MediaPipe mendeteksi tangan langsung di peramban ponsel Anda tanpa perlu unduh aplikasi tambahan, ringan dan hemat baterai.
-                  </span>
+                  {deviceTab === 'mobile'
+                    ? 'AI MediaPipe mendeteksi tangan langsung di peramban ponsel tanpa aplikasi tambahan, sangat ringan, responsif, dan hemat baterai.'
+                    : 'Sistem AI MediaPipe otomatis memanfaatkan akselerasi WebGL/GPU kartu grafis untuk latensi super rendah di 60 FPS.'}
                 </p>
               </div>
             </div>
@@ -547,16 +617,10 @@ export default function PanduanPage() {
         {/* ── FINAL CALL TO ACTION ── */}
         <div data-gsap="panduan-final-cta" className="pt-10 pb-8 text-center border-t border-black/20">
           <h3 className="font-serif italic font-bold text-3xl sm:text-4xl text-[#050303] mb-4">
-            <span className="hidden md:inline">Sudah Memahami Ilmunya? Waktunya Naik ke Panggung.</span>
-            <span className="md:hidden inline">Ilmu Sudah di Genggaman. Waktunya Naik ke Panggung.</span>
+            Ilmu Sudah di Genggaman. Waktunya Naik ke Panggung.
           </h3>
           <p className="text-black/75 text-sm sm:text-base max-w-xl mx-auto mb-8 font-sans">
-            <span className="hidden md:inline">
-              Nyalakan kamera Anda, biarkan lampu kelir menyala, dan mulailah melakonkan kisah-kisah adiluhung Nusantara.
-            </span>
-            <span className="md:hidden inline">
-              Buka panggung di ponsel Anda, biarkan api blencong menyala, dan mulailah melakonkan kisah adiluhung pewayangan.
-            </span>
+            Buka panggung di perangkat Anda, biarkan nyala api blencong bersinar, dan mulailah melakonkan kisah adiluhung pewayangan Nusantara.
           </p>
 
           <div className="flex items-center justify-center gap-4 flex-wrap">
@@ -564,8 +628,7 @@ export default function PanduanPage() {
               href="/stage"
               className="px-8 py-3.5 rounded-full bg-black text-[#dedf42] font-sans font-bold text-sm uppercase tracking-wider hover:bg-neutral-800 active:scale-95 transition-all shadow-xl flex items-center gap-2"
             >
-              <span className="hidden md:inline">Mulai Mendalang di Panggung</span>
-              <span className="md:hidden inline">Mulai Mendalang di HP</span>
+              <span>Mulai Mendalang di Panggung</span>
               <span className="text-base">&rarr;</span>
             </Link>
             <Link
@@ -580,3 +643,5 @@ export default function PanduanPage() {
     </div>
   );
 }
+
+
