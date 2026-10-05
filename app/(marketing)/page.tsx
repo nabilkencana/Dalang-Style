@@ -36,7 +36,7 @@ export default function LandingPage() {
           baseVelocity={0.8}
           scrollDependent
           delay={300}
-          clasname="font-sans font-black text-[4vw] sm:text-[3vw] md:text-[2.5vw] tracking-[0.15em] uppercase text-black/40 leading-none"
+          clasname="font-sans font-black text-[4vw] sm:text-[3vw] md:text-[2.5vw] tracking-[0.15em] uppercase text-black/65 leading-none"
         >
           KELIR • BLENCONG • GAMELAN • KAYON • PAKELIRAN • TATAH SUNGGING •
         </TextMarquee>

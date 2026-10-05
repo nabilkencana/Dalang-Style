@@ -40,7 +40,7 @@ export default function StoryShadowsSection({
           </p>
           <div className="text-left">
             <ScrollReveal
-              baseOpacity={0.05}
+              baseOpacity={0.42}
               enableBlur={true}
               baseRotation={0}
               blurStrength={8}
@@ -150,7 +150,7 @@ export default function StoryShadowsSection({
           style={{ width: '76%' }}
         >
           <ScrollReveal
-            baseOpacity={0.03}
+            baseOpacity={0.42}
             enableBlur={true}
             baseRotation={0}
             blurStrength={10}

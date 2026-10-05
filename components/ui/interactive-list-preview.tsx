@@ -437,7 +437,13 @@ export default function InteractiveListPreview({
                 <col style={{ width: "67%" }} />
                 <col style={{ width: "25%" }} />
               </colgroup>
-
+              <thead className="sr-only">
+                <tr>
+                  <th scope="col">Nomor</th>
+                  <th scope="col">Judul Artikel</th>
+                  <th scope="col">Aksi</th>
+                </tr>
+              </thead>
               <tbody className="divide-y divide-[#dedf42]/20 border-y border-[#dedf42]/25">
                 {items.map((item, index) => (
                   <tr

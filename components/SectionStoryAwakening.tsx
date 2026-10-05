@@ -27,39 +27,11 @@ const DEFAULT_WHEEL_ITEMS: WorksWheelItem[] = [
     href: '/tokoh/kyai-semar',
   },
   {
-    title: 'Kyai Petruk',
-    role: 'Punakawan • Cerdas & Jenaka',
-    description: 'Karakter periang berhidung panjang, tangkas berfikir, jenaka namun berwawasan luas.',
-    image: '/images/tokoh/wayang-2.webp',
-    href: '/tokoh/kyai-petruk',
-  },
-  {
-    title: 'Kyai Bagong',
-    role: 'Punakawan • Kritis & Jujur',
-    description: 'Sosok polos bertubuh bulat yang berani menyuarakan kebenaran rakyat tanpa tedeng aling-aling.',
-    image: '/images/tokoh/wayang-3.webp',
-    href: '/tokoh/kyai-bagong',
-  },
-  {
     title: 'Sang Arjuna',
     role: 'Satria Pandawa • Penengah Pandawa',
     description: 'Ksatria berbusur sakti Gandiwa, lambang keteguhan batin, kehalusan budi, dan kemahiran ilmu.',
     image: '/images/tokoh/wayang-4.webp',
     href: '/tokoh/sang-arjuna',
-  },
-  {
-    title: 'Sang Gatotkaca',
-    role: 'Satria Pandawa • Ksatria Pringgandani',
-    description: 'Otot kawat balung wesi, satria perkasa pelindung angkasa yang gugur dalam palagan kehormatan.',
-    image: '/images/tokoh/wayang-5.webp',
-    href: '/tokoh/sang-gatotkaca',
-  },
-  {
-    title: 'Nala Gareng',
-    role: 'Punakawan • Bijak & Bersahaja',
-    description: 'Kakak tertua punakawan bertangan ceko dan kaki pincang, lambang kehati-hatian dalam hidup.',
-    image: '/images/tokoh/wayang-6.webp',
-    href: '/tokoh/nala-gareng',
   },
   {
     title: 'Sang Bima',
@@ -69,18 +41,11 @@ const DEFAULT_WHEEL_ITEMS: WorksWheelItem[] = [
     href: '/tokoh/sang-bima',
   },
   {
-    title: 'Prabu Rahwana',
-    role: 'Prabu Alengka • Dasamuka',
-    description: 'Raja sakti berkepala sepuluh berjiwa angkara, personifikasi nafsu duniawi yang tak terbendung.',
-    image: '/images/tokoh/wayang-8.webp',
-    href: '/tokoh/prabu-rahwana',
-  },
-  {
-    title: 'Resi Drona',
-    role: 'Pujangga Hastina • Guru Besar',
-    description: 'Begawan sakti ahli siasat dan senjata perang, guru agung bagi seluruh Pandawa dan Kurawa.',
-    image: '/images/tokoh/wayang-9.webp',
-    href: '/tokoh/resi-drona',
+    title: 'Sang Gatotkaca',
+    role: 'Satria Pandawa • Ksatria Pringgandani',
+    description: 'Otot kawat balung wesi, satria perkasa pelindung angkasa yang gugur dalam palagan kehormatan.',
+    image: '/images/tokoh/wayang-5.webp',
+    href: '/tokoh/sang-gatotkaca',
   },
 ];
 

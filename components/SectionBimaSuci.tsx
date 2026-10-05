@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 
 export interface SectionBimaSuciProps {
   id?: string;
@@ -23,10 +23,29 @@ export default function SectionBimaSuci({
   className = '',
 }: SectionBimaSuciProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const [shouldLoadIframe, setShouldLoadIframe] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const isVisibleRef = useRef(false);
   const hasUnmutedRef = useRef(false);
   const hasActivatedCaptionsRef = useRef(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || backgroundType !== 'youtube') return;
+
+    const preloadObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setShouldLoadIframe(true);
+          preloadObserver.disconnect();
+        }
+      },
+      { rootMargin: '400px' }
+    );
+    preloadObserver.observe(section);
+    return () => preloadObserver.disconnect();
+  }, [backgroundType]);
+
   const sendYtCommand = useCallback((func: string, args: unknown[] = []) => {
     if (!iframeRef.current?.contentWindow) return;
     try {
@@ -57,9 +76,9 @@ export default function SectionBimaSuci({
     sendYtCommand('pauseVideo');
   }, [sendYtCommand]);
   useEffect(() => {
+    if (!shouldLoadIframe) return;
     const section = sectionRef.current;
     if (!section || backgroundType !== 'youtube') return;
-
 
     // IntersectionObserver with hysteresis to avoid flickering on threshold boundaries
     const observer = new IntersectionObserver(
@@ -144,7 +163,7 @@ export default function SectionBimaSuci({
       window.removeEventListener('click', handleFirstGesture);
       window.removeEventListener('keydown', handleFirstGesture);
     };
-  }, [backgroundType, pauseVideo, playWithSoundAndCaptions, activateEnglishCaptions, sendYtCommand]);
+  }, [backgroundType, shouldLoadIframe, pauseVideo, playWithSoundAndCaptions, activateEnglishCaptions, sendYtCommand]);
 
   return (
     <section
@@ -166,12 +185,13 @@ export default function SectionBimaSuci({
           }}
         >
           {/* 1. Video strictly contained inside the yellow box — BOLD & EXPANDED */}
-          {backgroundType === 'youtube' && youtubeVideoId ? (
+          {backgroundType === 'youtube' && youtubeVideoId && shouldLoadIframe ? (
             <div className="absolute inset-0 overflow-hidden pointer-events-auto z-0 bg-black flex items-center justify-center">
               <iframe
                 ref={iframeRef}
-                src={`https://www.youtube.com/embed/${youtubeVideoId}?si=PRutH_g9LIdRt4ZU&enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeVideoId}&controls=1&cc_load_policy=1&cc_lang_pref=en&hl=en`}
+                src={`https://www.youtube-nocookie.com/embed/${youtubeVideoId}?si=PRutH_g9LIdRt4ZU&enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeVideoId}&controls=1&cc_load_policy=1&cc_lang_pref=en&hl=en`}
                 title="Lakon Bima Suci - Latar Video YouTube"
+                loading="lazy"
                 className="w-full h-full object-cover pointer-events-auto filter contrast-[1.05] brightness-[0.96]"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"

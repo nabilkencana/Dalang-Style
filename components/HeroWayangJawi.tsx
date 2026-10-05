@@ -36,9 +36,12 @@ export default function HeroWayangJawi({
         muted
         loop
         playsInline
+        preload="metadata"
+        poster="/images/hero-dancers-backdrop.webp"
         className="absolute inset-0 w-full h-full object-cover pointer-events-none brightness-[1.18] contrast-[1.05]"
       >
         <source src={videoSrc} type="video/mp4" />
+        <track kind="captions" src="data:text/vtt,WEBVTT" label="ambient" default />
       </video>
 
       {/* ── Soft Vignette Overlays (Gentle contrast for bottom text while keeping the Dalang bright & clearly visible) ── */}

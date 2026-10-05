@@ -506,9 +506,9 @@ export function WorksWheel({
         </div>
       </div>
 
+      {/* Desktop & Tablet Character List (<ol>) — Restored Original Minimalist Style, Enlarged for High Visibility */}
       <ol
-        className="text-current opacity-75 absolute top-[7.5%] right-[2.5%] text-right leading-[1.75] z-30 pointer-events-auto hidden sm:block"
-        style={{ fontSize: metrics.index }}
+        className="text-current absolute top-[7%] sm:top-[8.5%] right-[2.5%] sm:right-[3.5%] text-right leading-[1.8] sm:leading-[2.0] z-30 pointer-events-auto hidden sm:block text-base sm:text-lg md:text-xl lg:text-2xl"
       >
         {items.map((item, i) => (
           <li key={item.title}>
@@ -519,7 +519,8 @@ export function WorksWheel({
                 onSelectCharacter?.(i);
               }}
               className={cn(
-                i === active && "font-bold opacity-100 underline underline-offset-2",
+                "cursor-pointer text-black/40 hover:text-black/80 transition-all select-none",
+                i === active && "font-bold text-black opacity-100 underline underline-offset-4 sm:underline-offset-6 decoration-2",
               )}
             >
               {item.title}
