@@ -445,8 +445,18 @@ export default function WayangStage() {
     setIsMuted(nextMuted);
   }, []);
 
+  const openCharModal = useCallback(() => {
+    if (settings.characters === 'one') {
+      setActiveSlotTab('left');
+    }
+    setShowCharModal(true);
+  }, [settings.characters]);
+
   const handleCharactersChange = useCallback((val: 'two' | 'one') => {
     setSettings((prev) => ({ ...prev, characters: val }));
+    if (val === 'one') {
+      setActiveSlotTab('left');
+    }
     const controller = wayangRef.current.controller;
     const puppets = wayangRef.current.puppets;
     const view = wayangRef.current.view;
@@ -1187,7 +1197,7 @@ export default function WayangStage() {
             type="button"
             id="btn-open-char-modal"
             className="btn-select-char"
-            onClick={() => setShowCharModal(true)}
+            onClick={openCharModal}
           >
             Ganti Tokoh...
           </button>
@@ -1267,7 +1277,7 @@ export default function WayangStage() {
           <button
             type="button"
             className="key-btn"
-            onClick={() => setShowCharModal(true)}
+            onClick={openCharModal}
             title="Pilih Tokoh Wayang"
           >
             <kbd>T</kbd> pilih tokoh
@@ -1336,7 +1346,7 @@ export default function WayangStage() {
           className="icon-btn"
           aria-label="Pilih Tokoh Wayang"
           title="Pilih Tokoh Wayang"
-          onClick={() => setShowCharModal(true)}
+          onClick={openCharModal}
         >
           <span style={{ fontSize: '15px' }}></span>
         </button> */}
@@ -1432,7 +1442,7 @@ export default function WayangStage() {
           style={{ width: '100%', margin: '4px 0 8px', borderColor: 'rgba(217, 164, 65, 0.6)' }}
           onClick={() => {
             setShowSettings(false);
-            setShowCharModal(true);
+            openCharModal();
           }}
         >
           Ganti Tokoh Wayang
@@ -1648,15 +1658,8 @@ export default function WayangStage() {
             {/* Main Stage Slots / Character Showcase */}
             <div className={`stage-slots-container ${settings.characters === 'one' ? 'single-slot' : ''}`}>
               {/* Desktop Dual View / Mobile Active Tab View */}
-              {/* Slot Tokoh Sisi Kiri */}
-              <div className={`stage-slot-box ${activeSlotTab === 'left' ? 'mobile-active' : 'mobile-hidden-on-small'}`}>
-                {/* <div className="slot-header">
-                  <span className="slot-label">
-                    {settings.characters === 'two' ? ' Tokoh Sisi Kiri' : ' Tokoh Wayang (Solo)'}
-                  </span>
-                  <span className="slot-active-badge">Aktif</span>
-                </div> */}
-
+              {/* Slot Tokoh Sisi Kiri / Solo */}
+              <div className={`stage-slot-box ${settings.characters === 'one' || activeSlotTab === 'left' ? 'mobile-active' : 'mobile-hidden-on-small'}`}>
                 {(() => {
                   const leftInfo = CHARACTER_LIST.find((c) => c.id === leftPuppetChar) || CHARACTER_LIST[0];
                   return (
@@ -1679,7 +1682,9 @@ export default function WayangStage() {
                 })()}
 
                 <div className="slot-character-grid">
-                  <span className="grid-heading">Pilih Karakter untuk Sisi Kiri:</span>
+                  <span className="grid-heading">
+                    {settings.characters === 'two' ? 'Pilih Karakter untuk Sisi Kiri:' : 'Pilih Tokoh Wayang:'}
+                  </span>
                   <div className="slot-buttons-group">
                     {CHARACTER_LIST.map((c) => (
                       <button
@@ -1722,11 +1727,6 @@ export default function WayangStage() {
               {/* Slot Tokoh Sisi Kanan (if 2 puppets) */}
               {settings.characters === 'two' && (
                 <div className={`stage-slot-box ${activeSlotTab === 'right' ? 'mobile-active' : 'mobile-hidden-on-small'}`}>
-                  {/* <div className="slot-header">
-                    <span className="slot-label"> Tokoh Sisi Kanan</span>
-                    <span className="slot-active-badge">Aktif</span>
-                  </div> */}
-
                   {(() => {
                     const rightInfo = CHARACTER_LIST.find((c) => c.id === rightPuppetChar) || CHARACTER_LIST[2];
                     return (
@@ -1774,7 +1774,7 @@ export default function WayangStage() {
               <div className="selected-summary">
                 <span className="sum-label">Posisi Panggung:</span>
                 <span className="sum-tag">
-                  Kiri: <strong>{getCharShortName(leftPuppetChar)}</strong>
+                  {settings.characters === 'two' ? 'Kiri: ' : 'Tokoh: '}<strong>{getCharShortName(leftPuppetChar)}</strong>
                   {settings.characters === 'two' && (
                     <> &bull; Kanan: <strong>{getCharShortName(rightPuppetChar)}</strong></>
                   )}
