@@ -25,8 +25,8 @@ export default function HeroWayangJawi({
     normal2: 'lewat panggung digital interaktif dan teknologi kecerdasan buatan.',
   },
   brandTitle = 'Wayang',
-  ctaText = 'Panduan Mendalang',
-  ctaHref = '/panduan',
+  ctaText = 'Mainkan Wayang',
+  ctaHref = '/stage',
 }: HeroWayangJawiProps) {
   return (
     <section className="relative w-full min-h-screen bg-black text-white overflow-hidden select-none flex flex-col justify-end">

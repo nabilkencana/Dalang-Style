@@ -14,8 +14,8 @@ export interface ButtonWithIconProps {
 const ButtonWithIcon = React.forwardRef<HTMLAnchorElement, ButtonWithIconProps>(
   (
     {
-      children = "Panduan Mendalang",
-      href = "/panduan",
+      children = "Mainkan Wayang",
+      href = "/stage",
       className = "",
       iconClassName = "",
       onClick,

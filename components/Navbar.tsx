@@ -25,7 +25,7 @@ const STAGGERED_MENU_ITEMS: StaggeredMenuItem[] = [
   { label: 'Galeri Museum', link: '/#galeri' },
   { label: 'Warta Budaya', link: '/#berita' },
   { label: 'Sang Empu AI', link: '/#kreasi', badge: 'BARU', highlight: true },
-  { label: 'Mainkan Wayang', link: '/panduan' },
+  { label: 'Panduan Mendalang', link: '/panduan' },
 ];
 
 const STAGGERED_SOCIAL_ITEMS: StaggeredMenuSocialItem[] = [
@@ -413,7 +413,7 @@ export default function Navbar({ className }: { className?: string }) {
             When scrolling up: slides back right (-45px -> 0) and expands (width: 240px) ── */}
         <motion.div
           animate={{
-            width: isCompact ? 0 : 190,
+            width: isCompact ? 0 : 240,
             opacity: isCompact ? 0 : 1,
             x: isCompact ? -45 : 0,
           }}
@@ -421,14 +421,14 @@ export default function Navbar({ className }: { className?: string }) {
           className="hidden min-[850px]:flex items-center justify-end gap-3.5 shrink-0 overflow-hidden pointer-events-auto mr-1 sm:mr-2"
         >
 
-          {/* Exact Split Button from rbp-saas-template [ Mainkan Wayang | ↘ ] */}
+          {/* Exact Split Button from rbp-saas-template [ Panduan Mendalang | ↘ ] */}
           <Link
             href="/panduan"
             className="group relative inline-flex items-center active:scale-95 transition-transform shrink-0"
           >
-            {/* Left black capsule */}
-            <span className="relative z-10 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-black text-[#dedf42] text-xs sm:text-sm font-bold tracking-wider uppercase transition-colors group-hover:bg-[#1a140e] shadow-lg whitespace-nowrap">
-              Mainkan Wayang
+            {/* Left capsule with background matching navbar */}
+            <span className="relative z-10 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-[#130d08] text-[#dedf42] text-xs sm:text-sm font-bold tracking-wider uppercase transition-colors group-hover:bg-[#1f150e] shadow-lg whitespace-nowrap">
+              Panduan Mendalang
             </span>
             {/* Right lime-chartreuse square with arrow that rotates on hover */}
             <span className="relative -left-px z-10 w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#dedf42] text-black flex items-center justify-center transition-colors group-hover:bg-[#e6e74e] shadow-lg shrink-0">
