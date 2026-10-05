@@ -136,12 +136,12 @@ function analyze(lms: Landmark[], aspect: number, pair: FingerPairIndices): Anal
     ring = reach(13, 14, 16),
     pinky = reach(17, 18, 20);
 
+  // Pinky sign detection:
+  // When controlling with thumb & index, pinky is extended outward/upward.
+  const pinkyExtended = pinky.tipPip > 1.08 && pinky.tipMcp > 1.25;
   const pinkySign =
-    pinky.tipPip > 1.12 &&
-    pinky.tipMcp > 1.4 &&
-    index.tipPip < 1.02 &&
-    middle.tipPip < 1.02 &&
-    ring.tipPip < 1.12;
+    pinkyExtended &&
+    (ring.tipPip < 1.18 || pinky.tipMcp > ring.tipMcp * 1.05 || middle.tipPip < 1.18);
 
   const palmTwist = lms[5] && lms[17] ? (lms[5].z - lms[17].z) * 4 : 0;
 
@@ -246,9 +246,28 @@ export class Controller {
       const { h, lm } = hands[hi];
       const dt = s.active ? clamp((ts - s.lastTs) / 1000, 1 / 240, 0.2) : 1 / 30;
 
-      // Auto-dance trigger from pinky gesture is disabled to prevent accidental interruptions while playing.
-      // Dance is triggered on demand via the Tari Kiprah button or pressing 'D'.
-      s.pinky = false;
+      // Pinky gesture detection:
+      // Active when pinky is raised and not used as a primary control finger (e.g. in thumb-index mode)
+      const pairKey = this.settings.fingers;
+      const pinkyAvailable = pairKey !== 'thumb-pinky' && pairKey !== 'index-pinky';
+      s.pinky = pinkyAvailable && h.pinkySign;
+
+      if (s.pinky) {
+        s.pinkyOff = 0;
+        if (!s.pinkyOn) s.pinkyOn = ts;
+        // Trigger dance immediately when pinky is raised and armed
+        if (s.pinkyArmed) {
+          s.danceTrigger = true;
+          s.pinkyArmed = false;
+        }
+      } else {
+        s.pinkyOn = 0;
+        if (!s.pinkyOff) s.pinkyOff = ts;
+        // Re-arm after pinky is curled/lowered for a brief period
+        if (!s.pinkyArmed && ts - s.pinkyOff >= 300) {
+          s.pinkyArmed = true;
+        }
+      }
       s.active = true;
       s.lastSeen = ts;
       s.lastTs = ts;

@@ -151,9 +151,9 @@ const GATOTKACA_LEFT: { upper: PartConfig; fore: PartConfig; hand: PartConfig } 
 };
 
 const GATOTKACA_RIGHT: { upper: PartConfig; fore: PartConfig; hand: PartConfig } = {
-  upper: { src: 'assets/gatotkaca/upper-arm-r.png', size: [340, 83], prox: [310.7, 45.3], dist: [28.6, 49.4] },
-  fore: { src: 'assets/gatotkaca/forearm-r.png', size: [350, 87], prox: [315.7, 43.5], dist: [28.8, 42.6] },
-  hand: { src: 'assets/gatotkaca/hand-r.png', size: [240, 183], prox: [216.6, 157.0], grip: [51.3, 12.9] },
+  upper: { src: 'assets/gatotkaca/upper-arm-r.png', size: [340, 83], prox: [29.3, 37.7], dist: [311.4, 33.6] },
+  fore: { src: 'assets/gatotkaca/forearm-r.png', size: [350, 87], prox: [34.3, 43.5], dist: [321.2, 44.4] },
+  hand: { src: 'assets/gatotkaca/hand-r.png', size: [240, 183], prox: [23.4, 26.0], grip: [188.7, 170.1] },
 };
 
 const GATOTKACA_PARTS: Record<string, PartConfig> = {

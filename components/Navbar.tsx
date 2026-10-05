@@ -24,7 +24,7 @@ const STAGGERED_MENU_ITEMS: StaggeredMenuItem[] = [
   { label: 'Tokoh Wayang', link: '/#cara-bermain' },
   { label: 'Galeri Museum', link: '/#galeri' },
   { label: 'Warta Budaya', link: '/#berita' },
-  { label: 'Sang Empu AI', link: '/#kreasi', badge: 'BARU', highlight: true },
+  { label: 'Kisah Wayang', link: '/kreasi', badge: 'LAKON', highlight: true },
   { label: 'Panduan Mendalang', link: '/panduan' },
 ];
 
@@ -357,16 +357,16 @@ export default function Navbar({ className }: { className?: string }) {
             </div>
           </MenuItem>
 
-          {/* 4. Kreasi AI */}
+          {/* 4. Kisah Wayang */}
           <MenuItem
             setActive={setActive}
             active={active}
-            item="Kreasi AI"
+            item="Kisah Wayang"
             title={
               <span className="flex items-center gap-1.5 text-xs sm:text-sm font-medium tracking-wide">
-                <span>Kreasi AI</span>
+                <span>Kisah Wayang</span>
                 <span className="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-[#dedf42] text-black rounded-full leading-none">
-                  BARU
+                  LAKON
                 </span>
                 <svg
                   className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dedf42]/70 transition-transform duration-200 group-hover:rotate-180"
@@ -384,15 +384,15 @@ export default function Navbar({ className }: { className?: string }) {
           >
             <div className="flex flex-col space-y-3.5 text-sm min-w-[260px]">
               <span className="text-[10px] font-mono tracking-widest text-[#dedf42]/70 uppercase">
-                Studio Kreasi Tokoh
+                Pustaka Sastra Pewayangan
               </span>
-              <HoveredLink href="/#kreasi" onClick={() => setActive(null)}>
-                <span className="font-semibold text-white block">Generator Tokoh AI</span>
-                <span className="text-[11px] text-[#cdb894] block">Kreasikan wayang baru lewat prompt</span>
-              </HoveredLink>
               <HoveredLink href="/kreasi" onClick={() => setActive(null)}>
-                <span className="font-semibold text-white block">Dialog Sang Empu</span>
-                <span className="text-[11px] text-[#cdb894] block">Konsultasi filosofi & karakter</span>
+                <span className="font-semibold text-white block">Katalog Kisah Epik</span>
+                <span className="text-[11px] text-[#cdb894] block">Koleksi lakon Ramayana & Mahabharata</span>
+              </HoveredLink>
+              <HoveredLink href="/#kreasi" onClick={() => setActive(null)}>
+                <span className="font-semibold text-white block">Sorotan Lakon Pilihan</span>
+                <span className="text-[11px] text-[#cdb894] block">Kisah ksatria & pitutur luhur</span>
               </HoveredLink>
               <div className="pt-2 border-t border-[#dedf42]/20">
                 <Link
@@ -400,7 +400,7 @@ export default function Navbar({ className }: { className?: string }) {
                   onClick={() => setActive(null)}
                   className="text-[#dedf42] text-xs font-semibold hover:underline block"
                 >
-                  Buka Studio Sang Empu &rarr;
+                  Buka Pustaka Kisah &rarr;
                 </Link>
               </div>
             </div>
