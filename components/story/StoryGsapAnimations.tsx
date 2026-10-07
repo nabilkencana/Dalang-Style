@@ -20,51 +20,11 @@ export default function StoryGsapAnimations({ filterKey = '' }: StoryGsapAnimati
         defaults: { ease: 'power3.out' },
         onComplete: () => {
           gsap.set(
-            '[data-gsap="story-kicker"], [data-gsap="story-aksara"], [data-gsap="story-title"], [data-gsap="story-subtitle"], [data-gsap="story-divider"], [data-gsap="story-stats"] > *, [data-gsap="story-spotlight"], [data-gsap="story-search"], [data-gsap="story-cats"] > *, [data-gsap="story-tokoh-tags"] > *',
+            '[data-gsap="story-stats"] > *, [data-gsap="story-spotlight"], [data-gsap="story-search"], [data-gsap="story-cats"] > *, [data-gsap="story-tokoh-tags"] > *',
             { clearProps: 'all' }
           );
         },
       });
-
-      // Kicker badge
-      heroTl.fromTo(
-        '[data-gsap="story-kicker"]',
-        { y: -20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, delay: 0.05, clearProps: 'all' }
-      );
-
-      // Main Title: "Kisah Epik Wayang Jawi"
-      heroTl.fromTo(
-        '[data-gsap="story-title"]',
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', clearProps: 'all' },
-        '-=0.35'
-      );
-
-      // Aksara Jawa watermark
-      heroTl.fromTo(
-        '[data-gsap="story-aksara"]',
-        { scale: 0.9, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.5)', clearProps: 'all' },
-        '-=0.45'
-      );
-
-      // Subtitle description
-      heroTl.fromTo(
-        '[data-gsap="story-subtitle"]',
-        { y: 15, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, clearProps: 'all' },
-        '-=0.4'
-      );
-
-      // Symmetrical divider
-      heroTl.fromTo(
-        '[data-gsap="story-divider"]',
-        { scaleX: 0, opacity: 0 },
-        { scaleX: 1, opacity: 1, duration: 0.5, clearProps: 'all' },
-        '-=0.4'
-      );
-
       // Stats ribbon items
       heroTl.fromTo(
         '[data-gsap="story-stats"] > *',

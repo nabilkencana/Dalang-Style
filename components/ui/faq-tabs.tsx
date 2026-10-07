@@ -131,10 +131,10 @@ const FAQList: React.FC<FAQListProps> = ({ faqData, selected }) => (
           return (
             <motion.div
               key={category}
-              initial={{ opacity: 0, y: 22, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -18, filter: "blur(6px)" }}
-              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-3.5 sm:space-y-4"
             >
               {questions.map((faq, index) => (

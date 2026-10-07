@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     "Menghidupkan seni wayang kulit lewat panggung digital interaktif, pelacakan gestur dalang AI, dan dialog kreasi sastra nusantara.",
   icons: {
     icon: "/favicon.ico",
-    apple: "/images/wayang-gunungan-logo.png",
+    apple: "/images/wayang-gunungan-logo.webp",
   },
 };
 

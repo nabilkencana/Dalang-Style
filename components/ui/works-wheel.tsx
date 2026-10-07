@@ -247,15 +247,7 @@ export function WorksWheel({
           const flickerY = Math.cos(flameTime * 1.2 + i * 1.2) * 2.5;
           const flickerAlpha = Math.sin(flameTime * 2.0 + i) * 0.03;
 
-          // 2. Translucent Box Shadow tilted deeply to bottom-left (-X, +Y) with zero blur & flame breathing
-          const shadowLayer = card.querySelector(".card-shadow-layer") as HTMLElement | null;
-          if (shadowLayer) {
-            // Tilted deeply to bottom-left (-32px, +30px) proportional to enlarged card
-            const shadowX = -32 + Math.round(flickerX * 0.7) - Math.round(d * 5);
-            const shadowY = 30 + Math.round(flickerY * 0.7) + Math.round(d * 12);
-            const shadowAlpha = (Math.max(0.12, 0.34 - absD * 0.12 + flickerAlpha) * m).toFixed(2);
-            shadowLayer.style.boxShadow = `${shadowX}px ${shadowY}px 0px 0px rgba(0, 0, 0, ${shadowAlpha})`;
-          }
+          // 2. 3D Floating Back Shadow is GPU composited via transform & opacity
 
           // 3. Floating 3D Back-Shadow Card — Decoupled in 3D space (-28px Z) for genuine parallax
           const backShadow = card.querySelector(".card-back-shadow") as HTMLElement | null;
@@ -408,7 +400,7 @@ export function WorksWheel({
                     style={{ transform: "translateZ(-28px) translateX(-32px) translateY(30px)" }}
                   />
                   {/* Main Card Face with Dynamic 3D Box Shadow */}
-                  <span className="card-shadow-layer relative block size-full overflow-hidden rounded-xl border-[2px] border-black/90 bg-[#120d08] transition-shadow duration-75">
+                  <span className="card-shadow-layer relative block size-full overflow-hidden rounded-xl border-[2px] border-black/90 bg-[#120d08] shadow-[0_12px_30px_rgba(0,0,0,0.35)]">
                     <img
                       src={item.image}
                       alt={item.title}

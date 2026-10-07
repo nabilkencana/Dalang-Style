@@ -14,8 +14,38 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Lazy-load: only initialize Three.js and download 3D model when near viewport
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Fallback if IntersectionObserver is not available
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px' }
+    );
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
+    if (!isVisible) return;
     const container = containerRef.current;
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
@@ -224,7 +254,7 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
       renderer.dispose();
       scene.clear();
     };
-  }, []);
+  }, [isVisible]);
 
   return (
     <div
