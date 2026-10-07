@@ -3,11 +3,10 @@
 import React from 'react';
 import Image from 'next/image';
 import { OriginButton } from '@/components/ui/origin-button';
+import Petruk3DCanvas from '@/components/Petruk3DCanvas';
 export interface SectionJoinTheNightProps {
   id?: string;
   title?: string;
-  pill1?: string;
-  pill2?: string;
   actionPill?: {
     text: string;
     href: string;
@@ -24,11 +23,9 @@ export interface SectionJoinTheNightProps {
 export default function SectionJoinTheNight({
   id = 'join',
   title = 'Mulai Perjalanan Mendalang',
-  pill1 = 'WARISAN BUDAYA UNESCO',
-  pill2 = 'KONTROL WAYANG AI',
   actionPill = {
     text: 'MULAI MENDALANG →',
-    href: '/stage',
+    href: '/panduan',
   },
   tagline = [
     'WAYANG JAWI HADIR UNTUK',
@@ -38,7 +35,6 @@ export default function SectionJoinTheNight({
   ],
   platformLinks = [
     { label: 'KATALOG TOKOH', href: '/katalog' },
-    { label: 'PANDUAN MENDALANG', href: '/panduan' },
     { label: 'KREDIT & TENTANG KITA', href: '/kredit' },
   ],
   brandTitle = 'Panggung Wayang Jawi',
@@ -49,8 +45,8 @@ export default function SectionJoinTheNight({
       id={id}
       className="relative w-full bg-[#dedf42] text-[#000000] overflow-hidden select-none edge-fade-top"
     >
-      {/* Full-Width Canvas Container matching Reference Ratio (1.60) */}
-      <div className="relative w-full min-h-[620px] md:aspect-[1504/940] @container overflow-hidden flex flex-col justify-between px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 pt-8 sm:pt-10 md:pt-12 pb-4 sm:pb-6 md:pb-8">
+      {/* Full-Width Canvas Container with ample responsive height */}
+      <div className="relative w-full min-h-[860px] md:min-h-[980px] lg:min-h-[1060px] @container flex flex-col justify-between px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 pt-8 sm:pt-10 md:pt-12 pb-10 sm:pb-14 md:pb-20">
         {/* Authentic Wayang Character Profile Watermark Canvas */}
         <div className="absolute inset-0 bg-[#dedf42] pointer-events-none">
           <Image
@@ -65,35 +61,14 @@ export default function SectionJoinTheNight({
 
         {/* 1. TOP HEADER ROW: Left "Join the Night" + Pills, Right Tagline */}
         <div className="relative z-10 w-full flex flex-col md:flex-row items-start justify-between gap-6 md:gap-8">
-          {/* Top-Left: "Join the Night" Title and 3 Pills */}
+          {/* Top-Left: "Join the Night" Title and Action Pill */}
           <div className="flex flex-col items-start pointer-events-auto">
             <h2 data-gsap="join-title" className="font-playfair text-black text-[clamp(42px,10.2cqi,152px)] font-normal leading-[0.98] tracking-[-0.035em] mb-4 sm:mb-5 md:mb-6 select-text">
               <span data-gsap="join-title-line" className="block will-change-transform">{title}</span>
             </h2>
 
-            {/* 3 Top Information Pills */}
-            {/* 3 Top Information Pills with OriginButton Ripple Animation */}
+            {/* Action Link Pill */}
             <div data-gsap="join-pills" className="flex flex-wrap items-center gap-2 sm:gap-2.5 md:gap-3">
-              {/* Heritage Badge Pill */}
-              <OriginButton
-                fillClassName="bg-black"
-                activeTextClassName="text-[#dedf42]"
-                className="h-auto px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-transparent text-black font-sans font-bold text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap shadow-sm cursor-default"
-              >
-                {pill1}
-              </OriginButton>
-
-              {/* Technology Badge Pill */}
-              <OriginButton
-                fillClassName="bg-black"
-                activeTextClassName="text-[#dedf42]"
-                className="h-auto px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-full border border-black bg-transparent text-black font-sans font-bold text-[clamp(8px,1.00cqi,13px)] tracking-wider uppercase whitespace-nowrap shadow-sm cursor-default"
-              >
-                {pill2}
-              </OriginButton>
-
-              {/* Action Link Pill */}
-              {/* Action Link Pill with #dedf42 hover fill */}
               <OriginButton
                 href={actionPill.href}
                 fillClassName="bg-[#dedf42]"
@@ -117,8 +92,33 @@ export default function SectionJoinTheNight({
           </div>
         </div>
 
-        {/* 2. BOTTOM SECTION: Navigation & Credit Pills directly above Giant Title */}
-        <div className="relative z-10 w-full flex flex-col gap-3 sm:gap-4 md:gap-5 mt-auto pt-6 md:pt-0">
+        {/* 2. MIDDLE ROW: Pure 3D Wayang Character (Petruk) with transparent background */}
+        <div
+          data-gsap="join-3d-model"
+          className="relative z-10 w-full flex justify-center md:justify-end my-3 sm:my-4 md:my-6 pointer-events-auto"
+        >
+          <div className="relative w-full max-w-[340px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[560px] xl:max-w-[620px] h-[350px] sm:h-[420px] md:h-[480px] lg:h-[540px] xl:h-[580px] flex flex-col items-center">
+            {/* Ambient Floor Shadow under 3D Character */}
+            <div className="absolute bottom-10 sm:bottom-12 w-[65%] h-6 sm:h-8 bg-black/25 blur-xl rounded-full pointer-events-none -z-0" />
+            <Petruk3DCanvas className="relative z-10 w-full h-full" />
+            {/* Pembatas Bawah Objek 3D (Pedestal / Divider) */}
+            <div className="w-full flex flex-col items-center gap-1.5 mt-2">
+              <div className="w-full flex items-center justify-center gap-2 px-2 sm:px-4">
+                <div className="h-[1.5px] flex-1 bg-gradient-to-r from-transparent via-black to-black" />
+                <div className="w-2.5 h-2.5 rotate-45 border border-black bg-black shrink-0" />
+                <div className="h-[1.5px] flex-1 bg-gradient-to-l from-transparent via-black to-black" />
+              </div>
+              <div className="text-center text-[10px] sm:text-xs text-black/85 font-mono font-bold tracking-widest uppercase select-none">
+                Model 3D Petruk • Geser untuk memutar
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Pembatas Horizontal Section Bawah */}
+        <div className="relative z-10 w-full border-b border-black/25 my-3 sm:my-5 pointer-events-none" />
+        {/* 3. BOTTOM SECTION: Navigation & Credit Pills directly above Giant Title */}
+        <div className="relative z-10 w-full flex flex-col gap-3 sm:gap-4 md:gap-5 mt-auto pt-4 sm:pt-6">
           {/* Action & Credit Pills sitting right above the giant title */}
           <div className="flex items-center justify-end">
             <div data-gsap="join-social" className="flex flex-wrap items-center justify-end gap-2 sm:gap-3 pointer-events-auto">

@@ -339,6 +339,19 @@ export default function GsapAnimations() {
       },
     });
 
+    // 3D Model Petruk — Upward Scale & Float Entrance
+    gsap.from('[data-gsap="join-3d-model"]', {
+      y: 50,
+      opacity: 0,
+      scale: 0.92,
+      duration: 1.2,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#join',
+        start: 'top 80%',
+        toggleActions: 'play none none none',
+      },
+    });
 
     // Giant bottom brand headline — Upward Reveal
     gsap.from('[data-gsap="join-brand-line"]', {
@@ -349,7 +362,7 @@ export default function GsapAnimations() {
       scrollTrigger: {
         trigger: '#join',
         start: 'top 85%',
-        toggleActions: 'play none none reverse',
+        toggleActions: 'play none none none',
       },
     });
 
