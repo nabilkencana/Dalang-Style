@@ -145,8 +145,8 @@ export default function SectionWayangGenerator({
             bgColor={bgColor}
             textColor={textColor}
             clusterRotation={true}
-            stackScale={0.82}
-            cardRadius={14}
+            stackScale={1.22}
+            cardRadius={6}
             textFadeStart={0.12}
             showScrollHint={true}
             title={

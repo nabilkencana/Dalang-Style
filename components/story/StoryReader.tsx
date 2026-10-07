@@ -656,19 +656,17 @@ Hikmah: ${story.pituturLuhur.moralLesson}
         {/* ── Story Header: Cover Portrait & Title Dossier (Horizontal Split) ── */}
         <header className="relative z-10 space-y-6 pb-8 border-b border-white/10">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
-            {/* Tokoh Visual Portrait (Square with Glow Aura) */}
-            <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-2xl overflow-hidden bg-black border border-white/15 shrink-0 shadow-2xl flex items-center justify-center p-3">
-              {/* Radial Aura */}
-              <div className="absolute inset-4 rounded-full bg-[radial-gradient(circle_at_center,rgba(222,223,66,0.18)_0%,transparent_70%)] pointer-events-none" />
-
+            {/* Tokoh Visual Portrait */}
+            <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-2xl overflow-hidden bg-black border border-white/15 shrink-0 shadow-2xl">
               <Image
                 src={story.coverImage}
                 alt={story.title}
                 fill
-                className="object-contain p-3 drop-shadow-[0_12px_28px_rgba(0,0,0,0.9)]"
+                className="object-cover"
                 sizes="(max-width: 768px) 160px, 192px"
                 priority
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
             </div>
 
             {/* Title & Metadata */}

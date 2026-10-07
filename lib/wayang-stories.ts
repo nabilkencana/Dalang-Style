@@ -79,7 +79,7 @@ export const WAYANG_STORIES: WayangStoryItem[] = [
     tagline: 'Kembara Batin Werkudara Menyelami Samudra Kesunyian',
     synopsis:
       'Perjalanan spiritual Bima mencari Air Kehidupan (Tirta Pawitra) atas titah gurunya, yang membawanya menaklukkan naga samudra hingga meraih pencerahan sejati di dalam diri Sang Dewa Ruci.',
-    coverImage: '/images/tokoh/wayang-7.webp',
+    coverImage: '/images/stories/dewa-ruci.webp',
     sulukOpening:
       'Suluk • "Samudra sunyi tanpa tepi, manunggal sukma ing jroning raga, manggih pepadhang ing guwa garbaning Batara Kencana."',
     culturalSignificance:
@@ -146,7 +146,7 @@ Secara ajaib, di dalam ruang kecil itu Bima justru menyaksikan jagat raya yang m
     tagline: 'Kritik Luhur Pamong Rakyat untuk Membangun Jiwa Pemimpin Bangsa',
     synopsis:
       'Kisah Kyai Semar yang berniat "membangun kayangan" bukan dengan istana megah berbatu permata, melainkan membangun budi pekerti, moralitas, dan ketenteraman batin para pemimpin di muka bumi.',
-    coverImage: '/images/tokoh/wayang-1.webp',
+    coverImage: '/images/stories/semar-mbangun-kayangan.webp',
     sulukOpening:
       'Suluk • "Kuncung putih rupa Semar Badranaya, tangis rakyat dadi sumpahing praja, mbangun kayangan jroning wardaya."',
     culturalSignificance:
@@ -264,7 +264,7 @@ Kemenangan Arjuna mengantarkannya dinobatkan sebagai raja sementara di kahyangan
     tagline: 'Pengorbanan Suci Kusuma Bangsa Melayang di Langit Malam Kurusetra',
     synopsis:
       'Detik-detik kepahlawanan sang satria Pringgandani yang mengorbankan jiwa raganya menghadang panah maut Kunta Wijayadanu demi menyelamatkan pamannya, Arjuna.',
-    coverImage: '/images/tokoh/wayang-5.webp',
+    coverImage: '/images/stories/gatotkaca-gugur.webp',
     sulukOpening:
       'Suluk • "Megatruh ing akasa, kumelap praba kencana, satria Pringgandani pasrah jiwa raga kanggo kejayaaning bangsa."',
     culturalSignificance:
@@ -323,7 +323,7 @@ Gugurnya Gatotkaca menyelamatkan Arjuna dan memastikan kemenangan Pandawa dalam 
     tagline: 'Satire Cerdas Mengenai Kekuasaan, Godaan Tahta, dan Hakikat Wong Cilik',
     synopsis:
       'Kisah jenaka penuh pitutur ketika Petruk menemukan pusaka Jamus Kalimasada yang hilang, mendirikan kerajaan Ngrancang Kencana, dan menguji para bangsawan yang kerap memandang remeh rakyat jelata.',
-    coverImage: '/images/tokoh/wayang-2.webp',
+    coverImage: '/images/stories/petruk-dadi-ratu.webp',
     sulukOpening:
       'Suluk • "Petruk Kantong Bolong madeg narendra, ngguyu lakune jagad kang kebak sandiwara, bali marang jatining abdi."',
     culturalSignificance:

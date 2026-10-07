@@ -242,6 +242,7 @@ export function StoryCatalog({ onSelectStory }: StoryCatalogProps) {
                   fill
                   sizes="(max-width: 1024px) 100vw, 450px"
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                  priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
                 <span className="absolute bottom-3 left-3 text-xs font-sans font-bold text-[#dedf42] bg-black/80 px-3 py-1 rounded-full border border-white/10 backdrop-blur-sm">
@@ -368,7 +369,7 @@ export function StoryCatalog({ onSelectStory }: StoryCatalogProps) {
               <span>Urutan:</span>
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={(e) => setSortBy(e.target.value as 'featured' | 'title' | 'time')}
                 className="bg-[#0a0a0a] border border-[#dedf42]/40 rounded-xl px-3 py-1.5 text-xs text-[#dedf42] focus:outline-none focus:border-[#dedf42] cursor-pointer"
               >
                 <option value="featured">Sorotan Unggulan</option>
