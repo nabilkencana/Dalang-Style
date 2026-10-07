@@ -88,6 +88,8 @@ export default function SectionStoryFinale({
 
           {/* Vignette Depth Overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/40 pointer-events-none z-10" />
+          {/* Top Edge Softening Gradient */}
+          <div className="absolute top-0 inset-x-0 h-24 sm:h-32 bg-gradient-to-b from-[#050303] via-[#050303]/70 to-transparent pointer-events-none z-10" />
 
           {/* RIGHT SIDE PURE CODE CONTENT LAYER */}
           <div className="relative md:absolute inset-0 flex flex-col justify-between py-8 md:py-0 md:pt-[13.2%] md:pb-[9.5%] px-6 md:px-0 md:pl-[56.1%] md:pr-[6.0%] pointer-events-none z-20 gap-6 md:gap-0">

@@ -238,16 +238,15 @@ export default function GsapAnimations() {
     // 5. SECTION 5: STORY FINALE (#berita)
     // ─────────────────────────────────────────────────────────────
 
-    // Dark theatrical card entrance
+    // Dark theatrical card entrance — smooth seamless slide
     gsap.from('[data-gsap="finale-card"]', {
-      scale: 0.93,
-      opacity: 0.35,
-      duration: 1.2,
+      opacity: 0.7,
+      duration: 1.0,
       ease: 'power2.out',
       scrollTrigger: {
         trigger: '#berita',
-        start: 'top 85%',
-        end: 'top 40%',
+        start: 'top 95%',
+        end: 'top 60%',
         scrub: 1,
       },
     });
