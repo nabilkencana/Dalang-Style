@@ -144,7 +144,7 @@ export function GlossaryTooltip({ termKey, children }: GlossaryTooltipProps) {
   const categoryLabels: Record<string, { label: string; color: string }> = {
     tokoh: { label: 'Tokoh', color: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
     istilah: { label: 'Istilah Sastra', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
-    perangkat: { label: 'Perangkat', color: 'bg-blue-500/20 text-blue-300 border-blue-500/30' },
+    perangkat: { label: 'Perangkat Wayang', color: 'bg-blue-500/20 text-blue-300 border-blue-500/30' },
     filosofi: { label: 'Falsafah Luhur', color: 'bg-purple-500/20 text-purple-300 border-purple-500/30' },
   };
 
@@ -160,52 +160,57 @@ export function GlossaryTooltip({ termKey, children }: GlossaryTooltipProps) {
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
-      <span
+      <button
+        type="button"
         onClick={(e) => {
           e.stopPropagation();
           setIsOpen(!isOpen);
         }}
-        className="underline decoration-dotted decoration-[#dedf42] underline-offset-4 text-[#f2c76b] hover:text-[#dedf42] font-semibold cursor-pointer transition-colors px-0.5 rounded hover:bg-[#dedf42]/10"
-        title={`Glosarium: ${termData.term}`}
+        className="inline underline decoration-dotted decoration-[#dedf42] underline-offset-4 text-[#f2c76b] hover:text-[#dedf42] font-semibold cursor-pointer transition-colors px-1 py-0.5 rounded hover:bg-[#dedf42]/10 text-left font-inherit"
       >
         {children}
-      </span>
+      </button>
 
       {isOpen && (
-        <span
-          className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 sm:w-80 p-3.5 bg-[#120b07] text-[#f5ecd9] border-2 border-[#d9a441]/60 rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.95)] backdrop-blur-xl animate-fadeSlideUp block text-left font-sans text-xs select-none pointer-events-auto"
+        <div
+          className="absolute z-50 bottom-full left-0 mb-2 w-72 sm:w-80 p-4 bg-[#0e0a07] text-[#f5ecd9] border border-[#dedf42]/50 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.95)] backdrop-blur-2xl animate-fadeSlideUp block text-left font-sans text-xs select-none pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
         >
-          <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-[#d9a441]/60" />
+          {/* Arrow */}
+          <div className="absolute -bottom-2 left-6 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-[#dedf42]/50" />
 
-          <span className="flex items-center justify-between border-b border-[#d9a441]/20 pb-2 mb-2">
-            <span className="flex items-center gap-1.5 font-serif font-bold text-sm text-[#dedf42]">
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-white/10 pb-2.5 mb-2.5">
+            <div className="flex items-center gap-1.5 font-serif font-bold text-sm text-[#dedf42]">
               <BookOpen className="w-3.5 h-3.5 text-[#dedf42]" />
               <span>{termData.term}</span>
-            </span>
+            </div>
 
-            <span className={`px-2 py-0.5 rounded-full text-[9px] font-mono uppercase tracking-wider border ${badge.color}`}>
+            <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-mono uppercase tracking-wider border ${badge.color}`}>
               {badge.label}
             </span>
-          </span>
+          </div>
 
-          <span className="block text-[11px] text-[#f5ecd9]/90 leading-relaxed font-normal">
+          {/* Meaning Body */}
+          <p className="text-[12px] text-[#f5ecd9]/90 leading-relaxed font-normal">
             {termData.meaning}
-          </span>
+          </p>
 
-          <span className="mt-2 pt-1.5 border-t border-white/10 flex items-center justify-between text-[9px] font-mono text-[#f5ecd9]/50">
-            <span className="text-[#dedf42]/80">
+          {/* Footer */}
+          <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-[#f5ecd9]/60">
+            <span className="text-[#dedf42]/90 flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-[#dedf42]" />
               Glosarium Pedalangan Jawa
             </span>
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="text-[#f5ecd9]/60 hover:text-white cursor-pointer"
+              className="text-[#f5ecd9]/60 hover:text-white cursor-pointer p-0.5 rounded"
             >
               <X className="w-3 h-3" />
             </button>
-          </span>
-        </span>
+          </div>
+        </div>
       )}
     </span>
   );
