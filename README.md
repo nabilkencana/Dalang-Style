@@ -1,9 +1,9 @@
 <div align="center">
 
-  <img src="public/images/wayang-gunungan-logo.png" alt="Wayang Jawi Logo" width="110" />
+  <img src="public/images/wayang-gunungan-logo.webp" alt="Wayang Jawi Logo" width="110" />
 
   # 🎭 WAYANG JAWI
-  ### Panggung Wayang Kulit Digital Interaktif & Studio Cipta Budaya Berbasis AI
+  ### Panggung Wayang Kulit Digital Interaktif, Studio Lakon Sastra, & Ensiklopedia Budaya Berbasis AI
 
   **Karya Inovasi Teknologi Kebudayaan — Tema: *LUMINE* (Illuminating Indonesian Heritage through Interactive Technology)**
 
@@ -12,11 +12,13 @@
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
   [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
   [![MediaPipe](https://img.shields.io/badge/MediaPipe-Vision_AI-FF6F00?style=for-the-badge&logo=google)](https://developers.google.com/mediapipe)
+  [![Three.js](https://img.shields.io/badge/Three.js-WebGL_3D-black?style=for-the-badge&logo=three.js)](https://threejs.org/)
   [![GSAP](https://img.shields.io/badge/GSAP-ScrollTrigger-88CE02?style=for-the-badge&logo=greensock)](https://greensock.com/)
   [![Remotion](https://img.shields.io/badge/Remotion-Video_in_React-0B84F3?style=for-the-badge&logo=remotion)](https://www.remotion.dev/)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+
   <p align="center">
-    <em>"Menghidupkan seni wayang kulit lewat panggung digital interaktif, pelacakan gestur dalang AI berbasis kamera, dan dialog kreasi sastra nusantara."</em>
+    <em>"Menghidupkan seni wayang kulit lewat panggung digital interaktif, pelacakan gestur dalang AI berbasis kamera, eksplorasi 3D adiluhung, dan dialog kreasi sastra pewayangan nusantara."</em>
   </p>
 
 </div>
@@ -25,139 +27,231 @@
 
 ## 📖 1. Latar Belakang & Kesesuaian Tema (*LUMINE*)
 
-Seni pertunjukan **Wayang Kulit** telah diakui oleh UNESCO sebagai *Masterpiece of Oral and Intangible Heritage of Humanity* sejak tahun 2003. Namun, di era digital kontemporer, kesenian adiluhung ini menghadapi tantangan pelestarian yang nyata:
-- **Kurangnya Aksesibilitas Instrumen**: Sulit dan mahalnya instrumen fisik wayang kulit, kelir layar kain, dan lampu blencong bagi generasi muda yang ingin belajar mendalang.
-- **Kompleksitas Teknik Mendalang**: Keterampilan motorik manipulasi gapit dan cempurit memerlukan bertahun-tahun latihan di sanggar tradisional.
-- **Kesenjangan Bahasa & Narasi**: Sastra pakeliran klasik sering kali berjarak dengan preferensi komunikasi generasi digital.
+Seni pertunjukan **Wayang Kulit** telah diakui oleh UNESCO sebagai *Masterpiece of the Oral and Intangible Heritage of Humanity* sejak tahun 2003 (inskripsi 2008). Namun, di era digital kontemporer, kesenian adiluhung ini menghadapi tantangan pelestarian nyata di kalangan generasi muda:
+- **Keterbatasan Akses Instrumen Fisik**: Biaya dan kelangkaan wayang kulit tatah sungging asli, kelir kain mori, blencong tembaga, dan gamelan perunggu.
+- **Kompleksitas Teknik Pedalangan**: Keterampilan motorik memanipulasi *cempurit* dan *tuding* menuntut latihan intensif bertahun-tahun di sanggar pedalangan tradisi.
+- **Kesenjangan Bahasa & Media Narasi**: Bahasa sastra pakeliran klasik sering kali berjarak dengan preferensi komunikasi interaktif generasi digital.
 
 ### 🌟 Solusi Inovatif: *Wayang Jawi*
-Menjawab tema kompetisi **LUMINE** (*menyinari dan menerangi khazanah bangsa lewat teknologi*), **Wayang Jawi** hadir mentransformasikan layar peramban web menjadi panggung kelir virtual interaktif yang inklusif, modern, dan edukatif:
-1. **Menyinari Budaya (*Cultural Illumination*)**: Menghadirkan kembali filosofi karakter, lakon moral (*Bima Suci*), dan 16 museum wayang nusantara dalam balutan desain editorial kelas dunia.
-2. **Kecerdasan Buatan Tanpa Hambatan (*Zero-Hardware AI Vision*)**: Cukup menggunakan webcam laptop biasa, pengguna dapat langsung mendalang dua tokoh wayang secara real-time dengan gestur tangan alami.
-3. **Generasi & Kolaborasi Kreatif (*Empu AI Atelier*)**: Memberikan ruang bagi publik untuk meramu konsep karakter wayang baru yang tetap berakar pada pakem etika dan estetika pewayangan.
+Menjawab tema kompetisi **LUMINE** (*menyinari dan menerangi khazanah bangsa lewat teknologi*), **Wayang Jawi** hadir mentransformasikan peramban web menjadi panggung kelir virtual interaktif yang inklusif, modern, dan edukatif:
+1. **Menyinari Warisan (*Cultural Illumination*)**: Menghadirkan kembali filosofi karakter Pandawa & Punakawan, lakon spiritual agung (*Bima Suci*), serta direktori 16 gedung museum wayang nusantara dalam balutan desain editorial kelas dunia.
+2. **Kecerdasan Buatan Tanpa Hambatan (*Zero-Hardware AI Vision*)**: Cukup menggunakan kamera laptop atau ponsel biasa, siapapun dapat langsung menjadi dalang secara real-time menggerakkan dua tokoh wayang sekaligus dengan gestur tangan alami.
+3. **Pustaka Lakon & Glosarium Terbuka**: Menyediakan naskah wiracarita lengkap dengan kidung macapat, audio gamelan slendro-pelog, serta penjelajah istilah glosarium instan.
 
 ---
 
-## ✨ 2. Fitur-Fitur Utama (*Key Capabilities*)
+## ✨ 2. Peta Fitur Lengkap Platform (*Platform Feature Matrix*)
 
 ### 🕹️ 1. Panggung Virtual Dalang AI (`/stage`)
-- **Dual-Hand Computer Vision Tracking**: Menggunakan model `@mediapipe/tasks-vision` untuk mendeteksi 21 titik sendi tangan kiri dan kanan secara simultan pada 60 FPS.
-- **Kinematika Rigging Organik**:
-  - *Telapak Tangan*: Mengendalikan batang tubuh wayang (*cempurit/gapit*).
-  - *Ibu Jari & Telunjuk*: Menggerakkan sendi siku dan pergelangan tangan wayang (*tuding*).
-  - *Kemiringan Tangan*: Menentukan sudut kemiringan tokoh.
-  - *Jarak ke Kamera (Z-Depth)*: Memperbesar bayangan wayang pada kelir seperti mendekatkan wayang ke lampu blencong asli.
-  - *Jari Kelingking*: Memicu gerakan tarian khas wayang (*Kiprahan*).
-- **Fallback Mouse & Touch Control**: Dilengkapi mode simulasi tetikus dan simulasi demo otomatis bagi perangkat tanpa kamera.
-- **Efek Blencong Audio-Visual**: Suara tabuhan gamelan slendro dinamis dan tata cahaya api blencong yang bernapas mengikuti alur gerak.
+- **Dual-Hand Computer Vision Tracking**: Memanfaatkan model `@mediapipe/tasks-vision` untuk melacak 21 titik sendi tangan kiri dan kanan secara simultan pada 60 FPS langsung di sisi klien (*client-side*).
+- **Kinematika Skeletal Hierarkis (*Rigging Engine*)**:
+  - *Telapak Tangan*: Mengatur pergeseran posisi dan ketinggian tubuh wayang (*cempurit/gapit*).
+  - *Ibu Jari & Telunjuk*: Menggerakkan sendi siku dan lengan wayang (*tuding*).
+  - *Kemiringan Tangan (Pitch/Roll)*: Mengatur sudut kemiringan dan dinamika gestur sabetan wayang.
+  - *Z-Depth Estimation*: Menyesuaikan skala bayangan wayang pada kain kelir seperti mendekatkan wayang ke lampu blencong fisik.
+  - *Jari Kelingking*: Memicu gestur tarian wayang khas (*Kiprahan*).
+- **Dukungan 6 Tokoh Panggung**: Raden Arjuna, Sang Gatotkaca, Kyai Semar, Kyai Petruk, Kyai Bagong, dan Raden Werkudara.
+- **Synthesizer Gamelan Web Audio API**: Audio tabuhan gamelan slendro dinamis dan tata cahaya api blencong yang bernapas mengikuti gerakan tokoh.
+- **Fallback Mouse & Touch Control**: Dilengkapi mode simulasi sentuhan jemari dan tetikus otomatis untuk perangkat tanpa webcam.
 
-### 📜 2. Panduan Mendalang Interaktif (`/panduan`)
-- Dokumentasi visual gestur tangan lengkap dengan *hover video previews*.
-- Filosofi kendali wayang, tata cara memegang gapit, serta panduan tata panggung kelir.
+### 🎭 2. Katalog Tokoh Pewayangan Nusantara (`/katalog` & `/tokoh/[slug]`)
+- **Koleksi 9 Tokoh Utama**: Kyai Semar, Kyai Petruk, Kyai Bagong, Nala Gareng, Sang Arjuna, Sang Bima, Sang Gatotkaca, Prabu Rahwana, dan Resi Drona.
+- **Filter Kategori Cepat**: Navigasi multi-kategori (`Semua Tokoh`, `Punakawan`, `Pandawa Lima`, dan `Tokoh Kerajaan`).
+- **Mesin Pencari Instan & Chip Tag**: Pencarian berbasis nama, peran, pusaka, dan watak filosofis dengan chip populer (`#Semar`, `#Arjuna`, `#Gatotkaca`, `#Bima`, dll.).
+- **Halaman Eksplorasi Mendalam (`/tokoh/[slug]`)**:
+  - Banner visual 16:9 beresolusi tinggi dengan lencana watak kuratorial.
+  - Aksara Jawa Hanacaraka Unicode resmi.
+  - Narasi asal-usul & silsilah wiracarita.
+  - Simbolisme filosofis & ajaran moral luhur.
+  - Daftar pusaka sakti lengkap dengan ikonografi tematik.
+  - Desain *follow-along* yang mengalir natural saat halaman digulir.
 
-### 🏛️ 3. Panggung Teatrikal & Lakon Bima Suci (`/#lakon`)
-- Rekaman pementasan otentik Lakon Bima Suci (Pencarian Tirta Perwitasari dan pertemuan dengan Dewa Ruci).
-- Bingkai teatrikal berbingkai emas dengan integrasi resmi YouTube player dan kontrol suara dinamis.
+### 📚 3. Pustaka Lakon & Pembaca Cerita Interaktif (`/kreasi` & `/story`)
+- **Katalog 15 Lakon Wiracarita Klasik**: *Dewa Ruci (Bima Suci)*, *Bharatayudha*, *Wisanggeni Gugat*, *Anoman Obong*, *Karna Tandhing*, *Gatotkaca Gugur*, *Petruk Dadi Ratu*, dll.
+- **Pembaca Lakon Teatrikal (*StoryReader*)**:
+  - **Audio Narasi Pedalangan**: Pemutar suara naratif terintegrasi dengan tombol pengatur kecepatan suara (`0.75x`, `1.0x`, `1.25x`), penanda babak, dan tombol bisu.
+  - **Efek Partikel Blencong (*FloatingEmbersOverlay*)**: Partikel bara api keemasan melayang lembut di atas naskah.
+  - **Babak Pedalangan Zig-Zag**: Pembagian babak cerita dengan transisi visual kanvas teatrikal.
+  - **Dialog Lakon & Drop Cap Klasik**: Format tipografi bernuansa naskah keraton dengan kutipan berbingkai emas.
+  - **Glosarium Interaktif Pedalangan (*GlossaryTooltip*)**: Kata kunci budaya (*Pancanaka*, *Blencong*, *Kelir*, *Cempala*, *Gandiwa*, *Suluk*, dll.) disorot dengan garis emas dan menampilkan pop-up penjelasan etimologi tanpa memicu hydration error.
+- **Sobekan Tirai Interaktif (*Tiger Tear Reveal*)**: Komposisi poster pembuka yang terbelah dua saat digulir, memperlihatkan kanvas 3D kepala Rahwana di baliknya.
 
-### 🎡 4. Roda Putar Karakter 3D (*Works Wheel Tokoh*) (`/#cara-bermain`)
-- Eksplorasi watak tokoh pewayangan (Kyai Semar, Petruk, Bagong, Arjuna, Werkudara, Gatotkaca).
-- Visual interaktif 3D wheel dengan metadata watak luhur dan filosofi kepemimpinan Jawa.
+### 🏛️ 4. Beranda Teatrikal & Galeri Virtual (`/`)
+- **Hero Video Teatrikal**: Cuplikan video gerak dalang beresolusi tinggi dengan tombol aksi langsung ke panggung kelir.
+- **Marquee Ticker Tape Berjalan**: Pita teks dwibahasa pewayangan yang responsif terhadap kecepatan gulir (*scroll-dependent velocity*).
+- **Pentas Lakon Bima Suci (`#lakon`)**: Pemutar video pementasan kolosal berbingkai kanvas emas teatrikal.
+- **Roda Karakter 3D (*WorksWheel Tokoh*) (`#cara-bermain`)**: Silinder drum 3D putar interaktif untuk mengenalkan watak ksatria, beradaptasi mulus di perangkat seluler.
+- **Galeri Museum Wayang Indonesia (`#galeri`)**: Pameran 3D interaktif (*Formation Carousel*) berisi 16 gedung museum wayang asli se-Indonesia lengkap dengan modal detail profil museum dan sejarah bangunannya.
+- **Pustaka Tanya Jawab Budaya (`#faq`)**: Tab tanya-jawab interaktif seputar panggung digital, kecerdasan buatan, dan kebudayaan.
+- **Kanvas Model 3D Petruk (`#join`)**: Model 3D interaktif Kyai Petruk berbasis Three.js WebGL yang dapat diputar 360 derajat oleh pengunjung.
 
-### 🤖 5. Studio Gubahan Sang Empu AI (`/kreasi`)
-- **Asisten Dialog Sastra**: Mengurai gagasan watak ksatria dalam bahasa sehari-hari menjadi nama berwibawa, pusaka sakti, dan nilai filosofis mendalam.
-- **Kanvas Spotlight Generatif**: Menampilkan visualisasi wayang hasil olahan AI secara murni tanpa tokoh bawaan.
-- **Persistensi Prompt Antar-Halaman**: Konsep yang diketikkan di beranda landing page otomatis tersimpan dan terisi ke kolom studio kreasi tanpa data hilang.
+### 📰 5. Warta Budaya & Liputan UNESCO (`/berita`)
+- **Sorotan Artikel Utama**: Liputan mendalam penetapan Wayang Kulit oleh UNESCO ICH.
+- **Daftar Berita Editorial Terkurasi**: Dokumentasi warta dari Kompas.com, CNN Indonesia, Detikcom, Antara News, dan Tempo mengenai kiprah maestro dalang (Ki Manteb Soedarsono, Ki Seno Nugroho, Ki Anom Suroto) serta festival pewayangan.
 
-### 📰 6. Warta Budaya & Liputan UNESCO (`/berita`)
-- Majalah editorial digital berisi liputan resmi UNESCO ICH, sejarah kosmologi gunungan, dan ulasan pelestarian warisan budaya.
+### 📜 6. Panduan & Tutorial Mendalang (`/panduan` & `/tutorial`)
+- **Panduan Gestur Kamera**: Diagram visual 4 gestur tangan utama (*Poros Gapit*, *Gerak Lengan Tuding*, *Tarian Kiprahan*, dan *Kedalaman Bayangan Z-Depth*).
+- **Tab Pemilihan Perangkat**: Panduan khusus untuk pengguna ponsel cerdas (*Mobile*) dan komputer/laptop (*Desktop*).
 
-### 🎬 7. Video Motion Showcase Terintegrasi (*Remotion*)
-- Komposisi video grafis motion terprogram berbasis React (`remotion/`) yang dapat di-preview secara langsung via browser dan di-render menjadi file video MP4 berkualitas siaran.
+### 👥 7. Kredit, Profil Pengembang, & Ekosistem Mitra (`/kredit`)
+- **Panggung Interaktif Tiga Siswa SMK Telkom Malang**:
+  - Penataan posisi proporsional ketiga kreator sesuai pose dokumentasi kelompok asli.
+  - Efek bayangan siluet murni (*alpha-traced silhouette shadow*) yang mengikuti kontur fisik tubuh masing-masing orang.
+  - Tombol magnetis dinamis (*dynamic cursor follower pill badge*) yang melayang mengikuti kursor pengguna.
+  - Jendela pop-up modal detail profil dengan dudukan panggung emas (*exhibition pedestal plinth*) dan tombol sosial media resmi (GitHub, LinkedIn, Instagram).
+- **Marquee Ekosistem & Jejaring Mitra (*Logo Cloud Infinite Slider*)**:
+  - Menampilkan logo resmi institusi dan teknologi pendukung: UNESCO ICH, SENAWANGI, Kemendikbudristek RI, SMK Telkom Malang Moklet, Next.js 16, Google MediaPipe, Tailwind CSS, Three.js, GSAP Motion, Framer Motion, Lucide Icons, dan GitHub.
+- **Katalog Rujukan Ilmiah Interaktif (*SuperHoverList*)**:
+  - Daftar arsip sumber rujukan dengan kartu pratinjau melayang berkilau emas saat disorot kursor (*floating artwork preview*).
+
+### 🎬 8. Video Motion Graphics Terprogram (`remotion/`)
+- Komposisi video motion graphics berbasis React (`remotion/DalangShowcase.tsx`) yang dapat di-preview langsung melalui Remotion Studio dan di-render menjadi file video MP4 berkualitas siaran.
 
 ---
 
-## 🏗️ 3. Arsitektur Teknis & Struktur Folder (*Clean Code*)
+## 🏗️ 3. Arsitektur Teknis & Struktur Folder (*Clean Architecture*)
 
-Aplikasi dibangun dengan arsitektur modular yang memisahkan logika presentasi (*UI Components*), manajemen state (*Hooks*), pemrosesan computer vision (*Engine Rigging*), dan aset video (*Remotion*):
+Proyek ini menerapkan **Clean Architecture & Modular Domain Structure** untuk memisahkan secara tegas antara modul antarmuka, kontrol animasi, kanvas 3D, logika panggung, dan rute navigasi:
 
 ```text
 dalang-style/
 ├── app/                              # Next.js 16 App Router Directory
-│   ├── (marketing)/                  # Marketing Route Group (Editorial Layout)
-│   │   ├── layout.tsx                # Marketing shared layout with Navbar & Footer
-│   │   ├── page.tsx                  # Landing Page (Hero, Lakon, Wheel, Sanggar)
-│   │   ├── kreasi/page.tsx           # Studio Dialog Sang Empu AI
-│   │   ├── panduan/page.tsx          # Panduan Gestur & Pengendalian Dalang
+│   ├── (marketing)/                  # Marketing & Editorial Route Group
+│   │   ├── layout.tsx                # Marketing Layout dengan Navbar & SiteFrame
+│   │   ├── page.tsx                  # Beranda Utama (Hero, Lakon, Carousel, FAQ, dll.)
+│   │   ├── kreasi/page.tsx           # Pustaka Lakon & Pembaca Cerita Wayang
+│   │   ├── story/page.tsx            # Alias Rute Story
+│   │   ├── katalog/page.tsx          # Katalog Tokoh Pewayangan
+│   │   ├── tokoh/[slug]/page.tsx     # Halaman Eksplorasi Detail Tokoh Wayang
 │   │   ├── berita/page.tsx           # Warta & Catatan Kebudayaan
-│   │   ├── katalog/page.tsx          # Katalog Tokoh Wayang Lengkap
-│   │   └── kredit/page.tsx           # Tim Pengembang & Sumber Lisensi
-│   ├── (stage)/                      # Fullscreen Virtual Stage Route Group
-│   │   ├── layout.tsx                # Dark stage shell layout
-│   │   └── stage/page.tsx            # Halaman Panggung Virtual Dalang AI
-│   ├── api/                          # Next.js Serverless API Route Handlers
-│   │   └── kreasi-wayang/route.ts    # AI Wayang Synthesis API (Gemini/Fallback)
-│   ├── globals.css                   # Tailwind CSS v4 Global Styling & Themes
-│   ├── wayang.css                    # Custom Stage Canvas & Lighting Keyframes
-│   └── layout.tsx                    # Root Layout with Font & Metadata Definitions
-├── components/                       # Reusable UI & Section Components
-│   ├── ui/                           # Primitives & Interactive Micro-Components
-│   │   ├── navbar-menu.tsx           # Accessible Floating Dropdown Navigation
-│   │   ├── works-wheel.tsx           # 3D Rotating Character Wheel
-│   │   ├── interactive-list-preview.tsx # Editorial List Preview with Hover Media
-│   │   ├── flip-card.tsx             # 3D Dalang Flip Card with Spring Physics
-│   │   └── text-marquee.tsx          # Smooth Infinite Running Ticker Tape
-│   ├── HeroWayangJawi.tsx            # Cinematic Video Hero Showcase
-│   ├── Navbar.tsx                    # Dynamic Island / Notch Responsive Bar
-│   ├── SectionBimaSuci.tsx           # Lakon Bima Suci Theater Frame
-│   ├── SectionStoryAwakening.tsx     # Editorial Galeri Tokoh Section
-│   ├── SectionWayangGenerator.tsx    # Sanggar Cipta Sang Empu Showcase
-│   ├── SectionStoryFinale.tsx        # Theatrical Dancers & UNESCO News Section
-│   ├── WayangLogo.tsx                # Official Gunungan / Kayon SVG Emblem
-│   ├── WayangStage.tsx               # Canvas 2D Puppet Physics & Control Hub
-│   └── GsapAnimations.tsx            # Centralized GSAP ScrollTrigger Controller
-├── lib/                              # Business Logic, Rigging, & Utilities
-│   ├── wayang/                       # Wayang Digital Engine
-│   │   ├── rig.ts                    # Hierarchical Skeletal Joint Transformation
-│   │   ├── tracking.ts               # MediaPipe Landmarks to Puppet Mapper
-│   │   ├── render.ts                 # 60fps Double-Buffered Canvas 2D Pipeline
-│   │   ├── audio.ts                  # Web Audio API Slendro Gamelan Synthesizer
-│   │   ├── controller.ts             # Input Controller Strategy (Camera/Mouse)
-│   │   └── math.ts                   # Vector, Angle, and Smoothing Utilities
-│   ├── wayang-ai.ts                  # Sastra & Archetype Prompt Synthesizer
-│   ├── news-data.ts                  # Curated Articles & Cultural Editorial Data
-│   └── utils.ts                      # Tailwind Merge & ClassName Utilities
-├── remotion/                         # Remotion Video in React Framework
-│   ├── Root.tsx                      # Remotion Composition & Scene Registry
-│   ├── DalangShowcase.tsx            # 30-second 60fps Motion Graphics Storyboard
-│   └── scenes/                       # Programmatic Video Scenes (Intro, UI, AI)
-├── public/                           # Optimized Static Assets (Images, Icons)
-│   └── images/                       # Compressed WebP/PNG Cultural Artifacts
-├── eslint.config.mjs                 # Flat ESLint Configuration (Zero Errors)
-├── next.config.ts                    # Next.js 16 Configuration
-└── tsconfig.json                     # Strict TypeScript Compiler Options
+│   │   ├── panduan/page.tsx          # Panduan Gestur & Pengendalian Dalang
+│   │   ├── tutorial/page.tsx         # Alias Tutorial
+│   │   └── kredit/page.tsx           # Profil Tim Pengembang & Ekosistem Mitra
+│   ├── (stage)/                      # Panggung Virtual Fullscreen Route Group
+│   │   ├── layout.tsx                # Shell Layout Panggung Gelap
+│   │   └── stage/page.tsx            # Panggung Interaktif Dalang AI
+│   ├── globals.css                   # Tailwind CSS v4 Global Styling
+│   ├── wayang.css                    # Keyframe Pencahayaan & Kanvas Panggung
+│   └── layout.tsx                    # Root Layout dengan Font & Viewport Definition
+├── components/                       # Clean Modular Component Architecture
+│   ├── ui/                           # Primitif UI & Desain Interaktif Reusable
+│   │   ├── infinite-slider.tsx       # Mesin Marquee Loop Berkelanjutan
+│   │   ├── logo-cloud.tsx            # Marquee Logo Resmi Ekosistem Mitra
+│   │   ├── super-hover-list.tsx      # Daftar Arsip dengan Pratinjau Gambar Melayang
+│   │   ├── works-wheel.tsx           # Silinder Putar Tokoh 3D
+│   │   ├── tiger-tear-reveal.tsx     # Efek Sobekan Tirai Interaktif Rahwana 3D
+│   │   ├── stack-spread.tsx          # Pustaka Lakon Kinetic Scroll Fan-In
+│   │   ├── formation.tsx             # Galeri Museum 3D Carousel
+│   │   ├── flip-card.tsx             # Kartu Teatrikal Sang Dalang 3D Flip
+│   │   ├── origin-button.tsx         # Tombol Asal Usul Efek Ripple
+│   │   ├── blur-text.tsx             # Animasi Teks Blur-In Kata per Kata
+│   │   ├── faq-tabs.tsx              # Tab Pustaka Tanya Jawab
+│   │   ├── navbar-menu.tsx           # Floating Dropdown Navigation
+│   │   ├── staggered-menu.tsx        # Mobile Navigation Drawer Berjenjang
+│   │   └── text-marquee.tsx          # Ticker Tape Dinamis
+│   ├── sections/                     # 10 Seksi Terisolasi Halaman Beranda
+│   │   ├── HeroWayangJawi.tsx        # Seksi 1: Video Hero Cinematic
+│   │   ├── StoryShadowsSection.tsx   # Seksi 2: Panggung Teater Sang Dalang
+│   │   ├── SectionBimaSuci.tsx       # Seksi 3: Pentas Video Lakon Bima Suci
+│   │   ├── SectionStoryAwakening.tsx # Seksi 4: Galeri Tokoh Wayang
+│   │   ├── SectionWayangGenerator.tsx# Seksi 5: Pustaka Kisah Sastra
+│   │   ├── SectionStoryFinale.tsx    # Seksi 6: Liputan UNESCO & Warta
+│   │   ├── SectionMovementMeaning.tsx# Seksi 7: Carousel Makna Gerak Wayang
+│   │   ├── SectionGalleryMuseum.tsx  # Seksi 8: Galeri 16 Museum Wayang
+│   │   ├── SectionFAQ.tsx            # Seksi 9: Pustaka Tanya Jawab Budaya
+│   │   └── SectionJoinTheNight.tsx   # Seksi 10: Penutup & Model 3D Petruk
+│   ├── canvas/                       # Kanvas WebGL Three.js 3D Terisolasi
+│   │   ├── Petruk3DCanvas.tsx        # Render Model 3D Petruk GLTF
+│   │   └── Rahwana3DFaceCanvas.tsx   # Render Model 3D Kepala Rahwana GLTF
+│   ├── layout/                       # Komponen Shell & Navigasi Global
+│   │   ├── Navbar.tsx                # Navigasi Pulau Mengambang & Notch Responsif
+│   │   ├── SiteFrame.tsx             # Bingkai Garis Viewport Teatrikal
+│   │   ├── SmoothScroll.tsx          # Inisialisasi Lenis Inertia Scrolling
+│   │   └── WayangLogo.tsx            # Lambang Vektor Gunungan Emas
+│   ├── animations/                   # Pengontrol Animasi GSAP & Efek Teks
+│   │   ├── GsapAnimations.tsx        # GSAP ScrollTrigger Landing Page
+│   │   ├── PanduanGsapAnimations.tsx # GSAP ScrollTrigger Halaman Panduan
+│   │   ├── BeritaGsapAnimations.tsx  # GSAP ScrollTrigger Halaman Berita
+│   │   ├── KatalogGsapAnimations.tsx # GSAP ScrollTrigger Halaman Katalog
+│   │   ├── ScrollReveal.tsx          # Efek Teks Pudar Berantai
+│   │   └── StrokeText.tsx            # Tipografi Garis Luar Tipis
+│   ├── views/                        # View Halaman Khusus
+│   │   ├── TeamInteractiveSection.tsx# Panggung Tiga Kreator & Dialog Profil
+│   │   ├── KatalogTokohView.tsx      # Tampilan Katalog & Filter Tokoh
+│   │   └── NewsEditorialView.tsx     # Tampilan Editorial Warta Budaya
+│   ├── stage/                        # Panggung Dalang & Pelacakan AI
+│   │   ├── WayangStage.tsx           # Kanvas 2D Fisika Boneka Wayang
+│   │   └── GestureVisuals.tsx        # Diagram Panduan Gestur Tangan
+│   ├── story/                        # Domain Modul Cerita Wayang
+│   │   ├── StoryReader.tsx           # Antarmuka Pembaca Naskah Teatrikal
+│   │   ├── StoryCatalog.tsx          # Katalog Kartu Lakon
+│   │   ├── StoryCard.tsx             # Kartu Lakon Individual
+│   │   ├── GlossaryTooltip.tsx       # Glosarium Istilah Pedalangan
+│   │   ├── StoryGsapAnimations.tsx   # Animasi Babak Lakon
+│   │   └── WayangVisualAssets.tsx    # Ornamen Pembatas Wayang
+│   ├── mobile/                       # Modul Khusus Tampilan Ponsel
+│   │   └── MobileTokohSection.tsx    # Penggeser Tokoh Sentuh Mobile
+│   └── index.ts                      # Central Barrel Re-export
+├── lib/                              # Basis Data, Mesin Pedalangan, & Utilitas
+│   ├── wayang/                       # Mesin Simulasi Wayang Digital
+│   │   ├── rig.ts                    # Hierarki Transformasi Sendi Boneka Wayang
+│   │   ├── tracking.ts               # Pemetaan Titik Landmark MediaPipe ke Wayang
+│   │   ├── render.ts                 # Double-Buffered Canvas 2D Pipeline 60 FPS
+│   │   ├── audio.ts                  # Web Audio API Synthesizer Gamelan Slendro
+│   │   ├── controller.ts             # Strategi Input Pengendalian (Kamera/Mouse)
+│   │   ├── math.ts                   # Utilitas Vektor, Sudut, & Smoothing
+│   │   └── dance.ts                  # Algoritma Koreografi Tarian Kiprahan
+│   ├── wayang-stories.ts             # Basis Data Naskah Lakon Pewayangan
+│   ├── tokoh-data.ts                 # Basis Data Karakter Tokoh & Pusaka
+│   ├── news-data.ts                  # Basis Data Artikel & Warta Kebudayaan
+│   └── utils.ts                      # Tailwind Merge & ClassName Helper
+├── remotion/                         # Framework Video Animasi di React
+│   ├── Root.tsx                      # Registrasi Komposisi Remotion
+│   ├── DalangShowcase.tsx            # Storyboard Motion Graphics 30 Detik
+│   └── scenes/                       # Adegan Video Terprogram
+├── public/                           # Aset Statis Teroptimasi
+│   ├── assets/                       # Tekstur Sendi Boneka Wayang (Dilindungi)
+│   ├── images/                       # Aset Gambar WebP Terkompresi
+│   ├── models/                       # Model 3D GLTF (Petruk & Rahwana)
+│   └── videos/                       # Video Hero Dalang
+├── next.config.ts                    # Konfigurasi Next.js 16 (Turbopack)
+├── tsconfig.json                     # Konfigurasi Strict TypeScript Compiler
+└── package.json                      # Dependensi & Skrip Proyek
 ```
 
 ---
 
 ## 🎨 4. Desain Sistem & Identitas Visual
 
-| Elemen | Spesifikasi | Filosofi |
+| Elemen | Spesifikasi | Filosofi Budaya & Desain |
 | :--- | :--- | :--- |
-| **Warna Utama** | `Chartreuse Gold (#dedf42)` | Cahaya pendar blencong modern, energi intelektual, dan pembaharuan tradisi. |
-| **Warna Aksen** | `Prada Gold (#d9a441)` | Kemegahan tatah sungging prada keraton Jawa klasik. |
-| **Warna Dasar** | `Obsidian Black (#050303 - #0e0704)` | Keheningan malam pakeliran dan kontras bayangan kelir. |
-| **Tipografi Judul** | `Playfair Display` & `Cormorant Garamond` | Anggun, berwibawa, dan bernuansa sastra klasik nusantara. |
-| **Tipografi Tubuh** | `Inter` | Bersih, terbaca sempurna di segala resolusi gawai, dan modern. |
-| **Aksara Jawa** | *Unicode Hanacaraka* | Penegas orisinalitas akar kebudayaan Jawa. |
+| **Warna Utama** | `Chartreuse Gold (#dedf42)` | Pendar api blencong modern, pencerahan intelektual, dan kesegaran tradisi di era digital. |
+| **Warna Aksen** | `Prada Gold (#d9a441)` | Kemegahan tatah sungging prada keraton pewayangan klasik. |
+| **Warna Dasar** | `Obsidian Black (#050303 - #0e0704)` | Keheningan malam pakeliran dan kontras bayangan kelir kain mori. |
+| **Tipografi Judul** | `Playfair Display` & `Cormorant Garamond` | Anggun, berwibawa, dan bernuansa sastra keraton klasik nusantara. |
+| **Tipografi Tubuh** | `Inter` | Jernih, terbaca sempurna di segala resolusi gawai modern. |
+| **Aksara Daerah** | *Unicode Hanacaraka* | Penegas orisinalitas akar kebudayaan dan sastra Jawa. |
 
 ---
 
-## 🚀 5. Panduan Instalasi & Menjalankan Lokal
+## 👥 5. Tim Pengembang (*Development Team*)
 
-### Prasyarat:
+Dikembangkan oleh tiga siswa **SMK Telkom Malang (Moklet)**:
+
+| Nama Pengembang | Peran & Disiplin | Fokus Kontribusi Utama |
+| :--- | :--- | :--- |
+| **Nabil Anwar K.** | `AI Architecture & Fullstack Engineering` | Perancangan arsitektur sistem, integrasi MediaPipe Vision AI, pipeline Next.js, dan optimasi performa. |
+| **Styven Dwi N.** | `Creative Direction & Motion Design` | Desain tata panggung teatrikal, harmoni palet warna Jawa, tipografi sastra, dan animasi interaktif 3D. |
+| **Risky Nabil P.** | `System Architecture & Cultural Research` | Keandalan sistem, tata kelola audio gamelan slendro-pelog, dan riset naskah wiracarita pewayangan. |
+
+---
+
+## 🚀 6. Panduan Instalasi & Menjalankan Lokal
+
+### Prasyarat Sistem:
 - **Node.js**: Versi `18.18.0` atau yang lebih baru (disarankan Node.js 20 LTS).
 - **Package Manager**: `npm`, `pnpm`, atau `bun`.
-- **Peramban Web**: Google Chrome, Microsoft Edge, atau Safari dengan izin akses webcam (untuk Panggung Virtual).
+- **Peramban Web Modern**: Google Chrome, Microsoft Edge, atau Safari dengan izin webcam untuk Panggung Virtual.
 
 ### Langkah Instalasi:
 
@@ -172,102 +266,53 @@ dalang-style/
    npm install
    ```
 
-3. **Konfigurasi Environment Variable (Opsional)**:
-   Buat file `.env.local` di root direktori jika ingin mengaktifkan integrasi Google Gemini API secara langsung:
-   ```env
-   GEMINI_API_KEY=your_gemini_api_key_here
-   ```
-   *(Catatan: Aplikasi tetap berfungsi 100% penuh secara offline/fallback cerdas tanpa API key).*
-
-4. **Jalankan Development Server**:
+3. **Jalankan Server Pengembangan (Dev Server)**:
    ```bash
    npm run dev
    ```
    Buka peramban di [http://localhost:3000](http://localhost:3000).
 
-5. **Verifikasi Kualitas Kode (Clean Code Check)**:
+4. **Verifikasi Kualitas Kode (Clean Code Check)**:
    ```bash
-   # Type checking TypeScript tanpa error
+   # Type check TypeScript (0 error)
    npx tsc --noEmit
 
-   # Linting ESLint (0 errors)
+   # Linting ESLint (0 error)
    npm run lint
 
-   # Production Build
+   # Build Produksi (33 rute SSG/statis sukses teroptimasi)
    npm run build
    ```
 
-6. **Preview & Render Video Remotion (Opsional)**:
+5. **Pratinjau & Render Video Remotion (Opsional)**:
    ```bash
-   # Buka Remotion Studio interaktif
+   # Membuka Remotion Studio interaktif
    npm run video:preview
 
-   # Render video MP4 motion graphics
+   # Me-render video MP4 motion graphics
    npm run video:render
    ```
 
 ---
 
-## 📱 6. Matriks Responsivitas Antar-Perangkat
+## 📱 7. Hasil Audit Responsivitas Seluruh Halaman (*100% Mobile Friendly*)
 
-Aplikasi telah diuji dan dioptimalkan secara ketat pada 3 breakpoint utama:
-- 📱 **Mobile (375px - 430px)**:
-  - Menu berubah menjadi *App Drawer* responsif dengan navigasi sentuh ergonomis.
-  - Panggung virtual mendukung penyesuaian skala otomatis satu tangan dan mode tetikus/sentuh.
-  - Bebas *horizontal scroll overflow*.
-- 📟 **Tablet (768px - 850px)**:
-  - Transisi mulus antara mode sentuh dan tata letak grid dua kolom seimbang.
-  - Kartu studio kreasi sejajar rapi.
-- 💻 **Desktop (1024px - 1568px+)**:
-  - *Dynamic Notch Navigation* yang menyempit (*compact*) saat digulir ke bawah dan melebar saat digulir ke atas.
-  - Animasi halus *GSAP ScrollTrigger* dan visual kedalaman 3D.
+Platform telah melalui uji audit teknis peramban pada resolusi ponsel standar (**390×844 px**) dan resolusi kecil (**360×740 px**):
+
+- ✅ **Bebas Horizontal Overflow**: `scrollWidth === clientWidth` pada seluruh 8 rute halaman utama (0 pixel *overflow* horizontal).
+- ✅ **Navigasi Sentuh Adaptif**: Bilah navigasi mengambang beralih otomatis ke *Staggered Navigation Drawer* yang nyaman dijangkau jemari satu tangan.
+- ✅ **Skala Tipografi Fluid**: Menggunakan fungsi CSS `clamp()` dan `@container` query sehingga judul besar tidak pernah terpotong di layar kecil.
+- ✅ **Panggung Ramah Sentuhan**: Halaman `/stage` otomatis mengaktifkan mode sentuh kanvas (`touch-action: none`) bagi perangkat layar sentuh.
 
 ---
 
-## 🏆 7. Kepatuhan Kriteria Penilaian
+## 📄 8. Lisensi (*License*)
 
-| Kriteria Penilaian | Bobot | Bukti Implementasi pada Proyek |
-| :--- | :---: | :--- |
-| **Fungsionalitas & Kesesuaian Tema** | **30%** | Solusi sejalan dengan tema **LUMINE** (pelestarian budaya berbasis teknologi). Seluruh fitur panggung gestur AI, studio gubahan, 3D wheel, dan galeri berjalan lancar tanpa error konsol. |
-| **Kualitas & Kerapian Kode (Clean Code)** | **30%** | Struktur folder terisolasi rapi, penamaan berkas & variabel semantik seragam, strict TypeScript (0 error `tsc`), ESLint lulus 0 error, dan README komprehensif. |
-| **UI/UX & Responsivitas** | **15%** | Palet warna teatrikal emas-hitam konsisten, tipografi pewayangan berkelas, responsif di Mobile, Tablet, dan Desktop tanpa overflow horizontal. |
-| **Video Demo Penjelasan** | **25%** | Naskah presentasi terstruktur (maksimal 7 menit) mencakup masalah, solusi, demonstrasi fitur, arsitektur, dan penutup telah disiapkan di bawah. |
-
----
-
-## 🎙️ 8. Panduan Naskah Video Demo (Maksimal 7 Menit)
-
-Gunakan struktur panduan berikut saat merekam video presentasi karya:
-
-- **Menit 00:00 - 01:15 (Latar Belakang & Urgensi Masalah)**:
-  - Pembukaan salam dan pengenalan tim.
-  - Paparan fakta: Wayang kulit adalah mahakarya UNESCO yang mulai asing bagi generasi muda karena kendala aksesibilitas instrumen fisik dan rumitnya teknik mendalang.
-  - Pengenalan gagasan utama **Wayang Jawi** sebagai perwujudan tema *LUMINE*.
-- **Menit 01:15 - 03:00 (Live Demo 1: Panggung Virtual Dalang AI)**:
-  - Membuka halaman `/stage`.
-  - Menunjukkan kemampuan deteksi tangan via webcam (kiri memegang tokoh kiri, kanan memegang tokoh kanan).
-  - Memperagakan gerak gapit, tuding, kedalaman bayangan blencong, dan tarian kiprahan.
-  - Menunjukkan fleksibilitas mode fallback (kontrol kursor/touch).
-- **Menit 03:00 - 04:30 (Live Demo 2: Studio Cipta Sang Empu AI)**:
-  - Membuka halaman beranda dan studio `/kreasi`.
-  - Mengetikkan gagasan watak kustom (contoh: *"Ksatria panah berjiwa hening bermahkota surya"*).
-  - Menunjukkan hasil analisis AI: perumusan nama berwibawa, filosofi batin, dan visual wayang kulit resolusi tinggi yang murni dihasilkan AI.
-- **Menit 04:30 - 05:45 (Arsitektur & Kerapian Rekayasa Kode)**:
-  - Menjelaskan arsitektur Next.js 16 App Router, MediaPipe Hands Vision, dan pipeline Canvas 2D 60 FPS.
-  - Menunjukkan kepatuhan *clean code*: modularitas komponen, penamaan semantik, TypeScript strict, dan pengujian Playwright.
-- **Menit 05:45 - 07:00 (Dampak Kebudayaan & Penutup)**:
-  - Merangkum bagaimana *Wayang Jawi* mendemokratisasi seni mendalang ke sekolah, museum, dan komunitas global.
-  - Kalimat penutup: *"Menghidupkan seni tradisi leluhur di atas layar masa depan."*
-
----
-
-## 📄 9. Lisensi (*License*)
-
-Proyek ini didistribusikan di bawah lisensi resmi **MIT License**. Kode sumber terbuka secara bebas untuk keperluan pembelajaran, pelestarian kebudayaan, penelitian, maupun pengembangan lebih lanjut. Lihat berkas [LICENSE](LICENSE) untuk ketentuan hukum lengkap.
+Proyek ini didistribusikan di bawah lisensi resmi **MIT License**. Kode sumber terbuka secara bebas untuk keperluan edukasi, pelestarian kebudayaan nusantara, penelitian, maupun pengembangan lebih lanjut. Lihat berkas [LICENSE](LICENSE) untuk ketentuan hukum lengkap.
 
 ---
 
 <div align="center">
-  <p>Dibuat dengan segenap cinta untuk Kebudayaan Nusantara 🇮🇩</p>
-  <p><strong>© 2026 nabilkencana &amp; Wayang Jawi Contributors. Lisensi MIT.</strong></p>
+  <p>Dibuat dengan segenap dedikasi dan cinta untuk Kebudayaan Nusantara 🇮🇩</p>
+  <p><strong>© 2026 Tim Pengembang Wayang Jawi • SMK Telkom Malang. Lisensi MIT.</strong></p>
 </div>
