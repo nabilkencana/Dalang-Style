@@ -172,32 +172,32 @@ export function GlossaryTooltip({ termKey, children }: GlossaryTooltipProps) {
       </button>
 
       {isOpen && (
-        <div
+        <span
           className="absolute z-50 bottom-full left-0 mb-2 w-72 sm:w-80 p-4 bg-[#0e0a07] text-[#f5ecd9] border border-[#dedf42]/50 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.95)] backdrop-blur-2xl animate-fadeSlideUp block text-left font-sans text-xs select-none pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Arrow */}
-          <div className="absolute -bottom-2 left-6 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-[#dedf42]/50" />
+          <span className="absolute -bottom-2 left-6 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-[#dedf42]/50 block" />
 
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-white/10 pb-2.5 mb-2.5">
-            <div className="flex items-center gap-1.5 font-serif font-bold text-sm text-[#dedf42]">
+          <span className="flex items-center justify-between border-b border-white/10 pb-2.5 mb-2.5">
+            <span className="flex items-center gap-1.5 font-serif font-bold text-sm text-[#dedf42]">
               <BookOpen className="w-3.5 h-3.5 text-[#dedf42]" />
               <span>{termData.term}</span>
-            </div>
+            </span>
 
             <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-mono uppercase tracking-wider border ${badge.color}`}>
               {badge.label}
             </span>
-          </div>
+          </span>
 
           {/* Meaning Body */}
-          <p className="text-[12px] text-[#f5ecd9]/90 leading-relaxed font-normal">
+          <span className="block text-[12px] text-[#f5ecd9]/90 leading-relaxed font-normal">
             {termData.meaning}
-          </p>
+          </span>
 
           {/* Footer */}
-          <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-[#f5ecd9]/60">
+          <span className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-[#f5ecd9]/60">
             <span className="text-[#dedf42]/90 flex items-center gap-1">
               <Sparkles className="w-3 h-3 text-[#dedf42]" />
               Glosarium Pedalangan Jawa
@@ -209,8 +209,8 @@ export function GlossaryTooltip({ termKey, children }: GlossaryTooltipProps) {
             >
               <X className="w-3 h-3" />
             </button>
-          </div>
-        </div>
+          </span>
+        </span>
       )}
     </span>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import NewsEditorialView from '@/components/NewsEditorialView';
+import NewsEditorialView from '@/components/views/NewsEditorialView';
 
 export const metadata: Metadata = {
   title: 'Warta & Berita Pewayangan | Wayang Jawi',

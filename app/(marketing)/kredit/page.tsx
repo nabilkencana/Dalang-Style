@@ -12,9 +12,9 @@ import {
   ArrowRight,
   Globe2,
 } from 'lucide-react';
-import TeamInteractiveSection from '@/components/TeamInteractiveSection';
+import TeamInteractiveSection from '@/components/views/TeamInteractiveSection';
 import { SuperHoverList, type SuperHoverListItem } from '@/components/ui/super-hover-list';
-import { LogoCloud, type Logo } from '@/components/ui/logo-cloud-3';
+import { LogoCloud, type Logo } from '@/components/ui/logo-cloud';
 
 export const metadata: Metadata = {
   title: 'Kredit & Tentang Kita | Wayang Jawi',
@@ -70,7 +70,7 @@ const WAYANG_ECOSYSTEM_LOGOS: Logo[] = [
     alt: 'SENAWANGI Wayang Indonesia Logo',
     category: 'Pedalangan Tradisi',
     href: 'https://www.youtube.com/@SENAWANGICHANNEL',
-    src: '/images/logo-senawangi-clean.png',
+    src: '/images/logo-senawangi-clean.webp',
   },
   {
     name: 'Kemendikbudristek',
@@ -84,7 +84,7 @@ const WAYANG_ECOSYSTEM_LOGOS: Logo[] = [
     alt: 'SMK Telkom Malang Moklet Official Logo',
     category: 'Almamater Kreator',
     href: 'https://smktelkom-mlg.sch.id/',
-    src: '/images/logo-smk-telkom-malang.png',
+    src: '/images/logo-smk-telkom-malang.webp',
   },
   {
     name: 'Next.js 16',

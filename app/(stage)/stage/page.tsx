@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
-const WayangStage = dynamic(() => import('@/components/WayangStage'), {
+const WayangStage = dynamic(() => import('@/components/stage/WayangStage'), {
   ssr: false,
   loading: () => (
     <div className="fixed inset-0 grid place-items-center bg-[#0b0604] text-[#f4e7cd]">

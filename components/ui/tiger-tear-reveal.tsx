@@ -3,7 +3,7 @@
 import * as React from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import Rahwana3DFaceCanvas from "@/components/Rahwana3DFaceCanvas"
+import Rahwana3DFaceCanvas from "@/components/canvas/Rahwana3DFaceCanvas";
 /**
  * Tiger Tear Reveal: a poster that rips in two as you scroll.
  *

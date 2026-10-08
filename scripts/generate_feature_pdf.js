@@ -498,7 +498,7 @@ const htmlContent = `
 
     <h3>Kartu 3D Teater Sang Dalang yang Dapat Dibalik (Interactive Flip Card)</h3>
     <p>
-      Di Section 2 (<code>components/StoryShadowsSection.tsx</code>), pengunjung menemukan sebuah foto artistik Sang Dalang yang memancarkan cahaya blencong. Kartu ini bukan sekadar gambar biasa, melainkan <strong>kartu 3D interaktif yang dapat diketuk atau diklik untuk membalikkan sisinya</strong>:
+      Di Section 2 (<code>components/sections/StoryShadowsSection.tsx</code>), pengunjung menemukan sebuah foto artistik Sang Dalang yang memancarkan cahaya blencong. Kartu ini bukan sekadar gambar biasa, melainkan <strong>kartu 3D interaktif yang dapat diketuk atau diklik untuk membalikkan sisinya</strong>:
     </p>
     <ul>
       <li><strong>Sisi Depan (Front):</strong> Menampilkan potret khidmat Sang Dalang di balik kelir putih bercahaya dengan lencana halus bertuliskan <em>"Ketuk untuk membalik ↺"</em>.</li>
@@ -521,7 +521,7 @@ const htmlContent = `
     </h2>
 
     <p>
-      Memasuki Section 3 (<code>components/SectionBimaSuci.tsx</code>), pengunjung disuguhkan pertunjukan video lakon legendaris <em>"Bima Suci Tirta Prawitasari"</em>—kisah spiritual pewayangan paling agung tentang pencarian air suci perwujudan ilmu sejati oleh Raden Werkudara.
+      Memasuki Section 3 (<code>components/sections/SectionBimaSuci.tsx</code>), pengunjung disuguhkan pertunjukan video lakon legendaris <em>"Bima Suci Tirta Prawitasari"</em>—kisah spiritual pewayangan paling agung tentang pencarian air suci perwujudan ilmu sejati oleh Raden Werkudara.
     </p>
 
     <div class="fig">
@@ -551,7 +551,7 @@ const htmlContent = `
     </h2>
 
     <p>
-      Pada Section 4 (<code>components/SectionStoryAwakening.tsx</code> &amp; <code>components/ui/works-wheel.tsx</code>), pengunjung diajak menelusuri galeri 9 tokoh pewayangan utama melalui silinder drum 3 dimensi megah (*WorksWheel*) berlatar kanvas ilustrasi Sang Bima bertinta emas.
+      Pada Section 4 (<code>components/sections/SectionStoryAwakening.tsx</code> &amp; <code>components/ui/works-wheel.tsx</code>), pengunjung diajak menelusuri galeri 9 tokoh pewayangan utama melalui silinder drum 3 dimensi megah (*WorksWheel*) berlatar kanvas ilustrasi Sang Bima bertinta emas.
     </p>
 
     <div class="fig">
@@ -613,7 +613,7 @@ const htmlContent = `
     </h2>
 
     <p>
-      Wayang kulit telah resmi dinobatkan oleh UNESCO pada 7 November 2003 sebagai <em>Masterpiece of Oral and Intangible Heritage of Humanity</em>. Section 5 (<code>components/SectionStoryFinale.tsx</code>) dan rute warta <code>/berita</code> mendokumentasikan kabar pelestarian dan esai kebudayaan tersebut dengan tata letak editorial prestisius.
+      Wayang kulit telah resmi dinobatkan oleh UNESCO pada 7 November 2003 sebagai <em>Masterpiece of Oral and Intangible Heritage of Humanity</em>. Section 5 (<code>components/sections/SectionStoryFinale.tsx</code>) dan rute warta <code>/berita</code> mendokumentasikan kabar pelestarian dan esai kebudayaan tersebut dengan tata letak editorial prestisius.
     </p>
 
     <div class="fig">
@@ -645,7 +645,7 @@ const htmlContent = `
     </h2>
 
     <p>
-      Di Section 7 (<code>components/SectionGalleryMuseum.tsx</code> &amp; <code>components/ui/formation.tsx</code>), pengunjung diajak berkeliling menjelajahi 16 gedung museum pewayangan asli se-Indonesia dalam pameran 3D interaktif yang hidup.
+      Di Section 7 (<code>components/sections/SectionGalleryMuseum.tsx</code> &amp; <code>components/ui/formation.tsx</code>), pengunjung diajak berkeliling menjelajahi 16 gedung museum pewayangan asli se-Indonesia dalam pameran 3D interaktif yang hidup.
     </p>
 
     <div class="grid-2 fig">
@@ -868,7 +868,7 @@ const htmlContent = `
     </h2>
 
     <p>
-      Menjelang bagian akhir beranda, pengunjung disuguhkan ruang perenungan intelektual melalui Section 8 (<code>components/SectionFAQ.tsx</code>) dan seruan penutup teatrikal Section 9 (<code>components/SectionJoinTheNight.tsx</code>).
+      Menjelang bagian akhir beranda, pengunjung disuguhkan ruang perenungan intelektual melalui Section 8 (<code>components/sections/SectionFAQ.tsx</code>) dan seruan penutup teatrikal Section 9 (<code>components/sections/SectionJoinTheNight.tsx</code>).
     </p>
 
     <div class="fig">

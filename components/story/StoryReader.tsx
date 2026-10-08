@@ -258,7 +258,7 @@ function FormattedNarrative({
           const restText = p.slice(1);
 
           return (
-            <p
+            <div
               key={idx}
               data-gsap="narrative-p"
               className="text-justify leading-relaxed"
@@ -267,19 +267,19 @@ function FormattedNarrative({
                 {firstLetter}
               </span>
               {renderEnrichedNarrative(restText)}
-            </p>
+            </div>
           );
         }
 
         // Standard narrative paragraph with glossary terms
         return (
-          <p
+          <div
             key={idx}
             data-gsap="narrative-p"
             className="text-justify leading-relaxed"
           >
             {renderEnrichedNarrative(p)}
-          </p>
+          </div>
         );
       })}
     </div>

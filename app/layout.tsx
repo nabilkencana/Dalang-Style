@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import "./wayang.css";
-import SmoothScroll from "@/components/SmoothScroll";
+import SmoothScroll from "@/components/layout/SmoothScroll";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-serif",
