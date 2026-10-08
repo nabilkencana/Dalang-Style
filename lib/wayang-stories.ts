@@ -9,6 +9,8 @@ export interface StoryAct {
   actTitle: string;
   sceneSetting?: string;
   content: string;
+  image?: string;
+  sceneArtwork?: string;
 }
 
 export interface CharacterProfile {
@@ -215,6 +217,8 @@ Para Pandawa berikrar kembali memurnikan niat mereka sebagai pelayan rakyat, dan
         actNumber: 1,
         actTitle: 'Babak I: Pathet Nem — Godaan Tujuh Bidadari Indrakila',
         sceneSetting: 'Gua Mintaraga • Puncak Gunung Indrakila',
+        sceneArtwork: '/images/arjuna-wiwaha-babak-1-full.webp',
+        image: '/images/arjuna-wiwaha-babak-1-full.webp',
         content: `Di dalam keheningan Gua Mintaraga, Raden Arjuna bertapa brata dengan gelar Begawan Ciptaning. Pandangan matanya tertuju pada satu titik kesadaran, mematikan hawa nafsu duniawi demi memperoleh pusaka sakti untuk membela keadilan.
 
 Para dewa menguji keteguhan batinnya dengan mengirimkan tujuh bidadari tercantik kahyangan yang dipimpin Dewi Supraba dan Dewi Tilottama. Mereka menari, membujuk, dan merayu sang begawan. Namun napas Arjuna tetap teratur dan hening laksana telaga kaca; tiada secuil pun nafsu bergolak di dadanya.`,
@@ -223,6 +227,8 @@ Para dewa menguji keteguhan batinnya dengan mengirimkan tujuh bidadari tercantik
         actNumber: 2,
         actTitle: 'Babak II: Pathet Sanga — Anugerah Panah Sakti Pasopati',
         sceneSetting: 'Lereng Gunung Indrakila • Pertarungan Babi Hutan Siluman',
+        sceneArtwork: '/images/arjuna-wiwaha-babak-2-full.webp',
+        image: '/images/arjuna-wiwaha-babak-2-full.webp',
         content: `Batara Guru turun menyamar sebagai pemburu liar (Kiraswara) bersamaan dengan munculnya babi hutan siluman Momongmuka yang mengamuk. Arjuna dan Kiraswara melepaskan anak panah secara bersamaan dan menewaskan babi hutan tersebut.
 
 Perselisihan mengenai panah siapa yang pertama menancap berakhir ketika Kiraswara menampakkan wujud aslinya sebagai Sang Hyang Manikmaya. Batara Guru memuji keteguhan jiwa Arjuna dan menganugerahkan panah pusaka sakti: Pasopati.`,
@@ -231,6 +237,8 @@ Perselisihan mengenai panah siapa yang pertama menancap berakhir ketika Kiraswar
         actNumber: 3,
         actTitle: 'Babak III: Pathet Manyura — Runtuhnya Prabu Niwatakawaca',
         sceneSetting: 'Kerajaan Manimantaka • Palagan Pemanah Sejati',
+        sceneArtwork: '/images/arjuna-wiwaha-babak-3-full.webp',
+        image: '/images/arjuna-wiwaha-babak-3-full.webp',
         content: `Arjuna diutus memimpin perang melawan Prabu Niwatakawaca yang hendak menghancurkan Kahyangan Kaindran. Melalui siasat Dewi Supraba yang berhasil memancing raksasa itu tertawa terbahak-bahak hingga membuka lidahnya yang menjadi titik kelemahannya, Arjuna membidikkan Panah Pasopati tepat ke langit-langit mulut sang raksasa.
 
 Kemenangan Arjuna mengantarkannya dinobatkan sebagai raja sementara di kahyangan bergelar Prabu Karitin dan memperisteri Dewi Supraba.`,
@@ -274,6 +282,8 @@ Kemenangan Arjuna mengantarkannya dinobatkan sebagai raja sementara di kahyangan
         actNumber: 1,
         actTitle: 'Babak I: Pathet Nem — Mandat Perang Malam Hari',
         sceneSetting: 'Tenda Pesanggrahan Pandawa • Padang Kurusetra',
+        sceneArtwork: '/images/gatotkaca-gugur-babak-1-full.webp',
+        image: '/images/gatotkaca-gugur-babak-1-full.webp',
         content: `Malam ke-14 Bharatayuddha diliputi kegelapan pekat. Kurawa melancarkan serangan malam terlarang yang membantai barisan prajurit Pandawa yang tertidur.
 
 Prabu Kresna meminta Gatotkaca yang memiliki pandangan batin tajam di malam hari untuk naik ke angkasa. Gatotkaca menerima mandat suci itu dengan ikhlas demi melindungi keselamatan saudara-saudaranya.`,
@@ -282,6 +292,8 @@ Prabu Kresna meminta Gatotkaca yang memiliki pandangan batin tajam di malam hari
         actNumber: 2,
         actTitle: 'Babak II: Pathet Sanga — Amukan Brajamusti di Puncak Awan',
         sceneSetting: 'Langit Malam Kurusetra • Petir Menyambar di Angkasa',
+        sceneArtwork: '/images/gatotkaca-gugur-babak-2-full.webp',
+        image: '/images/gatotkaca-gugur-babak-2-full.webp',
         content: `Melesatlah Gatotkaca mengenakan Rompi Antakusuma. Pukulan ajian Brajamusti dari atas awan memporak-porandakan ribuan prajurit Kurawa. 
 
 Melihat kekalahan telak pasukannya, Adipati Karna terpaksa menarik senjata pamungkas Kunta Wijayadanu yang disimpan khusus untuk membunuh Arjuna. Kilatan cahaya Kunta melesat membakar langit malam memburu Gatotkaca.`,
@@ -290,6 +302,8 @@ Melihat kekalahan telak pasukannya, Adipati Karna terpaksa menarik senjata pamun
         actNumber: 3,
         actTitle: 'Babak III: Pathet Manyura — Runtuhnya Kereta Jaladara',
         sceneSetting: 'Cakrawala Fajar Kurusetra',
+        sceneArtwork: '/images/gatotkaca-gugur-babak-3-full.webp',
+        image: '/images/gatotkaca-gugur-babak-3-full.webp',
         content: `Gatotkaca menyadari takdirnya telah tiba. Sebelum pusaka Kunta merenggut nyawanya, ia membesarkan tubuhnya menjadi raksasa setinggi bukit dan menjatuhkan jasadnya tepat menimpa kereta perang Adipati Karna.
 
 Gugurnya Gatotkaca menyelamatkan Arjuna dan memastikan kemenangan Pandawa dalam menegakkan dharma.`,
@@ -333,6 +347,8 @@ Gugurnya Gatotkaca menyelamatkan Arjuna dan memastikan kemenangan Pandawa dalam 
         actNumber: 1,
         actTitle: 'Babak I: Pathet Nem — Hilangnya Pusaka Jamus Kalimasada',
         sceneSetting: 'Kerajaan Amarta & Hutan Krendhawahana',
+        sceneArtwork: '/images/petruk-dadi-ratu-babak-1-full.webp',
+        image: '/images/petruk-dadi-ratu-babak-1-full.webp',
         content: `Pusaka lambang kedaulatan negara Amarta, Jimat Kalimasada, raib dicuri oleh siluman Mustakaweni. Para satria Pandawa kalang kabut mencari pusaka tersebut.
 
 Di tengah hutan, Petruk yang sedang mencari kayu bakar berhasil merebut kembali pusaka tersebut. Merasakan energi sakti yang merasuk ke dalam tubuhnya, Petruk tergiur untuk mencicipi bagaimana rasanya menjadi penguasa yang dihormati dan ditakuti.`,
@@ -341,6 +357,8 @@ Di tengah hutan, Petruk yang sedang mencari kayu bakar berhasil merebut kembali 
         actNumber: 2,
         actTitle: 'Babak II: Pathet Sanga — Takhta Megah Prabu Welgeduwelbeh',
         sceneSetting: 'Keraton Ngrancang Kencana • Balairung Istana Baru',
+        sceneArtwork: '/images/petruk-dadi-ratu-babak-2-full.webp',
+        image: '/images/petruk-dadi-ratu-babak-2-full.webp',
         content: `Dengan kesaktian Kalimasada, Petruk menyulap dirinya menjadi raja perkasa bergelar Prabu Welgeduwelbeh dan mendirikan kerajaan megah Ngrancang Kencana.
 
 Para raja tetangga dan patih istana takluk di hadapannya. Prabu Welgeduwelbeh memanfaatkan tahtanya untuk menyindir kebiasaan para bangsawan yang suka disanjung, doyan upeti, dan lamban menolong rakyat miskin.`,
@@ -349,6 +367,8 @@ Para raja tetangga dan patih istana takluk di hadapannya. Prabu Welgeduwelbeh me
         actNumber: 3,
         actTitle: 'Babak III: Pathet Manyura — Teguran Semar & Kesadaran Jati Diri',
         sceneSetting: 'Alun-Alun Keraton Ngrancang Kencana',
+        sceneArtwork: '/images/petruk-dadi-ratu-babak-3-full.webp',
+        image: '/images/petruk-dadi-ratu-babak-3-full.webp',
         content: `Semar dan Bagong datang menyusup ke istana. Bagong menantang Prabu Welgeduwelbeh adu kesaktian dan membongkar identitas aslinya.
 
 Melihat sang ayah (Semar) menangis melihat tingkahnya yang mulai terlena oleh kemewahan istana, Petruk tersadar seketika. Ia melepas mahkotanya, bersujud di kaki Semar, dan mengembalikan Jamus Kalimasada kepada Pandawa.`,
@@ -392,6 +412,8 @@ Melihat sang ayah (Semar) menangis melihat tingkahnya yang mulai terlena oleh ke
         actNumber: 1,
         actTitle: 'Babak I: Pathet Nem — Geger Dua Bagong di Paseban',
         sceneSetting: 'Paseban Kadipaten Madukara',
+        sceneArtwork: '/images/bagong-kembar-babak-1-full.webp',
+        image: '/images/bagong-kembar-babak-1-full.webp',
         content: `Suasana di Kadipaten Madukara mendadak gempar ketika dua sosok Bagong yang sama persis masuk ke balairung dan saling menuding bahwa lawannya adalah siluman palsu.
 
 Raden Arjuna dan para prajurit bingung membedakan keduanya karena wajah bulat, mata melotot, dan nada suara keduanya sama persis. Keduanya bahkan sama-sama hafal silsilah keluarga Semar.`,
@@ -400,6 +422,8 @@ Raden Arjuna dan para prajurit bingung membedakan keduanya karena wajah bulat, m
         actNumber: 2,
         actTitle: 'Babak II: Pathet Sanga — Ujian Urat Malu & Ketamakan Harta',
         sceneSetting: 'Halaman Balai Karang Kabadan',
+        sceneArtwork: '/images/bagong-kembar-babak-2-full.webp',
+        image: '/images/bagong-kembar-babak-2-full.webp',
         content: `Petruk dan Gareng menguji kedua Bagong dengan menyodorkan sekarung koin emas permata. Bagong pertama langsung memeluk sekarung emas dengan mata berbinar-binar penuh ketamakan.
 
 Sedangkan Bagong kedua justru menendang karung emas itu dan memaki Petruk karena bersikap bodoh menyodorkan suap di tengah rakyat yang sedang kesusahan.`,
@@ -408,6 +432,8 @@ Sedangkan Bagong kedua justru menendang karung emas itu dan memaki Petruk karena
         actNumber: 3,
         actTitle: 'Babak III: Pathet Manyura — Sabda Kyai Semar',
         sceneSetting: 'Pelataran Semar Badranaya',
+        sceneArtwork: '/images/bagong-kembar-babak-3-full.webp',
+        image: '/images/bagong-kembar-babak-3-full.webp',
         content: `Kyai Semar tersenyum melihat kejadian itu. Semar menegaskan bahwa Bagong sejati tercipta dari bayangannya sendiri, yang pantang silau oleh gemerlap emas dan tidak takut berkata jujur meskipun pahit.
 
 Bagong palsu seketika terbakar menjadi abu, membuktikan bahwa kepalsuan akan selalu lebur di hadapan kemurnian watak sejati.`,
@@ -451,6 +477,8 @@ Bagong palsu seketika terbakar menjadi abu, membuktikan bahwa kepalsuan akan sel
         actNumber: 1,
         actTitle: 'Babak I: Pathet Nem — Pertarungan Masa Muda Bambang Sukodadi',
         sceneSetting: 'Pertapaan Gandamekar',
+        sceneArtwork: '/images/nala-gareng-babak-1-full.webp',
+        image: '/images/nala-gareng-babak-1-full.webp',
         content: `Dahulu kala, Nala Gareng adalah seorang ksatria muda berparas tampan bernama Bambang Sukodadi. Karena merasa dirinya paling sakti, ia bertarung mati-matian melawan ksatria muda lain bernama Bambang Pecruk Panyukro (Petruk).
 
 Pertarungan sengit tanpa ujung itu membuat raga keduanya remuk redam: wajah tampan mereka berubah menjadi lucu dan cacat, hingga Semar datang melerai dan mengangkat keduanya menjadi anak asuh.`,
@@ -459,6 +487,8 @@ Pertarungan sengit tanpa ujung itu membuat raga keduanya remuk redam: wajah tamp
         actNumber: 2,
         actTitle: 'Babak II: Pathet Sanga — Wejangan Makna Raga dari Semar',
         sceneSetting: 'Gubuk Teduh Dusun Karang Klesem',
+        sceneArtwork: '/images/nala-gareng-babak-2-full.webp',
+        image: '/images/nala-gareng-babak-2-full.webp',
         content: `Gareng sempat bersedih melihat kakinya yang kini pincang berjingkit dan tangannya yang melengkung bengkok. 
 
 Semar membelai kepala anak sulungnya dan memberi wejangan: "Kaki pincangmu adalah pengingat agar engkau selalu berhati-hati melangkah di dunia. Tangan bengkokmu adalah benteng agar engkau pantang mengambil hak orang lain. Dan mata julingmu adalah penolak agar engkau tidak sudi memandang keburukan orang lain."`,
@@ -467,6 +497,8 @@ Semar membelai kepala anak sulungnya dan memberi wejangan: "Kaki pincangmu adala
         actNumber: 3,
         actTitle: 'Babak III: Pathet Manyura — Kematangan Jiwa Sang Penengah',
         sceneSetting: 'Paseban Agung Keraton Amarta',
+        sceneArtwork: '/images/nala-gareng-babak-3-full.webp',
+        image: '/images/nala-gareng-babak-3-full.webp',
         content: `Sejak saat itu, Nala Gareng menjelma menjadi sosok punakawan yang paling bijaksana, sabar, dan selalu menjadi penengah yang menyejukkan ketika adik-adiknya (Petruk dan Bagong) berselisih paham.
 
 Gareng membuktikan bahwa kemuliaan seseorang tidak diukur dari ketampanan raga, melainkan dari kebersihan budi pekerti dan kehati-hatian menjaga kehormatan diri.`,
@@ -510,6 +542,8 @@ Gareng membuktikan bahwa kemuliaan seseorang tidak diukur dari ketampanan raga, 
         actNumber: 1,
         actTitle: 'Babak I: Pathet Nem — Runtuhnya Benteng Alengka Diraja',
         sceneSetting: 'Alun-Alun Istana Alengka • Dikelilingi Kobaran Api',
+        sceneArtwork: '/images/rahwana-babak-1-full.webp',
+        image: '/images/rahwana-babak-1-full.webp',
         content: `Setelah gugurnya Senapati Indrajit dan satria perkasa Kumbakarna, bala tentara kera Sri Rama berhasil menjebol gerbang benteng emas Alengka. 
 
 Prabu Dasamuka yang murka mengenakan busana perang kebesaran bermahkotakan sepuluh kepala. Ia menaiki kereta kencana dan bersumpah akan menenggelamkan seluruh laskar Ayodya ke dasar samudra.`,
@@ -518,6 +552,8 @@ Prabu Dasamuka yang murka mengenakan busana perang kebesaran bermahkotakan sepul
         actNumber: 2,
         actTitle: 'Babak II: Pathet Sanga — Kedahsyatan Aji Pancasona',
         sceneSetting: 'Palagan Samudra Hindia • Suara Guntur Menggelegar',
+        sceneArtwork: '/images/rahwana-babak-2-full.webp',
+        image: '/images/rahwana-babak-2-full.webp',
         content: `Pertarungan antara Sri Rama dan Rahwana mengguncang bumi dan langit. Berkali-kali panah sakti Rama memenggal kepala Rahwana, namun berkat Aji Pancasona, setiap kali jasadnya menyentuh tanah bumi, kepala dan tubuhnya menyatu kembali seketika.
 
 Melihat hal itu, Gunawan Wibisana memberi petunjuk kepada Sri Rama bahwa Rahwana hanya dapat dilumpuhkan jika jasadnya ditindih gunung batu sebelum sempat menyentuh tanah.`,
@@ -526,6 +562,8 @@ Melihat hal itu, Gunawan Wibisana memberi petunjuk kepada Sri Rama bahwa Rahwana
         actNumber: 3,
         actTitle: 'Babak III: Pathet Manyura — Himpitan Gunung Somawana',
         sceneSetting: 'Cakrawala Senja Alengka • Kemenangan Kesucian Shinta',
+        sceneArtwork: '/images/rahwana-babak-3-full.webp',
+        image: '/images/rahwana-babak-3-full.webp',
         content: `Rama melepaskan panah pusaka pamungkas Guwawijaya yang menembus dada Rahwana dan membuatnya terpental ke angkasa. Sebelum tubuh sang raja raksasa menyentuh bumi, Anoman mencabut Gunung Somawana dan menghimpit tubuh Rahwana di bawah bongkahan gunung purba tersebut.
 
 Rahwana tak berdaya menanggung beban gunung keangkuhannya sendiri, menandai sirnanya tirani angkara murka dan bersinarnya kembali fajar kesucian Dewi Shinta.`,
@@ -569,6 +607,8 @@ Rahwana tak berdaya menanggung beban gunung keangkuhannya sendiri, menandai sirn
         actNumber: 1,
         actTitle: 'Babak I: Pathet Nem — Kedahsyatan Senapati Agung Sokalima',
         sceneSetting: 'Tenda Kurusetra • Fajar Hari ke-15 Perang',
+        sceneArtwork: '/images/resi-drona-babak-1-full.webp',
+        image: '/images/resi-drona-babak-1-full.webp',
         content: `Setelah gugurnya Bisma, Begawan Drona diangkat menjadi panglima tertinggi bala tentara Kurawa. Dengan pusaka panah Cundamanik dan ajian Danurweda, sang guru tua menyapu bersih sayap pertahanan prajurit Pandawa.
 
 Tiada seorang pun ksatria Pandawa yang sanggup membendung kepiawaian guru mereka sendiri dalam meracik strategi perang.`,
@@ -577,6 +617,8 @@ Tiada seorang pun ksatria Pandawa yang sanggup membendung kepiawaian guru mereka
         actNumber: 2,
         actTitle: 'Babak II: Pathet Sanga — Siasat Gajah Hestitama',
         sceneSetting: 'Tengah Medan Tempur Kurusetra • Debu Mengaburkan Pandangan',
+        sceneArtwork: '/images/resi-drona-babak-2-full.webp',
+        image: '/images/resi-drona-babak-2-full.webp',
         content: `Prabu Kresna merancang siasat untuk mematahkan konsentrasi batin sang guru. Bima membunuh gajah perang perkasa milik Prabu Indrajanu yang bernama Hestitama.
 
 Seluruh laskar bersorak: "Aswatama gugur!". Mendengar nama putranya disebut tewas, Drona gemetar dan mendekati Prabu Puntadewa yang dikenal tidak pernah berbohong. Puntadewa menjawab dengan suara pelan: "Hestitama (gajah) kang pejah", namun kata "gajah" tersamarkan oleh tabuhan genderang perang Kresna.`,
@@ -585,6 +627,8 @@ Seluruh laskar bersorak: "Aswatama gugur!". Mendengar nama putranya disebut tewa
         actNumber: 3,
         actTitle: 'Babak III: Pathet Manyura — Kelepasan Sukma Sang Resi',
         sceneSetting: 'Medan Laga Kurusetra • Senja Hari ke-15',
+        sceneArtwork: '/images/resi-drona-babak-3-full.webp',
+        image: '/images/resi-drona-babak-3-full.webp',
         content: `Drona meletakkan senjatanya dan duduk bermeditasi di atas keretanya untuk melepaskan sukmanya ke alam kelanggengan.
 
 Dalam keadaan hening tanpa perlawanan, Raden Drestajumena melompat dan memenggal leher sang Begawan, menuntaskan takdir kelahiran mereka. Sukma Sang Resi Drona melesat menuju swargaloka diiringi taburan bunga para dewa.`,

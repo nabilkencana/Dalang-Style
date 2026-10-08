@@ -4,9 +4,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { WAYANG_STORIES, type WayangStoryItem } from '@/lib/wayang-stories';
 import { renderEnrichedNarrative, WAYANG_GLOSSARY } from '@/components/story/GlossaryTooltip';
 import { GamelanAudioEngine } from '@/lib/wayang/audio';
+import {
+  WayangFlourishDivider,
+} from '@/components/story/WayangVisualAssets';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 import {
   Clock,
   BookOpen,
@@ -160,8 +170,40 @@ const STORY_QUIZZES: Record<
 };
 
 /**
+ * Atmospheric Floating Golden Embers & Sparks Animation Overlay
+ */
+function FloatingEmbersOverlay() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {[...Array(12)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[#dedf42] shadow-[0_0_8px_#dedf42]"
+          style={{
+            left: `${(i * 9 + 4) % 96}%`,
+            top: `${(i * 13 + 8) % 92}%`,
+          }}
+          animate={{
+            y: [-15, -70, -15],
+            x: [0, i % 2 === 0 ? 12 : -12, 0],
+            opacity: [0.1, 0.8, 0.1],
+            scale: [0.7, 1.3, 0.7],
+          }}
+          transition={{
+            duration: 4.5 + (i % 4),
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: i * 0.35,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/**
  * Format narrative text into structured editorial prose with drop caps,
- * dialogue highlights, and interactive glossary annotations.
+ * animated dialogue highlights, and interactive glossary annotations.
  */
 function FormattedNarrative({
   content,
@@ -196,10 +238,11 @@ function FormattedNarrative({
           return (
             <div
               key={idx}
-              className="my-3.5 p-4 sm:p-5 rounded-xl bg-gradient-to-r from-white/[0.04] via-[#140e08] to-transparent border-l-4 border-[#dedf42] space-y-1.5 shadow-sm"
+              data-gsap="narrative-p"
+              className="my-4 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#1c1208]/90 via-[#0d0703]/80 to-transparent border-l-4 border-[#dedf42] space-y-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.6)] group transition-all"
             >
               <div className="flex items-center gap-1.5 text-[10px] font-mono text-[#dedf42] uppercase tracking-wider font-bold">
-                <Quote className="w-3 h-3 text-[#dedf42]" />
+                <Quote className="w-3.5 h-3.5 text-[#dedf42] group-hover:rotate-12 transition-transform" />
                 <span>Sabda / Dialog Lakon</span>
               </div>
               <blockquote className="font-serif italic text-white text-justify leading-relaxed">
@@ -209,14 +252,18 @@ function FormattedNarrative({
           );
         }
 
-        // First paragraph has an elegant decorative drop cap
+        // First paragraph has an elegant large drop cap without background box
         if (idx === 0 && p.length > 20) {
           const firstLetter = p.charAt(0);
           const restText = p.slice(1);
 
           return (
-            <p key={idx} className="text-justify leading-relaxed">
-              <span className="float-left mr-3 mt-1 font-serif text-3xl sm:text-4xl font-bold text-[#dedf42] leading-none px-2.5 py-1.5 rounded-lg bg-white/[0.06] border border-white/15 select-none shadow-sm">
+            <p
+              key={idx}
+              data-gsap="narrative-p"
+              className="text-justify leading-relaxed"
+            >
+              <span className="float-left mr-2.5 font-serif text-4xl sm:text-5xl font-bold text-[#dedf42] leading-none select-none drop-shadow-[0_2px_10px_rgba(222,223,66,0.3)]">
                 {firstLetter}
               </span>
               {renderEnrichedNarrative(restText)}
@@ -226,11 +273,92 @@ function FormattedNarrative({
 
         // Standard narrative paragraph with glossary terms
         return (
-          <p key={idx} className="text-justify leading-relaxed">
+          <p
+            key={idx}
+            data-gsap="narrative-p"
+            className="text-justify leading-relaxed"
+          >
             {renderEnrichedNarrative(p)}
           </p>
         );
       })}
+    </div>
+  );
+}
+
+/**
+ * Cultural Stage Visual Composition for Zig-Zag Chapters
+ * (Authentic Bima Suci Babak 1 Scene Artwork & Pure Gold Gunungan for other Babak)
+ */
+function BabakVisualStage({
+  actNumber,
+  storyId,
+  reverse = false,
+}: {
+  actNumber: number;
+  storyId?: string;
+  reverse?: boolean;
+}) {
+  const isDewaRuci = storyId === 'dewa-ruci' || storyId === 'bima-suci';
+
+  // Only Babak 1 of Dewa Ruci uses the dedicated scene artwork for now
+  if (isDewaRuci && actNumber === 1) {
+    return (
+      <div className="relative flex items-center justify-center w-full min-h-[260px] sm:min-h-[320px] lg:min-h-[380px] select-none py-2">
+        {/* Ambient warm golden aura */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-full h-full rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(222,223,66,0.14)_0%,transparent_70%)] blur-2xl" />
+        </div>
+
+        {/* Bima Suci Babak 1 Scene Artwork Canvas matching reference mockup */}
+        <motion.div
+          className="relative z-10 w-full aspect-[16/11] max-w-[560px] rounded-2xl overflow-hidden border border-[#dedf42]/30 shadow-[0_15px_45px_rgba(0,0,0,0.9)] group"
+          animate={{ y: [-3, 3, -3] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          whileHover={{ scale: 1.02 }}
+        >
+          <Image
+            src="/images/bima-suci-babak-1-exact.webp"
+            alt="Ilustrasi Babak I Dewa Ruci (Bima Suci) - Astinapura & Gunung Candramuka"
+            fill
+            className="object-cover object-left"
+            sizes="(max-width: 768px) 100vw, 45vw"
+            priority
+          />
+          {/* Subtle edge vignette border */}
+          <div className="absolute inset-0 ring-1 ring-inset ring-[#dedf42]/20 pointer-events-none" />
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Babak 2, 3 and all other stories use the clean pure gold Gunungan
+  return (
+    <div
+      data-gsap="act-artwork"
+      className="relative flex items-center justify-center min-h-[280px] sm:min-h-[340px] lg:min-h-[380px] select-none py-4"
+    >
+      {/* Ambient warm golden aura */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-[radial-gradient(circle,rgba(222,223,66,0.12)_0%,transparent_70%)] blur-2xl" />
+      </div>
+
+      {/* Authentic Masterpiece Gold Gunungan Carving (Clean Transparent) */}
+      <motion.div
+        className={`relative z-10 w-52 h-72 sm:w-64 sm:h-88 md:w-76 md:h-[400px] drop-shadow-[0_15px_35px_rgba(0,0,0,0.95)] ${reverse ? 'scale-x-[-1]' : ''}`}
+        animate={{ y: [-4, 4, -4] }}
+        transition={{ duration: 4.5 + (actNumber % 3), repeat: Infinity, ease: 'easeInOut' }}
+        whileHover={{ scale: 1.05 }}
+      >
+        <Image
+          src="/images/gunungan-emas-bersih.webp"
+          alt="Gunungan Wayang Purwa"
+          fill
+          className="object-contain"
+          sizes="(max-width: 768px) 240px, 320px"
+          priority
+        />
+      </motion.div>
     </div>
   );
 }
@@ -439,6 +567,204 @@ Hikmah: ${story.pituturLuhur.moralLesson}
   const recommendedStories = otherStories.slice(0, 3);
 
   const currentQuiz = STORY_QUIZZES[story.id] || STORY_QUIZZES['dewa-ruci'];
+  const readerContainerRef = useRef<HTMLDivElement>(null);
+
+  // ── GSAP & ScrollTrigger Animations ──
+  useGSAP(
+    () => {
+      if (!readerContainerRef.current) return;
+
+      // 1. Header & Character Dossier Entrance Timeline
+      const headerTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      headerTl
+        .fromTo(
+          '[data-gsap="reader-portrait"]',
+          { scale: 0.85, opacity: 0, rotation: -3 },
+          { scale: 1, opacity: 1, rotation: 0, duration: 0.75, ease: 'back.out(1.4)' }
+        )
+        .fromTo(
+          '[data-gsap="reader-badge"]',
+          { y: -15, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.45, stagger: 0.08 },
+          '-=0.45'
+        )
+        .fromTo(
+          '[data-gsap="reader-title"]',
+          { y: 25, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.65, ease: 'power3.out' },
+          '-=0.35'
+        )
+        .fromTo(
+          '[data-gsap="reader-javanese-title"]',
+          { scale: 0.9, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(1.5)' },
+          '-=0.4'
+        )
+        .fromTo(
+          '[data-gsap="reader-synopsis"]',
+          { y: 15, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.55 },
+          '-=0.3'
+        )
+        .fromTo(
+          '[data-gsap="reader-meta-item"]',
+          { y: 15, opacity: 0, scale: 0.95 },
+          { y: 0, opacity: 1, scale: 1, stagger: 0.05, duration: 0.4 },
+          '-=0.25'
+        );
+
+      // 2. Sulukan Opening Scroll Animation
+      const sulukEl = readerContainerRef.current.querySelector('[data-gsap="reader-suluk"]');
+      if (sulukEl) {
+        gsap.fromTo(
+          sulukEl,
+          { opacity: 0, y: 30, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sulukEl,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+
+      // 3. ScrollTrigger for Each Babak Story Spread
+      const babakItems = gsap.utils.toArray<HTMLElement>('[data-gsap="reader-act-item"]');
+      babakItems.forEach((item) => {
+        // Visual Artwork Parallax Depth & Entrance
+        const visualArtwork = item.querySelector('[data-gsap="act-artwork"]');
+        if (visualArtwork) {
+          gsap.fromTo(
+            visualArtwork,
+            { scale: 0.94, opacity: 0, y: 35 },
+            {
+              scale: 1,
+              opacity: 1,
+              y: 0,
+              duration: 0.85,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: item,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
+              },
+            }
+          );
+        }
+
+        // Act Title & Number Badge
+        const actHeader = item.querySelector('[data-gsap="act-header"]');
+        if (actHeader) {
+          gsap.fromTo(
+            actHeader,
+            { opacity: 0, x: -20 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.55,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: item,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
+              },
+            }
+          );
+        }
+
+        // Narrative Paragraphs Stagger Entrance
+        const narrativeParagraphs = item.querySelectorAll('[data-gsap="narrative-p"]');
+        if (narrativeParagraphs.length > 0) {
+          gsap.fromTo(
+            narrativeParagraphs,
+            { opacity: 0, y: 20 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              stagger: 0.1,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: item,
+                start: 'top 75%',
+                toggleActions: 'play none none none',
+              },
+            }
+          );
+        }
+
+        // Corner Gunungan Ornament Entrance
+        const cornerOrnament = item.querySelector('[data-gsap="act-ornament"]');
+        if (cornerOrnament) {
+          gsap.fromTo(
+            cornerOrnament,
+            { opacity: 0, scale: 0.7, rotation: -8 },
+            {
+              opacity: 0.85,
+              scale: 1,
+              rotation: 0,
+              duration: 0.6,
+              ease: 'back.out(1.6)',
+              scrollTrigger: {
+                trigger: item,
+                start: 'top 70%',
+                toggleActions: 'play none none none',
+              },
+            }
+          );
+        }
+      });
+
+      // 4. Pitutur Luhur (Falsafah) Entrance
+      const pituturCard = readerContainerRef.current.querySelector('[data-gsap="pitutur-card"]');
+      if (pituturCard) {
+        gsap.fromTo(
+          pituturCard,
+          { opacity: 0, y: 40, scale: 0.97 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.85,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: pituturCard,
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+
+      // 5. Interactive Culture Quiz Card Entrance
+      const quizCard = readerContainerRef.current.querySelector('[data-gsap="quiz-card"]');
+      if (quizCard) {
+        gsap.fromTo(
+          quizCard,
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: quizCard,
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    },
+    { scope: readerContainerRef, dependencies: [story.id, activeActTab] }
+  );
 
   const visibleActs =
     activeActTab === 'all'
@@ -447,6 +773,7 @@ Hikmah: ${story.pituturLuhur.moralLesson}
 
   return (
     <div
+      ref={readerContainerRef}
       className={`relative w-full ${
         focusMode ? 'max-w-5xl mx-auto' : 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16'
       } space-y-10 sm:space-y-14 animate-fadeSlideUp transition-all duration-300 pt-20 sm:pt-24 pb-24`}
@@ -652,77 +979,112 @@ Hikmah: ${story.pituturLuhur.moralLesson}
       </motion.div>
 
       {/* ── 4. Main Single Column Manuscript Container ── */}
-      <article className="relative bg-[#070504] border border-white/10 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.95)] p-6 sm:p-10 md:p-14 lg:p-16 space-y-10 sm:space-y-12 overflow-visible">
-        {/* ── Story Header: Cover Portrait & Title Dossier (Horizontal Split) ── */}
-        <header className="relative z-10 space-y-6 pb-8 border-b border-white/10">
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
-            {/* Tokoh Visual Portrait (Square with Glow Aura) */}
-            <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-2xl overflow-hidden bg-black border border-white/15 shrink-0 shadow-2xl flex items-center justify-center p-3">
-              {/* Radial Aura */}
-              <div className="absolute inset-4 rounded-full bg-[radial-gradient(circle_at_center,rgba(222,223,66,0.18)_0%,transparent_70%)] pointer-events-none" />
+      <article className="relative bg-gradient-to-b from-[#180e07] via-[#0d0603] to-[#050201] border border-[#d9a441]/30 rounded-3xl shadow-[0_25px_80px_rgba(0,0,0,0.95)] p-6 sm:p-10 md:p-12 lg:p-16 space-y-12 sm:space-y-16 overflow-hidden">
+        {/* Floating Golden Sparks / Embers Particle Background Animation */}
+        <FloatingEmbersOverlay />
 
+        {/* Ambient Warm Golden Aura in Background */}
+        <div className="absolute top-12 right-12 w-96 h-96 bg-[radial-gradient(circle,rgba(222,223,66,0.1)_0%,transparent_70%)] pointer-events-none blur-3xl" />
+        <div className="absolute bottom-1/4 left-8 w-80 h-80 bg-[radial-gradient(circle,rgba(222,223,66,0.08)_0%,transparent_70%)] pointer-events-none blur-3xl" />
+
+
+
+        {/* ── Story Header: Restored Clean Layout with Tokoh Portrait & Dossier ── */}
+        <header className="relative z-10 space-y-6 pb-8 border-b border-[#dedf42]/20">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
+            {/* Tokoh Visual Portrait */}
+            <div
+              data-gsap="reader-portrait"
+              className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-3xl overflow-hidden bg-black/80 border-2 border-[#dedf42]/40 shrink-0 shadow-[0_10px_35px_rgba(0,0,0,0.8)] flex items-center justify-center p-3 group"
+            >
+              <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(222,223,66,0.15)_0%,transparent_70%)] pointer-events-none" />
               <Image
                 src={story.coverImage}
                 alt={story.title}
                 fill
-                className="object-contain p-3 drop-shadow-[0_12px_28px_rgba(0,0,0,0.9)]"
-                sizes="(max-width: 768px) 160px, 192px"
+                className="object-contain p-3 drop-shadow-[0_10px_25px_rgba(222,223,66,0.35)] group-hover:scale-105 transition-transform duration-500"
+                sizes="(max-width: 768px) 192px, 224px"
                 priority
               />
             </div>
 
             {/* Title & Metadata */}
-            <div className="space-y-3.5 flex-1 text-center md:text-left">
+            <div className="space-y-4 flex-1 text-center md:text-left">
               <div className="flex items-center justify-center md:justify-start gap-2 flex-wrap">
-                <span className="px-3.5 py-1 rounded-full text-[11px] font-mono font-bold bg-[#dedf42] text-black uppercase tracking-wider shadow-sm">
+                <span
+                  data-gsap="reader-badge"
+                  className="px-3.5 py-1 rounded-full text-[11px] font-mono font-bold bg-[#dedf42] text-black uppercase tracking-wider shadow-sm"
+                >
                   {story.categoryLabel}
                 </span>
-                <span className="text-xs font-mono text-[#f4e7cd]/75 flex items-center gap-1 bg-black px-3 py-0.5 rounded-full border border-white/10">
+                <span
+                  data-gsap="reader-badge"
+                  className="text-xs font-mono text-[#dedf42]/90 uppercase tracking-widest font-semibold flex items-center gap-1.5 bg-black/70 px-3 py-1 rounded-full border border-white/10"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-[#dedf42]" />
+                  Serat Lakon Pedalangan Jawi
+                </span>
+              </div>
+
+              <div className="space-y-1.5">
+                <h1
+                  data-gsap="reader-title"
+                  className="font-serif font-black text-3xl sm:text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-[#dedf42] via-[#fff4d6] to-[#d9a441] leading-tight tracking-tight uppercase drop-shadow-[0_4px_20px_rgba(222,223,66,0.3)]"
+                >
+                  {story.title}
+                </h1>
+                {story.javaneseTitle && (
+                  <div
+                    data-gsap="reader-javanese-title"
+                    className="inline-flex items-center gap-2 px-3 py-0.5 rounded-lg bg-black/70 border border-[#dedf42]/30"
+                  >
+                    <span className="text-xs sm:text-sm font-serif text-[#dedf42] tracking-widest font-medium">
+                      {story.javaneseTitle}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <p
+                data-gsap="reader-synopsis"
+                className="font-sans text-xs sm:text-sm md:text-[15px] text-[#f4e7cd]/90 leading-relaxed text-justify"
+              >
+                {story.synopsis}
+              </p>
+
+              <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-2.5 text-xs font-mono text-[#f4e7cd]/80">
+                <span
+                  data-gsap="reader-meta-item"
+                  className="px-3 py-1 rounded-xl bg-black/80 border border-white/15"
+                >
+                  <strong className="text-[#dedf42]">{story.mainCharacter}</strong> ({story.characterRole})
+                </span>
+                <span
+                  data-gsap="reader-meta-item"
+                  className="text-xs font-mono text-[#f4e7cd]/75 flex items-center gap-1 bg-black/80 px-3 py-1 rounded-xl border border-white/10"
+                >
                   <Clock className="w-3.5 h-3.5 text-[#dedf42]" />
                   <span>{story.readingTime}</span>
                 </span>
-                <span className="text-xs font-mono text-[#f4e7cd]/75 bg-black px-3 py-0.5 rounded-full border border-white/10">
-                  {story.acts.length} Babak Pedalangan
+                <span
+                  data-gsap="reader-meta-item"
+                  className="text-xs font-mono text-[#f4e7cd]/75 bg-black/80 px-3 py-1 rounded-xl border border-white/10"
+                >
+                  {story.acts.length} Babak
                 </span>
-              </div>
-
-              <div>
-                <h1 className="font-serif italic font-bold text-3xl sm:text-4xl md:text-5xl text-[#dedf42] leading-[1.08] tracking-tight">
-                  {story.title}
-                </h1>
-
-                {story.javaneseTitle && (
-                  <p className="font-serif text-sm text-[#dedf42]/80 tracking-widest mt-1.5 font-medium">
-                    {story.javaneseTitle}
-                  </p>
-                )}
-              </div>
-
-              <p className="font-sans text-xs sm:text-sm text-[#f4e7cd] font-medium leading-relaxed">
-                {story.tagline}
-              </p>
-
-              {/* Tokoh Utama & Pendukung */}
-              <div className="pt-1 flex flex-wrap items-center justify-center md:justify-start gap-2 text-xs font-mono text-[#f4e7cd]/80">
-                <span className="px-3 py-1 rounded-xl bg-black border border-white/15">
-                  <strong className="text-[#dedf42]">{story.mainCharacter}</strong> ({story.characterRole})
-                </span>
-                {story.supportingCharacters.length > 0 && (
-                  <span className="text-[11px] text-[#f4e7cd]/70 bg-black px-2.5 py-1 rounded-xl border border-white/5">
-                    Didukung: {story.supportingCharacters.join(', ')}
-                  </span>
-                )}
                 {story.castProfiles && story.castProfiles.length > 0 && (
                   <button
                     type="button"
+                    data-gsap="reader-meta-item"
                     onClick={() => setShowCastSheet(!showCastSheet)}
-                    className="text-[#dedf42] hover:underline text-[11px] font-mono inline-flex items-center gap-1 cursor-pointer ml-1 font-semibold"
+                    className="text-[#dedf42] hover:underline text-[11px] font-mono inline-flex items-center gap-1 cursor-pointer font-semibold ml-1"
                   >
                     <Users className="w-3.5 h-3.5" />
                     <span>{showCastSheet ? 'Tutup Profil Tokoh' : 'Lihat Profil Tokoh'}</span>
                   </button>
                 )}
                 <Link
+                  data-gsap="reader-meta-item"
                   href={`/tokoh/${story.tokohSlug}`}
                   className="text-[#dedf42] hover:underline text-[11px] font-mono inline-flex items-center gap-1 ml-1"
                 >
@@ -734,15 +1096,19 @@ Hikmah: ${story.pituturLuhur.moralLesson}
           </div>
 
           {/* Interactive Tooltip Hint Badge */}
-          <div className="flex items-center justify-center md:justify-start gap-2 text-xs font-mono text-[#dedf42] pt-3 border-t border-white/10">
-            <BookOpen className="w-4 h-4 text-[#dedf42] shrink-0" />
+          <div className="flex items-center justify-center md:justify-start gap-2 text-xs font-mono text-[#dedf42] pt-4 mt-6 border-t border-white/10">
+            <BookOpen className="w-4 h-4 text-[#dedf42]" />
             <span>Arahkan kursor atau sentuh istilah bergaris bawah untuk melihat catatan glosarium pedalangan Jawa</span>
           </div>
         </header>
 
         {/* ── Optional Cast Dossier Panel ── */}
         {showCastSheet && story.castProfiles && story.castProfiles.length > 0 && (
-          <section className="p-5 sm:p-6 rounded-2xl bg-black border border-white/15 space-y-4 animate-fadeSlideUp shadow-xl">
+          <motion.section
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-5 sm:p-6 rounded-2xl bg-black border border-white/15 space-y-4 shadow-xl"
+          >
             <div className="flex items-center justify-between border-b border-white/10 pb-2">
               <h3 className="font-serif italic font-bold text-base text-[#dedf42] flex items-center gap-2">
                 <Users className="w-4 h-4 text-[#dedf42]" />
@@ -768,24 +1134,33 @@ Hikmah: ${story.pituturLuhur.moralLesson}
                 </div>
               ))}
             </div>
-          </section>
+          </motion.section>
         )}
 
         {/* ── Cultural Significance Highlight ── */}
         {story.culturalSignificance && (
-          <section className="p-5 sm:p-6 rounded-2xl bg-black/60 border border-white/10 space-y-1.5 text-xs sm:text-sm">
-            <span className="font-mono text-[10px] text-[#dedf42] uppercase tracking-widest block font-bold">
+          <motion.section
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-[#140c06] via-[#090503] to-black border border-[#dedf42]/20 space-y-1.5 text-xs sm:text-sm"
+          >
+            <span className="font-mono text-[10px] text-[#dedf42] uppercase tracking-widest block font-bold flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-[#dedf42]" />
               MAKNA KULTURAL & NILAI SEJARAH
             </span>
-            <p className="font-sans text-[#f4e7cd]/85 leading-relaxed text-justify">
+            <p className="font-sans text-[#f4e7cd]/90 leading-relaxed text-justify">
               {story.culturalSignificance}
             </p>
-          </section>
+          </motion.section>
         )}
 
         {/* ── Sulukan Pembuka ── */}
-        <section className="relative z-10 p-6 sm:p-8 rounded-2xl bg-black border border-white/15 shadow-md">
-          <div className="space-y-2">
+        <section
+          data-gsap="reader-suluk"
+          className="relative z-10 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#1c1208]/90 via-black to-black border border-[#dedf42]/30 shadow-[0_10px_30px_rgba(0,0,0,0.8)]"
+        >
+          <div className="space-y-2.5">
             <span className="text-[10px] font-mono uppercase tracking-widest text-[#dedf42] font-bold block flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-[#dedf42]" />
               SULUKAN PEMBUKA TABIR LAKON
@@ -803,7 +1178,7 @@ Hikmah: ${story.pituturLuhur.moralLesson}
             onClick={() => setActiveActTab('all')}
             className={`px-4 py-2 rounded-full text-xs font-sans font-bold uppercase tracking-wider transition-all cursor-pointer ${
               activeActTab === 'all'
-                ? 'bg-[#dedf42] text-black shadow-[0_0_15px_rgba(222,223,66,0.3)]'
+                ? 'bg-[#dedf42] text-black shadow-[0_0_15px_rgba(222,223,66,0.35)]'
                 : 'bg-black border border-white/10 text-[#f4e7cd]/70 hover:text-white'
             }`}
           >
@@ -816,7 +1191,7 @@ Hikmah: ${story.pituturLuhur.moralLesson}
               onClick={() => setActiveActTab(act.actNumber)}
               className={`px-4 py-2 rounded-full text-xs font-sans font-bold uppercase tracking-wider transition-all cursor-pointer ${
                 activeActTab === act.actNumber
-                  ? 'bg-[#dedf42] text-black shadow-[0_0_15px_rgba(222,223,66,0.3)]'
+                  ? 'bg-[#dedf42] text-black shadow-[0_0_15px_rgba(222,223,66,0.35)]'
                   : 'bg-black border border-white/10 text-[#f4e7cd]/70 hover:text-white'
               }`}
             >
@@ -825,41 +1200,193 @@ Hikmah: ${story.pituturLuhur.moralLesson}
           ))}
         </div>
 
-        {/* ── Structured Acts (Babak I, II, III) with Editorial Prose & Dialogues ── */}
-        <div className="relative z-10 space-y-8">
-          {visibleActs.map((act) => (
-            <section
-              key={act.actNumber}
-              className="p-6 sm:p-8 md:p-10 rounded-2xl bg-black border border-white/10 space-y-5 shadow-lg hover:border-white/20 transition-colors"
-            >
-              {/* Act Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-4">
-                <div className="flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-[#dedf42] text-black font-mono font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">
-                    {act.actNumber}
-                  </span>
-                  <h2 className="font-serif italic font-bold text-xl sm:text-2xl text-[#dedf42]">
-                    {act.actTitle}
-                  </h2>
+        {/* ── Structured Acts (Babak I, II, III) - Zig-Zag Alternating Layout Without Card Boxes ── */}
+        <div className="relative z-10 space-y-12 sm:space-y-16">
+          {visibleActs.map((act, idx) => {
+            const isImageLeft = idx % 2 === 0;
+
+            // Check if this act has a custom widescreen scene artwork
+            const getCustomSceneArtwork = (storyId: string, actNum: number): string | null => {
+              if (act.sceneArtwork || act.image) {
+                return act.sceneArtwork || act.image || null;
+              }
+              if (storyId === 'dewa-ruci' || storyId === 'bima-suci') {
+                if (actNum === 1) return '/images/bima-suci-babak-1-full.webp';
+                if (actNum === 2) return '/images/bima-suci-babak-2-full.webp';
+                if (actNum === 3) return '/images/bima-suci-babak-3-full.webp';
+              }
+              if (storyId === 'semar-mbangun-kayangan' || storyId === 'kyai-semar') {
+                if (actNum === 1) return '/images/semar-mbangun-kayangan-babak-1-full.webp';
+                if (actNum === 2) return '/images/semar-mbangun-kayangan-babak-2-full.webp';
+                if (actNum === 3) return '/images/semar-mbangun-kayangan-babak-3-full.webp';
+              }
+              if (storyId === 'arjuna-wiwaha' || storyId === 'sang-arjuna') {
+                if (actNum === 1) return '/images/arjuna-wiwaha-babak-1-full.webp';
+                if (actNum === 2) return '/images/arjuna-wiwaha-babak-2-full.webp';
+                if (actNum === 3) return '/images/arjuna-wiwaha-babak-3-full.webp';
+              }
+              if (storyId === 'gatotkaca-gugur' || storyId === 'sang-gatotkaca') {
+                if (actNum === 1) return '/images/gatotkaca-gugur-babak-1-full.webp';
+                if (actNum === 2) return '/images/gatotkaca-gugur-babak-2-full.webp';
+                if (actNum === 3) return '/images/gatotkaca-gugur-babak-3-full.webp';
+              }
+              if (storyId === 'petruk-dadi-ratu' || storyId === 'kyai-petruk') {
+                if (actNum === 1) return '/images/petruk-dadi-ratu-babak-1-full.webp';
+                if (actNum === 2) return '/images/petruk-dadi-ratu-babak-2-full.webp';
+                if (actNum === 3) return '/images/petruk-dadi-ratu-babak-3-full.webp';
+              }
+              if (storyId === 'bagong-kembar' || storyId === 'kyai-bagong') {
+                if (actNum === 1) return '/images/bagong-kembar-babak-1-full.webp';
+                if (actNum === 2) return '/images/bagong-kembar-babak-2-full.webp';
+                if (actNum === 3) return '/images/bagong-kembar-babak-3-full.webp';
+              }
+              if (storyId === 'nala-gareng-meguru' || storyId === 'nala-gareng' || storyId === 'gareng') {
+                if (actNum === 1) return '/images/nala-gareng-babak-1-full.webp';
+                if (actNum === 2) return '/images/nala-gareng-babak-2-full.webp';
+                if (actNum === 3) return '/images/nala-gareng-babak-3-full.webp';
+              }
+              if (storyId === 'prabu-rahwana-sirna' || storyId === 'prabu-rahwana' || storyId === 'rahwana') {
+                if (actNum === 1) return '/images/rahwana-babak-1-full.webp';
+                if (actNum === 2) return '/images/rahwana-babak-2-full.webp';
+                if (actNum === 3) return '/images/rahwana-babak-3-full.webp';
+              }
+              if (storyId === 'resi-drona-gugur' || storyId === 'resi-drona' || storyId === 'drona' || storyId === 'durna') {
+                if (actNum === 1) return '/images/resi-drona-babak-1-full.webp';
+                if (actNum === 2) return '/images/resi-drona-babak-2-full.webp';
+                if (actNum === 3) return '/images/resi-drona-babak-3-full.webp';
+              }
+              return null;
+            };
+
+            const customSceneImg = getCustomSceneArtwork(story.id, act.actNumber);
+
+            if (customSceneImg) {
+              const isImageOnLeft = act.actNumber % 2 !== 0; // Babak 1: Left, Babak 2: Right, Babak 3: Left
+
+              return (
+                <div
+                  key={act.actNumber}
+                  data-gsap="reader-act-item"
+                  className="relative"
+                >
+                  {/* Dedicated Full-Width Widescreen Theatrical Spread with Zig-Zag Alignment */}
+                  <div className="relative w-full rounded-3xl overflow-hidden bg-gradient-to-r from-[#0d0703] via-[#080503] to-[#040201] border border-[#d9a441]/35 shadow-[0_25px_80px_rgba(0,0,0,0.95)]">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[460px] lg:min-h-[520px]">
+                      {/* Visual Artwork Column */}
+                      <div
+                        data-gsap="act-artwork"
+                        className={`relative lg:col-span-6 min-h-[340px] sm:min-h-[420px] lg:min-h-full overflow-hidden ${isImageOnLeft ? 'lg:order-1' : 'lg:order-2'}`}
+                      >
+                        <Image
+                          src={customSceneImg}
+                          alt={`Ilustrasi Babak ${act.actNumber} ${story.title}`}
+                          fill
+                          className="object-cover object-center"
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          priority={act.actNumber === 1}
+                        />
+                        {/* Smooth soft edge fade into dark narrative backdrop on desktop */}
+                        {isImageOnLeft ? (
+                          <div className="hidden lg:block absolute inset-y-0 right-0 w-36 bg-gradient-to-r from-transparent to-[#080503] pointer-events-none" />
+                        ) : (
+                          <div className="hidden lg:block absolute inset-y-0 left-0 w-36 bg-gradient-to-l from-transparent to-[#080503] pointer-events-none" />
+                        )}
+                        {/* Bottom soft gradient on mobile */}
+                        <div className="lg:hidden absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#080503] to-transparent pointer-events-none" />
+                      </div>
+
+                      {/* Narrative Text Column */}
+                      <div className={`relative lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6 ${isImageOnLeft ? 'lg:order-2' : 'lg:order-1'}`}>
+                        <div className="space-y-6">
+                          {/* Chapter Header matching reference mockup */}
+                          <div data-gsap="act-header" className="flex items-center gap-3 border-b border-[#dedf42]/20 pb-4">
+                            <span className="w-8 h-8 rounded-full bg-[#dedf42] text-black font-mono font-bold text-xs flex items-center justify-center shrink-0 shadow-md">
+                              {act.actNumber}
+                            </span>
+                            <h2 className="font-serif italic font-bold text-xl sm:text-2xl md:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-[#dedf42] via-[#fff4d6] to-[#d9a441] tracking-tight">
+                              {act.actTitle}
+                            </h2>
+                          </div>
+
+                          {/* Narrative prose with golden drop cap */}
+                          <FormattedNarrative content={act.content} fontSize={fontSize} />
+                        </div>
+
+                        {/* Decorative Corner Gunungan Ornament */}
+                        <div
+                          data-gsap="act-ornament"
+                          className={`flex ${isImageOnLeft ? 'justify-end' : 'justify-start'} pt-4 pointer-events-none opacity-85`}
+                        >
+                          <div className="relative w-12 h-16 sm:w-14 sm:h-20 drop-shadow-[0_4px_12px_rgba(222,223,66,0.3)]">
+                            <Image
+                              src="/images/gunungan-emas-bersih.webp"
+                              alt="Ornamen Wayang"
+                              fill
+                              className="object-contain"
+                              sizes="56px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Traditional Flourish Divider Between Chapters */}
+                  {idx < visibleActs.length - 1 && (
+                    <div className="pt-8 pb-4 flex justify-center">
+                      <WayangFlourishDivider className="w-full max-w-sm" color="#dedf42" />
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            return (
+              <div
+                key={act.actNumber}
+                data-gsap="reader-act-item"
+                className="relative space-y-8"
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                  {/* Visual Stage Column (Authentic Scene Artwork for Bima Suci / Pure Gold Gunungan) */}
+                  <div className={`lg:col-span-5 xl:col-span-5 ${isImageLeft ? 'lg:order-1' : 'lg:order-2'}`}>
+                    <BabakVisualStage actNumber={act.actNumber} storyId={story.id} reverse={!isImageLeft} />
+                  </div>
+
+                  {/* Narrative Text Column (Seamless, NO card box borders) */}
+                  <div className={`lg:col-span-7 xl:col-span-7 space-y-5 ${isImageLeft ? 'lg:order-2' : 'lg:order-1'}`}>
+                    {/* Chapter Header */}
+                    <div data-gsap="act-header" className="flex items-center gap-3 border-b border-[#dedf42]/30 pb-3">
+                      <span className="w-8 h-8 rounded-full bg-[#dedf42] text-black font-mono font-bold text-xs flex items-center justify-center shrink-0 shadow-md">
+                        {act.actNumber}
+                      </span>
+                      <h2 className="font-serif italic font-bold text-2xl sm:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-[#dedf42] via-[#fff4d6] to-[#d9a441] tracking-tight">
+                        {act.actTitle}
+                      </h2>
+                    </div>
+
+                    {/* Editorial Prose Content with Drop Caps, Animated Dialogues, and Interactive Glossary */}
+                    <FormattedNarrative content={act.content} fontSize={fontSize} />
+                  </div>
                 </div>
 
-                {act.sceneSetting && (
-                  <span className="text-[11px] font-mono text-[#f4e7cd]/75 bg-black px-3 py-1 rounded-full border border-white/10 flex items-center gap-1.5 self-start sm:self-auto">
-                    <MapPin className="w-3.5 h-3.5 text-[#dedf42]" />
-                    <span>{act.sceneSetting}</span>
-                  </span>
+                {/* Traditional Flourish Divider Between Chapters */}
+                {idx < visibleActs.length - 1 && (
+                  <div className="pt-8 pb-4 flex justify-center">
+                    <WayangFlourishDivider className="w-full max-w-sm" color="#dedf42" />
+                  </div>
                 )}
               </div>
-
-              {/* Act Narrative Prose with Drop-Caps & Dialogue Cards */}
-              <FormattedNarrative content={act.content} fontSize={fontSize} />
-            </section>
-          ))}
+            );
+          })}
         </div>
 
         {/* ── Pitutur Luhur (Falsafah Jawa) ── */}
-        <section className="relative z-10 p-6 sm:p-10 rounded-2xl bg-black border border-white/15 space-y-5 overflow-hidden shadow-lg">
-          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+        <section
+          data-gsap="pitutur-card"
+          className="relative z-10 p-6 sm:p-10 rounded-3xl bg-gradient-to-br from-[#211409] via-[#0d0703] to-black border-2 border-[#dedf42]/40 space-y-5 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
+        >
+          <div className="border-b border-[#dedf42]/30 pb-3 flex items-center justify-between">
             <h3 className="font-serif italic font-bold text-lg sm:text-xl uppercase tracking-wider text-[#dedf42]">
               Pitutur Luhur Pedalangan Jawa
             </h3>
@@ -894,7 +1421,10 @@ Hikmah: ${story.pituturLuhur.moralLesson}
         </section>
 
         {/* ── 5. Interactive Quiz & Reflection (Anti-Bosan Feature) ── */}
-        <section className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-[#140e08] via-[#0d0905] to-[#140e08] border border-white/15 space-y-5 shadow-xl">
+        <section
+          data-gsap="quiz-card"
+          className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-[#140e08] via-[#0d0905] to-[#140e08] border border-white/15 space-y-5 shadow-xl"
+        >
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <div className="flex items-center gap-2">
               <HelpCircle className="w-5 h-5 text-[#dedf42]" />
