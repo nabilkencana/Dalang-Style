@@ -19,7 +19,6 @@ html, body {
   color: var(--ink);
   font-family: var(--sans);
   font-size: 14px;
-  overflow-x: hidden;
 }
 
 #stage {

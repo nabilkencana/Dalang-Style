@@ -20,10 +20,12 @@ export default function Rahwana3DFaceCanvas({
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const openProgressRef = useRef(openProgress);
+  const pointerRef = useRef(pointer);
 
   useEffect(() => {
     openProgressRef.current = openProgress;
-  }, [openProgress]);
+    pointerRef.current = pointer;
+  }, [openProgress, pointer]);
 
   // Lazy-load: only initialize Three.js and load 3D model when near viewport
   useEffect(() => {
@@ -74,20 +76,34 @@ export default function Rahwana3DFaceCanvas({
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
     camera.position.set(0, 0, 5);
 
-    // 3. High performance WebGL Renderer with pure transparency
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      alpha: true,
-      antialias: true,
-      powerPreference: 'high-performance',
-    });
+    // 3. High performance WebGL Renderer with safe context loss handling
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance',
+      });
+    } catch (err) {
+      console.warn('WebGL context creation skipped or lost for Rahwana3DFaceCanvas:', err);
+      setIsLoading(false);
+      return;
+    }
+
+    const handleContextLost = (e: Event) => {
+      e.preventDefault();
+      isDisposed = true;
+      cancelAnimationFrame(animId);
+    };
+    canvas.addEventListener('webglcontextlost', handleContextLost, false);
+
     renderer.setClearColor(0x000000, 0);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.35;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(width, height, false);
-
     // 4. Dramatic Theatrical Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
     scene.add(ambientLight);
@@ -175,9 +191,10 @@ export default function Rahwana3DFaceCanvas({
         renderer.toneMappingExposure = THREE.MathUtils.lerp(0.65, 1.35, surge);
 
         // 3. Interactive pointer-based head tilt
-        if (pointer?.current && surge > 0.2) {
-          const targetRotY = baseRotY + pointer.current.x * 0.28;
-          const targetRotX = -pointer.current.y * 0.16;
+        const currentPtr = pointerRef.current?.current;
+        if (currentPtr && surge > 0.2) {
+          const targetRotY = baseRotY + currentPtr.x * 0.28;
+          const targetRotX = -currentPtr.y * 0.16;
           rahwanaModel.rotation.y += (targetRotY - rahwanaModel.rotation.y) * 0.08;
           rahwanaModel.rotation.x += (targetRotX - rahwanaModel.rotation.x) * 0.08;
         } else {
@@ -203,15 +220,29 @@ export default function Rahwana3DFaceCanvas({
     });
     ro.observe(container);
 
-    // 8. Cleanup
+    // 8. Robust Cleanup & GPU Memory Release
     return () => {
       isDisposed = true;
       cancelAnimationFrame(animId);
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
       ro.disconnect();
-      renderer.dispose();
+      scene.traverse((obj) => {
+        if (obj instanceof THREE.Mesh) {
+          obj.geometry?.dispose();
+          if (Array.isArray(obj.material)) {
+            obj.material.forEach((m) => m.dispose());
+          } else if (obj.material) {
+            obj.material.dispose();
+          }
+        }
+      });
       scene.clear();
+      try {
+        renderer.dispose();
+        renderer.forceContextLoss();
+      } catch {}
     };
-  }, [isVisible, pointer]);
+  }, [isVisible]);
 
   return (
     <div

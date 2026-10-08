@@ -186,7 +186,7 @@ export default function KatalogTokohView() {
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Cari nama tokoh, peran, atau watak (e.g. Arjuna, Semar, Bijaksana)..."
+              placeholder="Cari tokoh wayang (e.g. Arjuna, Semar)..."
               className="w-full px-5 py-3.5 pl-12 pr-28 sm:pr-32 rounded-full border border-[#dedf42]/30 bg-black/60 text-[#f4e7cd] placeholder-[#f4e7cd]/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#dedf42] focus:ring-2 focus:ring-[#dedf42]/20 transition-all backdrop-blur-md shadow-inner"
             />
 

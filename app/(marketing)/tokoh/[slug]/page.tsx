@@ -136,7 +136,7 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
   );
 
   return (
-    <div className="relative min-h-screen bg-[#050303] text-[#f4e7cd] overflow-x-clip selection:bg-[#dedf42] selection:text-black">
+    <div className="relative min-h-screen bg-[#050303] text-[#f4e7cd] selection:bg-[#dedf42] selection:text-black">
       {/* 1. Ambient Theatrical Stage Background Vignettes */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(222,223,66,0.08)_0%,_rgba(11,6,4,0.7)_50%,_#050303_100%)] pointer-events-none z-0" />
       <div className="fixed inset-0 bg-repeat opacity-[0.03] pointer-events-none z-0 bg-[radial-gradient(#dedf42_1px,transparent_1px)] [background-size:24px_24px]" />

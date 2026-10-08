@@ -66,13 +66,27 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 0, 5);
 
-    // 3. Renderer with pure transparent background
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      alpha: true,
-      antialias: true,
-      powerPreference: 'high-performance',
-    });
+    // 3. Renderer with safe context loss handling and pure transparent background
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance',
+      });
+    } catch {
+      setIsLoading(false);
+      return;
+    }
+
+    const handleContextLost = (e: Event) => {
+      e.preventDefault();
+      isDisposed = true;
+      cancelAnimationFrame(animId);
+    };
+    canvas.addEventListener('webglcontextlost', handleContextLost, false);
+
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setClearColor(0x000000, 0);
@@ -81,7 +95,6 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(width, height, false);
-
     // 4. Lighting setup
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.6);
     scene.add(ambientLight);
@@ -245,14 +258,28 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
     });
     ro.observe(container);
 
-    // 9. Cleanup
+    // 9. Robust Cleanup & GPU Memory Release
     return () => {
       isDisposed = true;
       cancelAnimationFrame(animId);
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
       ro.disconnect();
       controls.dispose();
-      renderer.dispose();
+      scene.traverse((obj) => {
+        if (obj instanceof THREE.Mesh) {
+          obj.geometry?.dispose();
+          if (Array.isArray(obj.material)) {
+            obj.material.forEach((m) => m.dispose());
+          } else if (obj.material) {
+            obj.material.dispose();
+          }
+        }
+      });
       scene.clear();
+      try {
+        renderer.dispose();
+        renderer.forceContextLoss();
+      } catch {}
     };
   }, [isVisible]);
 
