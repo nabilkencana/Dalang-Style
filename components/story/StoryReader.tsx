@@ -987,8 +987,6 @@ Hikmah: ${story.pituturLuhur.moralLesson}
         <div className="absolute top-12 right-12 w-96 h-96 bg-[radial-gradient(circle,rgba(222,223,66,0.1)_0%,transparent_70%)] pointer-events-none blur-3xl" />
         <div className="absolute bottom-1/4 left-8 w-80 h-80 bg-[radial-gradient(circle,rgba(222,223,66,0.08)_0%,transparent_70%)] pointer-events-none blur-3xl" />
 
-
-
         {/* ── Story Header: Restored Clean Layout with Tokoh Portrait & Dossier ── */}
         <header className="relative z-10 space-y-6 pb-8 border-b border-[#dedf42]/20">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
@@ -1006,6 +1004,7 @@ Hikmah: ${story.pituturLuhur.moralLesson}
                 sizes="(max-width: 768px) 192px, 224px"
                 priority
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
             </div>
 
             {/* Title & Metadata */}

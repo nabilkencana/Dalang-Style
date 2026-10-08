@@ -112,58 +112,78 @@ export function StoryCatalog({ onSelectStory }: StoryCatalogProps) {
       <StoryGsapAnimations filterKey={`${selectedCategory}-${selectedTokoh}-${searchQuery}-${showOnlyBookmarked}`} />
 
       {/* ── 1. Theatrical Stats Bar ── */}
-      <div data-gsap="story-stats" className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-2 sm:p-3 rounded-2xl bg-[#080808] border border-[#dedf42]/25">
-        <div className="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-xl bg-[#000000] border border-white/10 hover:border-[#dedf42] transition-all group">
-          <div className="w-10 h-10 rounded-xl bg-[#dedf42]/10 border border-[#dedf42]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#dedf42] group-hover:text-black text-[#dedf42] transition-all">
-            <Scroll className="w-5 h-5" />
+      <div data-gsap="story-stats" className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-5 p-3 sm:p-4 md:p-5 rounded-3xl bg-[#080808] border border-[#dedf42]/30 shadow-2xl">
+        <div className="flex flex-col justify-between p-4 sm:p-5 md:p-6 lg:p-7 min-h-[140px] md:min-h-[170px] lg:min-h-[190px] rounded-2xl bg-[#000000] border border-white/10 hover:border-[#dedf42] transition-all group">
+          <div className="flex items-center justify-between w-full">
+            <div className="w-11 h-11 md:w-13 md:h-13 rounded-2xl bg-[#dedf42]/10 border border-[#dedf42]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#dedf42] group-hover:text-black text-[#dedf42] transition-all shadow-sm">
+              <Scroll className="w-5 h-5 md:w-6 md:h-6" />
+            </div>
+            <span className="text-[10px] md:text-xs font-mono text-[#dedf42]/60 uppercase tracking-widest font-semibold">
+              LAKON
+            </span>
           </div>
-          <div className="text-left space-y-0.5">
-            <p className="font-sans font-black text-2xl sm:text-3xl text-[#dedf42] group-hover:text-white transition-colors leading-tight tracking-tight">
+          <div className="text-left space-y-1 mt-4">
+            <p className="font-sans font-black text-3xl sm:text-4xl md:text-5xl text-[#dedf42] group-hover:text-white transition-colors leading-none tracking-tight">
               9 Lakon
             </p>
-            <p className="text-[11px] font-mono text-[#f4e7cd]/80 uppercase tracking-wider font-semibold">
+            <p className="text-xs md:text-sm font-mono text-[#f4e7cd]/80 uppercase tracking-wider font-semibold">
               Naskah Lengkap
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-xl bg-[#000000] border border-white/10 hover:border-[#dedf42] transition-all group">
-          <div className="w-10 h-10 rounded-xl bg-[#dedf42]/10 border border-[#dedf42]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#dedf42] group-hover:text-black text-[#dedf42] transition-all">
-            <User className="w-5 h-5" />
+        <div className="flex flex-col justify-between p-4 sm:p-5 md:p-6 lg:p-7 min-h-[140px] md:min-h-[170px] lg:min-h-[190px] rounded-2xl bg-[#000000] border border-white/10 hover:border-[#dedf42] transition-all group">
+          <div className="flex items-center justify-between w-full">
+            <div className="w-11 h-11 md:w-13 md:h-13 rounded-2xl bg-[#dedf42]/10 border border-[#dedf42]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#dedf42] group-hover:text-black text-[#dedf42] transition-all shadow-sm">
+              <User className="w-5 h-5 md:w-6 md:h-6" />
+            </div>
+            <span className="text-[10px] md:text-xs font-mono text-[#dedf42]/60 uppercase tracking-widest font-semibold">
+              TOKOH
+            </span>
           </div>
-          <div className="text-left space-y-0.5">
-            <p className="font-sans font-black text-2xl sm:text-3xl text-[#dedf42] group-hover:text-white transition-colors leading-tight tracking-tight">
+          <div className="text-left space-y-1 mt-4">
+            <p className="font-sans font-black text-3xl sm:text-4xl md:text-5xl text-[#dedf42] group-hover:text-white transition-colors leading-none tracking-tight">
               9 Tokoh
             </p>
-            <p className="text-[11px] font-mono text-[#f4e7cd]/80 uppercase tracking-wider font-semibold">
+            <p className="text-xs md:text-sm font-mono text-[#f4e7cd]/80 uppercase tracking-wider font-semibold">
               Ikon Jagad Pakeliran
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-xl bg-[#000000] border border-white/10 hover:border-[#dedf42] transition-all group">
-          <div className="w-10 h-10 rounded-xl bg-[#dedf42]/10 border border-[#dedf42]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#dedf42] group-hover:text-black text-[#dedf42] transition-all">
-            <Clock className="w-5 h-5" />
+        <div className="flex flex-col justify-between p-4 sm:p-5 md:p-6 lg:p-7 min-h-[140px] md:min-h-[170px] lg:min-h-[190px] rounded-2xl bg-[#000000] border border-white/10 hover:border-[#dedf42] transition-all group">
+          <div className="flex items-center justify-between w-full">
+            <div className="w-11 h-11 md:w-13 md:h-13 rounded-2xl bg-[#dedf42]/10 border border-[#dedf42]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#dedf42] group-hover:text-black text-[#dedf42] transition-all shadow-sm">
+              <Clock className="w-5 h-5 md:w-6 md:h-6" />
+            </div>
+            <span className="text-[10px] md:text-xs font-mono text-[#dedf42]/60 uppercase tracking-widest font-semibold">
+              BABAK
+            </span>
           </div>
-          <div className="text-left space-y-0.5">
-            <p className="font-sans font-black text-2xl sm:text-3xl text-[#dedf42] group-hover:text-white transition-colors leading-tight tracking-tight">
+          <div className="text-left space-y-1 mt-4">
+            <p className="font-sans font-black text-3xl sm:text-4xl md:text-5xl text-[#dedf42] group-hover:text-white transition-colors leading-none tracking-tight">
               27 Babak
             </p>
-            <p className="text-[11px] font-mono text-[#f4e7cd]/80 uppercase tracking-wider font-semibold">
+            <p className="text-xs md:text-sm font-mono text-[#f4e7cd]/80 uppercase tracking-wider font-semibold">
               Pathet Nem, Sanga, Manyura
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-xl bg-[#000000] border border-white/10 hover:border-[#dedf42] transition-all group">
-          <div className="w-10 h-10 rounded-xl bg-[#dedf42]/10 border border-[#dedf42]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#dedf42] group-hover:text-black text-[#dedf42] transition-all">
-            <Award className="w-5 h-5" />
+        <div className="flex flex-col justify-between p-4 sm:p-5 md:p-6 lg:p-7 min-h-[140px] md:min-h-[170px] lg:min-h-[190px] rounded-2xl bg-[#000000] border border-white/10 hover:border-[#dedf42] transition-all group">
+          <div className="flex items-center justify-between w-full">
+            <div className="w-11 h-11 md:w-13 md:h-13 rounded-2xl bg-[#dedf42]/10 border border-[#dedf42]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#dedf42] group-hover:text-black text-[#dedf42] transition-all shadow-sm">
+              <Award className="w-5 h-5 md:w-6 md:h-6" />
+            </div>
+            <span className="text-[10px] md:text-xs font-mono text-[#dedf42]/60 uppercase tracking-widest font-semibold">
+              SASTRA
+            </span>
           </div>
-          <div className="text-left space-y-0.5">
-            <p className="font-sans font-black text-2xl sm:text-3xl text-[#dedf42] group-hover:text-white transition-colors leading-tight tracking-tight">
+          <div className="text-left space-y-1 mt-4">
+            <p className="font-sans font-black text-3xl sm:text-4xl md:text-5xl text-[#dedf42] group-hover:text-white transition-colors leading-none tracking-tight">
               100%
             </p>
-            <p className="text-[11px] font-mono text-[#f4e7cd]/80 uppercase tracking-wider font-semibold">
+            <p className="text-xs md:text-sm font-mono text-[#f4e7cd]/80 uppercase tracking-wider font-semibold">
               Sastra Pedalangan
             </p>
           </div>
@@ -204,23 +224,22 @@ export function StoryCatalog({ onSelectStory }: StoryCatalogProps) {
                 )}
               </div>
 
-              <p className="font-sans text-xs sm:text-sm text-[#f4e7cd]/90 leading-relaxed line-clamp-3">
+              <p className="font-sans text-sm sm:text-base md:text-[17px] text-[#f4e7cd]/95 leading-relaxed">
                 {featuredStory.synopsis}
               </p>
 
               {/* Pitutur Box Excerpt */}
-              <div className="p-4 rounded-xl bg-black border border-[#dedf42]/30 space-y-1">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#dedf42] font-semibold block">
+              <div className="p-4 sm:p-5 rounded-2xl bg-black border border-[#dedf42]/30 space-y-1.5">
+                <span className="text-[11px] sm:text-xs font-mono uppercase tracking-widest text-[#dedf42] font-semibold block">
                   Pitutur Luhur Lakon Ini:
                 </span>
-                <p className="font-serif italic text-xs sm:text-sm text-white line-clamp-2">
+                <p className="font-serif italic text-sm sm:text-base text-white leading-snug">
                   &ldquo;{featuredStory.pituturLuhur.javaneseQuote}&rdquo;
                 </p>
-                <p className="text-[11px] font-sans text-[#f4e7cd]/70 line-clamp-1">
+                <p className="text-xs sm:text-[13px] font-sans text-[#f4e7cd]/80 leading-relaxed">
                   {featuredStory.pituturLuhur.translation}
                 </p>
               </div>
-
               {/* Action Button */}
               <div className="pt-2 flex items-center gap-4">
                 <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#dedf42] text-black font-sans font-bold text-xs uppercase tracking-wider group-hover:bg-white group-hover:scale-105 transition-all shadow-md">
@@ -242,6 +261,7 @@ export function StoryCatalog({ onSelectStory }: StoryCatalogProps) {
                   fill
                   sizes="(max-width: 1024px) 100vw, 450px"
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                  priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
                 <span className="absolute bottom-3 left-3 text-xs font-sans font-bold text-[#dedf42] bg-black/80 px-3 py-1 rounded-full border border-white/10 backdrop-blur-sm">
@@ -368,7 +388,7 @@ export function StoryCatalog({ onSelectStory }: StoryCatalogProps) {
               <span>Urutan:</span>
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={(e) => setSortBy(e.target.value as 'featured' | 'title' | 'time')}
                 className="bg-[#0a0a0a] border border-[#dedf42]/40 rounded-xl px-3 py-1.5 text-xs text-[#dedf42] focus:outline-none focus:border-[#dedf42] cursor-pointer"
               >
                 <option value="featured">Sorotan Unggulan</option>

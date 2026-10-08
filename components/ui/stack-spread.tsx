@@ -13,7 +13,7 @@ import {
   type MotionValue,
 } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
-
+import Image from "next/image";
 const IMG_BASE =
   "https://pub-8abee449136941f5b0a1cd2c014534e9.r2.dev/vault-listing-images/assets-images/stack-spread";
 
@@ -99,60 +99,60 @@ export const DEFAULT_CARDS: StackSpreadCard[] = [
   },
 ];
 
-// 6 Authentic Tokoh Wayang Character Cards perfectly framing the center narrative and CTA
+// 6 Authentic Lakon Wayang Story Cards (16:9 widescreen) perfectly framing the center narrative and CTA
 export const WAYANG_STORY_CARDS: StackSpreadCard[] = [
-  // 1. Kyai Semar Badranaya (Top-Left)
+  // 1. Lakon Anoman Obong (Top-Left)
   {
-    item: { src: "/images/tokoh/wayang-1.webp", alt: "Kyai Semar Badranaya" },
-    stackOffset: { x: -8, y: -10 },
-    stackRotate: -16,
-    target: { x: -28, y: -28, rotate: -5, scale: 0.9, w: 19, h: 26 },
-    targetSm: { x: -23, y: -40 },
+    item: { src: "/images/stories/anoman-obong.webp", alt: "Lakon Anoman Obong" },
+    stackOffset: { x: -7, y: -8 },
+    stackRotate: -12,
+    target: { x: -33, y: -30, rotate: -4.5, scale: 0.98, w: 28, h: 16 },
+    targetSm: { x: -24, y: -38 },
     z: 2,
   },
-  // 2. Sang Gatotkaca (Top-Center)
+  // 2. Lakon Gatotkaca Gugur (Top-Center)
   {
-    item: { src: "/images/tokoh/wayang-5.webp", alt: "Raden Gatotkaca" },
-    stackOffset: { x: 0, y: -10 },
+    item: { src: "/images/stories/gatotkaca-gugur.webp", alt: "Lakon Gatotkaca Gugur" },
+    stackOffset: { x: 0, y: -7 },
     stackRotate: -2,
-    target: { x: 0, y: -33, rotate: 0, scale: 0.92, w: 22, h: 26 },
-    targetSm: { x: 23, y: -40 },
+    target: { x: 0, y: -34, rotate: 0.5, scale: 1.0, w: 29, h: 16.5 },
+    targetSm: { x: 24, y: -38 },
     z: 3,
   },
-  // 3. Sang Arjuna (Top-Right)
+  // 3. Lakon Karna Tandhing (Top-Right)
   {
-    item: { src: "/images/tokoh/wayang-4.webp", alt: "Raden Arjuna" },
-    stackOffset: { x: 14, y: -8 },
-    stackRotate: 18,
-    target: { x: 28, y: -28, rotate: 5, scale: 0.9, w: 19, h: 26 },
-    targetSm: { x: 23, y: -18 },
+    item: { src: "/images/stories/karna-tandhing.webp", alt: "Lakon Karna Tandhing" },
+    stackOffset: { x: 9, y: -6 },
+    stackRotate: 12,
+    target: { x: 33, y: -30, rotate: 4.5, scale: 0.98, w: 28, h: 16 },
+    targetSm: { x: 24, y: -16 },
     z: 4,
   },
-  // 4. Sang Werkudara / Bima (Bottom-Left)
+  // 4. Lakon Dewa Ruci (Bottom-Left)
   {
-    item: { src: "/images/tokoh/wayang-7.webp", alt: "Raden Werkudara Bima" },
-    stackOffset: { x: -14, y: 4 },
-    stackRotate: -6,
-    target: { x: -30, y: 25, rotate: -4, scale: 0.9, w: 19, h: 26 },
-    targetSm: { x: -23, y: -18 },
+    item: { src: "/images/stories/dewa-ruci.webp", alt: "Lakon Dewa Ruci" },
+    stackOffset: { x: -9, y: 5 },
+    stackRotate: -5,
+    target: { x: -33, y: 30, rotate: -3.5, scale: 0.98, w: 28, h: 16 },
+    targetSm: { x: -24, y: -16 },
     z: 5,
   },
-  // 5. Nala Gareng (Bottom-Center)
+  // 5. Lakon Sayembara Mantili (Bottom-Center)
   {
-    item: { src: "/images/tokoh/wayang-2.webp", alt: "Nala Gareng" },
-    stackOffset: { x: 4, y: 8 },
-    stackRotate: 4,
-    target: { x: 0, y: 34, rotate: 1, scale: 0.88, w: 20, h: 25 },
-    targetSm: { x: -23, y: 28 },
+    item: { src: "/images/stories/sayembara-mantili.webp", alt: "Lakon Sayembara Mantili" },
+    stackOffset: { x: 2, y: 6 },
+    stackRotate: 3,
+    target: { x: 0, y: 35, rotate: -0.5, scale: 1.0, w: 29, h: 16.5 },
+    targetSm: { x: -24, y: 28 },
     z: 6,
   },
-  // 6. Petruk Kanthong Bolong (Bottom-Right)
+  // 6. Lakon Petruk Dadi Ratu (Bottom-Right)
   {
-    item: { src: "/images/tokoh/wayang-3.webp", alt: "Petruk Kanthong Bolong" },
-    stackOffset: { x: 12, y: 10 },
-    stackRotate: -4,
-    target: { x: 30, y: 25, rotate: 5, scale: 0.9, w: 19, h: 26 },
-    targetSm: { x: 23, y: 28 },
+    item: { src: "/images/stories/petruk-dadi-ratu.webp", alt: "Lakon Petruk Dadi Ratu" },
+    stackOffset: { x: 8, y: 7 },
+    stackRotate: -3,
+    target: { x: 33, y: 30, rotate: 3.5, scale: 0.98, w: 28, h: 16 },
+    targetSm: { x: 24, y: 28 },
     z: 7,
   },
 ];
@@ -328,8 +328,8 @@ function Card({
     <motion.div
       className="absolute left-1/2 top-1/2 will-change-transform pointer-events-auto"
       style={{
-        width: `${fixedCard ? fixedCard.w : target.w}vw`,
-        height: `${fixedCard ? fixedCard.h : target.h}vh`,
+        width: isSmall ? "46vw" : `${fixedCard ? fixedCard.w : target.w}vw`,
+        aspectRatio: "16 / 9",
         zIndex: card.z ?? 1,
         x: xTransform,
         y: yTransform,
@@ -351,15 +351,25 @@ function CardFace({
 }) {
   return (
     <div
-      className="relative h-full w-full overflow-hidden max-md:rounded-[3vw] shadow-[0_20px_50px_rgba(0,0,0,0.45)] border border-black/25 bg-[#0e0805]"
+      className="relative h-full w-full overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.5)] bg-[#0e0805] group"
       style={{ borderRadius: `${cardRadius}px` }}
     >
-      <img
+      <Image
         src={item.src}
         alt={item.alt ?? ""}
+        fill
         draggable={false}
-        className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none"
+        className="object-cover select-none pointer-events-none transition-transform duration-500 group-hover:scale-105"
+        sizes="(max-width: 768px) 45vw, 30vw"
       />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
+      {item.alt && (
+        <div className="absolute bottom-2 sm:bottom-2.5 inset-x-2.5 sm:inset-x-3 pointer-events-none">
+          <span className="font-serif italic font-bold text-[11px] sm:text-xs md:text-sm text-[#f5ecd9] drop-shadow-md truncate block">
+            {item.alt}
+          </span>
+        </div>
+      )}
     </div>
   );
 }
@@ -390,7 +400,7 @@ export function StackSpreadStage({
   bgColor = "#dedf42",
   clusterRotation = true,
   stackScale = 0.85,
-  cardRadius = 12,
+  cardRadius = 6,
   textColor = "#0b0604",
   title,
   subtitle = SUB,

@@ -81,7 +81,7 @@ export const WAYANG_STORIES: WayangStoryItem[] = [
     tagline: 'Kembara Batin Werkudara Menyelami Samudra Kesunyian',
     synopsis:
       'Perjalanan spiritual Bima mencari Air Kehidupan (Tirta Pawitra) atas titah gurunya, yang membawanya menaklukkan naga samudra hingga meraih pencerahan sejati di dalam diri Sang Dewa Ruci.',
-    coverImage: '/images/tokoh/wayang-7.webp',
+    coverImage: '/images/stories/dewa-ruci.webp',
     sulukOpening:
       'Suluk • "Samudra sunyi tanpa tepi, manunggal sukma ing jroning raga, manggih pepadhang ing guwa garbaning Batara Kencana."',
     culturalSignificance:
@@ -148,7 +148,7 @@ Secara ajaib, di dalam ruang kecil itu Bima justru menyaksikan jagat raya yang m
     tagline: 'Kritik Luhur Pamong Rakyat untuk Membangun Jiwa Pemimpin Bangsa',
     synopsis:
       'Kisah Kyai Semar yang berniat "membangun kayangan" bukan dengan istana megah berbatu permata, melainkan membangun budi pekerti, moralitas, dan ketenteraman batin para pemimpin di muka bumi.',
-    coverImage: '/images/tokoh/wayang-1.webp',
+    coverImage: '/images/stories/semar-mbangun-kayangan.webp',
     sulukOpening:
       'Suluk • "Kuncung putih rupa Semar Badranaya, tangis rakyat dadi sumpahing praja, mbangun kayangan jroning wardaya."',
     culturalSignificance:
@@ -207,7 +207,7 @@ Para Pandawa berikrar kembali memurnikan niat mereka sebagai pelayan rakyat, dan
     tagline: 'Keteguhan Batin Sang Pemanah Ulung Menghadapi Godaan Duniawi',
     synopsis:
       'Kisah tapa brata Arjuna di Gunung Indrakila dengan gelar Begawan Ciptaning, menghadapi godaan tujuh bidadari hingga diutus dewa menumpas raja raksasa Niwatakawaca.',
-    coverImage: '/images/tokoh/wayang-4.webp',
+    coverImage: '/images/stories/wahyu-makutharama.webp',
     sulukOpening:
       'Suluk • "Heninging cipta ing pucuking arga, manah Pasopati nyamber angkara, jayaning satria Madukara."',
     culturalSignificance:
@@ -272,7 +272,7 @@ Kemenangan Arjuna mengantarkannya dinobatkan sebagai raja sementara di kahyangan
     tagline: 'Pengorbanan Suci Kusuma Bangsa Melayang di Langit Malam Kurusetra',
     synopsis:
       'Detik-detik kepahlawanan sang satria Pringgandani yang mengorbankan jiwa raganya menghadang panah maut Kunta Wijayadanu demi menyelamatkan pamannya, Arjuna.',
-    coverImage: '/images/tokoh/wayang-5.webp',
+    coverImage: '/images/stories/gatotkaca-gugur.webp',
     sulukOpening:
       'Suluk • "Megatruh ing akasa, kumelap praba kencana, satria Pringgandani pasrah jiwa raga kanggo kejayaaning bangsa."',
     culturalSignificance:
@@ -337,7 +337,7 @@ Gugurnya Gatotkaca menyelamatkan Arjuna dan memastikan kemenangan Pandawa dalam 
     tagline: 'Satire Cerdas Mengenai Kekuasaan, Godaan Tahta, dan Hakikat Wong Cilik',
     synopsis:
       'Kisah jenaka penuh pitutur ketika Petruk menemukan pusaka Jamus Kalimasada yang hilang, mendirikan kerajaan Ngrancang Kencana, dan menguji para bangsawan yang kerap memandang remeh rakyat jelata.',
-    coverImage: '/images/tokoh/wayang-2.webp',
+    coverImage: '/images/stories/petruk-dadi-ratu.webp',
     sulukOpening:
       'Suluk • "Petruk Kantong Bolong madeg narendra, ngguyu lakune jagad kang kebak sandiwara, bali marang jatining abdi."',
     culturalSignificance:
@@ -402,7 +402,7 @@ Melihat sang ayah (Semar) menangis melihat tingkahnya yang mulai terlena oleh ke
     tagline: 'Kejujuran Lugu yang Membongkar Kepalsuan dan Fitnah di Istana',
     synopsis:
       'Kisah kekacauan di padepokan ketika muncul sosok Bagong tiruan yang persis rupa dan suaranya, hingga Sang Semar menguji kemurnian hati nurani untuk menemukan Bagong yang sejati.',
-    coverImage: '/images/tokoh/wayang-3.webp',
+    coverImage: '/images/stories/babat-alas-wanamarta.webp',
     sulukOpening:
       'Suluk • "Bayangan sukma mijil saking hening, Bagong Bawor blak-kotang tanpa tanding, mecah gorohing jagad."',
     culturalSignificance:
@@ -467,7 +467,7 @@ Bagong palsu seketika terbakar menjadi abu, membuktikan bahwa kepalsuan akan sel
     tagline: 'Falsafah Mawas Diri, Kehati-hatian Melangkah, dan Kedamaian Persaudaraan',
     synopsis:
       'Kisah asal-usul Nala Gareng (Bambang Sukodadi) yang menuntut ilmu kebatinan sejati hingga memahami makna mendalam dari kaki berjingkit, tangan ceko, dan mata julingnya sebagai perisai hawa nafsu.',
-    coverImage: '/images/tokoh/wayang-6.webp',
+    coverImage: '/images/stories/srikandi-meguru-manah.webp',
     sulukOpening:
       'Suluk • "Mlaku jingkit eling ing pambudi, tangan ceko emoh njupuk darbine liyan, mawas diri sajroning urip."',
     culturalSignificance:
@@ -532,7 +532,7 @@ Gareng membuktikan bahwa kemuliaan seseorang tidak diukur dari ketampanan raga, 
     tagline: 'Runtuhnya Keangkuhan Penguasa Tirani di Hadapan Ketulusan Dharma',
     synopsis:
       'Puncak perang suci wiracarita Ramayana di mana Prabu Rahwana dengan kesaktian Aji Pancasona akhirnya tumbang di bawah Gunung Somawana oleh bidikan Panah Guwawijaya Sri Rama.',
-    coverImage: '/images/tokoh/wayang-8.webp',
+    coverImage: '/images/stories/kumbakarna-gugur.webp',
     sulukOpening:
       'Suluk • "Alengka kobong lebur sirna, aji Pancasona katindhih redi Somawana, angkara murka sirna dening panah Wijaya."',
     culturalSignificance:
@@ -597,7 +597,7 @@ Rahwana tak berdaya menanggung beban gunung keangkuhannya sendiri, menandai sirn
     tagline: 'Dilema Moral Sang Guru Agung di Balik Kabut Tragedi Perang Suci',
     synopsis:
       'Kisah gugurnya Begawan Drona pada hari ke-15 Bharatayuddha setelah kehilangan semangat bertarung akibat kabar kematian "Hestitama", hingga pasrah menjemput takdir di tangan Drestajumena.',
-    coverImage: '/images/tokoh/wayang-9.webp',
+    coverImage: '/images/stories/bisma-gugur.webp',
     sulukOpening:
       'Suluk • "Sokalima layu kabur kanginan, panah Cundamanik pedhot ing tawang, guru agung pasrah ing astane Hyang Widdhi."',
     culturalSignificance:

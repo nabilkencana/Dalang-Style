@@ -28,18 +28,16 @@ export function StoryCard({ story, onRead }: StoryCardProps) {
           </span>
         </div>
 
-        {/* Visual Cover Stage with Yellow Halo */}
-        <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black border border-white/10 mb-4 flex items-center justify-center group-hover:border-[#dedf42]/60 transition-colors">
-          {/* Subtle Radial Yellow Light behind Puppet */}
-          <div className="absolute inset-4 rounded-full bg-[radial-gradient(circle_at_center,rgba(222,223,66,0.22)_0%,transparent_70%)] pointer-events-none group-hover:scale-110 transition-transform duration-500" />
-
+        {/* Visual Cover Stage */}
+        <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black border border-white/10 mb-4 group-hover:border-[#dedf42]/60 transition-colors">
           <Image
             src={story.coverImage}
             alt={story.title}
             fill
-            className="object-contain p-3 drop-shadow-[0_8px_20px_rgba(0,0,0,0.9)] group-hover:scale-108 transition-transform duration-500"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 380px"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
 
           {story.javaneseTitle && (
             <div className="absolute bottom-2 inset-x-2 px-2.5 py-1 rounded-lg bg-black/90 backdrop-blur-md border border-[#dedf42]/30 text-center shadow-md">

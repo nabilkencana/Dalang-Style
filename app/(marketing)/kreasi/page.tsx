@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { StoryCatalog } from '@/components/story/StoryCatalog';
 import { StoryReader } from '@/components/story/StoryReader';
+import TigerTearReveal from '@/components/ui/tiger-tear-reveal';
 import {
   WAYANG_STORIES,
   getStoryBySlug,
@@ -76,55 +77,29 @@ function StoryPageContent() {
           />
         </div>
       ) : (
-        /* ── Catalog Overview View with Cinematic Dossier Header ── */
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 pt-28 sm:pt-36 pb-28 space-y-12 sm:space-y-16">
-          {/* Monumental Hero Dossier Header */}
-          <header className="text-center max-w-4xl mx-auto space-y-6">
-            <div
-              data-gsap="story-kicker"
-              className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-[#0a0a0a] border border-[#dedf42]/40 text-[#dedf42] text-[11px] sm:text-xs font-mono font-bold tracking-[0.28em] uppercase shadow-[0_0_25px_rgba(222,223,66,0.15)]"
-            >
-              <span className="size-2 rounded-full bg-[#dedf42] animate-pulse" />
-              <span>PUSTAKA KISAH • SASTRA PEDALANGAN NUSANTARA</span>
-            </div>
+        /* ── Catalog Overview View ── */
+        <div className="relative z-10 w-full">
+          {/* 1. Full-Width Pinned Wayang Tear Reveal Hero Section */}
+          <div className="w-full">
+            <TigerTearReveal
+              word="WAYANG"
+              tagline="PUSTAKA KISAH • SASTRA PEDALANGAN"
+              ink="#dedf42"
+              paper="#0b0604"
+              taglineColor="#cdb894"
+              eyeColor="#f0a526"
+              furColor="#d9832c"
+              height="80svh"
+              pin={true}
+              pinDistance={1000}
+              className="w-full"
+            />
+          </div>
 
-            <div className="space-y-3">
-              <h1
-                data-gsap="story-title"
-                className="font-serif italic font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-[#dedf42] leading-[0.98] tracking-tight"
-              >
-                Kisah Epik{' '}
-                <span className="not-italic font-sans font-black uppercase text-white tracking-tighter">
-                  Wayang Jawi
-                </span>
-              </h1>
-
-              <p
-                data-gsap="story-aksara"
-                className="text-xs sm:text-sm md:text-base font-serif tracking-[0.3em] text-[#dedf42]/80 select-none pt-1"
-              >
-                ꦥꦸꦱ꧀ꦠꦏꦭꦏꦺꦴꦤ꧀ꦮꦪꦁꦗꦮꦶꦱꦱ꧀ꦠꦿꦤꦸꦱꦤ꧀ꦠꦫ
-              </p>
-            </div>
-
-            <p
-              data-gsap="story-subtitle"
-              className="font-sans text-sm sm:text-base md:text-lg text-[#f4e7cd]/80 leading-relaxed max-w-2xl mx-auto"
-            >
-              Jelajahi 9 naskah lakon pewayangan pilihan Nusantara—mulai dari wiracarita Mahabharata, Ramayana, lakon carangan keraton, hingga kearifan punokawan yang sarat pitutur luhur filosofi Jawa.
-            </p>
-
-            <div
-              data-gsap="story-divider"
-              className="flex items-center justify-center gap-3 pt-2"
-            >
-              <div className="w-16 sm:w-28 h-[1.5px] bg-gradient-to-r from-transparent to-[#dedf42]" />
-              <div className="size-2 rotate-45 border border-[#dedf42] bg-[#dedf42]" />
-              <div className="w-16 sm:w-28 h-[1.5px] bg-gradient-to-l from-transparent to-[#dedf42]" />
-            </div>
-          </header>
-
-          <StoryCatalog onSelectStory={handleSelectStory} />
+          {/* 2. Story Catalog Grid Section (Full-Width aligned with Wayang section above) */}
+          <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pb-28 pt-6 sm:pt-8 space-y-12 sm:space-y-16">
+            <StoryCatalog onSelectStory={handleSelectStory} />
+          </div>
         </div>
       )}
     </div>
