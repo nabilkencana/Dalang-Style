@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import KatalogTokohView from '@/components/KatalogTokohView';
+import KatalogTokohView from '@/components/views/KatalogTokohView';
 
 export const metadata: Metadata = {
   title: 'Katalog Tokoh Pewayangan | Wayang Jawi',

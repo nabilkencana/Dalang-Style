@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import "./wayang.css";
-import SmoothScroll from "@/components/SmoothScroll";
+import SmoothScroll from "@/components/layout/SmoothScroll";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-serif",
@@ -24,6 +24,13 @@ const inter = Inter({
   weight: ["400", "500", "600"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#0b0604",
+};
 
 export const metadata: Metadata = {
   title: "Wayang Jawi — Panggung Wayang Kulit Digital Interaktif",

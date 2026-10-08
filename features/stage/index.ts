@@ -1,4 +1,4 @@
-export { default as WayangStage } from '@/components/WayangStage';
+export { default as WayangStage } from '@/components/stage/WayangStage';
 export * from '@/lib/wayang/render';
 export * from '@/lib/wayang/rig';
 export * from '@/lib/wayang/tracking';

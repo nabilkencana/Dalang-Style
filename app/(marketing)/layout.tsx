@@ -1,6 +1,6 @@
 import React from 'react';
-import Navbar from '@/components/Navbar';
-import SiteFrame from '@/components/SiteFrame';
+import Navbar from '@/components/layout/Navbar';
+import SiteFrame from '@/components/layout/SiteFrame';
 
 export default function MarketingLayout({
   children,

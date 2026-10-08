@@ -10,8 +10,8 @@ import {
   Gesture04Visual,
   ModeDuaWayangVisual,
   ModeSatuWayangVisual,
-} from '@/components/GestureVisuals';
-import PanduanGsapAnimations from '@/components/PanduanGsapAnimations';
+} from '@/components/stage/GestureVisuals';
+import PanduanGsapAnimations from '@/components/animations/PanduanGsapAnimations';
 
 export default function PanduanPage() {
   const [deviceTab, setDeviceTab] = useState<'mobile' | 'desktop'>('desktop');

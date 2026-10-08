@@ -1,16 +1,16 @@
 import React from 'react';
-import HeroWayangJawi from '@/components/HeroWayangJawi';
-import StoryShadowsSection from '@/components/StoryShadowsSection';
-import SectionBimaSuci from '@/components/SectionBimaSuci';
-import SectionStoryAwakening from '@/components/SectionStoryAwakening';
-import SectionStoryFinale from '@/components/SectionStoryFinale';
-import SectionWayangGenerator from '@/components/SectionWayangGenerator';
-import SectionMovementMeaning from '@/components/SectionMovementMeaning';
-import SectionGalleryMuseum from '@/components/SectionGalleryMuseum';
-import SectionFAQ from '@/components/SectionFAQ';
-import SectionJoinTheNight from '@/components/SectionJoinTheNight';
+import HeroWayangJawi from '@/components/sections/HeroWayangJawi';
+import StoryShadowsSection from '@/components/sections/StoryShadowsSection';
+import SectionBimaSuci from '@/components/sections/SectionBimaSuci';
+import SectionStoryAwakening from '@/components/sections/SectionStoryAwakening';
+import SectionStoryFinale from '@/components/sections/SectionStoryFinale';
+import SectionWayangGenerator from '@/components/sections/SectionWayangGenerator';
+import SectionMovementMeaning from '@/components/sections/SectionMovementMeaning';
+import SectionGalleryMuseum from '@/components/sections/SectionGalleryMuseum';
+import SectionFAQ from '@/components/sections/SectionFAQ';
+import SectionJoinTheNight from '@/components/sections/SectionJoinTheNight';
 import TextMarquee from '@/components/ui/text-marquee';
-import GsapAnimations from '@/components/GsapAnimations';
+import GsapAnimations from '@/components/animations/GsapAnimations';
 export default function LandingPage() {
   return (
     <div className="relative overflow-x-clip bg-[#0b0604]">
