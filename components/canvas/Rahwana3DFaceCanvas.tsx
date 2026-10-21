@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 interface Rahwana3DFaceCanvasProps {
   className?: string;
@@ -96,8 +97,11 @@ export default function Rahwana3DFaceCanvas({
     rimLight.position.set(0, -3, 3);
     scene.add(rimLight);
 
-    // 5. GLTF Loader
+    // 5. GLTF Loader with High-Precision Draco Decoder
     const loader = new GLTFLoader();
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('/draco/');
+    loader.setDRACOLoader(dracoLoader);
     loader.load(
       '/models/rahwana_face.glb',
       (gltf) => {
@@ -197,6 +201,7 @@ export default function Rahwana3DFaceCanvas({
       cancelAnimationFrame(animId);
       canvas.removeEventListener('webglcontextlost', handleContextLost);
       ro.disconnect();
+      dracoLoader.dispose();
       scene.traverse((obj) => {
         if (obj instanceof THREE.Mesh) {
           obj.geometry?.dispose();

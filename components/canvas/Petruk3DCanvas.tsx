@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 interface Petruk3DCanvasProps {
@@ -129,8 +130,11 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
     controls.minPolarAngle = Math.PI / 4;
     controls.maxPolarAngle = Math.PI / 1.7;
 
-    // 6. GLTF Loader
+    // 6. GLTF Loader with High-Precision Draco Decoder
     const loader = new GLTFLoader();
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('/draco/');
+    loader.setDRACOLoader(dracoLoader);
     loader.load(
       '/models/petruk.glb',
       (gltf) => {
@@ -270,6 +274,7 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
       canvas.removeEventListener('webglcontextlost', handleContextLost);
       ro.disconnect();
       controls.dispose();
+      dracoLoader.dispose();
       scene.traverse((obj) => {
         if (obj instanceof THREE.Mesh) {
           obj.geometry?.dispose();
