@@ -101,59 +101,59 @@ export const DEFAULT_CARDS: StackSpreadCard[] = [
 
 // 6 Authentic Lakon Wayang Story Cards (16:9 widescreen) perfectly framing the center narrative and CTA
 export const WAYANG_STORY_CARDS: StackSpreadCard[] = [
-  // 1. Lakon Anoman Obong (Top-Left)
+  // 1. Lakon Anoman Obong (Top-Left on Mobile & Desktop)
   {
     item: { src: "/images/stories/anoman-obong.webp", alt: "Lakon Anoman Obong" },
     stackOffset: { x: -7, y: -8 },
     stackRotate: -12,
     target: { x: -33, y: -30, rotate: -4.5, scale: 0.98, w: 28, h: 16 },
-    targetSm: { x: -24, y: -38 },
+    targetSm: { x: -24, y: -34 },
     z: 2,
   },
-  // 2. Lakon Gatotkaca Gugur (Top-Center)
+  // 2. Lakon Gatotkaca Gugur (Top-Right on Mobile / Top-Center on Desktop)
   {
     item: { src: "/images/stories/gatotkaca-gugur.webp", alt: "Lakon Gatotkaca Gugur" },
     stackOffset: { x: 0, y: -7 },
     stackRotate: -2,
     target: { x: 0, y: -34, rotate: 0.5, scale: 1.0, w: 29, h: 16.5 },
-    targetSm: { x: 24, y: -38 },
+    targetSm: { x: 24, y: -34 },
     z: 3,
   },
-  // 3. Lakon Karna Tandhing (Top-Right)
-  {
-    item: { src: "/images/stories/karna-tandhing.webp", alt: "Lakon Karna Tandhing" },
-    stackOffset: { x: 9, y: -6 },
-    stackRotate: 12,
-    target: { x: 33, y: -30, rotate: 4.5, scale: 0.98, w: 28, h: 16 },
-    targetSm: { x: 24, y: -16 },
-    z: 4,
-  },
-  // 4. Lakon Dewa Ruci (Bottom-Left)
+  // 3. Lakon Dewa Ruci (Bottom-Left on Mobile & Desktop)
   {
     item: { src: "/images/stories/dewa-ruci.webp", alt: "Lakon Dewa Ruci" },
     stackOffset: { x: -9, y: 5 },
     stackRotate: -5,
     target: { x: -33, y: 30, rotate: -3.5, scale: 0.98, w: 28, h: 16 },
-    targetSm: { x: -24, y: -16 },
-    z: 5,
+    targetSm: { x: -24, y: 34 },
+    z: 4,
   },
-  // 5. Lakon Sayembara Mantili (Bottom-Center)
-  {
-    item: { src: "/images/stories/sayembara-mantili.webp", alt: "Lakon Sayembara Mantili" },
-    stackOffset: { x: 2, y: 6 },
-    stackRotate: 3,
-    target: { x: 0, y: 35, rotate: -0.5, scale: 1.0, w: 29, h: 16.5 },
-    targetSm: { x: -24, y: 28 },
-    z: 6,
-  },
-  // 6. Lakon Petruk Dadi Ratu (Bottom-Right)
+  // 4. Lakon Petruk Dadi Ratu (Bottom-Right on Mobile & Desktop)
   {
     item: { src: "/images/stories/petruk-dadi-ratu.webp", alt: "Lakon Petruk Dadi Ratu" },
     stackOffset: { x: 8, y: 7 },
     stackRotate: -3,
     target: { x: 33, y: 30, rotate: 3.5, scale: 0.98, w: 28, h: 16 },
-    targetSm: { x: 24, y: 28 },
+    targetSm: { x: 24, y: 34 },
+    z: 5,
+  },
+  // 5. Lakon Karna Tandhing (Desktop Top-Right — Hidden on Mobile to avoid text overlap)
+  {
+    item: { src: "/images/stories/karna-tandhing.webp", alt: "Lakon Karna Tandhing" },
+    stackOffset: { x: 9, y: -6 },
+    stackRotate: 12,
+    target: { x: 33, y: -30, rotate: 4.5, scale: 0.98, w: 28, h: 16 },
+    z: 6,
+    hideOnMobile: true,
+  },
+  // 6. Lakon Sayembara Mantili (Desktop Bottom-Center — Hidden on Mobile to avoid text overlap)
+  {
+    item: { src: "/images/stories/sayembara-mantili.webp", alt: "Lakon Sayembara Mantili" },
+    stackOffset: { x: 2, y: 6 },
+    stackRotate: 3,
+    target: { x: 0, y: 35, rotate: -0.5, scale: 1.0, w: 29, h: 16.5 },
     z: 7,
+    hideOnMobile: true,
   },
 ];
 
@@ -190,7 +190,7 @@ const RESPONSIVE = {
 function useResponsive() {
   const [r, setR] = useState(RESPONSIVE.desktop);
   useEffect(() => {
-    const mq = window.matchMedia("(pointer: coarse)");
+    const mq = window.matchMedia("(max-width: 767px)");
     const read = () => setR(mq.matches ? RESPONSIVE.small : RESPONSIVE.desktop);
     read();
     mq.addEventListener("change", read);
@@ -256,6 +256,7 @@ export interface StackSpreadCard {
   stackRotate?: number;
   stackOffset?: { x: number; y: number };
   z?: number;
+  hideOnMobile?: boolean;
 }
 
 function Card({
@@ -436,7 +437,7 @@ export function StackSpreadStage({
   const pointer = usePointerParallax(spread, parallaxEnabled);
 
   const noScale = reduce === true;
-  const copyOpacity = useTransform(effectiveProgress, [textFadeStart, textFadeStart + 0.35], [0.15, 1]);
+  const copyOpacity = useTransform(effectiveProgress, [textFadeStart, textFadeStart + 0.35], [0, 1]);
   const copyScale = useTransform(effectiveProgress, [textFadeStart, 0.9], [0.88, 1]);
   const hintOpacity = useTransform(effectiveProgress, [0, SCATTER_START * 2], [1, 0]);
 
@@ -485,14 +486,14 @@ export function StackSpreadStage({
           )}
           {subtitle && (
             <p
-              className="mt-[1.2vw] w-full max-w-[50ch] text-[1.2vw] leading-relaxed tracking-tight max-md:mt-3 max-md:text-[3.8vw]"
+              className="mt-[1.2vw] w-full max-w-[50ch] text-[1.2vw] leading-relaxed tracking-tight max-md:mt-2.5 max-md:text-[3.2vw] max-md:max-w-[34ch]"
               style={{ color: textColor, opacity: 0.85 }}
             >
               {subtitle}
             </p>
           )}
           {cta && (
-            <div className="pointer-events-auto mt-[1.8vw] max-md:mt-4 z-30">
+            <div className="pointer-events-auto mt-[1.8vw] max-md:mt-3 z-30">
               {cta}
             </div>
           )}
@@ -500,9 +501,11 @@ export function StackSpreadStage({
 
         {/* scattering cards */}
         <div className="absolute inset-0 z-10 pointer-events-none">
-          {cards.map((card, i) => (
-            <Card
-              key={i}
+          {cards
+            .filter((c) => (isSmall ? !c.hideOnMobile : true))
+            .map((card, i) => (
+              <Card
+                key={i}
               card={card}
               progress={effectiveProgress}
               reduce={reduce}
