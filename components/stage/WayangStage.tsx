@@ -655,8 +655,7 @@ export default function WayangStage() {
         }
         ctx.stroke();
 
-        const pairKey = controller.settings.fingers;
-        const pair = pairKey === 'thumb-pinky' ? [4, 20] : pairKey === 'index-pinky' ? [8, 20] : [4, 8];
+        const pair = [4, 8];
         ctx.fillStyle = '#ff6b4a';
         for (const t of pair) {
           if (P[t]) {
@@ -664,14 +663,6 @@ export default function WayangStage() {
             ctx.arc(P[t][0], P[t][1], 4 * s, 0, Math.PI * 2);
             ctx.fill();
           }
-        }
-
-        if (slot.pinky && P[20]) {
-          ctx.strokeStyle = '#ffe28a';
-          ctx.lineWidth = 2.5 * s;
-          ctx.beginPath();
-          ctx.arc(P[20][0], P[20][1], 8 * s, 0, Math.PI * 2);
-          ctx.stroke();
         }
 
         if (isBody && !isAvatar) {
@@ -1047,7 +1038,7 @@ export default function WayangStage() {
     setIntroGone(true);
   };
 
-  const handleFingersChange = (val: 'thumb-index' | 'thumb-pinky' | 'index-pinky') => {
+  const handleFingersChange = (val: 'thumb-index') => {
     setSettings((prev) => ({ ...prev, fingers: val }));
     if (wayangRef.current.controller) {
       wayangRef.current.controller.settings.fingers = val;
@@ -1142,7 +1133,7 @@ export default function WayangStage() {
             <>
               <li>
                 <span className="k">Tangan Tuding</span>
-                <span>Mengatur kedua tangkai tangan &amp; lengan wayang (ibu jari &amp; telunjuk/kelingking) dengan bebas di panggung.</span>
+                <span>Mengatur kedua tangkai tangan &amp; lengan wayang (ibu jari &amp; telunjuk) dengan bebas di panggung.</span>
               </li>
               <li>
                 <span className="k">Tangan Gapit</span>
@@ -1150,7 +1141,7 @@ export default function WayangStage() {
               </li>
               <li>
                 <span className="k">Arah Hadap</span>
-                <span>Gunakan tombol F / G atau menu pengaturan untuk membalik arah hadap wayang.</span>
+                <span>Balik arah hadap wayang dengan membalik poros telapak tangan atau tombol F / G.</span>
               </li>
             </>
           )}
@@ -1463,12 +1454,10 @@ export default function WayangStage() {
             id="opt-fingers"
             value={settings.fingers}
             onChange={(e) =>
-              handleFingersChange(e.target.value as 'thumb-index' | 'thumb-pinky' | 'index-pinky')
+              handleFingersChange(e.target.value as 'thumb-index')
             }
           >
-            <option value="thumb-index">Ibu Jari + Telunjuk</option>
-            <option value="thumb-pinky">Ibu Jari + Kelingking (rentang lebar)</option>
-            <option value="index-pinky">Telunjuk + Kelingking</option>
+            <option value="thumb-index">Ibu Jari + Telunjuk (Default Dalang)</option>
           </select>
         </label>
         {settings.characters === 'one' && (

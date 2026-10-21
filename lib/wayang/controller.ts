@@ -21,13 +21,9 @@ export interface FingerPairIndices {
 
 export const FINGER_PAIRS: Record<string, FingerPairIndices> = {
   'thumb-index': { a: THUMB_TIP, aBase: THUMB_MCP, b: INDEX_TIP, bBase: INDEX_MCP },
-  'thumb-pinky': { a: THUMB_TIP, aBase: THUMB_MCP, b: PINKY_TIP, bBase: PINKY_MCP },
-  'index-pinky': { a: INDEX_TIP, aBase: INDEX_MCP, b: PINKY_TIP, bBase: PINKY_MCP },
 };
 
 const LOST_MS = 320;
-const PINKY_HOLD_MS = 600;
-const PINKY_REARM_MS = 400;
 
 export interface SlotFilterData {
   palm: [number, number];
@@ -58,14 +54,11 @@ export interface Slot {
   role: number | null;
   data: SlotFilterData | null;
   landmarks: Landmark[] | null;
-  pinky: boolean;
-  pinkyOn: number;
-  pinkyOff: number;
-  pinkyArmed: boolean;
+  facing: number;
   danceTrigger: boolean;
 }
 
-function makeSlot(): Slot {
+function makeSlot(initialFacing = -1): Slot {
   const pos = () => new OneEuro(1.6, 9, 1.0);
   return {
     active: false,
@@ -87,10 +80,7 @@ function makeSlot(): Slot {
     role: null,
     data: null,
     landmarks: null,
-    pinky: false,
-    pinkyOn: 0,
-    pinkyOff: 0,
-    pinkyArmed: true,
+    facing: initialFacing,
     danceTrigger: false,
   };
 }
@@ -99,17 +89,12 @@ function resetSlot(s: Slot) {
   s.active = false;
   s.data = null;
   s.rawPalm = null;
-  s.role = null;
-  s.pinky = false;
-  s.pinkyOn = 0;
-  s.pinkyOff = 0;
-  s.pinkyArmed = true;
   s.danceTrigger = false;
   for (const f of Object.values(s.f)) f.reset();
 }
 
 interface AnalyzedHand {
-  pinkySign: boolean;
+  palmDir: number;
   palm: [number, number];
   size: number;
   roll: number;
@@ -131,22 +116,17 @@ function analyze(lms: Landmark[], aspect: number, pair: FingerPairIndices): Anal
     tipPip: d(WRIST, tip) / d(WRIST, pip),
     tipMcp: d(WRIST, tip) / d(WRIST, mcp),
   });
-  const index = reach(5, 6, 8),
-    middle = reach(9, 10, 12),
-    ring = reach(13, 14, 16),
-    pinky = reach(17, 18, 20);
-
-  // Pinky sign detection:
-  // When controlling with thumb & index, pinky is extended outward/upward.
-  const pinkyExtended = pinky.tipPip > 1.08 && pinky.tipMcp > 1.25;
-  const pinkySign =
-    pinkyExtended &&
-    (ring.tipPip < 1.18 || pinky.tipMcp > ring.tipMcp * 1.05 || middle.tipPip < 1.18);
+  // Palm orientation / flip detection:
+  // In mirrored stage coordinates P, Index MCP (5) and Pinky MCP (17) along with Thumb (4)
+  // reverse their relative horizontal order when the palm is turned left vs right, or flipped front vs back.
+  const knuckleDx = P[INDEX_MCP][0] - P[PINKY_MCP][0];
+  const thumbDx = P[THUMB_TIP][0] - P[PINKY_TIP][0];
+  const palmDir = knuckleDx * 0.65 + thumbDx * 0.35;
 
   const palmTwist = lms[5] && lms[17] ? (lms[5].z - lms[17].z) * 4 : 0;
 
   return {
-    pinkySign,
+    palmDir,
     palm: avg(WRIST, INDEX_MCP, MIDDLE_MCP, RING_MCP, PINKY_MCP),
     size: Math.max(d(WRIST, MIDDLE_MCP), d(INDEX_MCP, PINKY_MCP) * 1.3),
     roll: Math.atan2(P[MIDDLE_MCP][0] - P[WRIST][0], -(P[MIDDLE_MCP][1] - P[WRIST][1])),
@@ -161,7 +141,7 @@ function analyze(lms: Landmark[], aspect: number, pair: FingerPairIndices): Anal
 export type SoloStyle = 'avatar' | 'classic';
 
 export interface ControllerSettings {
-  fingers: 'thumb-index' | 'thumb-pinky' | 'index-pinky';
+  fingers: 'thumb-index';
   bodyHand: 'right' | 'left';
   characters: 'two' | 'one';
   soloStyle?: SoloStyle;
@@ -181,7 +161,7 @@ export class Controller {
     characters: 'two',
     soloStyle: 'avatar',
   };
-  slots: [Slot, Slot] = [makeSlot(), makeSlot()];
+  slots: [Slot, Slot] = [makeSlot(-1), makeSlot(1)];
   bodySlot: number = -1;
   calibs: Record<string, { base: number | null; samples: number[] }> = {};
   mouse = { x: 960, y: 640, depth: 0, seen: false };
@@ -246,27 +226,14 @@ export class Controller {
       const { h, lm } = hands[hi];
       const dt = s.active ? clamp((ts - s.lastTs) / 1000, 1 / 240, 0.2) : 1 / 30;
 
-      // Pinky gesture detection:
-      // Active when pinky is raised and not used as a primary control finger (e.g. in thumb-index mode)
-      const pairKey = this.settings.fingers;
-      const pinkyAvailable = pairKey !== 'thumb-pinky' && pairKey !== 'index-pinky';
-      s.pinky = pinkyAvailable && h.pinkySign;
-
-      if (s.pinky) {
-        s.pinkyOff = 0;
-        if (!s.pinkyOn) s.pinkyOn = ts;
-        // Trigger dance immediately when pinky is raised and armed
-        if (s.pinkyArmed) {
-          s.danceTrigger = true;
-          s.pinkyArmed = false;
-        }
-      } else {
-        s.pinkyOn = 0;
-        if (!s.pinkyOff) s.pinkyOff = ts;
-        // Re-arm after pinky is curled/lowered for a brief period
-        if (!s.pinkyArmed && ts - s.pinkyOff >= 300) {
-          s.pinkyArmed = true;
-        }
+      // Poros telapak tangan jika dibalik:
+      // Wayang otomatis berbalik arah hadap (flip) mengikuti orientasi telapak tangan.
+      // palmDir > 0.04 -> telapak mengarah ke kanan (wayang facing: -1)
+      // palmDir < -0.04 -> telapak mengarah ke kiri (wayang facing: 1)
+      if (h.palmDir > 0.04) {
+        s.facing = -1;
+      } else if (h.palmDir < -0.04) {
+        s.facing = 1;
       }
       s.active = true;
       s.lastSeen = ts;
@@ -334,6 +301,7 @@ export class Controller {
       depth: this.depthFor(calibKey, d.size),
       arms: { left: leftIsA ? A : B, right: leftIsA ? B : A },
       danceTrigger,
+      facing: slot.facing,
     };
   }
 
@@ -442,6 +410,8 @@ export class Controller {
     leftSlot.danceTrigger = false;
     rightSlot.danceTrigger = false;
 
+    const avgFacing = (leftSlot.facing + rightSlot.facing) <= 0 ? -1 : 1;
+
     return [
       {
         active: true,
@@ -450,6 +420,7 @@ export class Controller {
         depth,
         arms: { left: leftArm, right: rightArm },
         danceTrigger,
+        facing: avgFacing,
       },
     ];
   }

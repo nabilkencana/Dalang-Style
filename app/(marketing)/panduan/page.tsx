@@ -230,10 +230,10 @@ export default function PanduanPage() {
               <div>
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <span className="text-xs font-mono font-bold tracking-widest text-black/60 uppercase">
-                    GESTUR 03 • TARIAN SAKRAL
+                    FITUR 03 • TARIAN SAKRAL
                   </span>
                   <span className="px-3 py-1 rounded-full bg-black text-[#dedf42] text-[11px] font-mono font-bold">
-                    {deviceTab === 'mobile' ? 'KELINGKING / TOMBOL D' : 'PINKY SIGN / TOMBOL [D]'}
+                    TOMBOL [D] / HUD
                   </span>
                 </div>
 
@@ -243,31 +243,23 @@ export default function PanduanPage() {
                 </div>
 
                 <h3 className="font-serif italic font-bold text-2xl sm:text-3xl text-[#050303] mb-3">
-                  {deviceTab === 'mobile'
-                    ? 'Kelingking & Tombol [D]: Tari Kiprah di HP'
-                    : 'Pemicu Tari Kiprahan Sakral Otomatis'}
+                  Pemicu Tari Kiprahan Sakral
                 </h3>
                 <p className="text-black/80 text-sm sm:text-base leading-relaxed font-sans font-normal mb-5">
-                  {deviceTab === 'mobile'
-                    ? 'Tegakkan jari kelingking ke atas di depan kamera HP atau ketuk tombol [D] Tari Kiprah di bar bawah panggung HP untuk memicu tarian dinamis.'
-                    : 'Acungkan jari kelingking Anda tegak ke atas atau tekan tombol keyboard [D] untuk memicu gerakan tari dinamis penari keraton secara seketika.'}
+                  Tekan tombol keyboard <span className="font-mono font-bold bg-black/10 px-1.5 py-0.5 rounded">[D]</span> atau ketuk tombol <span className="font-mono font-bold bg-black/10 px-1.5 py-0.5 rounded">[✦ Tarian]</span> di bilah bawah panggung untuk memicu tarian dinamis penari keraton secara seketika.
                 </p>
                 <div className="space-y-2 text-xs sm:text-sm font-sans text-black/85">
                   <div className="flex items-start gap-2">
                     <span className="font-bold text-black">•</span>
-                    <span><strong>Pose Kelingking:</strong> Sensor AI mendeteksi pose jari sakral penari keraton Jawa.</span>
+                    <span><strong>Poros Telapak Tangan:</strong> Balikkan poros telapak tangan Anda di depan kamera untuk membalik arah hadap wayang seketika.</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="font-bold text-black">•</span>
-                    <span><strong>Gerak Tubuh Berirama:</strong> Boneka wayang bergoyang luwes mengikuti pola tari kiprah klasik.</span>
+                    <span><strong>Gerak Tubuh Berirama:</strong> Boneka wayang bergoyang luwes mengikuti pola tari kiprah klasik saat dipicu.</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="font-bold text-black">•</span>
-                    <span>
-                      {deviceTab === 'mobile'
-                        ? 'Tombol Cepat HP: Tombol [D] di HUD bawah ponsel langsung mengaktifkan tari kiprah.'
-                        : 'Selaras Gamelan: Gerakan diselaraskan dengan tabuhan kendang pengiring.'}
-                    </span>
+                    <span><strong>Selaras Gamelan:</strong> Gerakan tarian diselaraskan secara matematis dengan tabuhan kendang pengiring.</span>
                   </div>
                 </div>
               </div>

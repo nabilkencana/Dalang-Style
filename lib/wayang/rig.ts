@@ -546,6 +546,9 @@ export class Puppet {
     let wantTurn = false;
     if (this.dance) {
       // dance owns turning
+    } else if (input.facing !== undefined && input.facing !== 0) {
+      // Poros telapak tangan dibalik: wayang ikut balik arah mengikuti telapak tangan
+      wantTurn = input.facing !== this.facing;
     } else if (this.facingMode === 'walk') {
       wantTurn = speed > 240 && Math.sign(vx) === this.facing;
     } else if (this.facingMode === 'target' && this.faceTargetX !== null) {
@@ -554,7 +557,7 @@ export class Puppet {
     }
     if (wantTurn) {
       this.turnTimer += dt;
-      if (this.turnTimer > 0.2) this.turn();
+      if (this.turnTimer > 0.15) this.turn();
     } else {
       this.turnTimer = 0;
     }

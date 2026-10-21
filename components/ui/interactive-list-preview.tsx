@@ -77,7 +77,7 @@ export default function InteractiveListPreview({
   const zIndexRef = useRef(DEFAULT_IMAGE_Z_INDEX);
   const pointerTargetRef = useRef({ x: 0, y: 0 });
   const pointerCurrentRef = useRef({ x: 0, y: 0 });
-  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
+  const [activeMobileIndex, setActiveMobileIndex] = useState<number | null>(null);
   const reduceMotionRef = useRef(
     typeof window !== "undefined" &&
       (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false)
@@ -109,14 +109,6 @@ export default function InteractiveListPreview({
     }
     mq.addEventListener?.("change", onChange);
     return () => mq.removeEventListener?.("change", onChange);
-  }, []);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(pointer: coarse)");
-    const update = () => setIsCoarsePointer(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
   }, []);
 
   useEffect(() => {
@@ -373,49 +365,51 @@ export default function InteractiveListPreview({
 
   return (
     <>
-      {!isCoarsePointer && (
+      {/* DESKTOP VIEW (Floating Hover Preview with Cursor Following) */}
+      <div
+        style={{ backgroundColor: bgColor }}
+        className={`hidden md:block relative w-full overflow-visible font-sans ${className}`}
+        onMouseMove={onMouseMove}
+      >
+        {/* Active Row Highlight Bar */}
         <div
-          style={{ backgroundColor: bgColor }}
-          className={`relative w-full overflow-visible font-sans ${className}`}
-          onMouseMove={onMouseMove}
+          ref={highlightRef}
+          className="pointer-events-none absolute inset-x-0 top-0 z-10 rounded-lg shadow-lg"
+          style={{ backgroundColor: highlightColor }}
+        />
+
+        {/* Floating Hover Preview Image Container */}
+        <div
+          ref={imageContainerRef}
+          className="pointer-events-none absolute inset-0 z-40 overflow-visible"
         >
-          {/* Active Row Highlight Bar */}
-          <div
-            ref={highlightRef}
-            className="pointer-events-none absolute inset-x-0 top-0 z-10 rounded-lg shadow-lg"
-            style={{ backgroundColor: highlightColor }}
-          />
+          {items.map((item, index) => {
+            const positionClass =
+              imagePosition === "center"
+                ? "left-[45%] top-1/2 -translate-y-1/2"
+                : imagePosition === "right"
+                ? "left-full ml-6 top-1/2 -translate-y-1/2"
+                : "right-full mr-6 lg:mr-8 top-1/2 -translate-y-1/2";
 
-          {/* Floating Hover Preview Image Container */}
-          <div
-            ref={imageContainerRef}
-            className="pointer-events-none absolute inset-0 z-40 overflow-visible"
-          >
-            {items.map((item, index) => {
-              const positionClass =
-                imagePosition === "center"
-                  ? "left-[45%] top-1/2 -translate-y-1/2"
-                  : imagePosition === "right"
-                  ? "left-full ml-6 top-1/2 -translate-y-1/2"
-                  : "right-full mr-6 lg:mr-8 top-1/2 -translate-y-1/2";
-
-              return (
-                <div
-                  key={`${item.client}-${index}`}
-                  ref={(element) => setImageRef(index, element)}
-                  className={`invisible absolute ${positionClass} rounded-xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.95)] border-2 border-[#dedf42]/70 bg-black pointer-events-none`}
-                  style={{
-                    width: `${BASE_IMAGE_WIDTH_REM * safeImageSize}rem`,
-                    height: `${BASE_IMAGE_HEIGHT_REM * safeImageSize}rem`,
-                    willChange: "clip-path, opacity",
-                    zIndex: DEFAULT_IMAGE_Z_INDEX,
-                  }}
-                >
-                  <img
-                    src={item.img}
-                    alt={item.client}
-                    className="absolute inset-0 h-full w-full object-cover brightness-[0.95] contrast-[1.05]"
-                  />
+            return (
+              <div
+                key={`${item.client}-${index}`}
+                ref={(element) => setImageRef(index, element)}
+                className={`invisible absolute ${positionClass} rounded-xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.95)] border-2 border-[#dedf42]/70 bg-black pointer-events-none`}
+                style={{
+                  width: `${BASE_IMAGE_WIDTH_REM * safeImageSize}rem`,
+                  maxWidth: "calc(52vw - 2.5rem)",
+                  height: `${BASE_IMAGE_HEIGHT_REM * safeImageSize}rem`,
+                  maxHeight: "calc((52vw - 2.5rem) * 15.5 / 24.5)",
+                  willChange: "clip-path, opacity",
+                  zIndex: DEFAULT_IMAGE_Z_INDEX,
+                }}
+              >
+                <img
+                  src={item.img}
+                  alt={item.client}
+                  className="absolute inset-0 h-full w-full object-cover brightness-[0.95] contrast-[1.05]"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-white/10 pointer-events-none" />
                 <div className="absolute bottom-2.5 left-3 right-3 text-[10px] font-sans font-bold text-white tracking-wider uppercase bg-black/75 px-2.5 py-1 rounded backdrop-blur-sm truncate">
                   {item.platform ? `${item.platform} • ` : ""}
@@ -426,114 +420,207 @@ export default function InteractiveListPreview({
           })}
         </div>
 
-          <div
-            ref={tableRef}
-            className="relative w-full"
-            onMouseLeave={onTableLeave}
-          >
-            <table className="relative z-30 w-full table-fixed border-collapse">
-              <colgroup>
-                <col style={{ width: "8%" }} />
-                <col style={{ width: "67%" }} />
-                <col style={{ width: "25%" }} />
-              </colgroup>
-              <thead className="sr-only">
-                <tr>
-                  <th scope="col">Nomor</th>
-                  <th scope="col">Judul Artikel</th>
-                  <th scope="col">Aksi</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#dedf42]/20 border-y border-[#dedf42]/25">
-                {items.map((item, index) => (
-                  <tr
-                    key={`${item.client}-${index}`}
-                    onClick={() => handleRowClick(item)}
-                    onMouseEnter={(event) =>
-                      onRowEnter(event.currentTarget, index)
-                    }
-                    onMouseLeave={() => onRowLeave(index)}
-                    className="cursor-pointer group transition-colors"
-                  >
-                    {/* Index */}
-                    <td className="whitespace-nowrap px-3 py-3.5 font-mono text-xs font-bold opacity-60">
-                      0{index + 1}
-                    </td>
-
-                    {/* Article Details: Platform/Category + Title */}
-                    <td className="px-3 py-3.5">
-                      <div className="flex flex-col">
-                        {item.platform && (
-                          <span className="text-[9px] font-sans font-bold tracking-[0.2em] uppercase opacity-75 mb-0.5">
-                            {item.platform}
-                          </span>
-                        )}
-                        <span className="font-playfair text-[clamp(13px,1.4cqi,18px)] font-normal tracking-[-0.01em] leading-snug line-clamp-1">
-                          {item.client}
-                        </span>
-                      </div>
-                    </td>
-
-                    {/* Action Link / Services */}
-                    <td className="whitespace-nowrap px-3 py-3.5 text-right font-sans text-xs font-bold uppercase tracking-wider">
-                      <span className="inline-flex items-center gap-1 group-hover:translate-x-1.5 transition-transform duration-200">
-                        <span className="hidden sm:inline">
-                          {item.services || "Buka"}
-                        </span>
-                        <span>↗</span>
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {isCoarsePointer && (
         <div
-          style={{ backgroundColor: bgColor }}
-          className={`w-full font-sans text-white ${className}`}
+          ref={tableRef}
+          className="relative w-full"
+          onMouseLeave={onTableLeave}
         >
-          {items.map((item, index) => (
-            <div
-              key={`${item.client}-${index}`}
-              onClick={() => handleRowClick(item)}
-              className="flex border-b border-[#dedf42]/20 py-3 cursor-pointer group active:bg-white/5"
-            >
-              <div className="flex w-3/5 flex-col justify-between gap-2 pr-3">
-                <div className="flex flex-col gap-0.5">
-                  <span className="font-mono text-xs font-bold text-[#dedf42]/60">
+          <table className="relative z-30 w-full table-fixed border-collapse">
+            <colgroup>
+              <col style={{ width: "8%" }} />
+              <col style={{ width: "67%" }} />
+              <col style={{ width: "25%" }} />
+            </colgroup>
+            <thead className="sr-only">
+              <tr>
+                <th scope="col">Nomor</th>
+                <th scope="col">Judul Artikel</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#dedf42]/20 border-y border-[#dedf42]/25">
+              {items.map((item, index) => (
+                <tr
+                  key={`${item.client}-${index}`}
+                  onClick={() => handleRowClick(item)}
+                  onMouseEnter={(event) =>
+                    onRowEnter(event.currentTarget, index)
+                  }
+                  onMouseLeave={() => onRowLeave(index)}
+                  className="cursor-pointer group transition-colors"
+                >
+                  {/* Index */}
+                  <td className="whitespace-nowrap px-3 py-3.5 font-mono text-xs font-bold opacity-60">
                     0{index + 1}
-                  </span>
-                  {item.platform && (
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#dedf42]/75">
-                      {item.platform}
+                  </td>
+
+                  {/* Article Details: Platform/Category + Title */}
+                  <td className="px-3 py-3.5">
+                    <div className="flex flex-col">
+                      {item.platform && (
+                        <span className="text-[9px] font-sans font-bold tracking-[0.2em] uppercase opacity-75 mb-0.5">
+                          {item.platform}
+                        </span>
+                      )}
+                      <span className="font-playfair text-[clamp(13px,1.4cqi,18px)] font-normal tracking-[-0.01em] leading-snug line-clamp-1">
+                        {item.client}
+                      </span>
+                    </div>
+                  </td>
+
+                  {/* Action Link / Services */}
+                  <td className="whitespace-nowrap px-3 py-3.5 text-right font-sans text-xs font-bold uppercase tracking-wider">
+                    <span className="inline-flex items-center gap-1 group-hover:translate-x-1.5 transition-transform duration-200">
+                      <span className="hidden sm:inline">
+                        {item.services || "Buka"}
+                      </span>
+                      <span>↗</span>
                     </span>
-                  )}
-                  <h4 className="font-playfair text-sm text-[#f4e7cd] line-clamp-2 leading-snug">
-                    {item.client}
-                  </h4>
-                </div>
-
-                <span className="text-[10px] font-sans font-bold text-[#dedf42] uppercase tracking-wider flex items-center gap-1">
-                  <span>{item.services || "Buka Berita"}</span>
-                  <span>↗</span>
-                </span>
-              </div>
-
-              <div className="relative aspect-[16/10] h-20 w-2/5 rounded-lg overflow-hidden border border-[#dedf42]/30 bg-black">
-                <img
-                  src={item.img}
-                  alt={item.client}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              </div>
-            </div>
-          ))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      )}
+      </div>
+
+      {/* MOBILE VIEW (Accordion Inline Preview with Smooth Expand Animation) */}
+      <div
+        style={{ backgroundColor: bgColor }}
+        className={`block md:hidden w-full font-sans ${className}`}
+        onMouseLeave={() => setActiveMobileIndex(null)}
+      >
+        <div className="flex flex-col divide-y divide-[#dedf42]/20 border-y border-[#dedf42]/25">
+          {items.map((item, index) => {
+            const isOpen = activeMobileIndex === index;
+            return (
+              <div
+                key={`${item.client}-${index}`}
+                onMouseEnter={() => setActiveMobileIndex(index)}
+                className={`transition-colors duration-300 ${
+                  isOpen
+                    ? "bg-[#dedf42]/10 rounded-xl my-1 border border-[#dedf42]/30 shadow-md"
+                    : "hover:bg-white/5"
+                }`}
+              >
+                {/* Row Header (Clickable to toggle accordion) */}
+                <button
+                  type="button"
+                  onClick={() => setActiveMobileIndex(isOpen ? null : index)}
+                  className="w-full text-left py-3.5 px-3 flex items-center justify-between gap-3 focus:outline-none transition-colors"
+                >
+                  <div className="flex items-start gap-3 min-w-0">
+                    <span
+                      className={`font-mono text-xs font-bold pt-0.5 transition-colors ${
+                        isOpen ? "text-[#dedf42]" : "text-[#dedf42]/60"
+                      }`}
+                    >
+                      0{index + 1}
+                    </span>
+                    <div className="flex flex-col min-w-0">
+                      {item.platform && (
+                        <span className="text-[9px] font-sans font-bold tracking-[0.2em] uppercase text-[#dedf42]/75 truncate mb-0.5">
+                          {item.platform}
+                        </span>
+                      )}
+                      <span
+                        className={`font-playfair text-[15px] font-normal leading-snug line-clamp-2 transition-colors ${
+                          isOpen ? "text-[#dedf42]" : "text-[#f4e7cd]"
+                        }`}
+                      >
+                        {item.client}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Accordion Chevron Pill Indicator */}
+                  <div className="flex items-center flex-shrink-0 pl-1">
+                    <div
+                      className={`w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${
+                        isOpen
+                          ? "bg-[#dedf42] text-black rotate-180 shadow-[0_0_12px_rgba(222,223,66,0.35)]"
+                          : "bg-[#dedf42]/15 text-[#dedf42] rotate-0"
+                      }`}
+                    >
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2.5}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </button>
+
+                {/* Accordion Expandable Content with smooth grid height animation */}
+                <div
+                  className={`grid transition-all duration-300 ease-out ${
+                    isOpen
+                      ? "grid-rows-[1fr] opacity-100"
+                      : "grid-rows-[0fr] opacity-0 pointer-events-none"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-3 pb-3.5 pt-1">
+                      {/* Interactive Image Card */}
+                      <div
+                        onClick={() => handleRowClick(item)}
+                        className={`group/card relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-[#dedf42]/40 bg-black shadow-[0_10px_30px_rgba(0,0,0,0.85)] cursor-pointer transform transition-all duration-500 ease-out ${
+                          isOpen
+                            ? "scale-100 translate-y-0 opacity-100"
+                            : "scale-95 -translate-y-2 opacity-0"
+                        }`}
+                      >
+                        <img
+                          src={item.img}
+                          alt={item.client}
+                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
+                        />
+                        {/* Gradient Lighting & Vignette */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent pointer-events-none" />
+
+                        {/* Top Platform Badge */}
+                        {item.platform && (
+                          <div className="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-[#dedf42]/40 text-[9px] font-mono font-bold tracking-widest text-[#dedf42] uppercase shadow-sm">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#dedf42] animate-pulse" />
+                            {item.platform}
+                          </div>
+                        )}
+
+                        {/* Bottom Actions Bar */}
+                        <div className="absolute bottom-0 inset-x-0 p-3 flex items-end justify-between gap-3">
+                          <p className="font-playfair text-xs font-normal text-white/90 line-clamp-1 drop-shadow-md pr-1">
+                            {item.client}
+                          </p>
+
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRowClick(item);
+                            }}
+                            className="flex-shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#dedf42] text-black font-sans text-[11px] font-bold uppercase tracking-wider shadow-lg active:scale-95 hover:bg-[#dedf42]/90 transition-all cursor-pointer"
+                          >
+                            <span>{item.services || "Buka"}</span>
+                            <span>↗</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </>
   );
 }

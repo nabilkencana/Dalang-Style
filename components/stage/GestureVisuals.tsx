@@ -148,7 +148,7 @@ export function Gesture03Visual() {
       imageAlt="Gestur 03: Tari Kiprahan Sakral"
       videoSrc="/videos/gestures/gesture-03-kiprahan.mp4"
       badgeTitle="TARI KIPRAHAN"
-      badgeSubtitle="Kelingking #20 • Auto-Dance"
+      badgeSubtitle="Tombol [D] • Auto-Dance"
     />
   );
 }
