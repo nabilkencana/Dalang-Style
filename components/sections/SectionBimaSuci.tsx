@@ -29,6 +29,7 @@ export default function SectionBimaSuci({
   const hasUnmutedRef = useRef(false);
   const hasActivatedCaptionsRef = useRef(false);
 
+  // Autoplay observer: automatically loads and autoplays YouTube video when approaching section
   useEffect(() => {
     const section = sectionRef.current;
     if (!section || backgroundType !== 'youtube') return;
@@ -40,12 +41,11 @@ export default function SectionBimaSuci({
           preloadObserver.disconnect();
         }
       },
-      { rootMargin: '400px' }
+      { rootMargin: '120px', threshold: 0.05 }
     );
     preloadObserver.observe(section);
     return () => preloadObserver.disconnect();
   }, [backgroundType]);
-
   const sendYtCommand = useCallback((func: string, args: unknown[] = []) => {
     if (!iframeRef.current?.contentWindow) return;
     try {
@@ -104,16 +104,8 @@ export default function SectionBimaSuci({
 
     observer.observe(section);
 
-    // Handshake to YouTube player until ready
-    let attempts = 0;
-    const handshakeInterval = setInterval(() => {
-      if (hasActivatedCaptionsRef.current || attempts > 20) {
-        clearInterval(handshakeInterval);
-        return;
-      }
-      attempts++;
-      sendYtCommand('listening');
-    }, 400);
+    // Single initial handshake to YouTube player without continuous interval polling
+    sendYtCommand('listening');
 
     const handleYtMessage = (e: MessageEvent) => {
       try {
@@ -121,7 +113,6 @@ export default function SectionBimaSuci({
         if (data && (data.event === 'onReady' || data.event === 'initialDelivery')) {
           if (!hasActivatedCaptionsRef.current) {
             hasActivatedCaptionsRef.current = true;
-            clearInterval(handshakeInterval);
             activateEnglishCaptions();
           }
         }
@@ -134,7 +125,6 @@ export default function SectionBimaSuci({
     const initTimer = setTimeout(() => {
       if (!hasActivatedCaptionsRef.current) {
         hasActivatedCaptionsRef.current = true;
-        clearInterval(handshakeInterval);
         activateEnglishCaptions();
       }
     }, 2000);
@@ -157,7 +147,6 @@ export default function SectionBimaSuci({
 
     return () => {
       observer.disconnect();
-      clearInterval(handshakeInterval);
       clearTimeout(initTimer);
       window.removeEventListener('message', handleYtMessage);
       window.removeEventListener('click', handleFirstGesture);
@@ -186,13 +175,13 @@ export default function SectionBimaSuci({
         >
           {/* 1. Video strictly contained inside the yellow box — BOLD & EXPANDED */}
           {backgroundType === 'youtube' && youtubeVideoId && shouldLoadIframe ? (
-            <div className="absolute inset-0 overflow-hidden pointer-events-auto z-0 bg-black flex items-center justify-center">
+            <div className="absolute inset-0 overflow-hidden pointer-events-auto z-0 bg-black flex items-center justify-center transform-gpu">
               <iframe
                 ref={iframeRef}
                 src={`https://www.youtube-nocookie.com/embed/${youtubeVideoId}?si=PRutH_g9LIdRt4ZU&enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeVideoId}&controls=1&cc_load_policy=1&cc_lang_pref=en&hl=en`}
                 title="Lakon Bima Suci - Latar Video YouTube"
                 loading="lazy"
-                className="w-full h-full object-cover pointer-events-auto filter contrast-[1.05] brightness-[0.96]"
+                className="w-full h-full object-cover pointer-events-auto transform-gpu"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen

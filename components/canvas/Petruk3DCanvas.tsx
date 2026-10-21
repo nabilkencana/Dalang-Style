@@ -34,7 +34,7 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
           observer.disconnect();
         }
       },
-      { rootMargin: '400px' }
+      { rootMargin: '120px', threshold: 0.05 }
     );
 
     observer.observe(container);
@@ -211,8 +211,13 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
         setIsLoading(false);
       },
       (xhr) => {
-        if (xhr.total > 0 && !isDisposed) {
-          setLoadProgress(Math.round((xhr.loaded / xhr.total) * 100));
+        if (!isDisposed) {
+          if (xhr.lengthComputable && xhr.total > 0) {
+            setLoadProgress(Math.round((xhr.loaded / xhr.total) * 100));
+          } else if (xhr.loaded > 0) {
+            const estTotal = 61 * 1024 * 1024;
+            setLoadProgress(Math.min(99, Math.round((xhr.loaded / estTotal) * 100)));
+          }
         }
       },
       (err) => {
@@ -288,14 +293,7 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
       ref={containerRef}
       className={`relative w-full h-full cursor-grab active:cursor-grabbing select-none ${className}`}
     >
-      {isLoading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-black z-20">
-          <div className="w-8 h-8 rounded-full border-2 border-black/20 border-t-black animate-spin mb-2" />
-          <span className="text-[11px] font-mono font-bold tracking-wider uppercase text-black/80">
-            Memuat Wayang 3D {loadProgress > 0 ? `(${loadProgress}%)` : ''}
-          </span>
-        </div>
-      )}
+      {/* Canvas renders directly without spinner overlay */}
       <canvas ref={canvasRef} className="w-full h-full block" />
     </div>
   );

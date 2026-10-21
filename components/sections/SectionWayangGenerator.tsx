@@ -26,6 +26,16 @@ export default function SectionWayangGenerator({
   const sectionRef = useRef<HTMLElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
   const motionProgress = useMotionValue(0);
+  // Preload and decode cards in advance to eliminate any black box or pop-in
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    cards.forEach((card) => {
+      if (card.item?.src) {
+        const img = new window.Image();
+        img.src = card.item.src;
+      }
+    });
+  }, [cards]);
 
   // ── GSAP ScrollTrigger: Fan-In Overlay Sweep (30° -> 0°) + Card Scatter Pin ──
   useEffect(() => {

@@ -36,9 +36,9 @@ export default function HeroWayangJawi({
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
         poster="/images/hero-dancers-backdrop.webp"
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none brightness-[1.18] contrast-[1.05]"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none brightness-[1.18] contrast-[1.05] transform-gpu will-change-transform"
       >
         <source src={videoSrc} type="video/mp4" />
         <track kind="captions" src="data:text/vtt,WEBVTT" label="ambient" default />
@@ -47,7 +47,6 @@ export default function HeroWayangJawi({
       {/* ── Soft Vignette Overlays (Gentle contrast for bottom text while keeping the Dalang bright & clearly visible) ── */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none z-10" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent pointer-events-none z-10" />
-
       {/* ── Bottom Content Container (Exact Studiova Reference Structure) ── */}
       <div className="relative z-20 w-full px-6 sm:px-10 md:px-14 lg:px-16 xl:px-20 pb-10 sm:pb-14 md:pb-16 pt-32">
         <div className="flex flex-col gap-6 sm:gap-8">

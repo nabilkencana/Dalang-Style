@@ -3,7 +3,11 @@
 import * as React from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import Rahwana3DFaceCanvas from "@/components/canvas/Rahwana3DFaceCanvas";
+import dynamic from "next/dynamic";
+
+const Rahwana3DFaceCanvas = dynamic(() => import("@/components/canvas/Rahwana3DFaceCanvas"), {
+  ssr: false,
+});
 /**
  * Tiger Tear Reveal: a poster that rips in two as you scroll.
  *
@@ -704,8 +708,8 @@ export default function TigerTearReveal({
       io.disconnect()
     }
   }, [pin])
-
   const s = stages(f.p)
+  // Eager background mount for instantaneous 3D animation without loading spinner
   const pop = reduced ? s.pop : easeOutBack(s.pop)
   const eyeScale = 0.9 + 0.1 * pop
   const pupil = 1.3 - 0.5 * s.pop + 0.35 * f.squint

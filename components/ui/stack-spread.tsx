@@ -351,13 +351,14 @@ function CardFace({
 }) {
   return (
     <div
-      className="relative h-full w-full overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.5)] bg-[#0e0805] group"
+      className="relative h-full w-full overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.5)] bg-[#1c1308] group"
       style={{ borderRadius: `${cardRadius}px` }}
     >
       <Image
         src={item.src}
         alt={item.alt ?? ""}
         fill
+        priority
         draggable={false}
         className="object-cover select-none pointer-events-none transition-transform duration-500 group-hover:scale-105"
         sizes="(max-width: 768px) 45vw, 30vw"

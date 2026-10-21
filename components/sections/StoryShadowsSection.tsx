@@ -41,9 +41,8 @@ export default function StoryShadowsSection({
           <div className="text-left">
             <ScrollReveal
               baseOpacity={0.42}
-              enableBlur={true}
+              enableBlur={false}
               baseRotation={0}
-              blurStrength={8}
               rotationEnd="bottom center"
               wordAnimationEnd="bottom center"
               textClassName="font-playfair text-[#dedf42] text-lg sm:text-xl font-normal leading-relaxed tracking-tight select-text"
@@ -151,9 +150,8 @@ export default function StoryShadowsSection({
         >
           <ScrollReveal
             baseOpacity={0.42}
-            enableBlur={true}
+            enableBlur={false}
             baseRotation={0}
-            blurStrength={10}
             rotationEnd="bottom center"
             wordAnimationEnd="bottom center"
             textClassName="font-playfair text-[#dedf42] text-[clamp(8px,3.18cqi,43px)] font-normal leading-[1.22] tracking-[-0.015em] select-text"

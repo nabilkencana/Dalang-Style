@@ -17,8 +17,7 @@ export default function Rahwana3DFaceCanvas({
 }: Rahwana3DFaceCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible] = useState(true);
   const openProgressRef = useRef(openProgress);
   const pointerRef = useRef(pointer);
 
@@ -27,32 +26,7 @@ export default function Rahwana3DFaceCanvas({
     pointerRef.current = pointer;
   }, [openProgress, pointer]);
 
-  // Lazy-load: only initialize Three.js and load 3D model when near viewport
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    if (typeof IntersectionObserver === 'undefined') {
-      setIsVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '400px' }
-    );
-
-    observer.observe(container);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  // Eager background load: load 3D model immediately on mount behind closed paper
 
   useEffect(() => {
     if (!isVisible) return;
@@ -87,7 +61,6 @@ export default function Rahwana3DFaceCanvas({
       });
     } catch (err) {
       console.warn('WebGL context creation skipped or lost for Rahwana3DFaceCanvas:', err);
-      setIsLoading(false);
       return;
     }
 
@@ -155,12 +128,10 @@ export default function Rahwana3DFaceCanvas({
         model.rotation.y = baseRotY;
         rahwanaModel = model;
         scene.add(model);
-        setIsLoading(false);
       },
       undefined,
       (err) => {
         console.error('Error loading Rahwana 3D model:', err);
-        if (!isDisposed) setIsLoading(false);
       }
     );
 
@@ -249,14 +220,7 @@ export default function Rahwana3DFaceCanvas({
       ref={containerRef}
       className={`relative w-full h-full select-none ${className}`}
     >
-      {isLoading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-[#dedf42] z-10">
-          <div className="w-8 h-8 rounded-full border-2 border-[#dedf42]/20 border-t-[#dedf42] animate-spin mb-2" />
-          <span className="text-[11px] font-mono font-bold tracking-wider uppercase">
-            Memuat Wayang 3D...
-          </span>
-        </div>
-      )}
+      {/* Canvas renders directly without spinner overlay */}
       <canvas ref={canvasRef} className="w-full h-full block" />
     </div>
   );

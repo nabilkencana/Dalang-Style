@@ -2,8 +2,12 @@
 
 import React from 'react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { OriginButton } from '@/components/ui/origin-button';
-import Petruk3DCanvas from '@/components/canvas/Petruk3DCanvas';
+
+const Petruk3DCanvas = dynamic(() => import('@/components/canvas/Petruk3DCanvas'), {
+  ssr: false,
+});
 export interface SectionJoinTheNightProps {
   id?: string;
   title?: string;
