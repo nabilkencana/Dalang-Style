@@ -39,6 +39,9 @@ export default function Rahwana3DFaceCanvas({
     let rahwanaModel: THREE.Group | null = null;
     let initialY = 0;
     let targetCameraZ = 5;
+    let modelCenter = new THREE.Vector3();
+    let modelSize = new THREE.Vector3();
+    let hasModelBounds = false;
     const baseRotY = -Math.PI / 2;
     const clock = new THREE.Clock();
     const width = container.clientWidth || window.innerWidth;
@@ -110,24 +113,19 @@ export default function Rahwana3DFaceCanvas({
 
         // Compute bounding box and center geometry
         const box = new THREE.Box3().setFromObject(model);
-        const center = box.getCenter(new THREE.Vector3());
-        const size = box.getSize(new THREE.Vector3());
+        modelCenter = box.getCenter(new THREE.Vector3());
+        modelSize = box.getSize(new THREE.Vector3());
+        hasModelBounds = true;
 
-        // Center model so the eyes align directly in the center of the tear gap
-        // Lower the model so Rahwana's piercing eyes and brow align in the center of the tear gap
-        model.position.x = -center.x;
-        initialY = -center.y - size.y * 0.22;
-        model.position.y = initialY;
-        model.position.z = -center.z;
+        model.position.x = -modelCenter.x;
+        model.position.z = -modelCenter.z;
 
-        // Fit camera tightly to the face portrait
-        const maxDim = Math.max(size.x, size.y);
-        const fov = camera.fov * (Math.PI / 180);
-        let baseCameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
-        baseCameraZ *= 1.08;
-        targetCameraZ = baseCameraZ;
+        // Apply responsive layout (desktop vs mobile eye alignment)
+        const currentW = container.clientWidth || width;
+        const currentH = container.clientHeight || height;
+        applyLayout(currentW, currentH);
 
-        camera.position.set(0, 0, baseCameraZ * 2.4);
+        camera.position.set(0, 0, targetCameraZ * 2.4);
         camera.lookAt(0, 0, 0);
         model.rotation.y = baseRotY;
         rahwanaModel = model;
@@ -181,7 +179,24 @@ export default function Rahwana3DFaceCanvas({
     };
     animate();
 
-    // 7. Responsive ResizeObserver
+    // 7. Responsive Layout & ResizeObserver
+    function applyLayout(w: number, h: number) {
+      if (!hasModelBounds) return;
+      const isMobile = w < 768;
+
+      // On mobile: align specifically on Rahwana's piercing eyes in the dead center of the tear slit (-0.155)
+      // On desktop: keep natural portrait framing (-0.22).
+      const yOffset = isMobile ? (-modelSize.y * 0.155) : (-modelSize.y * 0.22);
+      initialY = -modelCenter.y + yOffset;
+      if (rahwanaModel) rahwanaModel.position.y = initialY;
+
+      const maxDim = isMobile ? modelSize.x * 0.98 : Math.max(modelSize.x, modelSize.y);
+      const fov = camera.fov * (Math.PI / 180);
+      let baseCameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+      baseCameraZ *= isMobile ? 1.05 : 1.08;
+      targetCameraZ = baseCameraZ;
+    }
+
     const ro = new ResizeObserver((entries) => {
       if (isDisposed) return;
       for (const entry of entries) {
@@ -190,6 +205,7 @@ export default function Rahwana3DFaceCanvas({
           camera.aspect = w / h;
           camera.updateProjectionMatrix();
           renderer.setSize(w, h, false);
+          applyLayout(w, h);
         }
       }
     });
