@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800;900&family=Playfair+Display:ital,wght@0,800;0,900;1,800&family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      position: relative;
+    }
+
+    /* 2x2 Grid of 4 News Articles (Clean Light Look) */
+    .news-grid {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+      padding: 16px;
+      background: #e2e8f0;
+    }
+
+    .article-box {
+      background: #ffffff;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 38px 46px;
+      font-family: 'Inter', sans-serif;
+      color: #1e293b;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+    }
+
+    .article-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+    .media-logo {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+    .media-date {
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .article-headline {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+      margin-bottom: 16px;
+    }
+
+    .article-body-row {
+      display: flex;
+      gap: 26px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .article-img {
+      width: 44%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+      border: 1px solid #e2e8f0;
+    }
+
+    .article-text {
+      flex: 1;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #475569;
+    }
+    .article-text p {
+      margin-bottom: 10px;
+    }
+
+    /* Clean White / Translucent Frost Overlay */
+    .white-frost-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(1.5px);
+      pointer-events: none;
+    }
+
+    /* Subtle Warm Gold Radial Vignette for Royal Touch */
+    .gold-glow-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(222, 223, 66, 0.08) 0%, rgba(212, 175, 55, 0.15) 60%, rgba(255, 255, 255, 0.85) 100%);
+      pointer-events: none;
+    }
+
+    /* Center Stage Title (No Badge!) */
+    .center-stage {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      text-align: center;
+      padding: 60px;
+    }
+
+    .hero-title {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      font-size: 104px;
+      font-weight: 900;
+      color: #111111;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      white-space: nowrap;
+      
+      /* Detailed Font Stroke & 3D Lighting */
+      -webkit-text-stroke: 2px #d4af37;
+      text-shadow: 
+        0 4px 0px #ffffff,
+        0 8px 24px rgba(212, 175, 55, 0.4),
+        0 16px 48px rgba(0, 0, 0, 0.18);
+      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.15));
+    }
+  </style>
+</head>
+<body>
+  <div class="news-grid">
+    <!-- 1. Top Left: Kompas.com -->
+    <div class="article-box">
+      <div class="article-header">
+        <span class="media-logo" style="color: #ea580c;">KOMPAS.com</span>
+        <span class="media-date">17 Juli 2024 • Budaya & Edukasi</span>
+      </div>
+      <h2 class="article-headline">Wayang Kulit Alami Krisis: Jumlah Penonton dan Minat Anak Muda Anjlok</h2>
+      <div class="article-body-row">
+        <img class="article-img" src="http://localhost:3000/images/tokoh/wayang-8.webp" alt="Wayang">
+        <div class="article-text">
+          <p>Kesenian tradisional wayang kulit kini berada di ambang krisis regenerasi serius. Jumlah dalang muda tercatat menurun lebih dari 65% dalam kurun waktu satu dekade terakhir.</p>
+          <p>Generasi Z menganggap wayang terlalu rumit, berdurasi semalam suntuk, dan berjarak dengan bahasa pergaulan masa kini.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Top Right: detiknews -->
+    <div class="article-box">
+      <div class="article-header">
+        <span class="media-logo" style="color: #2563eb;">detiknews</span>
+        <span class="media-date">8 November 2024 • Nasional</span>
+      </div>
+      <h2 class="article-headline">Kelangkaan Regenerasi pada Budaya Wayang Masih Jadi Tantangan Besar</h2>
+      <div class="article-body-row">
+        <img class="article-img" src="http://localhost:3000/images/dalang-story-photo.webp" alt="Dalang">
+        <div class="article-text">
+          <p>Kementerian Kebudayaan dan persatuan pedalangan menyoroti minimnya sarana pelatihan digital bagi anak muda yang ingin mendalang.</p>
+          <p>Tanpa terobosan teknologi interaktif, warisan leluhur ini dikhawatirkan hanya menjadi artefak bisu di museum.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Bottom Left: UNESCO -->
+    <div class="article-box">
+      <div class="article-header">
+        <span class="media-logo" style="color: #0284c7;">UNESCO Watch</span>
+        <span class="media-date">Paris / Jakarta • Heritage Protection</span>
+      </div>
+      <h2 class="article-headline">Status Warisan Dunia UNESCO Terancam Jika Transmisi Nilai ke Pemuda Mandek</h2>
+      <div class="article-body-row">
+        <img class="article-img" src="http://localhost:3000/images/articles/unesco-page.webp" alt="UNESCO">
+        <div class="article-text">
+          <p>UNESCO mengukuhkan wayang kulit sebagai Masterpiece of Oral and Intangible Heritage of Humanity sejak 2003 dengan syarat pelestarian aktif.</p>
+          <p>Transformasi ke ranah digital adalah kunci agar seni adiluhung ini tetap bernapas di abad ke-21.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Bottom Right: ANTARA -->
+    <div class="article-box">
+      <div class="article-header">
+        <span class="media-logo" style="color: #dc2626;">ANTARA News</span>
+        <span class="media-date">Surakarta • Berita Kebudayaan</span>
+      </div>
+      <h2 class="article-headline">Wayang dan Krisis Identitas Budaya pada Generasi Muda Indonesia</h2>
+      <div class="article-body-row">
+        <img class="article-img" src="http://localhost:3000/images/tokoh/wayang-1.webp" alt="Semar">
+        <div class="article-text">
+          <p>Wafatnya para dalang maestro meninggalkan kekosongan teladan moral pewayangan bagi generasi penerus bangsa.</p>
+          <p>Perlu inovasi segar untuk mengembalikan kebanggaan anak muda terhadap khazanah budaya sendiri.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pure White Frost Overlay -->
+  <div class="white-frost-overlay"></div>
+  <div class="gold-glow-overlay"></div>
+
+  <!-- Center Stage: Big Bold Title with Gold Stroke, NO BADGE! -->
+  <div class="center-stage">
+    <h1 class="hero-title">Wayang Kulit? Emas Atau Cemas?</h1>
+  </div>
+</body>
+</html>

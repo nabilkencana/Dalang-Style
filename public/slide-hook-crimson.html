@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #240508;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      position: relative;
+    }
+
+    /* 2x2 Grid of 4 News Articles */
+    .news-grid {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+      padding: 12px;
+      background: #000;
+    }
+
+    .article-box {
+      background: #ffffff;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 36px 42px;
+      font-family: 'Inter', sans-serif;
+      color: #1a1a1a;
+    }
+
+    .article-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+    .media-logo {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #7f1d1d;
+    }
+    .media-date {
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .article-headline {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+      margin-bottom: 16px;
+    }
+
+    .article-body-row {
+      display: flex;
+      gap: 24px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .article-img {
+      width: 44%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .article-text {
+      flex: 1;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #334155;
+    }
+    .article-text p {
+      margin-bottom: 10px;
+    }
+
+    /* Green / Teal Color Wash Overlay (Persis seperti referensi Image #1) */
+    .green-tint-overlay {
+      position: absolute;
+      inset: 0;
+      background: #8b1828;
+      opacity: 0.78;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+    .green-solid-overlay {
+      position: absolute;
+      inset: 0;
+      background: #6e0e1c;
+      opacity: 0.42;
+      pointer-events: none;
+    }
+    .vignette-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0) 35%, rgba(5,25,20,0.65) 100%);
+      pointer-events: none;
+    }
+
+    /* Center Giant Catchy Title */
+    .center-stage {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .hero-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 96px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      text-shadow: 
+        0 4px 18px rgba(48, 6, 12, 0.95),
+        0 8px 36px rgba(4, 28, 22, 0.85),
+        0 2px 4px rgba(0, 0, 0, 0.9);
+      filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.6));
+    }
+
+    .badge-sub {
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #0b3d32;
+      padding: 10px 32px;
+      border-radius: 9999px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      border: 1.5px solid rgba(222, 223, 66, 0.6);
+    }
+  </style>
+</head>
+<body>
+  <div class="news-grid">
+    <!-- 1. Top Left: Kompas.com - Wayang Kulit Alami Krisis -->
+    <div class="article-box">
+      <div class="article-header">
+        <span class="media-logo" style="color: #ea580c;">KOMPAS.com</span>
+        <span class="media-date">17 Juli 2024 • Edukasi & Budaya</span>
+      </div>
+      <h2 class="article-headline">Wayang Kulit Alami Krisis Regenerasi: Minat Generasi Muda Menyusut Drastis</h2>
+      <div class="article-body-row">
+        <img class="article-img" src="http://localhost:3000/images/tokoh/wayang-8.webp" alt="Wayang Krisis">
+        <div class="article-text">
+          <p>Kesenian tradisional wayang kulit kini berada di ambang krisis regenerasi serius. Jumlah dalang muda tercatat menurun lebih dari 65% dalam kurun waktu satu dekade terakhir.</p>
+          <p>Generasi Z menganggap wayang terlalu rumit, berdurasi semalam suntuk, dan berjarak dengan bahasa pergaulan masa kini.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Top Right: Detiknews / Waka MPR -->
+    <div class="article-box">
+      <div class="article-header">
+        <span class="media-logo" style="color: #2563eb;">detiknews</span>
+        <span class="media-date">8 November 2024 • Nasional</span>
+      </div>
+      <h2 class="article-headline">Kelangkaan Regenerasi Dalang dan Kesenian Wayang Masih Jadi Ancaman Nyata</h2>
+      <div class="article-body-row">
+        <img class="article-img" src="http://localhost:3000/images/dalang-story-photo.webp" alt="Dalang">
+        <div class="article-text">
+          <p>Kementerian Kebudayaan dan PEPADI menyoroti minimnya sarana pelatihan digital bagi anak muda yang ingin belajar sabetan cempurit dan pakeliran.</p>
+          <p>Jika tidak ada terobosan teknologi, dikhawatirkan seni wayang kulit hanya tinggal nama di museum.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Bottom Left: UNESCO Warisan Dunia -->
+    <div class="article-box">
+      <div class="article-header">
+        <span class="media-logo" style="color: #0284c7;">UNESCO Report</span>
+        <span class="media-date">Paris / Jakarta • Cultural Heritage Watch</span>
+      </div>
+      <h2 class="article-headline">Status Warisan Dunia UNESCO Terancam Jika Transmisi Nilai ke Pemuda Mandek</h2>
+      <div class="article-body-row">
+        <img class="article-img" src="http://localhost:3000/images/articles/unesco-page.webp" alt="UNESCO">
+        <div class="article-text">
+          <p>UNESCO mengukuhkan wayang kulit sebagai Masterpiece of Oral and Intangible Heritage of Humanity sejak 2003, dengan syarat adanya upaya pelestarian aktif berkelanjutan.</p>
+          <p>Tanpa transformasi ke media digital, warisan adiluhung nusantara ini menghadapi jurang kepunahan.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Bottom Right: Berita Duka Maestro Ki Manteb / Ki Seno -->
+    <div class="article-box">
+      <div class="article-header">
+        <span class="media-logo" style="color: #dc2626;">ANTARA News</span>
+        <span class="media-date">Surakarta • Berita Duka Budaya</span>
+      </div>
+      <h2 class="article-headline">Gugurnya Sang Maestro Wayang: Siapa yang Meneruskan Api Tradisi?</h2>
+      <div class="article-body-row">
+        <img class="article-img" src="http://localhost:3000/images/tokoh/wayang-1.webp" alt="Semar Wayang">
+        <div class="article-text">
+          <p>Wafatnya para dalang legendaris seperti Ki Manteb Soedarsono dan Ki Seno Nugroho meninggalkan kekosongan figur teladan di panggung pedalangan tanah air.</p>
+          <p>Anak muda dituntut mengambil alih tongkat estafet kepemimpinan budaya bangsa.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Color Overlay & Vignette -->
+  <div class="green-tint-overlay"></div>
+  <div class="green-solid-overlay"></div>
+  <div class="vignette-overlay"></div>
+
+  <!-- Center Punchline Hook -->
+  <div class="center-stage">
+    <h1 class="hero-title">Wayang Kulit? Emas Atau Cemas?</h1>
+    <div class="badge-sub">Krisis Regenerasi & Masa Depan Warisan Budaya Indonesia</div>
+  </div>
+</body>
+</html>

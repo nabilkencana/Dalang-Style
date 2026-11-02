@@ -173,9 +173,15 @@ export default function SectionBimaSuci({
             border: `1.5px solid ${accentColor}`,
           }}
         >
+          {/* Always render the theatrical poster backdrop underneath so it NEVER appears as a black void */}
+          <div
+            className="absolute inset-0 bg-cover bg-center pointer-events-none z-0 brightness-[0.88]"
+            style={{ backgroundImage: `url(${backgroundImage})` }}
+          />
+
           {/* 1. Video strictly contained inside the yellow box — BOLD & EXPANDED */}
-          {backgroundType === 'youtube' && youtubeVideoId && shouldLoadIframe ? (
-            <div className="absolute inset-0 overflow-hidden pointer-events-auto z-0 bg-black flex items-center justify-center transform-gpu">
+          {backgroundType === 'youtube' && youtubeVideoId && shouldLoadIframe && (
+            <div className="absolute inset-0 overflow-hidden pointer-events-auto z-10 flex items-center justify-center transform-gpu">
               <iframe
                 ref={iframeRef}
                 src={`https://www.youtube-nocookie.com/embed/${youtubeVideoId}?si=PRutH_g9LIdRt4ZU&enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeVideoId}&controls=1&cc_load_policy=1&cc_lang_pref=en&hl=en`}
@@ -187,11 +193,6 @@ export default function SectionBimaSuci({
                 allowFullScreen
               />
             </div>
-          ) : (
-            <div
-              className="absolute inset-0 bg-cover bg-center pointer-events-none z-0 brightness-[0.88]"
-              style={{ backgroundImage: `url(${backgroundImage})` }}
-            />
           )}
         </div>
 
