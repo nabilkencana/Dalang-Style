@@ -12,7 +12,6 @@ interface Petruk3DCanvasProps {
 
 export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -48,8 +47,57 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
   useEffect(() => {
     if (!isVisible) return;
     const container = containerRef.current;
-    const canvas = canvasRef.current;
-    if (!container || !canvas) return;
+    if (!container) return;
+
+    if (typeof window === 'undefined' || !window.WebGL2RenderingContext) {
+      setIsLoading(false);
+      return;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'w-full h-full block';
+    container.appendChild(canvas);
+
+    let gl: WebGL2RenderingContext | null = null;
+    try {
+      gl = canvas.getContext('webgl2', {
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance',
+      });
+    } catch {
+      gl = null;
+    }
+
+    if (!gl || gl.isContextLost()) {
+      setIsLoading(false);
+      if (container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
+      return;
+    }
+
+    try {
+      const vertHigh = gl.getShaderPrecisionFormat(gl.VERTEX_SHADER, gl.HIGH_FLOAT);
+      const fragHigh = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
+      if (!vertHigh || !fragHigh || typeof vertHigh.precision !== 'number') {
+        const vertMed = gl.getShaderPrecisionFormat(gl.VERTEX_SHADER, gl.MEDIUM_FLOAT);
+        const fragMed = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.MEDIUM_FLOAT);
+        if (!vertMed || !fragMed || typeof vertMed.precision !== 'number') {
+          setIsLoading(false);
+          if (container.contains(canvas)) {
+            container.removeChild(canvas);
+          }
+          return;
+        }
+      }
+    } catch {
+      setIsLoading(false);
+      if (container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
+      return;
+    }
     let animId = 0;
     let isDisposed = false;
     let petrukModel: THREE.Group | null = null;
@@ -72,12 +120,16 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
     try {
       renderer = new THREE.WebGLRenderer({
         canvas,
+        context: gl,
         alpha: true,
         antialias: true,
         powerPreference: 'high-performance',
       });
     } catch {
       setIsLoading(false);
+      if (container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
       return;
     }
 
@@ -288,8 +340,10 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
       scene.clear();
       try {
         renderer.dispose();
-        renderer.forceContextLoss();
       } catch {}
+      if (container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
     };
   }, [isVisible]);
 
@@ -297,9 +351,6 @@ export default function Petruk3DCanvas({ className = '' }: Petruk3DCanvasProps) 
     <div
       ref={containerRef}
       className={`relative w-full h-full cursor-grab active:cursor-grabbing select-none ${className}`}
-    >
-      {/* Canvas renders directly without spinner overlay */}
-      <canvas ref={canvasRef} className="w-full h-full block" />
-    </div>
+    />
   );
 }

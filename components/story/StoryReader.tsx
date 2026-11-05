@@ -13,6 +13,7 @@ import { GamelanAudioEngine } from '@/lib/wayang/audio';
 import {
   WayangFlourishDivider,
 } from '@/components/story/WayangVisualAssets';
+import { scrollToPageTop } from '@/lib/utils';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -395,9 +396,7 @@ export function StoryReader({
 
   // Scroll to top immediately when story opens or changes
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }
+    scrollToPageTop(true);
   }, [story.slug]);
 
   // Check bookmarks
@@ -809,8 +808,10 @@ Hikmah: ${story.pituturLuhur.moralLesson}
         <div className="flex items-center gap-2.5">
           <button
             type="button"
-            onClick={onBackToCatalog}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-black hover:bg-[#dedf42] border border-white/15 text-xs font-sans font-bold text-[#f4e7cd] hover:text-black transition-all cursor-pointer shadow-md active:scale-95 uppercase tracking-wider"
+            onClick={() => {
+              onBackToCatalog();
+              scrollToPageTop(true);
+            }}
           >
             <ChevronLeft className="w-4 h-4" />
             <span>Pustaka Kisah</span>
@@ -1526,7 +1527,10 @@ Hikmah: ${story.pituturLuhur.moralLesson}
           </div>
           <button
             type="button"
-            onClick={onBackToCatalog}
+            onClick={() => {
+              onBackToCatalog();
+              scrollToPageTop(true);
+            }}
             className="text-xs font-sans font-bold text-[#dedf42] hover:underline cursor-pointer uppercase tracking-wider"
           >
             Lihat Semua Lakon →
@@ -1540,7 +1544,7 @@ Hikmah: ${story.pituturLuhur.moralLesson}
               type="button"
               onClick={() => {
                 onSelectStory(rec);
-                window.scrollTo({ top: 0, behavior: 'instant' });
+                scrollToPageTop(true);
               }}
               className="p-4 rounded-2xl bg-black/60 hover:bg-[#120d08] border border-white/10 hover:border-[#dedf42] transition-all text-left space-y-3 cursor-pointer group shadow-sm"
             >
@@ -1573,7 +1577,10 @@ Hikmah: ${story.pituturLuhur.moralLesson}
         {prevStory ? (
           <button
             type="button"
-            onClick={() => onSelectStory(prevStory)}
+            onClick={() => {
+              onSelectStory(prevStory);
+              scrollToPageTop(true);
+            }}
             className="p-5 rounded-3xl bg-[#0d0906] border border-white/10 hover:border-[#dedf42] text-left space-y-1.5 transition-all group cursor-pointer shadow-md"
           >
             <span className="text-[10px] font-mono text-[#dedf42] flex items-center gap-1 uppercase tracking-wider">
@@ -1592,7 +1599,10 @@ Hikmah: ${story.pituturLuhur.moralLesson}
         {nextStory ? (
           <button
             type="button"
-            onClick={() => onSelectStory(nextStory)}
+            onClick={() => {
+              onSelectStory(nextStory);
+              scrollToPageTop(true);
+            }}
             className="p-5 rounded-3xl bg-[#0d0906] border border-white/10 hover:border-[#dedf42] text-right space-y-1.5 transition-all group cursor-pointer sm:ml-auto w-full shadow-md"
           >
             <span className="text-[10px] font-mono text-[#dedf42] flex items-center justify-end gap-1 uppercase tracking-wider">

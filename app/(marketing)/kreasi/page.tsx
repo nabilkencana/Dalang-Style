@@ -11,6 +11,7 @@ import {
   type WayangStoryItem,
 } from '@/lib/wayang-stories';
 import { BookOpen } from 'lucide-react';
+import { scrollToPageTop } from '@/lib/utils';
 
 function StoryPageContent() {
   const searchParams = useSearchParams();
@@ -36,20 +37,24 @@ function StoryPageContent() {
         WAYANG_STORIES.find((s) => s.title.toLowerCase().includes(storySlugParam.toLowerCase()));
       if (match) {
         setActiveStory(match);
+        scrollToPageTop(true);
       }
     } else {
       setActiveStory(null);
+      scrollToPageTop(true);
     }
   }, [storySlugParam]);
 
   const handleSelectStory = (story: WayangStoryItem) => {
     setActiveStory(story);
     router.push(`/kreasi?slug=${encodeURIComponent(story.slug)}`, { scroll: true });
+    scrollToPageTop(true);
   };
 
   const handleBackToCatalog = () => {
     setActiveStory(null);
     router.push('/kreasi', { scroll: true });
+    scrollToPageTop(true);
   };
 
   return (

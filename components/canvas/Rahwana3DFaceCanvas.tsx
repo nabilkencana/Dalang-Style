@@ -17,7 +17,6 @@ export default function Rahwana3DFaceCanvas({
   openProgress = 0,
 }: Rahwana3DFaceCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isVisible] = useState(true);
   const openProgressRef = useRef(openProgress);
   const pointerRef = useRef(pointer);
@@ -32,8 +31,55 @@ export default function Rahwana3DFaceCanvas({
   useEffect(() => {
     if (!isVisible) return;
     const container = containerRef.current;
-    const canvas = canvasRef.current;
-    if (!container || !canvas) return;
+    if (!container) return;
+
+    if (typeof window === 'undefined' || !window.WebGL2RenderingContext) {
+      return;
+    }
+
+    // Create a fresh canvas element on mount to ensure clean WebGL context lifecycle
+    const canvas = document.createElement('canvas');
+    canvas.className = 'w-full h-full block';
+    container.appendChild(canvas);
+
+    let gl: WebGL2RenderingContext | null = null;
+    try {
+      gl = canvas.getContext('webgl2', {
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance',
+      });
+    } catch {
+      gl = null;
+    }
+
+    if (!gl || gl.isContextLost()) {
+      if (container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
+      return;
+    }
+
+    // Preflight shader precision format to prevent Three.js null.precision crash
+    try {
+      const vertHigh = gl.getShaderPrecisionFormat(gl.VERTEX_SHADER, gl.HIGH_FLOAT);
+      const fragHigh = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
+      if (!vertHigh || !fragHigh || typeof vertHigh.precision !== 'number') {
+        const vertMed = gl.getShaderPrecisionFormat(gl.VERTEX_SHADER, gl.MEDIUM_FLOAT);
+        const fragMed = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.MEDIUM_FLOAT);
+        if (!vertMed || !fragMed || typeof vertMed.precision !== 'number') {
+          if (container.contains(canvas)) {
+            container.removeChild(canvas);
+          }
+          return;
+        }
+      }
+    } catch {
+      if (container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
+      return;
+    }
     let animId = 0;
     let isDisposed = false;
     let rahwanaModel: THREE.Group | null = null;
@@ -59,12 +105,16 @@ export default function Rahwana3DFaceCanvas({
     try {
       renderer = new THREE.WebGLRenderer({
         canvas,
+        context: gl,
         alpha: true,
         antialias: true,
         powerPreference: 'high-performance',
       });
     } catch (err) {
       console.warn('WebGL context creation skipped or lost for Rahwana3DFaceCanvas:', err);
+      if (container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
       return;
     }
 
@@ -231,8 +281,10 @@ export default function Rahwana3DFaceCanvas({
       scene.clear();
       try {
         renderer.dispose();
-        renderer.forceContextLoss();
       } catch {}
+      if (container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
     };
   }, [isVisible]);
 
@@ -240,9 +292,6 @@ export default function Rahwana3DFaceCanvas({
     <div
       ref={containerRef}
       className={`relative w-full h-full select-none ${className}`}
-    >
-      {/* Canvas renders directly without spinner overlay */}
-      <canvas ref={canvasRef} className="w-full h-full block" />
-    </div>
+    />
   );
 }
