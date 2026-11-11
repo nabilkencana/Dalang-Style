@@ -2,55 +2,9 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { TOKOH_CHARACTERS } from '@/lib/tokoh-data';
-import {
-  Brain,
-  ShieldCheck,
-  Heart,
-  Zap,
-  Lightbulb,
-  Users,
-  Smile,
-  Gift,
-  Scale,
-  Flame,
-  Sparkles,
-  Eye,
-  Target,
-  Swords,
-  Feather,
-  Compass,
-  Crown,
-  BookOpen,
-  Lock,
-} from 'lucide-react';
+import { InteractiveTiltCard } from '@/components/ui/3d-card';
 import KatalogGsapAnimations from '@/components/animations/KatalogGsapAnimations';
-
-function getTraitIcon(trait: string) {
-  const t = trait.toLowerCase();
-  if (t.includes('bijak') || t.includes('pencari')) return <Brain className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('pengayom') || t.includes('kokoh') || t.includes('lindung')) return <ShieldCheck className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('tulus') || t.includes('bakti') || t.includes('kasih') || t.includes('sayang')) return <Heart className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('sakti') || t.includes('perkasa') || t.includes('mandraguna')) return <Zap className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('cerdas') || t.includes('pikir')) return <Lightbulb className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('diplomatis') || t.includes('kawan')) return <Users className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('humor') || t.includes('jenaka')) return <Smile className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('dermawan')) return <Gift className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('jujur')) return <Scale className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('berani')) return <Flame className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('spontan') || t.includes('tangkas')) return <Sparkles className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('kritis') || t.includes('waspada') || t.includes('hati-hati') || t.includes('mawas')) return <Eye className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('fokus') || t.includes('senjata')) return <Target className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('ksatria') || t.includes('patriot')) return <Swords className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('halus') || t.includes('budi') || t.includes('sabar')) return <Feather className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('pertapa') || t.includes('hakikat')) return <Compass className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('ambisi') || t.includes('raja')) return <Crown className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('angkara')) return <Flame className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('pujangga')) return <BookOpen className="size-3 text-[#dedf42] shrink-0" />;
-  if (t.includes('sumpah')) return <Lock className="size-3 text-[#dedf42] shrink-0" />;
-  return <Sparkles className="size-3 text-[#dedf42] shrink-0" />;
-}
 
 const CATEGORIES = [
   { id: 'ALL', label: 'Semua Tokoh', count: 9 },
@@ -310,87 +264,17 @@ export default function KatalogTokohView() {
             </button>
           </div>
         ) : (
-          /* Cards Grid: Authentic Dark Theatrical Wayang Cards */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 lg:gap-7">
+          /* Cards Grid: name-only 3D tilt cards */
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-7">
             {filteredCharacters.map((char) => (
-              <Link
-                key={char.slug}
-                data-gsap="katalog-card"
-                href={`/tokoh/${char.slug}`}
-                className="group flex flex-col rounded-2xl overflow-hidden border border-[#dedf42]/25 bg-[#120d08] hover:border-[#dedf42] hover:shadow-[0_20px_45px_-10px_rgba(222,223,66,0.18)] transition-[border-color,box-shadow] duration-300 focus:outline-none focus:ring-2 focus:ring-[#dedf42]"
-              >
-                {/* 16:9 Wayang Artwork Card */}
-                <div className="relative aspect-[16/9] w-full overflow-hidden bg-black">
-                  <Image
-                    src={char.image}
-                    alt={char.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-                  />
-
-                  {/* Gradient Lighting Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-white/10 pointer-events-none" />
-
-
-                  {/* Aksara Jawa Bottom Watermark */}
-                  <span className="absolute bottom-2.5 right-3 text-[#dedf42]/80 font-serif text-xs tracking-widest bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm pointer-events-none">
-                    {char.aksara}
-                  </span>
-                </div>
-
-                {/* Card Content */}
-                <div className="p-5 sm:p-6 flex flex-col justify-between flex-1">
-                  <div>
-                    {/* Role Title */}
-                    <p className="text-[10px] font-sans font-bold tracking-[0.2em] text-[#dedf42] uppercase mb-1">
-                      {char.role}
-                    </p>
-
-                    {/* Character Name */}
-                    <h2 className="font-playfair font-normal text-2xl sm:text-3xl text-[#f4e7cd] group-hover:text-[#dedf42] transition-colors leading-tight">
-                      {char.name}
-                    </h2>
-
-                    {/* Subtitle */}
-                    <p className="text-xs font-sans text-[#f4e7cd]/65 uppercase tracking-wide mt-1 line-clamp-1">
-                      {char.subtitle}
-                    </p>
-
-                    {/* Traits Tags */}
-                    {/* Traits Tags with Bespoke Icons */}
-                    <div className="flex flex-wrap items-center gap-1.5 mt-3.5">
-                      {char.traits.map((trait) => (
-                        <span
-                          key={trait}
-                          className="px-2.5 py-0.5 rounded-full border border-[#dedf42]/20 bg-white/[0.03] hover:bg-[#dedf42]/10 hover:border-[#dedf42]/40 text-[#f4e7cd]/90 text-[10.5px] font-sans font-medium flex items-center gap-1 transition-colors"
-                        >
-                          {getTraitIcon(trait)}
-                          <span>{trait}</span>
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Brief Origin Excerpt */}
-                    <p className="text-xs font-sans text-[#f4e7cd]/75 leading-relaxed mt-4 line-clamp-3">
-                      {char.origin}
-                    </p>
-                  </div>
-
-                  {/* Action Link Footer */}
-                  <div className="pt-5 mt-5 border-t border-[#dedf42]/15 flex items-center justify-between">
-                    <span className="text-xs font-sans font-bold text-[#dedf42] tracking-wider uppercase group-hover:underline flex items-center gap-1.5">
-                      <span>Buka Kisah Lengkap</span>
-                      <span className="group-hover:translate-x-1.5 transition-transform duration-200">
-                        →
-                      </span>
-                    </span>
-                    <span className="text-[11px] text-[#f4e7cd]/40 font-mono">
-                      0{allCharacters.findIndex((c) => c.slug === char.slug) + 1}
-                    </span>
-                  </div>
-                </div>
-              </Link>
+              <div key={char.slug} data-gsap="katalog-card">
+                <InteractiveTiltCard
+                  title={char.name}
+                  imageUrl={char.image}
+                  href={`/tokoh/${char.slug}`}
+                  sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                />
+              </div>
             ))}
           </div>
         )}
