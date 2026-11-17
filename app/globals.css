@@ -143,3 +143,83 @@ h4[data-reveal="pending"] {
     opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ─── Katalog kelir (shadow-play screen hero) ────────────────────────────── */
+/* Registered so the lamp position and shadow offset can transition smoothly. */
+@property --kelir-lx {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+
+@property --kelir-sx {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+.kelir {
+  transition: --kelir-lx 0.6s ease-out, --kelir-sx 0.6s ease-out;
+}
+
+/* Cloth base is warm lit parchment (#b38544 -> #ecd6a4) so dark shadow ink stays readable everywhere;
+   a softer spotlight follows the lamp on top without cutting a dark shadow curve across the text. */
+.kelir-cloth {
+  background:
+    radial-gradient(ellipse 55% 85% at var(--kelir-lx) 8%, rgba(255, 248, 228, 0.72) 0%, rgba(246, 224, 175, 0.28) 48%, transparent 80%),
+    radial-gradient(ellipse 100% 115% at 50% 45%, #ecd6a4 0%, #dab979 58%, #b38544 100%);
+}
+
+/* Type rendered as a cast shadow: tight umbra + softer penumbra sliding opposite the lamp. */
+.kelir-shadow {
+  color: #1c0f07;
+  text-shadow:
+    calc(var(--kelir-sx) * 12px) 4px 5px rgba(28, 15, 7, 0.28),
+    calc(var(--kelir-sx) * 26px) 10px 18px rgba(74, 34, 12, 0.18);
+}
+
+@keyframes blencong-flicker {
+  0%, 100% { opacity: 0; }
+  9% { opacity: 0.06; }
+  14% { opacity: 0.01; }
+  47% { opacity: 0.04; }
+  53% { opacity: 0; }
+  78% { opacity: 0.07; }
+  84% { opacity: 0.02; }
+}
+
+.kelir-flicker {
+  animation: blencong-flicker 6s ease-in-out infinite;
+}
+
+/* Penanda "ketuk di sini" di pentas: tangan memantul seperti mengetuk */
+@keyframes hotspot-tap {
+  0%, 100% { transform: translateY(0) scale(1); }
+  40% { transform: translateY(-7px) scale(1.04); }
+  55% { transform: translateY(1px) scale(0.96); }
+  70% { transform: translateY(0) scale(1); }
+}
+
+.hotspot-tap {
+  animation: hotspot-tap 1.4s ease-in-out infinite;
+}
+
+/* Tombol Panggung Wayang: nyala blencong berkedip pelan */
+@keyframes panggung-cta-flame {
+  0%, 100% { opacity: 0.85; }
+  22% { opacity: 1; }
+  41% { opacity: 0.7; }
+  63% { opacity: 0.95; }
+  80% { opacity: 0.75; }
+}
+
+.panggung-cta-glow {
+  animation: panggung-cta-flame 3.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kelir { transition: none; }
+  .kelir-flicker { animation: none; }
+  .panggung-cta-glow { animation: none; }
+  .hotspot-tap { animation: none; }
+}

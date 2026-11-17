@@ -12,6 +12,7 @@ import {
   ModeSatuWayangVisual,
 } from '@/components/stage/GestureVisuals';
 import PanduanGsapAnimations from '@/components/animations/PanduanGsapAnimations';
+import { PanggungCTA } from '@/components/ui/panggung-cta';
 
 export default function PanduanPage() {
   const [deviceTab, setDeviceTab] = useState<'mobile' | 'desktop'>('desktop');
@@ -92,13 +93,7 @@ export default function PanduanPage() {
           </p>
 
           <div data-gsap="panduan-cta" className="mt-8 flex items-center justify-center gap-4 flex-wrap">
-            <Link
-              href="/stage"
-              className="px-6 sm:px-8 py-3 rounded-full bg-black text-[#dedf42] font-sans font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-neutral-800 active:scale-95 transition-[background-color,transform,box-shadow] duration-200 shadow-lg flex items-center gap-2"
-            >
-              <span>Buka Panggung Wayang</span>
-              <span className="text-base">&rarr;</span>
-            </Link>
+            <PanggungCTA label="Buka Panggung Wayang" />
             <a
               href="#gestur-utama"
               onClick={handleScrollToGestur}
@@ -616,13 +611,7 @@ export default function PanduanPage() {
           </p>
 
           <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Link
-              href="/stage"
-              className="px-8 py-3.5 rounded-full bg-black text-[#dedf42] font-sans font-bold text-sm uppercase tracking-wider hover:bg-neutral-800 active:scale-95 transition-all shadow-xl flex items-center gap-2"
-            >
-              <span>Mulai Mendalang di Panggung</span>
-              <span className="text-base">&rarr;</span>
-            </Link>
+            <PanggungCTA label="Mulai Mendalang di Panggung" />
             <Link
               href="/"
               className="px-7 py-3.5 rounded-full border border-black/40 text-black font-sans font-bold text-sm uppercase tracking-wider hover:bg-black/10 transition-colors"

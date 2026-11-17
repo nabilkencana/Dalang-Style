@@ -1091,6 +1091,16 @@ Hikmah: ${story.pituturLuhur.moralLesson}
                   <ExternalLink className="w-3 h-3" />
                   <span>Galeri Tokoh</span>
                 </Link>
+                {story.slug === 'dewa-ruci' && (
+                  <Link
+                    data-gsap="reader-meta-item"
+                    href="/kreasi/pentas-dewa-ruci"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[#dedf42] px-3 py-1 text-[11px] font-sans font-semibold text-[#1c0f07] hover:bg-[#f4e7cd] transition-colors ml-1"
+                  >
+                    <Sparkles className="w-3 h-3" />
+                    <span>Pentas Hidup (Prototipe)</span>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

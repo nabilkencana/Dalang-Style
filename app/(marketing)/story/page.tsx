@@ -43,6 +43,10 @@ function StoryPageContent() {
   }, [storySlugParam]);
 
   const handleSelectStory = (story: WayangStoryItem) => {
+    if (story.slug === 'dewa-ruci') {
+      router.push('/kreasi/pentas-dewa-ruci');
+      return;
+    }
     setActiveStory(story);
     router.push(`/story?slug=${encodeURIComponent(story.slug)}`, { scroll: true });
   };

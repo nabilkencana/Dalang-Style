@@ -3,96 +3,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import {
-  Brain,
-  ShieldCheck,
-  Heart,
-  Zap,
-  Lightbulb,
-  Users,
-  Smile,
-  Gift,
-  Scale,
-  Flame,
-  Sparkles,
-  Eye,
-  Target,
-  Swords,
-  Feather,
-  Compass,
-  Crown,
-  BookOpen,
-  Lock,
-  Wind,
-  Axe,
-  Hammer,
-  MessageSquareQuote,
-} from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen } from 'lucide-react';
 import {
   TOKOH_CHARACTERS,
   getAllTokohSlugs,
   getTokohBySlug,
 } from '@/lib/tokoh-data';
-
-function getTraitIcon(trait: string) {
-  const t = trait.toLowerCase();
-  if (t.includes('bijak') || t.includes('pencari')) return <Brain className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('pengayom') || t.includes('kokoh') || t.includes('lindung')) return <ShieldCheck className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('tulus') || t.includes('bakti') || t.includes('kasih') || t.includes('sayang')) return <Heart className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('sakti') || t.includes('perkasa') || t.includes('mandraguna')) return <Zap className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('cerdas') || t.includes('pikir')) return <Lightbulb className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('diplomatis') || t.includes('kawan')) return <Users className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('humor') || t.includes('jenaka')) return <Smile className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('dermawan')) return <Gift className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('jujur')) return <Scale className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('berani')) return <Flame className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('spontan') || t.includes('tangkas')) return <Sparkles className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('kritis') || t.includes('waspada') || t.includes('hati-hati') || t.includes('mawas')) return <Eye className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('fokus') || t.includes('senjata')) return <Target className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('ksatria') || t.includes('patriot')) return <Swords className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('halus') || t.includes('budi') || t.includes('sabar')) return <Feather className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('pertapa') || t.includes('hakikat')) return <Compass className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('ambisi') || t.includes('raja')) return <Crown className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('angkara')) return <Flame className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('pujangga')) return <BookOpen className="size-3.5 text-[#dedf42] shrink-0" />;
-  if (t.includes('sumpah')) return <Lock className="size-3.5 text-[#dedf42] shrink-0" />;
-  return <Sparkles className="size-3.5 text-[#dedf42] shrink-0" />;
-}
-
-function getWeaponIcon(name: string) {
-  const n = name.toLowerCase();
-  if (n.includes('kentut') || n.includes('angin') || n.includes('rompi') || n.includes('antakusuma')) {
-    return <Wind className="size-4 text-[#dedf42]" />;
-  }
-  if (n.includes('kapak')) {
-    return <Axe className="size-4 text-[#dedf42]" />;
-  }
-  if (n.includes('busur') || n.includes('gandiwa') || n.includes('panah') || n.includes('pasopati') || n.includes('cundamanik')) {
-    return <Target className="size-4 text-[#dedf42]" />;
-  }
-  if (n.includes('keris') || n.includes('pedang') || n.includes('candrasa') || n.includes('belati')) {
-    return <Swords className="size-4 text-[#dedf42]" />;
-  }
-  if (n.includes('kuku') || n.includes('pancanaka')) {
-    return <Sparkles className="size-4 text-[#dedf42]" />;
-  }
-  if (n.includes('gada') || n.includes('rujakpala') || n.includes('brajamusti') || n.includes('narantaka') || n.includes('palu')) {
-    return <Hammer className="size-4 text-[#dedf42]" />;
-  }
-  if (n.includes('lidah') || n.includes('kata') || n.includes('jujur') || n.includes('silat')) {
-    return <MessageSquareQuote className="size-4 text-[#dedf42]" />;
-  }
-  if (n.includes('jiwa') || n.includes('caping') || n.includes('batin') || n.includes('pangabaran') || n.includes('rawarontek')) {
-    return <ShieldCheck className="size-4 text-[#dedf42]" />;
-  }
-  if (n.includes('danurweda') || n.includes('kitab') || n.includes('ilmu')) {
-    return <BookOpen className="size-4 text-[#dedf42]" />;
-  }
-  if (n.includes('pancasona') || n.includes('bandung') || n.includes('daya') || n.includes('sakti')) {
-    return <Zap className="size-4 text-[#dedf42]" />;
-  }
-  return <Flame className="size-4 text-[#dedf42]" />;
-}
+import { getStoryBySlug } from '@/lib/wayang-stories';
+import { InteractiveTiltCard } from '@/components/ui/3d-card';
+import TokohDetailTabs from '@/components/views/TokohDetailTabs';
 
 interface TokohPageProps {
   params: Promise<{
@@ -122,6 +41,18 @@ export async function generateMetadata({
   };
 }
 
+function parseCharacterQuote(raw: string) {
+  const cleaned = raw.replace(/^["“]|["”]$/g, '').trim();
+  const dashIndex = cleaned.indexOf(' — ');
+  if (dashIndex === -1) {
+    return { javanese: null, meaning: cleaned };
+  }
+  return {
+    javanese: cleaned.slice(0, dashIndex).trim(),
+    meaning: cleaned.slice(dashIndex + 3).trim(),
+  };
+}
+
 export default async function TokohDetailPage({ params }: TokohPageProps) {
   const { slug } = await params;
   const character = getTokohBySlug(slug);
@@ -130,250 +61,157 @@ export default async function TokohDetailPage({ params }: TokohPageProps) {
     notFound();
   }
 
-  // Get other characters for the exploration carousel/grid
-  const otherCharacters = Object.values(TOKOH_CHARACTERS).filter(
-    (c) => c.slug !== slug
-  );
+  const allCharacters = Object.values(TOKOH_CHARACTERS);
+  const currentIdx = allCharacters.findIndex((c) => c.slug === character.slug);
+  const nextCharacter =
+    allCharacters[(currentIdx + 1) % allCharacters.length];
+
+  // Rotate from current character so each profile suggests 4 fresh neighbors
+  const suggestedCharacters = Array.from({ length: 4 }, (_, offset) => {
+    return allCharacters[(currentIdx + 1 + offset) % allCharacters.length];
+  }).filter((c) => c.slug !== character.slug);
+
+  const relatedStory = getStoryBySlug(character.slug);
+  const groupLabel = character.role.split('•')[0].trim();
+  const { javanese: quoteJavanese, meaning: quoteMeaning } = parseCharacterQuote(character.quote);
 
   return (
     <div className="relative min-h-screen bg-[#050303] text-[#f4e7cd] selection:bg-[#dedf42] selection:text-black">
-      {/* 1. Ambient Theatrical Stage Background Vignettes */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(222,223,66,0.08)_0%,_rgba(11,6,4,0.7)_50%,_#050303_100%)] pointer-events-none z-0" />
-      <div className="fixed inset-0 bg-repeat opacity-[0.03] pointer-events-none z-0 bg-[radial-gradient(#dedf42_1px,transparent_1px)] [background-size:24px_24px]" />
+      {/* Subtle warm stage backdrop */}
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_rgba(222,223,66,0.06)_0%,_rgba(11,6,4,0.55)_50%,_#050303_100%)]" />
 
-      {/* 2. Top Header Navigation Bar */}
-      <header className="relative z-30 w-full border-b border-[#dedf42]/15 bg-black/60 backdrop-blur-md sticky top-0">
-        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 h-16 sm:h-20 flex items-center justify-between gap-4">
-          {/* Back to Catalog Link */}
+      <main className="relative z-10 w-full px-4 sm:px-6 md:px-5 lg:px-5 pt-24 sm:pt-28 pb-20 sm:pb-24">
+        {/* 1. Quiet breadcrumb strip (clears global floating Navbar) */}
+        <nav
+          aria-label="Navigasi katalog tokoh"
+          className="flex flex-wrap items-center justify-between gap-4 pb-6 sm:pb-8 border-b border-[#dedf42]/15"
+        >
           <Link
             href="/katalog"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-sans font-bold tracking-wider text-[#dedf42] uppercase hover:brightness-125 transition-all group focus:outline-none focus:underline"
+            className="group inline-flex items-center gap-2 font-sans text-sm text-[#dedf42] hover:text-[#f4e7cd] transition-colors focus:outline-none focus-visible:underline"
           >
-            <span className="text-base sm:text-lg group-hover:-translate-x-1 transition-transform">
-              ←
-            </span>
+            <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-1" />
             <span>Kembali ke Katalog</span>
           </Link>
 
-          {/* Central Brand */}
-          <Link href="/" className="group focus:outline-none text-center">
-            <span className="font-serif font-bold text-xl sm:text-2xl text-[#dedf42] tracking-tight group-hover:brightness-125 transition-all block leading-tight">
-              Wayang Jawi
-            </span>
-            <span className="text-[9px] font-sans font-bold tracking-[0.25em] text-[#dedf42]/60 uppercase block">
-              Galeri Tokoh
-            </span>
+          <Link
+            href={`/tokoh/${nextCharacter.slug}`}
+            className="group inline-flex items-center gap-2 font-sans text-sm text-[#f4e7cd]/70 hover:text-[#dedf42] transition-colors focus:outline-none focus-visible:underline"
+          >
+            <span>Berikutnya: {nextCharacter.name}</span>
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
           </Link>
+        </nav>
 
-          {/* Header Right Balancing Spacer */}
-          <div className="w-10 sm:w-28 hidden sm:block pointer-events-none" />
-        </div>
-      </header>
-
-      {/* 3. Main Character Profile Content */}
-      <main className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-12 md:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
-          {/* Left Column: Visual Showcase Card (Sticky on Scroll) */}
-          <div className="lg:col-span-6 flex flex-col items-center lg:sticky lg:top-24 self-start h-fit z-20">
-            <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden border-2 border-[#dedf42]/40 bg-[#120d08] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.9),0_0_40px_rgba(222,223,66,0.12)] group">
+        {/* 2. Opening Hero: Clear Focal Portrait + Identity */}
+        <section className="pt-7 sm:pt-9 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+          <div className="lg:col-span-6 flex items-center">
+            <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden border border-[#dedf42]/30 bg-[#120d08] shadow-[0_24px_60px_-15px_rgba(0,0,0,0.85)]">
               <Image
                 src={character.image}
                 alt={character.name}
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 600px"
-                className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-center"
               />
-
-              {/* Card Sheen & Vignette Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-white/10 pointer-events-none" />
-
             </div>
+          </div>
 
-            {/* Quick Character Traits Pills */}
-            {/* Quick Character Traits Pills with Custom Icons */}
-            <div className="w-full flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mt-5">
-              {character.traits.map((trait) => (
-                <span
-                  key={trait}
-                  className="px-3.5 py-1.5 rounded-full border border-[#dedf42]/30 bg-white/[0.04] hover:bg-[#dedf42]/10 hover:border-[#dedf42]/60 text-[#f4e7cd] text-[11px] sm:text-xs font-sans font-medium tracking-wide shadow-sm flex items-center gap-1.5 transition-colors"
+          <div className="lg:col-span-6 flex flex-col justify-center items-start lg:pl-4">
+            <span className="font-sans text-sm sm:text-base font-medium text-[#dedf42]/85">
+              {groupLabel}
+            </span>
+
+            <p
+              lang="jv"
+              aria-label={`Aksara Jawa untuk ${character.name}`}
+              className="mt-2.5 font-serif text-xl sm:text-2xl lg:text-[1.85rem] tracking-[0.2em] text-[#dedf42]/75"
+            >
+              {character.aksara}
+            </p>
+
+            <h1 className="mt-1.5 font-playfair font-normal text-5xl sm:text-6xl lg:text-[4.25rem] xl:text-[5rem] text-[#dedf42] tracking-tight leading-[1.0]">
+              {character.name}
+            </h1>
+
+            <p className="mt-3.5 font-sans text-base sm:text-lg lg:text-xl text-[#f4e7cd]/85 leading-relaxed max-w-2xl">
+              {character.subtitle}
+            </p>
+
+            {relatedStory && (
+              <div className="mt-7 flex flex-wrap items-center gap-4">
+                <Link
+                  href={`/kreasi?slug=${encodeURIComponent(relatedStory.slug)}`}
+                  className="group inline-flex items-center gap-3 rounded-full bg-[#dedf42] px-6 py-3.5 font-sans text-sm sm:text-base font-semibold text-[#1c0f07] shadow-[0_12px_30px_-6px_rgba(222,223,66,0.3)] transition-colors hover:bg-[#f4e7cd] focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#dedf42]"
                 >
-                  {getTraitIcon(trait)}
-                  <span>{trait}</span>
-                </span>
-              ))}
-            </div>
-
-            {/* Cultural Proverb Quote Card */}
-            <div className="w-full mt-6 p-5 sm:p-6 rounded-xl border border-[#dedf42]/20 bg-gradient-to-b from-[#18110b]/90 to-[#0d0806]/90 backdrop-blur-sm relative overflow-hidden">
-              <div className="absolute -right-4 -bottom-6 font-serif text-8xl text-[#dedf42]/5 select-none pointer-events-none">
-                “
+                  <BookOpen className="size-4.5 shrink-0" />
+                  <span>Baca {relatedStory.title.replace(/\s*\([^)]*\)/, '')}</span>
+                  <ArrowRight className="size-4.5 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                </Link>
               </div>
-              <p className="text-[10px] sm:text-xs font-sans font-bold tracking-[0.2em] text-[#dedf42] uppercase mb-2">
-                Filosofi & Nasihat Luhur
-              </p>
-              <blockquote className="font-playfair italic text-sm sm:text-base text-[#f4e7cd] leading-relaxed relative z-10">
-                {character.quote}
+            )}
+          </div>
+        </section>
+
+        {/* 3. Standout Visual Anchor: Lit Kelir Quote Band */}
+        <section aria-label="Pitutur utama tokoh" className="mt-10 sm:mt-14">
+          <div className="relative w-full overflow-hidden rounded-lg shadow-[0_24px_55px_-12px_rgba(0,0,0,0.85)]">
+            <div className="h-1.5 bg-[#5a1712] border-b border-[#dedf42]/35" />
+
+            <div className="kelir-cloth relative px-6 sm:px-10 lg:px-12 py-8 sm:py-11">
+              <blockquote className="relative w-full">
+                {quoteJavanese ? (
+                  <>
+                    <p className="kelir-shadow font-playfair italic font-normal text-2xl sm:text-3xl md:text-[2.25rem] leading-[1.25] tracking-tight">
+                      “{quoteJavanese}”
+                    </p>
+                    <p className="mt-3 font-sans text-sm sm:text-base text-[#2c180c] leading-relaxed max-w-2xl">
+                      {quoteMeaning}
+                    </p>
+                  </>
+                ) : (
+                  <p className="kelir-shadow font-playfair italic font-normal text-xl sm:text-2xl md:text-3xl leading-[1.35] max-w-3xl">
+                    “{quoteMeaning}”
+                  </p>
+                )}
               </blockquote>
             </div>
+
+            <div className="h-2 bg-gradient-to-b from-[#5d5629] via-[#4a441f] to-[#2c2811] border-t border-black/45" />
           </div>
+        </section>
 
-          {/* Right Column: In-Depth Narrative & Cultural Context */}
-          <div className="lg:col-span-6 flex flex-col">
-            {/* Aksara Jawa Watermark & Role */}
-            <div className="flex flex-col mb-4">
-              <div className="flex items-center gap-3">
-                <span className="px-3 py-0.5 rounded-full border border-[#dedf42]/40 bg-[#dedf42]/10 text-[#dedf42] text-[10px] sm:text-xs font-sans font-bold tracking-widest uppercase">
-                  {character.role}
-                </span>
-              </div>
-
-              {/* Aksara Script */}
-              <p
-                className="text-[#dedf42]/70 text-base sm:text-xl font-serif tracking-[0.25em] mt-3"
-                aria-label={character.name}
-              >
-                {character.aksara}
-              </p>
-
-              {/* Character Name */}
-              <h1 className="font-playfair text-4xl sm:text-5xl md:text-6xl font-normal text-[#dedf42] tracking-tight leading-[1.05] mt-1">
-                {character.name}
-              </h1>
-
-              {/* Subtitle */}
-              <p className="text-xs sm:text-sm font-sans font-semibold tracking-wide text-[#f4e7cd]/70 uppercase mt-2">
-                {character.subtitle}
-              </p>
-            </div>
-
-            {/* Asal-Usul & Mitologi */}
-            <div className="space-y-4 text-xs sm:text-sm text-[#f4e7cd]/85 leading-relaxed font-sans border-t border-[#dedf42]/15 pt-5">
-              <h2 className="font-serif text-lg sm:text-xl font-semibold text-[#dedf42] tracking-wide">
-                Asal-Usul & Kisah Pewayangan
-              </h2>
-              <p className="text-justify leading-relaxed">{character.origin}</p>
-            </div>
-
-            {/* Makna Filosofis */}
-            <div className="space-y-3 text-xs sm:text-sm text-[#f4e7cd]/85 leading-relaxed font-sans border-t border-[#dedf42]/15 pt-5 mt-5">
-              <h2 className="font-serif text-lg sm:text-xl font-semibold text-[#dedf42] tracking-wide">
-                Simbolisme & Makna Hidup
-              </h2>
-              <p className="text-justify leading-relaxed">
-                {character.philosophy}
-              </p>
-            </div>
-
-            {/* Ajaran Moral Cards */}
-            <div className="border-t border-[#dedf42]/15 pt-5 mt-5">
-              <h2 className="font-serif text-lg sm:text-xl font-semibold text-[#dedf42] tracking-wide mb-3">
-                Ajaran Luhur
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {character.morals.map((moral, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3.5 rounded-lg border border-[#dedf42]/15 bg-black/40"
-                  >
-                    <h3 className="font-sans font-bold text-xs text-[#dedf42] uppercase tracking-wider mb-1">
-                      {moral.title}
-                    </h3>
-                    <p className="text-[11px] text-[#f4e7cd]/75 leading-relaxed font-sans">
-                      {moral.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Senjata & Kesaktian */}
-            <div className="border-t border-[#dedf42]/15 pt-5 mt-5">
-              <h2 className="font-serif text-lg sm:text-xl font-semibold text-[#dedf42] tracking-wide mb-3">
-                Pusaka & Ajian Sakti
-              </h2>
-              <div className="space-y-2.5">
-                {character.weapons.map((w, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-start gap-3.5 p-3.5 rounded-xl border border-[#dedf42]/15 bg-white/[0.02] hover:bg-white/[0.04] hover:border-[#dedf42]/30 transition-all"
-                  >
-                    <div className="size-8 rounded-lg border border-[#dedf42]/25 bg-[#dedf42]/10 flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
-                      {getWeaponIcon(w.name)}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-sans font-bold text-xs text-[#dedf42] tracking-wider uppercase">
-                        {w.name}
-                      </p>
-                      <p className="text-[11px] text-[#f4e7cd]/75 leading-relaxed font-sans mt-0.5">
-                        {w.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+        {/* 4. Guided Single-Chapter Dossier (tabs prevent text overload) */}
+        <div className="mt-10 sm:mt-14">
+          <TokohDetailTabs character={character} />
         </div>
 
-        {/* 4. Explore Other Characters Section */}
-        <section className="mt-16 sm:mt-24 pt-10 sm:pt-14 border-t border-[#dedf42]/20">
-          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-8">
-            <div>
-              <p className="text-[10px] sm:text-xs font-sans font-bold tracking-[0.25em] text-[#dedf42] uppercase mb-1">
-                Koleksi Karakter
-              </p>
-              <h2 className="font-playfair text-2xl sm:text-3xl md:text-4xl text-[#f4e7cd] font-normal tracking-tight">
-                Jelajahi Tokoh Lainnya
-              </h2>
-            </div>
+        {/* 5. Explore Other Characters (unified 3D portrait cards from /katalog) */}
+        <section className="mt-16 sm:mt-20 pt-10 sm:pt-12 border-t border-[#dedf42]/15">
+          <div className="flex flex-wrap items-baseline justify-between gap-4 mb-7 sm:mb-8">
+            <h2 className="font-playfair font-normal text-2xl sm:text-3xl text-[#f4e7cd] tracking-tight">
+              Kenali Tokoh Lainnya
+            </h2>
 
             <Link
               href="/katalog"
-              className="text-xs font-sans font-bold text-[#dedf42] uppercase tracking-wider hover:underline"
+              className="group inline-flex items-center gap-1.5 font-sans text-sm text-[#dedf42] hover:text-[#f4e7cd] transition-colors focus:outline-none focus-visible:underline"
             >
-              Lihat Semua di Katalog →
+              <span>Lihat semua 9 tokoh</span>
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
 
-          {/* Other Characters Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6">
-            {otherCharacters.map((other) => (
-              <Link
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {suggestedCharacters.map((other) => (
+              <InteractiveTiltCard
                 key={other.slug}
+                title={other.name}
+                imageUrl={other.image}
                 href={`/tokoh/${other.slug}`}
-                className="group flex flex-col rounded-xl overflow-hidden border border-[#dedf42]/20 bg-[#120d08] hover:border-[#dedf42] hover:shadow-[0_12px_30px_rgba(222,223,66,0.15)] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#dedf42]"
-              >
-                <div className="relative aspect-[16/9] w-full overflow-hidden bg-black/60">
-                  <Image
-                    src={other.image}
-                    alt={other.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-                  <span className="absolute bottom-2 left-2 text-[9px] font-sans font-bold text-[#dedf42] uppercase tracking-wider bg-black/80 px-2 py-0.5 rounded-full border border-white/10">
-                    {other.badge}
-                  </span>
-                </div>
-
-                <div className="p-3 sm:p-4 flex flex-col justify-between flex-1">
-                  <div>
-                    <h3 className="font-playfair font-normal text-sm sm:text-base text-[#f4e7cd] group-hover:text-[#dedf42] transition-colors leading-snug">
-                      {other.name}
-                    </h3>
-                    <p className="text-[10px] font-sans text-[#f4e7cd]/60 uppercase tracking-wider mt-0.5 line-clamp-1">
-                      {other.role}
-                    </p>
-                  </div>
-
-                  <span className="text-[10px] font-sans font-bold text-[#dedf42] tracking-wider uppercase mt-3 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                    <span>Telusuri</span>
-                    <span>→</span>
-                  </span>
-                </div>
-              </Link>
+                sizes="(max-width: 1024px) 50vw, 25vw"
+              />
             ))}
           </div>
         </section>

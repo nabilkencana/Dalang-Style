@@ -2,8 +2,10 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { Search, X } from 'lucide-react';
 import { TOKOH_CHARACTERS } from '@/lib/tokoh-data';
 import { InteractiveTiltCard } from '@/components/ui/3d-card';
+import KatalogKelir from '@/components/views/KatalogKelir';
 import KatalogGsapAnimations from '@/components/animations/KatalogGsapAnimations';
 
 const CATEGORIES = [
@@ -12,8 +14,6 @@ const CATEGORIES = [
   { id: 'PANDAWA', label: 'Satria Pandawa', count: 3 },
   { id: 'KERAJAAN', label: 'Kerajaan & Begawan', count: 2 },
 ];
-
-const POPULAR_TAGS = ['Semar', 'Arjuna', 'Gatotkaca', 'Bima', 'Petruk', 'Rahwana'];
 
 export default function KatalogTokohView() {
   const [selectedCategory, setSelectedCategory] = useState('ALL');
@@ -56,12 +56,6 @@ export default function KatalogTokohView() {
   const handleClearSearch = () => {
     setSearchInput('');
     setSubmittedQuery('');
-  };
-
-  const handleTagClick = (tag: string) => {
-    setSearchInput(tag);
-    setSubmittedQuery(tag);
-    setSelectedCategory('ALL');
   };
 
   const handleResetAll = () => {
@@ -109,113 +103,76 @@ export default function KatalogTokohView() {
         </div>
       </header>
 
-      {/* 3. Hero Header Section */}
-      <section className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 pt-10 sm:pt-14 md:pt-18 pb-6 sm:pb-8 text-center flex flex-col items-center">
-        <p data-gsap="katalog-aksara" className="text-[#dedf42]/60 text-lg sm:text-2xl font-serif tracking-[0.3em] mb-3 select-none">
-          ꦏꦠꦭꦺꦴꦒ꧀ ꦠꦺꦴꦏꦺꦴꦃ ꦮꦪꦁ
-        </p>
+      {/* 3. Hero: the kelir, followed by quiet browse controls */}
+      <section className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 pt-4 sm:pt-5 pb-2">
+        <KatalogKelir />
 
-        {/* Main Headline */}
-        <h1 data-gsap="katalog-title" className="font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal text-[#dedf42] tracking-tight leading-[1.05] max-w-4xl">
-          Katalog Tokoh Pewayangan
-        </h1>
-
-        {/* Subtitle Description */}
-        <p data-gsap="katalog-subtitle" className="text-xs sm:text-sm md:text-base font-sans text-[#f4e7cd]/80 max-w-2xl mt-4 leading-relaxed">
-          Telusuri watak filosofis, kisah heroisme, dan pusaka sakti para ksatria,
-          punakawan, serta raja-raja dalam warisan agung wiracarita pewayangan Jawa.
-        </p>
-
-        {/* 4. Interactive Search Bar & Category Filter Tabs */}
-        <div data-gsap="katalog-search" className="w-full max-w-3xl mt-8 sm:mt-10 flex flex-col gap-4 items-center">
-          {/* Functional Search Box with Clickable Button & Form Submit */}
-          <form
-            onSubmit={handleSearchSubmit}
-            className="relative w-full flex items-center"
+        <div
+          data-gsap="katalog-search"
+          className="mt-6 sm:mt-8 flex flex-col-reverse gap-5 md:flex-row md:items-end md:justify-between"
+        >
+          <div
+            data-gsap="katalog-cats"
+            role="group"
+            aria-label="Golongan tokoh"
+            className="flex flex-wrap gap-x-6 gap-y-3"
           >
-            <span className="absolute left-4.5 top-1/2 -translate-y-1/2 text-[#dedf42]/70 text-sm sm:text-base pointer-events-none">
-              🔍
-            </span>
-            <input
-              type="text"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Cari tokoh wayang (e.g. Arjuna, Semar)..."
-              className="w-full px-5 py-3.5 pl-12 pr-28 sm:pr-32 rounded-full border border-[#dedf42]/30 bg-black/60 text-[#f4e7cd] placeholder-[#f4e7cd]/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#dedf42] focus:ring-2 focus:ring-[#dedf42]/20 transition-all backdrop-blur-md shadow-inner"
-            />
-
-            {/* Clear Input Button */}
-            {searchInput && (
-              <button
-                type="button"
-                onClick={handleClearSearch}
-                aria-label="Hapus kata kunci pencarian"
-                className="absolute right-24 sm:right-28 top-1/2 -translate-y-1/2 text-xs text-[#dedf42]/60 hover:text-[#dedf42] p-1.5 cursor-pointer font-bold"
-              >
-                ✕
-              </button>
-            )}
-
-            {/* Functional Search Submit Button */}
-            <button
-              type="submit"
-              aria-label="Cari Tokoh"
-              className="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 px-4 sm:px-5 py-2 rounded-full bg-[#dedf42] text-black font-sans font-bold text-xs uppercase tracking-wider hover:bg-white active:scale-95 transition-all shadow-md cursor-pointer"
-            >
-              Cari
-            </button>
-          </form>
-
-          {/* Quick Search Tag Chips */}
-          <div data-gsap="katalog-tags" className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[11px] text-[#f4e7cd]/70">
-            <span className="font-sans font-medium text-xs text-[#dedf42]/80 mr-1">
-              Populer:
-            </span>
-            {POPULAR_TAGS.map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                onClick={() => handleTagClick(tag)}
-                className="px-2.5 py-0.5 rounded-full border border-[#dedf42]/25 bg-black/40 hover:border-[#dedf42] hover:text-[#dedf42] text-[11px] font-sans transition-all cursor-pointer"
-              >
-                #{tag}
-              </button>
-            ))}
-          </div>
-
-          {/* Functional Category Filter Pills with Item Counts */}
-          <div data-gsap="katalog-cats" className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 w-full pt-1">
             {CATEGORIES.map((cat) => {
               const isActive = selectedCategory === cat.id;
               return (
                 <button
                   key={cat.id}
                   type="button"
+                  aria-pressed={isActive}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-full border text-[11px] sm:text-xs font-sans font-bold tracking-wider uppercase transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
+                  className={`border-b-2 pb-1.5 font-sans text-sm sm:text-[15px] transition-colors cursor-pointer rounded-sm focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#dedf42] ${
                     isActive
-                      ? 'border-[#dedf42] bg-[#dedf42] text-black shadow-[0_0_20px_rgba(222,223,66,0.3)] scale-105'
-                      : 'border-[#dedf42]/30 text-[#f4e7cd]/75 hover:border-[#dedf42] hover:text-[#dedf42] bg-black/40'
+                      ? 'border-[#dedf42] text-[#dedf42]'
+                      : 'border-transparent text-[#f4e7cd]/70 hover:text-[#f4e7cd]'
                   }`}
                 >
-                  <span>{cat.label}</span>
-                  <span
-                    className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono ${
-                      isActive ? 'bg-black/20 text-black font-bold' : 'bg-[#dedf42]/15 text-[#dedf42]'
-                    }`}
-                  >
+                  {cat.label}
+                  <span className={`ml-1.5 tabular-nums ${isActive ? 'text-[#dedf42]/70' : 'text-[#f4e7cd]/40'}`}>
                     {cat.count}
                   </span>
                 </button>
               );
             })}
           </div>
+
+          <form role="search" onSubmit={handleSearchSubmit} className="relative w-full md:w-80">
+            <label htmlFor="cari-tokoh" className="sr-only">
+              Cari tokoh
+            </label>
+            <Search
+              aria-hidden="true"
+              className="absolute left-0 top-1/2 size-4 -translate-y-1/2 text-[#dedf42]/70 pointer-events-none"
+            />
+            <input
+              id="cari-tokoh"
+              type="search"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Cari nama, watak, atau peran"
+              className="w-full appearance-none border-b border-[#dedf42]/35 bg-transparent py-2 pl-7 pr-8 font-sans text-sm sm:text-[15px] text-[#f4e7cd] placeholder:text-[#f4e7cd]/40 transition-colors focus:border-[#dedf42] focus:outline-none [&::-webkit-search-cancel-button]:appearance-none"
+            />
+            {searchInput && (
+              <button
+                type="button"
+                onClick={handleClearSearch}
+                aria-label="Hapus pencarian"
+                className="absolute right-0 top-1/2 -translate-y-1/2 p-1 text-[#f4e7cd]/50 hover:text-[#dedf42] cursor-pointer focus:outline-none focus-visible:text-[#dedf42]"
+              >
+                <X className="size-4" />
+              </button>
+            )}
+          </form>
         </div>
       </section>
 
       {/* 5. Main Catalog Grid Section - Full Width */}
-      <main className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-12">
-        <div data-gsap="katalog-counter" className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-[#dedf42]/15 mb-8 gap-3">
+      <main className="relative z-10 w-full px-4 sm:px-6 md:px-8 lg:px-10 pt-5 pb-12 sm:pt-6">
+        <div data-gsap="katalog-counter" className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-[#dedf42]/15 mb-6 gap-3">
           <p className="text-xs sm:text-sm font-sans font-medium text-[#f4e7cd]/70">
             Menampilkan{' '}
             <span className="font-bold text-[#dedf42]">

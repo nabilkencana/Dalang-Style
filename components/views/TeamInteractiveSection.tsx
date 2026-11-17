@@ -32,7 +32,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     number: '01 / 03',
     name: 'Nabil Anwar K.',
     portrait: '/images/team/nabil-solo.webp',
-    bio: 'Siswa SMK Telkom Malang arsitek interaksi cerdas, perumus kecerdasan artifisial pengenal gestur dalang, integrasi Gemini AI, dan pelopor pelestarian budaya berbasis teknologi web modern.',
+    bio: 'Siswa SMK Telkom Malang arsitek interaksi cerdas, perumus kecerdasan artifisial pengenal gestur dalang, panggung wayang interaktif, dan pelopor pelestarian budaya berbasis teknologi web modern.',
     basedIn: 'Malang, ID',
     focus: 'AI Architecture & Fullstack Engineering',
     school: 'SMK Telkom Malang (RPL)',

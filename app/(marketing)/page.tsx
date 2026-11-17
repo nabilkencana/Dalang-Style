@@ -52,7 +52,7 @@ export default function LandingPage() {
       {/* 6. Section 4: A Story of Inner Awakening (Tokoh Wayang Pinned Character Journey) */}
       <SectionStoryAwakening id="cara-bermain" />
 
-      {/* 6.5. Section: Kreasi AI - Custom Wayang Generator (Fan-In Overlay 30° -> 0°) */}
+      {/* 6.5. Section: Koleksi Lakon Agung - pustaka Kisah Wayang (Fan-In Overlay 30° -> 0°) */}
       <SectionWayangGenerator id="kreasi" />
        {/* 7. Section 5: Articles & Editorial News (#berita) */}
       <SectionStoryFinale id="berita" />

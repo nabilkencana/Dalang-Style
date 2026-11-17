@@ -11,74 +11,54 @@ interface KatalogGsapAnimationsProps {
 }
 
 export default function KatalogGsapAnimations({ filterKey = '' }: KatalogGsapAnimationsProps) {
+  // ─────────────────────────────────────────────────────────────
+  // 1. HERO — the blencong is lit once on page load, then the shadows appear.
+  //    Runs only on mount so filtering never replays it.
+  // ─────────────────────────────────────────────────────────────
+  useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    heroTl.fromTo(
+      '[data-gsap="katalog-header"]',
+      { y: -25, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, delay: 0.05, clearProps: 'all' }
+    );
+
+    // Lamp catches: the dark cloth brightens
+    heroTl.fromTo(
+      '[data-gsap="katalog-kelir-unlit"]',
+      { opacity: 1 },
+      { opacity: 0, duration: 1.1, ease: 'power2.inOut', clearProps: 'all' },
+      '-=0.35'
+    );
+
+    // Shadows sharpen into focus on the cloth
+    heroTl.fromTo(
+      '[data-gsap="katalog-aksara"], [data-gsap="katalog-title"]',
+      { opacity: 0, filter: 'blur(10px)' },
+      { opacity: 1, filter: 'blur(0px)', duration: 0.9, stagger: 0.12, clearProps: 'opacity,filter' },
+      '-=0.55'
+    );
+
+    heroTl.fromTo(
+      '[data-gsap="katalog-subtitle"]',
+      { opacity: 0 },
+      { opacity: 1, duration: 0.6, clearProps: 'opacity' },
+      '-=0.4'
+    );
+
+    heroTl.fromTo(
+      '[data-gsap="katalog-search"]',
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.5, clearProps: 'all' },
+      '-=0.3'
+    );
+  }, []);
+
   useGSAP(
     () => {
-      // ─────────────────────────────────────────────────────────────
-      // 1. HERO ENTRANCE — Cinematic Load Timeline
-      // ─────────────────────────────────────────────────────────────
-      const heroTl = gsap.timeline({
-        defaults: { ease: 'power3.out' },
-        onComplete: () => {
-          gsap.set(
-            '[data-gsap="katalog-header"], [data-gsap="katalog-aksara"], [data-gsap="katalog-title"], [data-gsap="katalog-subtitle"], [data-gsap="katalog-search"], [data-gsap="katalog-tags"] > *, [data-gsap="katalog-cats"] > *',
-            { clearProps: 'all' }
-          );
-        },
-      });
-
-      // Top navigation bar
-      heroTl.fromTo(
-        '[data-gsap="katalog-header"]',
-        { y: -25, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, delay: 0.05, clearProps: 'all' }
-      );
-
-      // Aksara Jawa watermark
-      heroTl.fromTo(
-        '[data-gsap="katalog-aksara"]',
-        { scale: 0.9, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.5)', clearProps: 'all' },
-        '-=0.4'
-      );
-
-      // Main Title: "Katalog Tokoh Pewayangan"
-      heroTl.fromTo(
-        '[data-gsap="katalog-title"]',
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', clearProps: 'all' },
-        '-=0.4'
-      );
-
-      // Subtitle description
-      heroTl.fromTo(
-        '[data-gsap="katalog-subtitle"]',
-        { y: 15, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, clearProps: 'all' },
-        '-=0.5'
-      );
-
-      // Search Box
-      heroTl.fromTo(
-        '[data-gsap="katalog-search"]',
-        { scale: 0.95, opacity: 0, y: 15 },
-        { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', clearProps: 'all' },
-        '-=0.4'
-      );
-
-      // Category filter pills
-      heroTl.fromTo(
-        '[data-gsap="katalog-cats"] > *',
-        { y: 12, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.06,
-          duration: 0.5,
-          clearProps: 'all',
-        },
-        '-=0.3'
-      );
-
       // ─────────────────────────────────────────────────────────────
       // 2. MAIN CATALOG COUNTER BAR
       // ─────────────────────────────────────────────────────────────

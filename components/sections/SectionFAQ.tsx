@@ -9,7 +9,7 @@ export interface SectionFAQProps {
 
 const FAQ_CATEGORIES: Record<string, string> = {
   panggung: "Panggung Virtual",
-  kreasi: "Sanggar Cipta AI",
+  kreasi: "Kisah Wayang",
   museum: "Galeri Museum",
   tokoh: "Tokoh & Filosofi",
 };
@@ -39,19 +39,19 @@ const FAQ_DATA: Record<string, FAQItemData[]> = {
   ],
   kreasi: [
     {
-      question: "Apa itu fitur Sanggar Cipta Wayang AI?",
+      question: "Apa itu fitur Kisah Wayang?",
       answer:
-        "Sanggar Cipta adalah generator karakter yang memungkinkan Anda merancang desain wayang kulit baru dengan mengetikkan deskripsi cerita (prompt). AI akan menggubah ilustrasi wayang dengan tetap mempertahankan kaidah tatah sungging nusantara.",
+        "Kisah Wayang adalah pustaka lakon digital berisi 9 lakon pilihan, seperti Dewa Ruci, Semar Mbangun Kayangan, dan Gatotkaca Gugur. Setiap lakon disajikan per babak lengkap dengan ilustrasi, profil tokoh, petuah luhur, dan penjelasan istilah Jawa agar mudah dipahami.",
     },
     {
-      question: "Bagaimana cara membuat karakter wayang kustom?",
+      question: "Apa itu Pentas Hidup Lakon Dewa Ruci?",
       answer:
-        "Kunjungi halaman Kreasi AI, pilih salah satu preset inspirasi atau tuliskan deskripsi karakter Anda sendiri (contoh: 'Ksatria sakti berbusur panah bermahkota surya emas'), lalu tekan tombol Buat Wayang untuk menghasilkan ilustrasi beserta watak filosofisnya.",
+        "Pentas Hidup adalah versi interaktif Lakon Dewa Ruci. Anda mengikuti perjalanan Bima adegan demi adegan dengan menggulir layar, menentukan sikapnya di titik-titik penting, menghadapi raksasa dan Naga Nemburnawa, lalu menemukan sendiri makna \"air suci\" yang dicari Bima.",
     },
     {
-      question: "Apakah saya bisa mengunduh hasil wayang yang telah dibuat?",
+      question: "Bagaimana cara menguji pemahaman setelah membaca lakon?",
       answer:
-        "Ya, setiap karakter wayang yang berhasil digubah dapat diunduh langsung dalam format gambar resolusi tinggi untuk koleksi pribadi atau karya kreatif Anda.",
+        "Di akhir setiap lakon tersedia Kuis Kilat & Refleksi Pemahaman. Jawab pertanyaan singkat seputar alur dan nilai luhur lakon tersebut untuk memastikan pesan ceritanya tersampaikan.",
     },
   ],
   museum: [
