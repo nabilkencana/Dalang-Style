@@ -5,7 +5,7 @@
   # 🎭 WAYANG JAWI
   ### Panggung Wayang Kulit Digital Interaktif, Studio Lakon Sastra, & Ensiklopedia Budaya Berbasis AI
 
-  **Karya Inovasi Teknologi Kebudayaan — Tema: *LUMINE* (Illuminating Indonesian Heritage through Interactive Technology)**
+  **Platform Web Interaktif untuk Mengenal & Melestarikan Seni Wayang Kulit**
 
   [![Next.js](https://img.shields.io/badge/Next.js-16.3-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
   [![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
@@ -25,7 +25,7 @@
 
 ---
 
-## 📖 1. Latar Belakang & Kesesuaian Tema (*LUMINE*)
+## 📖 1. Latar Belakang
 
 Seni pertunjukan **Wayang Kulit** telah diakui oleh UNESCO sebagai *Masterpiece of the Oral and Intangible Heritage of Humanity* sejak tahun 2003 (inskripsi 2008). Namun, di era digital kontemporer, kesenian adiluhung ini menghadapi tantangan pelestarian nyata di kalangan generasi muda:
 - **Keterbatasan Akses Instrumen Fisik**: Biaya dan kelangkaan wayang kulit tatah sungging asli, kelir kain mori, blencong tembaga, dan gamelan perunggu.
@@ -33,7 +33,7 @@ Seni pertunjukan **Wayang Kulit** telah diakui oleh UNESCO sebagai *Masterpiece 
 - **Kesenjangan Bahasa & Media Narasi**: Bahasa sastra pakeliran klasik sering kali berjarak dengan preferensi komunikasi interaktif generasi digital.
 
 ### 🌟 Solusi Inovatif: *Wayang Jawi*
-Menjawab tema kompetisi **LUMINE** (*menyinari dan menerangi khazanah bangsa lewat teknologi*), **Wayang Jawi** hadir mentransformasikan peramban web menjadi panggung kelir virtual interaktif yang inklusif, modern, dan edukatif:
+**Wayang Jawi** hadir mentransformasikan peramban web menjadi panggung kelir virtual interaktif yang inklusif, modern, dan edukatif:
 1. **Menyinari Warisan (*Cultural Illumination*)**: Menghadirkan kembali filosofi karakter Pandawa & Punakawan, lakon spiritual agung (*Bima Suci*), serta direktori 16 gedung museum wayang nusantara dalam balutan desain editorial kelas dunia.
 2. **Kecerdasan Buatan Tanpa Hambatan (*Zero-Hardware AI Vision*)**: Cukup menggunakan kamera laptop atau ponsel biasa, siapapun dapat langsung menjadi dalang secara real-time menggerakkan dua tokoh wayang sekaligus dengan gestur tangan alami.
 3. **Pustaka Lakon & Glosarium Terbuka**: Menyediakan naskah wiracarita lengkap dengan kidung macapat, audio gamelan slendro-pelog, serta penjelajah istilah glosarium instan.
