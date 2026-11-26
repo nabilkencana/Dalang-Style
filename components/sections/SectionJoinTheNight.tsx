@@ -29,7 +29,7 @@ export default function SectionJoinTheNight({
   title = 'Mulai Perjalanan Mendalang',
   actionPill = {
     text: 'MULAI MENDALANG →',
-    href: '/panduan',
+    href: '/stage?tutorial=1',
   },
   tagline = [
     'WAYANG JAWI HADIR UNTUK',

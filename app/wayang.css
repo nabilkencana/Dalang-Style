@@ -1028,3 +1028,225 @@ body.ui-hidden .settings { opacity: 0; pointer-events: none; }
   z-index: 5;
 }
 
+
+/* ── Stage Tutorial (game-style) ── */
+.tut-outro {
+  position: fixed; inset: 0; z-index: 66;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  padding: 16px; text-align: center; cursor: pointer;
+  background: radial-gradient(ellipse 60% 40% at center, rgba(11, 6, 4, 0.72), rgba(11, 6, 4, 0) 75%);
+  animation: tut-outro 2.8s ease both;
+}
+@keyframes tut-outro {
+  0% { opacity: 0; }
+  14%, 78% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.tut-outro-eyebrow {
+  margin: 0; color: var(--gold); font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 600;
+}
+.tut-outro-title {
+  margin: 0; font-family: var(--serif); font-weight: 600; line-height: 1;
+  font-size: clamp(40px, 8vw, 88px); color: #fbeed3;
+  text-shadow: 0 0 24px rgba(242, 199, 107, 0.55), 0 4px 18px rgba(0, 0, 0, 0.6);
+  animation: tut-outro-title 2.8s cubic-bezier(.2, .9, .3, 1) both;
+}
+@keyframes tut-outro-title {
+  0% { transform: scale(0.92); letter-spacing: 0.08em; }
+  30%, 100% { transform: scale(1); letter-spacing: 0.01em; }
+}
+.tut-outro-sub { margin: 4px 0 0; color: var(--ink); font-size: 14px; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7); }
+.tutorial-on .hud, .tutorial-on #toast { opacity: 0; pointer-events: none; }
+.tut-scrim {
+  position: fixed; inset: 0; z-index: 65;
+  display: grid; place-items: center; padding: 16px;
+  background: radial-gradient(ellipse at center, rgba(11, 6, 4, 0.55), rgba(11, 6, 4, 0.85));
+  animation: tut-fade 0.35s ease both;
+}
+.tut-scrim.soft { background: rgba(11, 6, 4, 0.35); pointer-events: none; }
+@keyframes tut-fade { from { opacity: 0; } }
+.tut-choice {
+  width: min(560px, 100%); padding: 26px 24px 18px; text-align: center;
+  animation: tut-pop 0.4s cubic-bezier(.2,.9,.3,1.2) both;
+}
+@keyframes tut-pop { from { opacity: 0; transform: scale(0.94); } }
+.tut-heading {
+  margin: 4px 0 8px; font-family: var(--serif); font-weight: 600;
+  font-size: clamp(22px, 4vw, 30px); line-height: 1.1; color: #fbeed3;
+}
+.tut-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0 14px; }
+.tut-option {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+  padding: 18px 14px; border-radius: 14px; cursor: pointer;
+  border: 1px solid var(--line); background: rgba(255, 235, 200, 0.04); color: var(--ink);
+  font: 400 12.5px/1.45 var(--sans);
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+}
+.tut-option:hover:not(:disabled) { border-color: var(--gold); background: rgba(217, 164, 65, 0.1); transform: translateY(-2px); }
+.tut-option:disabled { opacity: 0.6; cursor: progress; }
+.tut-option strong { font: 600 15px var(--sans); color: var(--gold-hi); }
+.tut-option > span:last-child { color: var(--ink-dim); }
+.tut-option-icon {
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; margin-bottom: 6px;
+  color: var(--gold-hi); background: rgba(217, 164, 65, 0.12); border: 1px solid rgba(217, 164, 65, 0.4);
+  transition: background 0.2s, transform 0.2s;
+}
+.tut-option:hover:not(:disabled) .tut-option-icon { background: rgba(217, 164, 65, 0.22); transform: scale(1.05); }
+.tut-error { color: #f0a080; font-size: 12.5px; margin: 0 0 10px; }
+.tutorial-skip {
+  background: none; border: 0; padding: 4px 0; cursor: pointer;
+  color: var(--ink-dim); font: 500 12px var(--sans); text-decoration: underline;
+}
+.tutorial-skip:hover { color: var(--ink); }
+
+.tut-layer { position: fixed; inset: 0; z-index: 65; pointer-events: none; }
+.tut-ghost, .tut-me { position: absolute; left: 0; top: 0; will-change: transform; }
+.tut-ghost { width: 0; height: 0; transform-origin: 0 0; }
+.tut-ghost .ghost-hand {
+  position: absolute; width: clamp(150px, 17vw, 210px);
+  /* anchor = palm centre (100,160 of 200x260) */
+  left: 0; top: 0; transform: translate(-50%, -61.5%);
+}
+.tut-ghost.pointer .ghost-hand { width: clamp(120px, 13vw, 160px); transform: translate(-32.2%, -11.6%); }
+.ghost-hand { display: block; overflow: visible; animation: ghost-breathe 2.4s ease-in-out infinite; }
+@keyframes ghost-breathe { 50% { opacity: 0.85; } }
+.ghost-hand .g-skin-hi { stop-color: #fff4e2; stop-opacity: 0.78; }
+.ghost-hand .g-skin-lo { stop-color: #e9b98a; stop-opacity: 0.6; }
+.ghost-hand .g-skin { transition: fill 0.3s; }
+.ghost-hand .g-crease { fill: none; stroke: rgba(130, 76, 40, 0.42); stroke-width: 1.6; stroke-linecap: round; }
+.ghost-hand .g-joint { fill: none; stroke: rgba(130, 76, 40, 0.32); stroke-width: 1.4; stroke-linecap: round; }
+.ghost-hand .g-nail { fill: rgba(255, 250, 240, 0.55); stroke: rgba(150, 95, 55, 0.35); stroke-width: 0.8; }
+.ghost-hand .g-edge {
+  fill: none; stroke: #f2c76b; stroke-width: 2.6; stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px rgba(242, 199, 107, 0.9));
+  transition: stroke 0.3s;
+}
+.tut-ghost .ghost-hand, .tut-two .ghost-hand {
+  filter: drop-shadow(0 12px 22px rgba(20, 10, 4, 0.55));
+}
+/* soft dark halo so the hand reads over busy puppets */
+.tut-ghost::before {
+  content: ''; position: absolute; left: 0; top: 0; width: 300px; height: 340px; margin: -210px 0 0 -150px;
+  background: radial-gradient(closest-side, rgba(20, 10, 4, 0.42), rgba(20, 10, 4, 0));
+  pointer-events: none;
+}
+.tut-ghost.pointer::before { width: 220px; height: 300px; margin: -40px 0 0 -80px; }
+.tut-ghost.ok .g-edge, .tut-two.ok .g-edge { stroke: #8fdc7a; filter: drop-shadow(0 0 6px rgba(143, 220, 122, 0.9)); }
+.tut-ghost.ok .g-skin-lo, .tut-two.ok .g-skin-lo { stop-color: #b8efa6; }
+
+/* touch ripple at the anchor point */
+.tut-ripple {
+  position: absolute; left: 0; top: 0; width: 64px; height: 64px; margin: -32px 0 0 -32px;
+  border-radius: 50%; border: 2px solid rgba(242, 199, 107, 0.8);
+  animation: tut-ripple 1.6s ease-out infinite; pointer-events: none;
+}
+.tut-ripple.r2 { animation-delay: 0.8s; }
+.tut-ghost.hand .tut-ripple, .tut-ghost.pinch .tut-ripple { width: 170px; height: 170px; margin: -85px 0 0 -85px; border-width: 2px; }
+.tut-ghost.ok .tut-ripple { border-color: rgba(143, 220, 122, 0.85); }
+@keyframes tut-ripple { from { transform: scale(0.3); opacity: 1; } to { transform: scale(1.25); opacity: 0; } }
+.tut-ring { position: absolute; left: 0; top: 0; width: 50px; height: 50px; margin: -25px 0 0 -25px; transform: rotate(-90deg); }
+.tut-ghost.hand .tut-ring, .tut-ghost.pinch .tut-ring { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
+.tut-ghost.pointer .tut-ring { top: -10px; }
+.tut-ring circle, .tut-bar circle { fill: none; stroke-width: 3; }
+.tut-ring .track, .tut-bar .track { stroke: rgba(255, 240, 210, 0.18); }
+.tut-ring .fill, .tut-bar .fill {
+  stroke: var(--gold-hi); stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100;
+  transition: stroke 0.3s;
+}
+.tut-ghost.ok .fill, .tut-bar.ok .fill { stroke: #8fdc7a; }
+
+.tut-trail { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tut-trail polyline { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.tut-trail .dash {
+  stroke: rgba(242, 199, 107, 0.85); stroke-width: 2.5; stroke-dasharray: 10 10;
+  filter: drop-shadow(0 0 1.5px rgba(20, 10, 4, 0.8));
+  animation: tut-trail 1.2s linear infinite;
+}
+@keyframes tut-trail { to { stroke-dashoffset: -20; } }
+
+.tut-me {
+  width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%; opacity: 0;
+  background: var(--gold-hi); border: 3px solid #fff8e8;
+  box-shadow: 0 0 0 6px rgba(242, 199, 107, 0.25), 0 0 18px rgba(242, 199, 107, 0.8);
+  transition: opacity 0.2s;
+}
+.tut-me.camera { width: 34px; height: 34px; margin: -17px 0 0 -17px; background: rgba(242, 199, 107, 0.35); }
+.tut-two {
+  position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%);
+  display: flex; gap: clamp(60px, 18vw, 260px);
+}
+.tut-two .ghost-hand { width: clamp(90px, 12vw, 150px); animation: ghost-bob 2s ease-in-out infinite; }
+.tut-two .ghost-hand:first-child { transform: scaleX(-1); animation-name: ghost-bob-m; }
+@keyframes ghost-bob { 50% { transform: translateY(-12px); } }
+@keyframes ghost-bob-m { 0%, 100% { transform: scaleX(-1); } 50% { transform: scaleX(-1) translateY(-12px); } }
+.tut-two.ok .ghost-hand rect { stroke: #8fdc7a; }
+
+.tut-caption {
+  position: absolute; left: 50%; top: max(84px, calc(env(safe-area-inset-top, 0px) + 76px));
+  transform: translateX(-50%);
+  width: min(520px, calc(100vw - 32px)); text-align: center; pointer-events: auto;
+  padding: 14px 18px 10px; border-radius: 14px;
+  background: rgba(22, 13, 7, 0.88); border: 1px solid var(--line);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  animation: tut-drop 0.35s ease both;
+}
+.tut-caption.done-all { position: static; transform: none; animation: tut-pop 0.4s ease both; }
+@keyframes tut-drop { from { opacity: 0; transform: translate(-50%, -10px); } }
+.tut-caption-head { display: flex; align-items: center; gap: 12px; text-align: left; margin-bottom: 10px; }
+.tut-step-icon {
+  flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px;
+  color: var(--gold-hi); background: rgba(217, 164, 65, 0.14); border: 1px solid rgba(217, 164, 65, 0.45);
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+.tut-step-icon.ok { color: #1b2a12; background: #8fdc7a; border-color: #8fdc7a; animation: tut-pop 0.35s ease both; }
+.tut-caption-text .tut-heading { margin: 0; font-size: clamp(20px, 3vw, 26px); }
+.tut-step-num { margin: 0; color: var(--gold); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+.tut-caption > .tut-step-num { margin-top: 6px; letter-spacing: 0.08em; }
+.tut-hint { margin: 0; color: var(--ink); font-size: 14px; line-height: 1.45; }
+.tut-warn { margin: 8px 0 0; min-height: 1.3em; color: #f0b24a; font-size: 12.5px; }
+.tut-warn:empty { min-height: 0; margin: 0; }
+.tut-progress { display: flex; gap: 4px; margin-bottom: 10px; }
+.tut-progress span { flex: 1; }
+.tut-progress span { width: 22px; height: 3px; border-radius: 2px; background: rgba(217, 164, 65, 0.22); transition: background 0.3s; }
+.tut-progress span.cur { background: rgba(217, 164, 65, 0.6); }
+.tut-progress span.on { background: var(--gold-hi); }
+.tut-bar { position: relative; width: 64px; height: 64px; margin: 12px auto 2px; display: grid; place-items: center; }
+.tut-bar svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.tut-bar .btn { position: relative; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+.tut-bigkey {
+  position: relative; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 8px;
+  border: 1px solid var(--gold); color: var(--gold-hi); font: 700 18px var(--sans);
+  animation: ghost-glow 1.2s ease-in-out infinite;
+}
+.tut-scroll-icon {
+  position: relative; width: 20px; height: 32px; border-radius: 10px; border: 2px solid var(--gold-hi);
+}
+.tut-scroll-icon::after {
+  content: ''; position: absolute; left: 50%; top: 6px; width: 4px; height: 7px; margin-left: -2px;
+  border-radius: 2px; background: var(--gold-hi); animation: tut-scroll 1.2s ease-in-out infinite;
+}
+@keyframes tut-scroll { 50% { transform: translateY(9px); opacity: 0.4; } }
+.tut-links { display: flex; justify-content: center; gap: 18px; margin-top: 8px; }
+.tutorial-keys {
+  list-style: none; margin: 12px 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+}
+.tutorial-keys li {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: var(--ink-dim);
+  padding: 7px 4px; border-radius: 8px; border: 1px solid var(--line);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.tutorial-keys li.hit { border-color: #8fdc7a; color: var(--ink); background: rgba(143, 220, 122, 0.1); }
+.tutorial-keys kbd { color: var(--gold-hi); font: 700 13px var(--sans); }
+
+@media (max-width: 640px) {
+  .tut-options { grid-template-columns: 1fr; }
+  .tut-option { flex-direction: row; text-align: left; flex-wrap: wrap; column-gap: 12px; }
+  .tut-option-icon { width: 44px; height: 44px; margin: 0; }
+  .tut-caption { top: auto; bottom: max(14px, env(safe-area-inset-bottom, 14px)); }
+  .tut-hint { font-size: 13px; }
+  .tutorial-keys { grid-template-columns: repeat(2, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tut-outro, .tut-outro-title, .tut-scrim, .tut-choice, .tut-caption, .ghost-hand, .ghost-hand *, .tut-trail .dash, .tut-step-icon, .tut-two .ghost-hand, .tut-ripple, .tut-trail polyline, .tut-bigkey, .tut-scroll-icon::after { animation: none !important; }
+}

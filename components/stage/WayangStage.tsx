@@ -8,6 +8,7 @@ import { HandTracker } from '@/lib/wayang/tracking';
 import { Controller, ControllerSettings } from '@/lib/wayang/controller';
 import { BackgroundMusic, BeatClock } from '@/lib/wayang/audio';
 import { clamp, noise1, Affine, AffineMatrix } from '@/lib/wayang/math';
+import StageTutorial, { TUTORIAL_DONE_KEY } from '@/components/stage/StageTutorial';
 
 const HAND_EDGES: [number, number][] = [
   [0, 1],
@@ -323,6 +324,8 @@ export default function WayangStage() {
   const [facingMode, setFacingMode] = useState<'target' | 'walk' | 'manual'>('target');
   const [controlMode, setControlMode] = useState<'camera' | 'mouse'>('mouse');
   const [errorMessage, setErrorMessage] = useState('');
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [outro, setOutro] = useState<'done' | 'skip' | null>(null);
 
   const [settings, setSettings] = useState<ControllerSettings>({
     characters: 'two',
@@ -950,6 +953,41 @@ export default function WayangStage() {
     wayangRef.current.showPreview = showPreview;
   }, [showPreview]);
 
+  const openTutorial = useCallback(() => {
+    const controller = wayangRef.current.controller;
+    if (controller && controller.source !== 'camera') {
+      controller.source = 'mouse';
+      setControlMode('mouse');
+    }
+    setShowSettings(false);
+    setIntroGone(true);
+    setShowTutorial(true);
+  }, []);
+
+  // Auto-open tutorial on first visit or when linked with ?tutorial=1
+  useEffect(() => {
+    let seen = false;
+    try {
+      seen = localStorage.getItem(TUTORIAL_DONE_KEY) === '1';
+    } catch {}
+    const forced = new URLSearchParams(window.location.search).get('tutorial') === '1';
+    if (forced || !seen) openTutorial();
+  }, [openTutorial]);
+
+  const closeTutorial = useCallback((finished: boolean) => {
+    setShowTutorial(false);
+    try {
+      localStorage.setItem(TUTORIAL_DONE_KEY, '1');
+    } catch {}
+    setOutro(finished ? 'done' : 'skip');
+  }, []);
+
+  useEffect(() => {
+    if (!outro) return;
+    const t = window.setTimeout(() => setOutro(null), 2800);
+    return () => window.clearTimeout(t);
+  }, [outro]);
+
   // Switch Control Mode (Camera vs Mouse)
   const switchControlMode = useCallback(async (mode: 'camera' | 'mouse') => {
     const controller = wayangRef.current.controller;
@@ -999,6 +1037,14 @@ export default function WayangStage() {
       }
     }
   }, [showToast]);
+
+  const handleTutorialAction = (a: 'mouse' | 'camera' | 'dance' | 'one' | 'two') => {
+    if (a === 'mouse' || a === 'camera') return switchControlMode(a);
+    if (a === 'dance') {
+      wayangRef.current.controller?.requestDance();
+      showToast('Tari Kiprah');
+    } else handleCharactersChange(a);
+  };
 
   // Start Camera handler
   const handleStartCamera = async () => {
@@ -1085,7 +1131,7 @@ export default function WayangStage() {
   const activeCharData = CHARACTER_LIST.find((c) => c.id === activeCharId) || CHARACTER_LIST[0];
 
   return (
-    <div className={uiHidden ? 'ui-hidden' : ''}>
+    <div className={`${uiHidden ? 'ui-hidden' : ''} ${showTutorial ? 'tutorial-on' : ''}`}>
       <canvas id="stage" ref={canvasRef} aria-label="Panggung wayang kulit" />
       <video id="video" ref={videoRef} playsInline muted style={{ display: 'none' }} />
 
@@ -1342,9 +1388,20 @@ export default function WayangStage() {
           <span style={{ fontSize: '15px' }}></span>
         </button> */}
 
+        {/* Tutorial Button */}
+        <button
+          type="button"
+          className="icon-btn"
+          aria-label="Buka tutorial"
+          title="Tutorial mendalang"
+          onClick={openTutorial}
+        >
+          <span style={{ fontSize: '16px', fontWeight: 700, lineHeight: 1 }}>?</span>
+        </button>
+
         {/* Home Button */}
         <Link
-          href="/panduan"
+          href="/"
           className="icon-btn"
           aria-label="Kembali ke Beranda"
           title="Kembali ke Beranda"
@@ -1409,13 +1466,14 @@ export default function WayangStage() {
             ✕
           </button>
         </div>
-        <Link
-          href="/panduan"
+        <button
+          type="button"
           className="btn small"
-          style={{ textAlign: 'center', display: 'block', textDecoration: 'none' }}
+          style={{ width: '100%' }}
+          onClick={openTutorial}
         >
-          Kembali ke Panduan
-        </Link>
+          Ulangi Tutorial
+        </button>
         <label>
           Mode Pertunjukan (Jumlah Wayang)
           <select
@@ -1562,6 +1620,22 @@ export default function WayangStage() {
           </svg>
         </button>
       </div>
+
+      {showTutorial && (
+        <StageTutorial onAction={handleTutorialAction} onClose={closeTutorial} />
+      )}
+
+      {outro && (
+        <div className="tut-outro" role="status" aria-live="polite" onClick={() => setOutro(null)}>
+          <p className="tut-outro-eyebrow">{outro === 'done' ? 'Tutorial selesai' : 'Panggung siap'}</p>
+          <h2 className="tut-outro-title">Selamat Mendalang!</h2>
+          <p className="tut-outro-sub">
+            {outro === 'done'
+              ? 'Kelir milik Anda. Hidupkan kisahnya.'
+              : 'Butuh panduan? Ketuk tombol ? kapan saja.'}
+          </p>
+        </div>
+      )}
 
       {/* Toast Notification */}
       <div id="toast" className={`toast ${toastVisible ? 'show' : ''}`} role="status" aria-live="polite">

@@ -25,7 +25,7 @@ const STAGGERED_MENU_ITEMS: StaggeredMenuItem[] = [
   { label: 'Galeri Museum', link: '/#galeri' },
   { label: 'Warta Budaya', link: '/#berita' },
   { label: 'Kisah Wayang', link: '/kreasi', badge: 'LAKON', highlight: true },
-  { label: 'Panduan Mendalang', link: '/panduan' },
+  { label: 'Panduan Mendalang', link: '/stage?tutorial=1' },
 ];
 
 const STAGGERED_SOCIAL_ITEMS: StaggeredMenuSocialItem[] = [
@@ -180,7 +180,7 @@ export default function Navbar({ className }: { className?: string }) {
                 </HoveredLink>
                 <div className="pt-2 border-t border-[#dedf42]/20">
                   <Link
-                    href="/panduan"
+                    href="/stage?tutorial=1"
                     className="text-[#dedf42] text-xs font-semibold hover:underline block"
                   >
                     Panduan Gestur Dalang &rarr;
@@ -403,7 +403,7 @@ export default function Navbar({ className }: { className?: string }) {
 
           {/* Exact Split Button from rbp-saas-template [ Panduan Mendalang | ↘ ] */}
           <Link
-            href="/panduan"
+            href="/stage?tutorial=1"
             className="group relative inline-flex items-center active:scale-95 transition-transform shrink-0"
           >
             {/* Left capsule with background matching navbar */}
